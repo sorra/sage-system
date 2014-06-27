@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+#set(components = ["bootstrap", "layout", "tag", "test"])
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<title>贤者：测试</title>
+    $!{includeCSS()}
+</head>
+<body>
+$!{include("navbar.httl")}
+<div class="container" id="container">
+	<div class="tag-chain">
+
+	</div>
+</div>
+$!{include("proto.httl")}
+$!{includeProto}
+$!{includeJS()}
+<script type="text/javascript">
+$(document).ready(function(){
+	getTagChain(8, $('body > .container'));
+});
+</script>
+</body>
+</html>

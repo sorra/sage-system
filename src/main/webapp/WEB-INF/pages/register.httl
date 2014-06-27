@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>注册</title>
+    <style type="text/css">
+       table{
+           margin-top: 100px;
+           margin-left: auto;
+           margin-right: auto;
+       }
+       body{
+           background: lightgreen;
+       }
+    </style>
+</head>
+<body>
+    <form method="POST" action="#!{base}/auth/register">
+        <table>
+            <tr><td>用户注册</td></tr>
+            <tr>
+                <td>邮箱：</td>
+                <td><input type="text" name="email" /></td>
+            </tr>
+            <tr>
+                <td>密码：</td>
+                <td><input type="password" name="password" /></td>
+            </tr>
+            <tr>
+                <td>再输一次密码：</td>
+                <td><input type="password" name="password" /></td>
+            </tr>
+            <tr>
+                <td><input type="submit" value="注册" /></td>
+            </tr>
+        </table>
+    </form>
+</body>
+</html>

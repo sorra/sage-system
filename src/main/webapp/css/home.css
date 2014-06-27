@@ -1,0 +1,23 @@
+.side{
+	min-height: 600px;
+    background-color: #DDDDDD;
+}
+
+.top-box{
+	padding: 10px;
+}
+.top-box .input{
+	height: 100px;
+}
+
+.avatar img{
+    width: 50px;
+    height: 50px;
+}
+.friends .name{
+	color: black;
+}
+.user-card .name{
+	font-weight: bold;
+	color: black;
+}

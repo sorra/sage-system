@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+#set(components = ["bootstrap", "layout", "stream", "tag", "usercard", "post-box", "home"])
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<title>贤者：首页</title>
+	$!{includeCSS()}
+</head>
+<body>
+$!{include("navbar.httl")}
+
+<div id="container" class="container">
+	<div class="row">
+		<div class="side span3" style="width: 260px">
+		  <div class="self-card"></div>
+		  <ul class="friends unstyled">好友</ul>
+		</div>
+		<div class="main span9" style="width: 660px">
+			$!{include("top-box.httl")}
+			<div class="stream row">
+				<div class="slist span9"></div>
+			</div>
+		</div>
+	</div>
+	<div class="footer"></div>
+</div>
+$!{include("proto.httl")}
+$!{includeProto}
+$!{includeJS()}
+</body>
+</html>

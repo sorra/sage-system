@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+#set(components = ["bootstrap", "layout", "stream", "tag", "usercard"])
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<title>私人主页</title>
+	$!{includeCSS()}
+</head>
+<body>
+$!{include("navbar.httl")}
+
+<div class="container" id="container">
+	<div class="row">
+		<div class="side span3"><div style="height:30px;"></div></div>
+		<div class="main span9">
+			<div class="stream row">
+				<div class="slist span9"></div>
+			</div>
+		</div>
+	</div>
+	<div class="footer"></div>
+</div>
+$!{include("proto.httl")}
+$!{includeProto}
+$!{includeJS()}
+<script type="text/javascript">
+
+  $(document).ready(function() {
+    if (window.frontMap.isSelfPage) {
+      $('#nav-private').addClass('active');
+    }
+    
+    var $thisUser = createUserCard(window.frontMap.thisUser).css('border', '').css('border-radius', '');
+    $thisUser.find('.follow').remove();
+    $thisUser.appendTo($('.side'));
+
+    var deferred = getStream(webroot + '/read/u/' + window.frontMap.id);
+    if (window.frontMap.isSelfPage) {
+      deferred.done(function() {
+        addDeleteButtons($('.slist .tweet'));
+      });
+    }
+  });
+</script>
+</body>
+</html>

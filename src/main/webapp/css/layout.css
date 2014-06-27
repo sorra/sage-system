@@ -1,0 +1,22 @@
+.data-holder{
+	display:none;
+}
+body{
+    background: #e5e5e5;
+}
+body>.container{
+    margin-top: 50px;
+}
+
+.mybrand {
+    color: #000;
+    font-weight:bold;
+    text-shadow: 0 1px 0 rgba(255,255,255,.1), 0 0 30px rgba(255,255,255,.125);
+}
+.search {
+    margin: 5px 0 -5px 0;
+}
+
+.followings, .followers {
+	color: green;
+}

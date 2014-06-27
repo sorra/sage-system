@@ -1,0 +1,42 @@
+.stream .item{
+	background: #f0f0f0;
+	border-radius: 5px;
+	padding: 5px;
+	margin-bottom: 5px;
+}
+.stream .t-part{
+	width: 540px;
+}
+.stream .origin .t-part{
+	width: 538px;
+}
+.stream .origin{
+	background: #e0e0e0;
+	border: solid 1px #e5e5e5;
+	border-radius: 10px;
+}
+.stream .combine{
+	border-left: solid 1px #e5e5e5;
+	border-right: solid 1px #e5e5e5;
+}
+.stream .combine > .forward{
+	margin-left: 0;
+}
+.stream .combine > .origin{
+	margin-left: 80px;
+}
+.stream .avatar{
+	display: block;
+	padding-top: 5px;
+}
+.stream .avatar img{
+	width: 50px;
+	height: 50px;
+}
+.stream .author-name{
+	font-weight: bold;
+	color: black;
+}
+.stream .tags a{
+	margin-left: 1em;
+}

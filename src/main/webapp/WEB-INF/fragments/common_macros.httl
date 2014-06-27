@@ -1,0 +1,6 @@
+#macro($includeProto)
+  #set( _protos = includeProtos() )
+  #for(String each : _protos)
+    $!{include(each)}
+  #end
+#end

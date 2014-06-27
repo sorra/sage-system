@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+#set(components = ["bootstrap", "layout", "stream", "tag", "usercard", "search-result"])
+#set(List<String> hits)
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<title>搜索结果</title>
+    $!{includeCSS()}
+</head>
+<body>
+$!{include("navbar.httl")}
+<div class="data-holder" style="display:none;">
+	#for(hit : hits)
+	<span class="hit-json">$!{hit}</span>
+	#end
+</div>
+<div id="container" class="container">
+	<div id="result-list"></div>
+</div>
+$!{include("proto.httl")}
+$!{includeProto}
+$!{includeJS()}
+</body>
+</html>

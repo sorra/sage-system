@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+#set(components = ["bootstrap", "layout", "tag", "usercard", "followers"])
+#set(List<String> followers)
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<title>粉丝列表</title>
+  $!{includeCSS()}
+  <link href="$!{rs}/css/home.css" rel="stylesheet" type="text/css" media="screen" />
+</head>
+<body>
+$!{include("navbar.httl")}
+<div id="container" class="container">
+	<div id="list"></div>
+</div>
+$!{include("proto.httl")}
+$!{includeProto}
+$!{includeJS()}
+</body>
+</html>

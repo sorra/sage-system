@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+#set(components = ["bootstrap", "layout", "stream", "tag", "usercard", "markdown"])
+#set(BlogData blog, List<TweetCard> tweets)
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<title>${blog.title}</title>
+    $!{includeCSS()}
+	<style type="text/css">
+	#container{
+		margin-top: 50px;
+		background-color: #F0F0F0;
+	}
+	.title, .content, .tweets{
+		border: 1px solid #eee;
+	}
+	</style>
+</head>
+<body>
+$!{include("navbar.httl")}
+<div class="container" id="container">
+	<div class="author"></div>
+	<div class="blog">
+		<span id="id" style="display:none">$!{blog.id}</span>
+		<h3 class="title">$!{blog.title}</h3>
+		#if(uid.equals(blog.authorId))
+		<a href="$!{base}/blog/$!{blog.id}/edit">编辑</a>
+		#end
+		<span>$!{blog.time}</span>
+		<div class="tags">
+		#for(TagLabel tag : blog.tags)
+		  <a class="btn btn-small" href="${base}/public/${tag.id}">${tag.name}</a>
+		#end
+		</div>
+		<div class="content">$!{blog.content}</div>
+	</div>
+	<h5>连接到的微博：</h5>
+	<div class="stream">
+	   <div class="slist"></div>
+	</div>
+</div>
+$!{include("proto.httl")}
+$!{includeProto}
+$!{includeJS()}
+<script type="text/javascript">
+console.log('blog-id: ' + $('#id').text());
+function unescape(str) {
+    return String(str).replace(/&gt;/g, '>');
+}
+var $content = $('.content').warnEmpty();
+$content.html(markdown.toHTML(unescape($content.html())));
+
+getStream(webroot+'/read/connect/'+$('#id').text())
+    .done(function(){
+        $('.newfeed').remove();
+        $('.oldfeed').remove();
+    });
+</script>
+</body>
+</html>
