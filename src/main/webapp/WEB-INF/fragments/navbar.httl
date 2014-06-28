@@ -23,7 +23,7 @@
 </div>
 <div class="data-holder">
     #if(frontMap != null)
-    <span id="frontMap">${frontMap}</span>
+    <span id="front-map">${frontMap}</span>
     #end
     #if(userSelfJson != null)
     <span id="user-self-json">${userSelfJson}</span>

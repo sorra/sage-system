@@ -8,16 +8,14 @@ $!{includeCSS()}
 </head>
 <body>
 $!{include("navbar.httl")}
-<div class="data-holder">
-    <span id="tc-json">${tcJson}</span>
-</div>
 <div class="container"></div>
 $!{include("proto.httl")}
 $!{includeProto}
 $!{includeJS()}
 <script>
-var tc = $.parseJSON($('#tc-json').text());
-createTweetCard(tc).appendTo($('body > .container'));
+$(document).ready(function(){
+  createTweetCard(window.frontMap.tc).appendTo($('body > .container'))
+})
 </script>
 </body>
 </html>

@@ -15,7 +15,11 @@ public class FrontMap extends ModelMap {
     model.addAttribute(NAME, fm);
     return fm;
   }
-  
+
+  /**
+   * Use for rendering in template engine
+   * @return JSON string
+   */
   @Override
   public String toString() {
     logger.debug("Keys: " + this.keySet());

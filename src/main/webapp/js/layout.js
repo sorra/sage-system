@@ -103,8 +103,8 @@ function userLinkAttrs(id) {
 }
 
 $(document).ready(function(){
-    if ($('#frontMap').length > 0) {
-      window.frontMap = $.parseJSON($('#frontMap').text());
+    if ($('#front-map').length > 0) {
+      window.frontMap = $.parseJSON($('#front-map').text());
     }
   
     if ($('#user-self-json').length > 0) {

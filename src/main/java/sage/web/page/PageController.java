@@ -13,6 +13,7 @@ import sage.domain.service.TweetReadService;
 import sage.transfer.BlogData;
 import sage.transfer.TweetCard;
 import sage.web.auth.Auth;
+import sage.web.context.FrontMap;
 import sage.web.context.Json;
 
 @Controller
@@ -27,8 +28,7 @@ public class PageController {
   @RequestMapping("/tweet/{id}")
   public String tweetPage(@PathVariable long id, ModelMap model) {
     TweetCard tc = tweetReadService.getTweetCard(id);
-    String tcJson = Json.json(tc);
-    model.addAttribute("tcJson", tcJson);
+    FrontMap.from(model).put("tc", tc);
     return "tweet";
   }
 
