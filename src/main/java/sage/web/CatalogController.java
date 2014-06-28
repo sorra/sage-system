@@ -8,8 +8,8 @@ import sage.domain.service.RelationService;
 import sage.entity.nosql.FollowCatalog;
 import sage.entity.nosql.FollowCatalogLite;
 import sage.entity.nosql.ResourceCatalog;
-import sage.web.auth.AuthUtil;
-import sage.web.context.JsonUtil;
+import sage.web.auth.Auth;
+import sage.web.context.Json;
 
 @RestController
 @RequestMapping("/catalog")
@@ -21,15 +21,15 @@ public class CatalogController {
   
   @RequestMapping(value = "/resource/{id}", method = RequestMethod.GET)
   public ResourceCatalog getResourceCatalog(@PathVariable String id) {
-    AuthUtil.checkCurrentUid();
+    Auth.checkCurrentUid();
     return catalogs.getResourceCatalog(id);
   }
   
   @RequestMapping(value = "/resource/{id}", method = RequestMethod.POST)
   public Boolean updateResourceCatalog(@PathVariable String id, @RequestParam String catalog) {
-    Long uid = AuthUtil.checkCurrentUid();
+    Long uid = Auth.checkCurrentUid();
     
-    ResourceCatalog rc = JsonUtil.object(catalog, ResourceCatalog.class);
+    ResourceCatalog rc = Json.object(catalog, ResourceCatalog.class);
     Assert.isTrue(rc.getOwnerId().equals(uid));
     Assert.isTrue(rc.getId().equals(id));
     return catalogs.updateResourceCatalog(rc);
@@ -37,23 +37,23 @@ public class CatalogController {
 
   @RequestMapping(value = "/resource/add", method = RequestMethod.POST)
   public String addResourceCatalog(@RequestParam String catalog) {
-    Long uid = AuthUtil.checkCurrentUid();
+    Long uid = Auth.checkCurrentUid();
     
-    ResourceCatalog rc = JsonUtil.object(catalog, ResourceCatalog.class);
+    ResourceCatalog rc = Json.object(catalog, ResourceCatalog.class);
     return catalogs.addResourceCatalog(rc, uid) ? rc.getId() : null;
   }
   
   @RequestMapping(value = "/follow/{id}", method = RequestMethod.GET)
   public FollowCatalog getFollowCatalog(@PathVariable String id) {
-    AuthUtil.checkCurrentUid();
+    Auth.checkCurrentUid();
     return catalogs.getFollowCatalog(id);
   }
   
   @RequestMapping(value = "/follow/{id}", method = RequestMethod.POST)
   public Boolean updateFollowCatalog(@PathVariable String id, @RequestParam String catalogLite) {
-    Long uid = AuthUtil.checkCurrentUid();
+    Long uid = Auth.checkCurrentUid();
     
-    FollowCatalogLite fcLite = JsonUtil.object(catalogLite, FollowCatalogLite.class);
+    FollowCatalogLite fcLite = Json.object(catalogLite, FollowCatalogLite.class);
     Assert.isTrue(fcLite.getOwnerId().equals(uid));
     Assert.isTrue(fcLite.getId().equals(id));
     return catalogs.updateFollowCatalog(fcLite);
@@ -61,9 +61,9 @@ public class CatalogController {
 
   @RequestMapping(value = "/follow/add", method = RequestMethod.POST)
   public String addFollowCatalog(@RequestParam String catalogLite) {
-    Long uid = AuthUtil.checkCurrentUid();
+    Long uid = Auth.checkCurrentUid();
 
-    FollowCatalogLite fcLite = JsonUtil.object(catalogLite, FollowCatalogLite.class);
+    FollowCatalogLite fcLite = Json.object(catalogLite, FollowCatalogLite.class);
     return catalogs.addFollowCatalog(fcLite, uid) ? fcLite.getId() : null;
   }
 }

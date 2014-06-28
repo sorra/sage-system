@@ -12,7 +12,7 @@ import sage.entity.Tag;
 import sage.transfer.TagCard;
 import sage.transfer.TagLabel;
 import sage.transfer.TagNode;
-import sage.web.context.JsonUtil;
+import sage.web.context.Json;
 
 @Service
 @Transactional
@@ -49,7 +49,7 @@ public class TagService {
 
   // TODO Cache it
   public String getTagTreeJson() {
-    return JsonUtil.json(getTagTree());
+    return Json.json(getTagTree());
   }
 
   @Transactional(readOnly = true)

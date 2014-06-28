@@ -13,7 +13,7 @@ import sage.domain.service.RelationService;
 import sage.domain.service.UserService;
 import sage.entity.Follow;
 import sage.transfer.UserCard;
-import sage.web.auth.AuthUtil;
+import sage.web.auth.Auth;
 import sage.web.context.FrontMap;
 
 @Controller
@@ -25,12 +25,12 @@ public class RelationPageController {
 
   @RequestMapping("/followings")
   public String followings() {
-    return "forward:/followings/" + AuthUtil.checkCurrentUid();
+    return "forward:/followings/" + Auth.checkCurrentUid();
   }
 
   @RequestMapping("/followings/{userId}")
   public String followings(@PathVariable long userId, ModelMap model) {
-    Long curUid = AuthUtil.checkCurrentUid();
+    Long curUid = Auth.checkCurrentUid();
     
     List<UserCard> followings = new ArrayList<>();
     for (Follow follow : relationService.followings(userId)) {
@@ -44,12 +44,12 @@ public class RelationPageController {
 
   @RequestMapping("/followers")
   public String followers() {
-    return "forward:/followers/" + AuthUtil.checkCurrentUid();
+    return "forward:/followers/" + Auth.checkCurrentUid();
   }
 
   @RequestMapping("/followers/{userId}")
   public String followers(@PathVariable long userId, ModelMap model) {
-    Long curUid = AuthUtil.checkCurrentUid();
+    Long curUid = Auth.checkCurrentUid();
     
     List<UserCard> followers = new ArrayList<>();
     for (Follow follow : relationService.followers(userId)) {

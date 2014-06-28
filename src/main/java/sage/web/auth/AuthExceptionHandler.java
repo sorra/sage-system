@@ -15,6 +15,6 @@ public class AuthExceptionHandler {
     if (request.getQueryString() != null) {
       uri += request.getQueryString();
     }
-    return "redirect:/login?" + AuthUtil.getRedirectGoto(uri);
+    return "redirect:/login?" + Auth.getRedirectGoto(uri);
   }
 }

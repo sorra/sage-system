@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import sage.domain.service.HeedService;
-import sage.web.auth.AuthUtil;
+import sage.web.auth.Auth;
 
 @RestController
 @RequestMapping(method = RequestMethod.POST)
@@ -16,13 +16,13 @@ public class HeedController {
   
   @RequestMapping("/heed/tag/{id}")
   public void heedTag(@PathVariable long tagId) {
-    Long uid = AuthUtil.checkCurrentUid();
+    Long uid = Auth.checkCurrentUid();
     heedService.heedTag(uid, tagId);
   }
   
   @RequestMapping("/unheed/tag/{id}")
   public void unheedTag(@PathVariable long tagId) {
-    Long uid = AuthUtil.checkCurrentUid();
+    Long uid = Auth.checkCurrentUid();
     heedService.unheedTag(uid, tagId);
   }
 }

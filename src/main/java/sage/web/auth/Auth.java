@@ -11,8 +11,8 @@ import org.springframework.web.util.UriUtils;
 
 import sage.web.context.WebContexts;
 
-public class AuthUtil {
-  private final static Logger logger = LoggerFactory.getLogger(AuthUtil.class);
+public class Auth {
+  private final static Logger logger = LoggerFactory.getLogger(Auth.class);
 
   public static Long checkCurrentUid() {
     Long cuid = currentUid();

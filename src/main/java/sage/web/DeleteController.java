@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import sage.domain.service.BlogPostService;
 import sage.domain.service.TweetPostService;
-import sage.web.auth.AuthUtil;
+import sage.web.auth.Auth;
 
 @RestController
 @RequestMapping(method = RequestMethod.POST)
@@ -19,13 +19,13 @@ public class DeleteController {
 
   @RequestMapping("/tweet/{id}/delete")
   public void deleteTweet(@PathVariable Long id) {
-    long uid = AuthUtil.checkCurrentUid();
+    long uid = Auth.checkCurrentUid();
     tweetPostService.delete(uid, id);
   }
 
   @RequestMapping("/blog/{id}/delete")
   public void deleteBlog(@PathVariable Long id) {
-    long uid = AuthUtil.checkCurrentUid();
+    long uid = Auth.checkCurrentUid();
     blogPostService.delete(uid, id);
   }
 }

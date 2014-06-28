@@ -7,7 +7,7 @@ import java.util.List;
 import org.springframework.stereotype.Repository;
 
 import sage.entity.nosql.Notif;
-import sage.web.context.JsonUtil;
+import sage.web.context.Json;
 
 import com.couchbase.client.protocol.views.Query;
 import com.couchbase.client.protocol.views.ViewResponse;
@@ -22,7 +22,7 @@ public class NotifRepository extends BaseCouchbaseRepository<Notif> {
     
     List<Notif> notifs = new ArrayList<>();
     for (ViewRow row : resp) {
-      Notif notif = JsonUtil.object(row.getDocument().toString(), entityClass());
+      Notif notif = Json.object(row.getDocument().toString(), entityClass());
       notifs.add(notif);
     }
     return notifs;

@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 
 import sage.domain.service.TagService;
 import sage.domain.service.UserService;
-import sage.web.auth.AuthUtil;
+import sage.web.auth.Auth;
 
 @ControllerAdvice
 public class CommonModelAttributesHandler {
@@ -17,8 +17,8 @@ public class CommonModelAttributesHandler {
 
   @ModelAttribute("userSelfJson")
   public String userSelfJson() {
-    Long uid = AuthUtil.currentUid();
-    return uid == null ? null : JsonUtil.json(userService.getSelf(uid));
+    Long uid = Auth.currentUid();
+    return uid == null ? null : Json.json(userService.getSelf(uid));
   }
 
   @ModelAttribute("tagTreeJson")

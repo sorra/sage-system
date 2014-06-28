@@ -15,7 +15,7 @@ import sage.domain.service.UserService;
 import sage.entity.Tag;
 import sage.transfer.TagCard;
 import sage.transfer.TagLabel;
-import sage.web.auth.AuthUtil;
+import sage.web.auth.Auth;
 import sage.web.context.FrontMap;
 
 @Controller
@@ -53,12 +53,12 @@ public class StreamPageController {
 
   @RequestMapping("/private")
   public String privatePage() {
-    return "forward:/private/" + AuthUtil.checkCurrentUid();
+    return "forward:/private/" + Auth.checkCurrentUid();
   }
 
   @RequestMapping("/private/{id}")
   public String privatePage(@PathVariable long id, ModelMap model) {
-    Long uid = AuthUtil.checkCurrentUid();
+    Long uid = Auth.checkCurrentUid();
     FrontMap fm = FrontMap.from(model);
     
     fm.put("id", id);

@@ -10,7 +10,7 @@ import org.springframework.web.servlet.ModelAndView;
 import sage.domain.service.UserService;
 import sage.transfer.UserCard;
 import sage.transfer.UserSelf;
-import sage.web.auth.AuthUtil;
+import sage.web.auth.Auth;
 
 @Controller
 @RequestMapping("/user")
@@ -21,14 +21,14 @@ public class UserController {
   @RequestMapping("/self")
   @ResponseBody
   public UserSelf self() {
-    Long uid = AuthUtil.checkCurrentUid();
+    Long uid = Auth.checkCurrentUid();
     return userService.getSelf(uid);
   }
 
   @RequestMapping("/card/{id}")
   @ResponseBody
   public UserCard userCard(@PathVariable Long id) {
-    Long uid = AuthUtil.checkCurrentUid();
+    Long uid = Auth.checkCurrentUid();
     return userService.getUserCard(uid, id);
   }
 

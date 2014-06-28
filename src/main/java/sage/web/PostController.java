@@ -4,14 +4,13 @@ import java.util.Collection;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import sage.domain.service.BlogPostService;
 import sage.domain.service.TweetPostService;
 import sage.entity.Blog;
 import sage.entity.Tweet;
-import sage.web.auth.AuthUtil;
+import sage.web.auth.Auth;
 
 @RestController
 @RequestMapping(value = "/post", method = RequestMethod.POST)
@@ -27,7 +26,7 @@ public class PostController {
       @RequestParam String content,
       @RequestParam(value = "attachmentRefs[]", defaultValue = "") Collection<String> attachmentRefs,
       @RequestParam(value = "tagIds[]", defaultValue = "") Collection<Long> tagIds) {
-    Long uid = AuthUtil.checkCurrentUid();
+    Long uid = Auth.checkCurrentUid();
     if (content.isEmpty()) {
       return false;
     }
@@ -45,7 +44,7 @@ public class PostController {
   public boolean forward(
       @RequestParam String content,
       @RequestParam Long originId) {
-    Long uid = AuthUtil.checkCurrentUid();
+    Long uid = Auth.checkCurrentUid();
 
     Tweet tweet = tweetPostService.forward(uid, content, originId);
     logger.info("forward tweet {} success", tweet.getId());
@@ -57,7 +56,7 @@ public class PostController {
       @RequestParam String title,
       @RequestParam String content,
       @RequestParam(value = "tagIds[]", defaultValue = "") Collection<Long> tagIds) {
-    Long uid = AuthUtil.checkCurrentUid();
+    Long uid = Auth.checkCurrentUid();
     if (title.isEmpty() || content.isEmpty()) {
       return null;
     }
@@ -76,7 +75,7 @@ public class PostController {
       @RequestParam String title,
       @RequestParam String content,
       @RequestParam(value = "tagIds[]", defaultValue = "") Collection<Long> tagIds) {
-    Long uid = AuthUtil.checkCurrentUid();
+    Long uid = Auth.checkCurrentUid();
     if (title.isEmpty() || content.isEmpty()) {
       return null;
     }
@@ -90,7 +89,7 @@ public class PostController {
   public boolean comment(
       @RequestParam String content,
       @RequestParam Long sourceId) {
-    Long uid = AuthUtil.checkCurrentUid();
+    Long uid = Auth.checkCurrentUid();
     if (content.isEmpty()) {
       return false;
     }

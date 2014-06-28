@@ -21,7 +21,7 @@ import org.springframework.stereotype.Component;
 
 import sage.transfer.BlogData;
 import sage.transfer.TweetCard;
-import sage.web.context.JsonUtil;
+import sage.web.context.Json;
 
 @Component
 public class SearchBase {
@@ -86,7 +86,7 @@ public class SearchBase {
     if (object == null) {
       throw new IllegalArgumentException("object is null");
     }
-    String json = JsonUtil.json(object);
+    String json = Json.json(object);
     client.prepareIndex(INDEX, mapType(object.getClass()), String.valueOf(id))
         .setSource(json)
         .execute();

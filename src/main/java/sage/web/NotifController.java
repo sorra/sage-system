@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import sage.domain.service.NotifService;
 import sage.entity.nosql.Notif;
-import sage.web.auth.AuthUtil;
+import sage.web.auth.Auth;
 
 import java.util.Collection;
 
@@ -18,7 +18,7 @@ public class NotifController {
   
   @RequestMapping("/get")
   public Collection<Notif> notifs() {
-    Long uid = AuthUtil.checkCurrentUid();
+    Long uid = Auth.checkCurrentUid();
     return notifSvc.getNotifs(uid);
   }
 }

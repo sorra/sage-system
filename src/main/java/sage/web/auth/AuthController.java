@@ -29,7 +29,7 @@ public class AuthController {
       @RequestParam("email") String email,
       @RequestParam("password") String password) {
     logger.info("login email: {}", email);
-    AuthUtil.invalidateSession(request);
+    Auth.invalidateSession(request);
 
     String referer = request.getHeader("referer");
     logger.debug("Referer: {}", referer);
@@ -52,7 +52,7 @@ public class AuthController {
         return "redirect:/";
       }
       else {
-        return "redirect:" + AuthUtil.decodeLink(dest);
+        return "redirect:" + Auth.decodeLink(dest);
       }
     }
     else {
@@ -61,7 +61,7 @@ public class AuthController {
         return "redirect:/login";
       }
       else {
-        return "redirect:/login?" + AuthUtil.getRedirectGoto(dest);
+        return "redirect:/login?" + Auth.getRedirectGoto(dest);
       }
     }
   }

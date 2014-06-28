@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-import sage.web.auth.AuthUtil;
+import sage.web.auth.Auth;
 
 import java.io.File;
 import java.io.IOException;
@@ -44,7 +44,7 @@ public class UploadController {
   
   @RequestMapping("/image")
   public Collection<String> uploadImage(@RequestParam MultipartFile[] files) throws IOException {
-    AuthUtil.checkCurrentUid();
+    Auth.checkCurrentUid();
     
     Collection<String> destinations = new ArrayList<>();    
     for (MultipartFile file : files) {

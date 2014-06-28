@@ -19,7 +19,7 @@ public class FrontMap extends ModelMap {
   @Override
   public String toString() {
     logger.debug("Keys: " + this.keySet());
-    return JsonUtil.json(this);
+    return Json.json(this);
   }
 
   private static final Logger logger = LoggerFactory.getLogger(FrontMap.class);

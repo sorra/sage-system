@@ -13,7 +13,7 @@ import sage.domain.service.TweetReadService;
 import sage.transfer.CommentCard;
 import sage.transfer.Stream;
 import sage.transfer.TweetCard;
-import sage.web.auth.AuthUtil;
+import sage.web.auth.Auth;
 
 import java.util.List;
 
@@ -30,7 +30,7 @@ public class ReadController {
   public Stream istream(
       @RequestParam(required = false) Long before,
       @RequestParam(required = false) Long after) {
-    Long uid = AuthUtil.checkCurrentUid();
+    Long uid = Auth.checkCurrentUid();
     logger.debug("before {}, after {}", before, after);
     return streamService.istream(uid, getEdge(before, after));
   }

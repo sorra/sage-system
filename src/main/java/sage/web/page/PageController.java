@@ -12,8 +12,8 @@ import sage.domain.service.BlogReadService;
 import sage.domain.service.TweetReadService;
 import sage.transfer.BlogData;
 import sage.transfer.TweetCard;
-import sage.web.auth.AuthUtil;
-import sage.web.context.JsonUtil;
+import sage.web.auth.Auth;
+import sage.web.context.Json;
 
 @Controller
 @RequestMapping
@@ -27,7 +27,7 @@ public class PageController {
   @RequestMapping("/tweet/{id}")
   public String tweetPage(@PathVariable long id, ModelMap model) {
     TweetCard tc = tweetReadService.getTweetCard(id);
-    String tcJson = JsonUtil.json(tc);
+    String tcJson = Json.json(tc);
     model.addAttribute("tcJson", tcJson);
     return "tweet";
   }
@@ -57,13 +57,13 @@ public class PageController {
 
   @RequestMapping("/write-blog")
   public String writeBlog() {
-    AuthUtil.checkCurrentUid();
+    Auth.checkCurrentUid();
     return "write-blog";
   }
 
   @RequestMapping("/blog/{blogId}/edit")
   public String blogEdit(@PathVariable Long blogId, ModelMap model) {
-    Long currentUid = AuthUtil.checkCurrentUid();
+    Long currentUid = Auth.checkCurrentUid();
 
     BlogData blog = blogReadService.getBlogData(blogId);
     if (blog.getAuthorId().equals(currentUid)) {

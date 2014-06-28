@@ -9,7 +9,7 @@ import org.springframework.util.Assert;
 
 import sage.domain.nosql.CouchbaseFactory;
 import sage.entity.nosql.IdAble;
-import sage.web.context.JsonUtil;
+import sage.web.context.Json;
 
 import com.couchbase.client.CouchbaseClient;
 
@@ -25,7 +25,7 @@ public abstract class BaseCouchbaseRepository<T extends IdAble> {
     if (json ==null) {
       return null;
     }
-    T result = JsonUtil.object(json, entityClass());
+    T result = Json.object(json, entityClass());
     result.setId(key);
     return result;
   }
@@ -33,13 +33,13 @@ public abstract class BaseCouchbaseRepository<T extends IdAble> {
   public Future<Boolean> add(String key, T value) {
     Assert.notNull(key);
     Assert.notNull(value);
-    return client.add(key, JsonUtil.json(value));
+    return client.add(key, Json.json(value));
   }
 
   public Future<Boolean> set(String key, T value) {
     Assert.notNull(key);
     Assert.notNull(value);
-    return client.set(key, JsonUtil.json(value));
+    return client.set(key, Json.json(value));
   }
   
   @PreDestroy
