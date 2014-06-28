@@ -29,7 +29,7 @@ public class PostController {
   @RequestMapping("/tweet")
   @ResponseBody
   public boolean tweet(
-      @RequestParam("content") String content,
+      @RequestParam String content,
       @RequestParam(value = "attachmentRefs[]", defaultValue = "") Collection<String> attachmentRefs,
       @RequestParam(value = "tagIds[]", defaultValue = "") Collection<Long> tagIds) {
     Long uid = AuthUtil.checkCurrentUid();
@@ -49,8 +49,8 @@ public class PostController {
   @RequestMapping("/forward")
   @ResponseBody
   public boolean forward(
-      @RequestParam("content") String content,
-      @RequestParam("originId") Long originId) {
+      @RequestParam String content,
+      @RequestParam Long originId) {
     Long uid = AuthUtil.checkCurrentUid();
 
     Tweet tweet = tweetPostService.forward(uid, content, originId);
@@ -61,8 +61,8 @@ public class PostController {
   @RequestMapping("/blog")
   @ResponseBody
   public Long blog(
-      @RequestParam("title") String title,
-      @RequestParam("content") String content,
+      @RequestParam String title,
+      @RequestParam String content,
       @RequestParam(value = "tagIds[]", defaultValue = "") Collection<Long> tagIds) {
     Long uid = AuthUtil.checkCurrentUid();
     if (title.isEmpty() || content.isEmpty()) {
@@ -80,9 +80,9 @@ public class PostController {
   @RequestMapping("/edit-blog/{blogId}")
   @ResponseBody
   public Long editBlog(
-      @PathVariable("blogId") Long blogId,
-      @RequestParam("title") String title,
-      @RequestParam("content") String content,
+      @PathVariable Long blogId,
+      @RequestParam String title,
+      @RequestParam String content,
       @RequestParam(value = "tagIds[]", defaultValue = "") Collection<Long> tagIds) {
     Long uid = AuthUtil.checkCurrentUid();
     if (title.isEmpty() || content.isEmpty()) {
@@ -97,8 +97,8 @@ public class PostController {
   @RequestMapping("/comment")
   @ResponseBody
   public boolean comment(
-      @RequestParam("content") String content,
-      @RequestParam("sourceId") Long sourceId) {
+      @RequestParam String content,
+      @RequestParam Long sourceId) {
     Long uid = AuthUtil.checkCurrentUid();
     if (content.isEmpty()) {
       return false;

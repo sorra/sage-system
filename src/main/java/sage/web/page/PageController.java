@@ -25,7 +25,7 @@ public class PageController {
   private TweetReadService tweetReadService;
 
   @RequestMapping("/tweet/{id}")
-  public String tweetPage(@PathVariable("id") long id, ModelMap model) {
+  public String tweetPage(@PathVariable long id, ModelMap model) {
     TweetCard tc = tweetReadService.getTweetCard(id);
     String tcJson = JsonUtil.json(tc);
     model.addAttribute("tcJson", tcJson);
@@ -33,7 +33,7 @@ public class PageController {
   }
 
   @RequestMapping("/blog/{id}")
-  public String blogPage(@PathVariable("id") long id, ModelMap model) {
+  public String blogPage(@PathVariable long id, ModelMap model) {
     BlogData blog = blogReadService.getBlogData(id);
     if (blog == null) {
       logger.info("blog {} is null!", id);
@@ -62,7 +62,7 @@ public class PageController {
   }
 
   @RequestMapping("/blog/{blogId}/edit")
-  public String blogEdit(@PathVariable("blogId") Long blogId, ModelMap model) {
+  public String blogEdit(@PathVariable Long blogId, ModelMap model) {
     Long currentUid = AuthUtil.checkCurrentUid();
 
     BlogData blog = blogReadService.getBlogData(blogId);

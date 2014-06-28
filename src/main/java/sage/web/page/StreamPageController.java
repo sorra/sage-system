@@ -26,7 +26,7 @@ public class StreamPageController {
   private TagService tagService;
 
   @RequestMapping("/public/{id}")
-  public String publicPage(@PathVariable("id") long id, ModelMap model) {
+  public String publicPage(@PathVariable long id, ModelMap model) {
     FrontMap fm = FrontMap.from(model);
     fm.put("id", id);
     
@@ -57,7 +57,7 @@ public class StreamPageController {
   }
 
   @RequestMapping("/private/{id}")
-  public String privatePage(@PathVariable("id") long id, ModelMap model) {
+  public String privatePage(@PathVariable long id, ModelMap model) {
     Long uid = AuthUtil.checkCurrentUid();
     FrontMap fm = FrontMap.from(model);
     
@@ -72,7 +72,7 @@ public class StreamPageController {
   }
 
   @RequestMapping("/group/{id}")
-  public String groupPage(@PathVariable("id") long id) {
+  public String groupPage(@PathVariable long id) {
     return "group-page";
   }
 }

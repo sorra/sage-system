@@ -29,7 +29,7 @@ public class RelationPageController {
   }
 
   @RequestMapping("/followings/{userId}")
-  public String followings(@PathVariable("userId") long userId, ModelMap model) {
+  public String followings(@PathVariable long userId, ModelMap model) {
     Long curUid = AuthUtil.checkCurrentUid();
     
     List<UserCard> followings = new ArrayList<>();
@@ -48,7 +48,7 @@ public class RelationPageController {
   }
 
   @RequestMapping("/followers/{userId}")
-  public String followers(@PathVariable("userId") long userId, ModelMap model) {
+  public String followers(@PathVariable long userId, ModelMap model) {
     Long curUid = AuthUtil.checkCurrentUid();
     
     List<UserCard> followers = new ArrayList<>();

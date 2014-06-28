@@ -18,14 +18,14 @@ public class HeedController {
   
   @RequestMapping("/heed/tag/{id}")
   @ResponseBody
-  public void heedTag(@PathVariable("id") long tagId) {
+  public void heedTag(@PathVariable long tagId) {
     Long uid = AuthUtil.checkCurrentUid();
     heedService.heedTag(uid, tagId);
   }
   
   @RequestMapping("/unheed/tag/{id}")
   @ResponseBody
-  public void unheedTag(@PathVariable("id") long tagId) {
+  public void unheedTag(@PathVariable long tagId) {
     Long uid = AuthUtil.checkCurrentUid();
     heedService.unheedTag(uid, tagId);
   }

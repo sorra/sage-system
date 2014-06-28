@@ -27,14 +27,14 @@ public class CatalogController {
   
   @RequestMapping(value = "/resource/{id}", method = RequestMethod.GET)
   @ResponseBody
-  public ResourceCatalog getResourceCatalog(@PathVariable("id") String id) {
+  public ResourceCatalog getResourceCatalog(@PathVariable String id) {
     AuthUtil.checkCurrentUid();
     return catalogs.getResourceCatalog(id);
   }
   
   @RequestMapping(value = "/resource/{id}", method = RequestMethod.POST)
   @ResponseBody
-  public Boolean updateResourceCatalog(@PathVariable("id") String id, @RequestParam("catalog") String catalog) {
+  public Boolean updateResourceCatalog(@PathVariable String id, @RequestParam String catalog) {
     Long uid = AuthUtil.checkCurrentUid();
     
     ResourceCatalog rc = JsonUtil.object(catalog, ResourceCatalog.class);
@@ -45,7 +45,7 @@ public class CatalogController {
 
   @RequestMapping(value = "/resource/add", method = RequestMethod.POST)
   @ResponseBody
-  public String addResourceCatalog(@RequestParam("catalog") String catalog) {
+  public String addResourceCatalog(@RequestParam String catalog) {
     Long uid = AuthUtil.checkCurrentUid();
     
     ResourceCatalog rc = JsonUtil.object(catalog, ResourceCatalog.class);
@@ -54,14 +54,14 @@ public class CatalogController {
   
   @RequestMapping(value = "/follow/{id}", method = RequestMethod.GET)
   @ResponseBody
-  public FollowCatalog getFollowCatalog(@PathVariable("id") String id) {
+  public FollowCatalog getFollowCatalog(@PathVariable String id) {
     AuthUtil.checkCurrentUid();
     return catalogs.getFollowCatalog(id);
   }
   
   @RequestMapping(value = "/follow/{id}", method = RequestMethod.POST)
   @ResponseBody
-  public Boolean updateFollowCatalog(@PathVariable("id") String id, @RequestParam("catalogLite") String catalogLite) {
+  public Boolean updateFollowCatalog(@PathVariable String id, @RequestParam String catalogLite) {
     Long uid = AuthUtil.checkCurrentUid();
     
     FollowCatalogLite fcLite = JsonUtil.object(catalogLite, FollowCatalogLite.class);
@@ -72,7 +72,7 @@ public class CatalogController {
 
   @RequestMapping(value = "/follow/add", method = RequestMethod.POST)
   @ResponseBody
-  public String addFollowCatalog(@RequestParam("catalogLite") String catalogLite) {
+  public String addFollowCatalog(@RequestParam String catalogLite) {
     Long uid = AuthUtil.checkCurrentUid();
 
     FollowCatalogLite fcLite = JsonUtil.object(catalogLite, FollowCatalogLite.class);

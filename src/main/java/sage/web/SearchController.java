@@ -23,7 +23,7 @@ public class SearchController {
 
   @RequestMapping("/search")
   public String search(
-      @RequestParam("q") String q,
+      @RequestParam String q,
       ModelMap model) throws UnsupportedEncodingException {
     if (q.isEmpty()) {
       return "forward:";

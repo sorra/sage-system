@@ -22,8 +22,7 @@ public class FavController {
   private FavService favService;
   
   @RequestMapping(value="/add", method=RequestMethod.POST)
-  public void addFav(@RequestParam(value = "link", required = false) String link,
-      @RequestParam(value = "tweetId", required = false) Long tweetId) {
+  public void addFav(@RequestParam(required = false) String link, @RequestParam(required = false) Long tweetId) {
     Long uid = AuthUtil.checkCurrentUid();
 
     if (link != null && tweetId == null) {
@@ -36,7 +35,7 @@ public class FavController {
   }
   
   @RequestMapping(value="/{favId}/delete", method=RequestMethod.POST)
-  public boolean deleteFav(@PathVariable("favId") Long favId) {
+  public boolean deleteFav(@PathVariable Long favId) {
     Long uid =AuthUtil.checkCurrentUid();
     
     return favService.deleteFav(uid, favId);

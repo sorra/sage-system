@@ -31,50 +31,48 @@ public class ReadController {
   @RequestMapping("/istream")
   @ResponseBody
   public Stream istream(
-      @RequestParam(value = "before", required = false) Long beforeId,
-      @RequestParam(value = "after", required = false) Long afterId) {
+      @RequestParam(required = false) Long before,
+      @RequestParam(required = false) Long after) {
     Long uid = AuthUtil.checkCurrentUid();
-    logger.debug("before {}, after {}", beforeId, afterId);
-    return streamService.istream(uid, getEdge(beforeId, afterId));
+    logger.debug("before {}, after {}", before, after);
+    return streamService.istream(uid, getEdge(before, after));
   }
 
   @RequestMapping("/connect/{blogId}")
   @ResponseBody
-  public Stream connect(@PathVariable("blogId") Long blogId) {
+  public Stream connect(@PathVariable Long blogId) {
     List<TweetCard> tcs = tweetReadService.connectTweets(blogId);
     return new Stream(tcs);
   }
 
   @RequestMapping("/{tweetId}/comments")
   @ResponseBody
-  public List<CommentCard> comments(@PathVariable("tweetId") Long tweetId) {
+  public List<CommentCard> comments(@PathVariable Long tweetId) {
     return CommentCard.listOf(tweetReadService.getComments(tweetId));
   }
 
   @RequestMapping("/tag/{id}")
   @ResponseBody
-  public Stream tagStream(
-      @PathVariable("id") Long tagId,
-      @RequestParam(value = "before", required = false) Long beforeId,
-      @RequestParam(value = "after", required = false) Long afterId) {
-    return streamService.tagStream(tagId, getEdge(beforeId, afterId));
+  public Stream tagStream(@PathVariable Long id,
+      @RequestParam(required = false) Long before,
+      @RequestParam(required = false) Long after) {
+    return streamService.tagStream(id, getEdge(before, after));
   }
 
-  @RequestMapping("/u/{id}")
+  @RequestMapping("/u/{userId}")
   @ResponseBody
-  public Stream personalStream(
-      @PathVariable("id") Long userId,
-      @RequestParam(value = "before", required = false) Long beforeId,
-      @RequestParam(value = "after", required = false) Long afterId) {
-    return streamService.personalStream(userId, getEdge(beforeId, afterId));
+  public Stream personalStream(@PathVariable Long id,
+      @RequestParam(required = false) Long before,
+      @RequestParam(required = false) Long after) {
+    return streamService.personalStream(id, getEdge(before, after));
   }
 
   @RequestMapping("/group/{id}")
   @ResponseBody
-  public Stream groupStream(@PathVariable("id") Long groupId,
-      @RequestParam(value = "before", required = false) Long beforeId,
-      @RequestParam(value = "after", required = false) Long afterId) {
-    return streamService.groupStream(groupId, getEdge(beforeId, afterId));
+  public Stream groupStream(@PathVariable Long id,
+      @RequestParam(required = false) Long before,
+      @RequestParam(required = false) Long after) {
+    return streamService.groupStream(id, getEdge(before, after));
   }
 
   private Edge getEdge(Long beforeId, Long afterId) {
