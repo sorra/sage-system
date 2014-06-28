@@ -1,5 +1,12 @@
 package sage.web;
 
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+import sage.web.auth.AuthUtil;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -10,16 +17,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.concurrent.atomic.AtomicLong;
 
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.MultipartFile;
-
-import sage.web.auth.AuthUtil;
-
-@Controller
+@RestController
 @RequestMapping(value = "/upload", method = RequestMethod.POST)
 public class UploadController {
   private static final long MAX_IMAGE_BYTES = 4*1024*1024;
@@ -45,7 +43,6 @@ public class UploadController {
   }
   
   @RequestMapping("/image")
-  @ResponseBody
   public Collection<String> uploadImage(@RequestParam MultipartFile[] files) throws IOException {
     AuthUtil.checkCurrentUid();
     

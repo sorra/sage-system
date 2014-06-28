@@ -5,11 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import sage.domain.service.BlogPostService;
 import sage.domain.service.TweetPostService;
@@ -17,7 +13,7 @@ import sage.entity.Blog;
 import sage.entity.Tweet;
 import sage.web.auth.AuthUtil;
 
-@Controller
+@RestController
 @RequestMapping(value = "/post", method = RequestMethod.POST)
 public class PostController {
   private final Logger logger = LoggerFactory.getLogger(getClass());
@@ -27,7 +23,6 @@ public class PostController {
   private BlogPostService blogService;
 
   @RequestMapping("/tweet")
-  @ResponseBody
   public boolean tweet(
       @RequestParam String content,
       @RequestParam(value = "attachmentRefs[]", defaultValue = "") Collection<String> attachmentRefs,
@@ -47,7 +42,6 @@ public class PostController {
   }
 
   @RequestMapping("/forward")
-  @ResponseBody
   public boolean forward(
       @RequestParam String content,
       @RequestParam Long originId) {
@@ -59,7 +53,6 @@ public class PostController {
   }
 
   @RequestMapping("/blog")
-  @ResponseBody
   public Long blog(
       @RequestParam String title,
       @RequestParam String content,
@@ -78,7 +71,6 @@ public class PostController {
   }
 
   @RequestMapping("/edit-blog/{blogId}")
-  @ResponseBody
   public Long editBlog(
       @PathVariable Long blogId,
       @RequestParam String title,
@@ -95,7 +87,6 @@ public class PostController {
   }
 
   @RequestMapping("/comment")
-  @ResponseBody
   public boolean comment(
       @RequestParam String content,
       @RequestParam Long sourceId) {

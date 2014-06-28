@@ -1,16 +1,12 @@
 package sage.web;
 
-import java.util.List;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-
+import org.springframework.web.bind.annotation.RestController;
 import sage.domain.Edge;
 import sage.domain.service.StreamService;
 import sage.domain.service.TweetReadService;
@@ -19,7 +15,9 @@ import sage.transfer.Stream;
 import sage.transfer.TweetCard;
 import sage.web.auth.AuthUtil;
 
-@Controller
+import java.util.List;
+
+@RestController
 @RequestMapping("/read")
 public class ReadController {
   private final static Logger logger = LoggerFactory.getLogger(ReadController.class);
@@ -29,7 +27,6 @@ public class ReadController {
   private TweetReadService tweetReadService;
 
   @RequestMapping("/istream")
-  @ResponseBody
   public Stream istream(
       @RequestParam(required = false) Long before,
       @RequestParam(required = false) Long after) {
@@ -39,28 +36,24 @@ public class ReadController {
   }
 
   @RequestMapping("/connect/{blogId}")
-  @ResponseBody
   public Stream connect(@PathVariable Long blogId) {
     List<TweetCard> tcs = tweetReadService.connectTweets(blogId);
     return new Stream(tcs);
   }
 
   @RequestMapping("/{tweetId}/comments")
-  @ResponseBody
   public List<CommentCard> comments(@PathVariable Long tweetId) {
     return CommentCard.listOf(tweetReadService.getComments(tweetId));
   }
 
   @RequestMapping("/tag/{id}")
-  @ResponseBody
   public Stream tagStream(@PathVariable Long id,
       @RequestParam(required = false) Long before,
       @RequestParam(required = false) Long after) {
     return streamService.tagStream(id, getEdge(before, after));
   }
 
-  @RequestMapping("/u/{userId}")
-  @ResponseBody
+  @RequestMapping("/u/{id}")
   public Stream personalStream(@PathVariable Long id,
       @RequestParam(required = false) Long before,
       @RequestParam(required = false) Long after) {
@@ -68,7 +61,6 @@ public class ReadController {
   }
 
   @RequestMapping("/group/{id}")
-  @ResponseBody
   public Stream groupStream(@PathVariable Long id,
       @RequestParam(required = false) Long before,
       @RequestParam(required = false) Long after) {
