@@ -1,42 +1,42 @@
-.stream .item{
+.stream-item{
 	background: #f0f0f0;
 	border-radius: 5px;
 	padding: 5px;
 	margin-bottom: 5px;
 }
-.stream .t-part{
+.stream-item .t-part{
 	width: 540px;
 }
-.stream .origin .t-part{
+.stream-item .origin .t-part{
 	width: 538px;
 }
-.stream .origin{
+.stream-item .origin{
 	background: #e0e0e0;
 	border: solid 1px #e5e5e5;
 	border-radius: 10px;
 }
-.stream .combine{
+.stream-item .combine{
 	border-left: solid 1px #e5e5e5;
 	border-right: solid 1px #e5e5e5;
 }
-.stream .combine > .forward{
+.stream-item .combine > .forward{
 	margin-left: 0;
 }
-.stream .combine > .origin{
+.stream-item .combine > .origin{
 	margin-left: 80px;
 }
-.stream .avatar{
+.stream-item .avatar{
 	display: block;
 	padding-top: 5px;
 }
-.stream .avatar img{
+.stream-item .avatar img{
 	width: 50px;
 	height: 50px;
 }
-.stream .author-name{
+.stream-item .author-name{
 	font-weight: bold;
 	color: black;
 }
-.stream .tags a{
-	margin-left: 1em;
+.stream-item .tags a{
+	margin-left: 0.5em;
 }

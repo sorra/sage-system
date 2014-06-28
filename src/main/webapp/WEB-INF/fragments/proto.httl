@@ -1,5 +1,5 @@
 <div class="proto" style="display:none">
-	<div class="tweet item row">
+	<div class="tweet stream-item row">
 		<a class="avatar span1" href=""><img src=""/></a>
 		<div class="t-part span7">
 			<div class="row">
@@ -18,7 +18,7 @@
 		</div>
 	</div>
 	
-	<div class="combine item row"></div>
+	<div class="combine stream-item row"></div>
 
 	<div class="blog">
 		<a class="avatar span1" href=""><img src=""/></a>
