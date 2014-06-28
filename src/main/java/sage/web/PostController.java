@@ -15,6 +15,9 @@ import sage.web.auth.Auth;
 @RestController
 @RequestMapping(value = "/post", method = RequestMethod.POST)
 public class PostController {
+  private static final int TWEET__MAX_LEN = 2000, COMMENT_MAX_LEN = 200,
+      BLOG_TITLE_MAX_LEN = 100, BLOG_CONTENT_MAX_LEN = 10000;
+
   private final Logger logger = LoggerFactory.getLogger(getClass());
   @Autowired
   private TweetPostService tweetPostService;
@@ -27,10 +30,7 @@ public class PostController {
       @RequestParam(value = "attachmentRefs[]", defaultValue = "") Collection<String> attachmentRefs,
       @RequestParam(value = "tagIds[]", defaultValue = "") Collection<Long> tagIds) {
     Long uid = Auth.checkCurrentUid();
-    if (content.isEmpty()) {
-      return false;
-    }
-    if (content.length() > 2000) {
+    if (content.isEmpty() || content.length() > TWEET__MAX_LEN) {
       return false;
     }
 
@@ -45,6 +45,9 @@ public class PostController {
       @RequestParam String content,
       @RequestParam Long originId) {
     Long uid = Auth.checkCurrentUid();
+    if (content.length() > TWEET__MAX_LEN) {
+      return false;
+    }
 
     Tweet tweet = tweetPostService.forward(uid, content, originId);
     logger.info("forward tweet {} success", tweet.getId());
@@ -57,7 +60,8 @@ public class PostController {
       @RequestParam String content,
       @RequestParam(value = "tagIds[]", defaultValue = "") Collection<Long> tagIds) {
     Long uid = Auth.checkCurrentUid();
-    if (title.isEmpty() || content.isEmpty()) {
+    if (title.isEmpty() || title.length() > BLOG_TITLE_MAX_LEN
+        || content.isEmpty() || content.length() > BLOG_CONTENT_MAX_LEN) {
       return null;
     }
 
@@ -76,7 +80,8 @@ public class PostController {
       @RequestParam String content,
       @RequestParam(value = "tagIds[]", defaultValue = "") Collection<Long> tagIds) {
     Long uid = Auth.checkCurrentUid();
-    if (title.isEmpty() || content.isEmpty()) {
+    if (title.isEmpty() || title.length() > BLOG_TITLE_MAX_LEN
+        || content.isEmpty() || content.length() > BLOG_CONTENT_MAX_LEN) {
       return null;
     }
 
@@ -91,7 +96,7 @@ public class PostController {
       @RequestParam Long sourceId,
       @RequestParam(required = false) Long replyUserId) {
     Long uid = Auth.checkCurrentUid();
-    if (content.isEmpty()) {
+    if (content.isEmpty() || content.length() > COMMENT_MAX_LEN) {
       return false;
     }
 
