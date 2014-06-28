@@ -88,13 +88,15 @@ public class PostController {
   @RequestMapping("/comment")
   public boolean comment(
       @RequestParam String content,
-      @RequestParam Long sourceId) {
+      @RequestParam Long sourceId,
+      @RequestParam(required = false) Long replyUserId) {
     Long uid = Auth.checkCurrentUid();
     if (content.isEmpty()) {
       return false;
     }
 
-    tweetPostService.comment(uid, content, sourceId);
+    //TODO save reply info in the comment
+    tweetPostService.comment(uid, content, sourceId, replyUserId);
     return true;
   }
 }

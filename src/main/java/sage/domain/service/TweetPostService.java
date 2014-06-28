@@ -91,7 +91,7 @@ public class TweetPostService {
     return tweet;
   }
 
-  public Comment comment(long userId, String content, long sourceId) {
+  public Comment comment(Long userId, String content, Long sourceId, Long replyUserId) {
     ParsedContent parsedContent = processContent(content);
     content = parsedContent.content;
     
@@ -101,6 +101,9 @@ public class TweetPostService {
     commentRepo.save(comment);
     
     notifService.commented(source.getAuthor().getId(), userId, comment.getId());
+    if (replyUserId != null) {
+      notifService.replied(replyUserId, userId, comment.getId());
+    }
     for (Long mentioned : parsedContent.mentionedIds) {
       notifService.mentionedByComment(mentioned, userId, comment.getId());
     }

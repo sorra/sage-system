@@ -43,6 +43,6 @@ public class Notif implements IdAble {
   }
   
   public static enum Type {
-    FORWARDED, COMMENTED, MENTIONED_TWEET, MENTIONED_COMMENT
+    FORWARDED, COMMENTED, REPLIED, MENTIONED_TWEET, MENTIONED_COMMENT
   }
 }

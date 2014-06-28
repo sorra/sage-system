@@ -30,6 +30,10 @@ public class NotifService {
   public void commented(Long toUser, Long fromUser, Long sourceId) {
     sendNotif(new Notif(toUser, fromUser, Type.COMMENTED, sourceId));
   }
+
+  public void replied(Long toUser, Long fromUser, Long sourceId) {
+    sendNotif(new Notif(toUser, fromUser, Type.REPLIED, sourceId));
+  }
   
   public void mentionedByTweet(Long toUser, Long fromUser, Long sourceId) {
     sendNotif(new Notif(toUser, fromUser, Type.MENTIONED_TWEET, sourceId));
