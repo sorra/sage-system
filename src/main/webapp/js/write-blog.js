@@ -60,6 +60,7 @@ $(document).ready(function() {
         }
     })
     .keyup(function() {
+        textareaAutoResize.apply(this);
         refresh();
     });
     $('#tabs a[href="#content"]').warnEmpty().tab('show');
