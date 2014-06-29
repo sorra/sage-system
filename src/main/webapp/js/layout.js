@@ -129,3 +129,10 @@ function escapeHtml(str) {
 function unescapeHtml(str) {
   return String(str).replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"').replace(/&#39;/g, '\'');
 };
+
+function textareaAutoResize() {
+  var height = Math.max(this.scrollHeight, this.clientHeight);
+  if (height > this.clientHeight) {
+    $(this).css('height', height+'px');
+  }
+}

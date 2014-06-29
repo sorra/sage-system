@@ -241,7 +241,8 @@ function createBlogData(blog) {
 
 function createCommentList(tweetId, funcRetach) {
     var $cl = $('<div>');
-    var $input = $('<input>').appendTo($cl);
+    var $input = $('<textarea>').css({overflow: 'hidden', resize: 'none', width: '400px', height: '1em'})
+        .on('keyup', textareaAutoResize).appendTo($cl);
     $('<button class="btn btn-small btn-success">').text('评论').appendTo($cl)
         .click(function(){
            $.post(webroot+'/post/comment', {
