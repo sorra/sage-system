@@ -39,7 +39,6 @@ $!{include("navbar.httl")}
 	   <div class="slist"></div>
 	</div>
 </div>
-$!{include("proto.httl")}
 $!{includeProto}
 $!{includeJS()}
 <script type="text/javascript">

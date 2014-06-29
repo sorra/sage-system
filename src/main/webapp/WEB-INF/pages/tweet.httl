@@ -9,7 +9,6 @@ $!{includeCSS()}
 <body>
 $!{include("navbar.httl")}
 <div class="container"></div>
-$!{include("proto.httl")}
 $!{includeProto}
 $!{includeJS()}
 <script>

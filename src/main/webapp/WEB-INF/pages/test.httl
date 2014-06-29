@@ -13,7 +13,6 @@ $!{include("navbar.httl")}
 
 	</div>
 </div>
-$!{include("proto.httl")}
 $!{includeProto}
 $!{includeJS()}
 <script type="text/javascript">

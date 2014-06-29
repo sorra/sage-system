@@ -82,6 +82,7 @@ public class ComponentResourceManager {
   
   public Collection<String> includeProtos(String[] components) {
     Collection<String> protos = new ArrayList<>(components.length);
+    protos.add("proto.httl");
     for (String comp : components) {
       String pf = comp + ".proto.httl";
       if (presentFileNames.contains(pf)) {
