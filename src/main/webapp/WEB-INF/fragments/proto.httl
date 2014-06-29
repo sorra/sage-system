@@ -1,9 +1,9 @@
 <div class="proto" style="display:none">
 	<div class="tweet stream-item row">
-		<a class="avatar span1" href=""><img src=""/></a>
+		<a class="avatar span1"><img src=""/></a>
 		<div class="t-part span7">
 			<div class="row">
-				<a class="author-name" href="#"></a>
+				<a class="author-name"></a>
 				<p class="content"></p>
 				<div class="origin"></div>
 			</div>
@@ -21,8 +21,8 @@
 	<div class="combine stream-item row"></div>
 
 	<div class="blog">
-		<a class="avatar span1" href=""><img src=""/></a>
-		<a class="author-name" href="#"></a>
+		<a class="avatar span1"><img src=""/></a>
+		<a class="author-name"></a>
 		<a class="title"></a>
 		<p class="content"></p>
 		<a class="time"></a>
@@ -36,7 +36,7 @@
 				<p class="name"></p>
 				<p class="intro"></p>
 				<div>
-					<!-- <a class="followings">关注</a>：<span class="following-count"></span> -->
+					<a class="followings">关注</a>_
 					<a class="followers">粉丝</a>：<span class="follower-count"></span>
 					博客：<span class="blog-count"></span>
 					微博：<span class="tweet-count"></span>
