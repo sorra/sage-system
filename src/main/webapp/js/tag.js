@@ -32,17 +32,13 @@ function createTagChain(tagCard) {
 		}
 		
 		if (i > 0) {
-//			$tag.click(function(event) {
-//			    event.preventDefault();
-//			    gotoTag($(this).data('tagId'));
-//			});
-            var pleft = inc*(60+50) + 60;
+      var pxleft = inc*(60+50) + 60;
 			var $line = $('<div></div>').addClass('line').appendTo($tch);
 			$line.css({width:	'50px',
 					   height:	'5px',
 					   background:	'#CCCCCC'})
 			     .css({position: 'absolute',
-					   left: pleft+'px', 
+					   left: pxleft+'px',
 					   top: '10px'});
 		}
 	};

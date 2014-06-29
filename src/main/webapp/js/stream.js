@@ -145,50 +145,8 @@ function createTweetCard(tweet) {
     if (tweet.commentCount > 0) {
         $tc.find('.comment .count').text('('+tweet.commentCount+')');
     }
-    $tc.find('.forward').attr('href', 'javascript:;').click(function(){
-        event.preventDefault();
-        var $dialog = $('<div class="forward-dialog modal">')
-            .css({
-                width: '435px',
-                minHeight: '100px',
-                borderRadius: '10px'
-            });
-        $('<div class="modal-header">').text('转发微博').appendTo($dialog);
-        $('<textarea class="input modal-body">').css({width: '400px', height: '100px'}).appendTo($dialog);
-        var $footer = $('<div class="modal-footer">').appendTo($dialog);
-        $('<button class="btn btn-primary">').text('转发').css({float: 'right'}).appendTo($footer)
-            .click(function() {
-                $.post(webroot+'/post/forward', {
-                    content: $dialog.find('.input').val(),
-                    originId: tweet.id
-                });
-                $dialog.modal('hide');
-            });
-        
-        $dialog.appendTo('#container').modal();
-        console.log('forward dialog');
-    });
-    $tc.find('.comment').attr('href', 'javascript:;').click(function(){
-        event.preventDefault();
-        var $this = $(this);
-        var clKey = 'comment-list';
-        var $cl = $this.data(clKey);
-        
-        if ($cl) {
-            $cl.remove();
-            $this.removeData(clKey);
-        }
-        else {
-          var retach = function(funcSelf, $commentList){
-            var $clOld = $this.data(clKey);
-            if ($clOld) $clOld.remove();
-            
-            var $clNew = $commentList.appendTo($tc.find('.t-part'));
-            $this.data(clKey, $clNew);
-          };
-          retach(retach, createCommentList(tweet.id, retach));
-        }
-    });
+    $tc.find('.forward').on('click', {tweet: tweet}, forwardAction);
+    $tc.find('.comment').on('click', {tweet: tweet, $tc: $tc}, commentAction);
     return $tc;
 }
 
@@ -206,6 +164,54 @@ function createCombineGroup(group) {
     });
     createOriginCard(group.origin).addClass('offset1').appendTo($cg);
     return $cg;
+}
+
+function forwardAction(event) {
+    event.preventDefault();
+    var tweet = event.data.tweet;
+    var $dialog = $('<div class="forward-dialog modal">')
+        .css({
+            width: '435px',
+            minHeight: '100px',
+            borderRadius: '10px'
+        });
+    $('<div class="modal-header">').text('转发微博').appendTo($dialog);
+    $('<textarea class="input modal-body">').css({width: '400px', height: '100px'}).appendTo($dialog);
+    var $footer = $('<div class="modal-footer">').appendTo($dialog);
+    $('<button class="btn btn-primary">').text('转发').css({float: 'right'}).appendTo($footer)
+        .click(function() {
+            $.post(webroot+'/post/forward', {
+                content: $dialog.find('.input').val(),
+                originId: tweet.id
+            });
+            $dialog.modal('hide');
+        });
+
+    $dialog.appendTo('#container').modal();
+}
+
+function commentAction(event){
+    event.preventDefault();
+    var tweet = event.data.tweet;
+    var $tc = event.data.$tc;
+    var $this = $(this);
+    var clKey = 'comment-list';
+    var $cl = $this.data(clKey);
+
+    if ($cl) {
+        $cl.remove();
+        $this.removeData(clKey);
+    }
+    else {
+      var retach = function(funcSelf, $commentList){
+        var $clOld = $this.data(clKey);
+        if ($clOld) $clOld.remove();
+
+        var $clNew = $commentList.appendTo($tc.find('.t-part'));
+        $this.data(clKey, $clNew);
+      };
+      retach(retach, createCommentList(tweet.id, retach));
+    }
 }
 
 function createBlogData(blog) {

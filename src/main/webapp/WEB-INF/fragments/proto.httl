@@ -11,8 +11,8 @@
 				<a class="time span">time</a>
 				<span class="tags span">tags</span>
 				<span class="span pull-right">
-					<a class="forward">转发<span class="count"></span></a>
-					<a class="comment">评论<span class="count"></span></a>
+					<a class="forward" href="javascript:;">转发<span class="count"></span></a>
+					<a class="comment" href="javascript:;">评论<span class="count"></span></a>
 				</span>
 			</div>
 		</div>
