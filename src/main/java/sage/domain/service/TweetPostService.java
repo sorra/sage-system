@@ -2,12 +2,7 @@ package sage.domain.service;
 
 import httl.util.StringUtils;
 
-import java.util.ArrayDeque;
-import java.util.Collection;
-import java.util.Date;
-import java.util.Deque;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,6 +18,7 @@ import sage.entity.Blog;
 import sage.entity.Comment;
 import sage.entity.Tweet;
 import sage.entity.User;
+import sage.transfer.MidForwards;
 import sage.transfer.TweetCard;
 
 @Service
@@ -51,41 +47,34 @@ public class TweetPostService {
         tagRepo.byIds(tagIds));
     tweetRepo.save(tweet);
     
-    for (Long mentioned : parsedContent.mentionedIds) {
-      notifService.mentionedByTweet(mentioned, userId, tweet.getId());
-    }
+    parsedContent.mentionedIds.forEach(mentioned -> notifService.mentionedByTweet(mentioned, userId, tweet.getId()));
     
     searchBase.index(tweet.getId(), transfers.toTweetCardNoCount(tweet));
     return tweet;
   }
 
-  public Tweet forward(long userId, String content, long originId) {
+  public Tweet forward(long userId, String content, long originId, Collection<Long> removedForwardIds) {
     ParsedContent parsedContent = processContent(content);
     content = parsedContent.content;
     
-    Tweet origin = tweetRepo.load(originId);
+    Tweet directOrigin = tweetRepo.load(originId);
+    Deque<Tweet> origins = new LinkedList<>();
     Tweet tweet;
-    Deque<Tweet> furtherOrigins = null;
-    if (origin.getOrigin() == null) {
-      tweet = new Tweet(content, userRepo.load(userId), new Date(), origin);
+    if (directOrigin.getOrigin() == null) {
+      origins.add(directOrigin);
+      tweet = new Tweet(content, userRepo.load(userId), new Date(), directOrigin);
     }
     else {
-      furtherOrigins = furtherOrigins(origin);
-      Tweet initialOrigin = furtherOrigins.getLast();
-      tweet = new Tweet(content, userRepo.load(userId), new Date(), initialOrigin, enPreforw(origin));
+      origins = allOrigins(directOrigin);
+      Tweet initialOrigin = origins.getLast();
+      MidForwards midForwards = new MidForwards(directOrigin);
+      removedForwardIds.forEach(each -> midForwards.removeById(each));
+      tweet = new Tweet(content, userRepo.load(userId), new Date(), initialOrigin, midForwards);
     }
     tweetRepo.save(tweet);
     
-    notifService.forwarded(origin.getAuthor().getId(), userId, tweet.getId());
-    if (furtherOrigins != null) {
-      for (Tweet eachOrigin : furtherOrigins) {
-        notifService.forwarded(eachOrigin.getAuthor().getId(), userId, tweet.getId());
-      }
-    }
-    
-    for (Long mentioned : parsedContent.mentionedIds) {
-      notifService.mentionedByTweet(mentioned, userId, tweet.getId());
-    }
+    origins.forEach(origin -> notifService.forwarded(origin.getAuthor().getId(), userId, tweet.getId()));
+    parsedContent.mentionedIds.forEach(mentioned -> notifService.mentionedByTweet(mentioned, userId, tweet.getId()));
     
     searchBase.index(tweet.getId(), transfers.toTweetCardNoCount(tweet));
     return tweet;
@@ -104,9 +93,7 @@ public class TweetPostService {
     if (replyUserId != null) {
       notifService.replied(replyUserId, userId, comment.getId());
     }
-    for (Long mentioned : parsedContent.mentionedIds) {
-      notifService.mentionedByComment(mentioned, userId, comment.getId());
-    }
+    parsedContent.mentionedIds.forEach(mentioned -> notifService.mentionedByComment(mentioned, userId, comment.getId()));
     return comment;
   }
 
@@ -149,25 +136,17 @@ public class TweetPostService {
   }
 
   /*
-   * Find the further origins of this origin
+   * Find all nested origins including the direct origin
    */
-  private Deque<Tweet> furtherOrigins(Tweet origin) {
-    Deque<Tweet> origins = new ArrayDeque<>();
-    origin = origin.getOrigin();
+  private Deque<Tweet> allOrigins(Tweet directOrigin) {
+    Deque<Tweet> origins = new LinkedList<>();
+    origins.add(directOrigin);
+    Tweet origin = directOrigin.getOrigin();
     while (origin != null) {
       origins.add(origin);
       origin = origin.getOrigin();
     }
     return origins;
-  }
-
-  private String enPreforw(Tweet tweet) {
-    String asPreforw = " ||@" + tweet.getAuthor().getName() + "#" + tweet.getAuthor().getId() + " : "
-        + tweet.getContent();
-    if (tweet.getPreforw() == null)
-      return asPreforw;
-    else
-      return asPreforw + tweet.getPreforw();
   }
 
   /*

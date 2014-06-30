@@ -1,23 +1,10 @@
 package sage.entity;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Lob;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-
 import sage.domain.IdCommons;
+import sage.transfer.MidForwards;
+
+import javax.persistence.*;
+import java.util.*;
 
 @Entity(name = "Tweet")
 public class Tweet {
@@ -26,11 +13,7 @@ public class Tweet {
   private User author;
   private Date time;
   private Tweet origin = null;
-  /**
-   * Flattened prefix for nested forwards
-   * @see TweetPostService#enPreforw()
-   */
-  private String preforw = null;
+  private String midForwardsJson = null;
   private Long blogId = null;
   private Set<Tag> tags = new HashSet<>();
   private Collection<Comment> comments = new ArrayList<>();
@@ -53,9 +36,9 @@ public class Tweet {
     }
   }
 
-  public Tweet(String content, User author, Date time, Tweet origin, String preforw) {
+  public Tweet(String content, User author, Date time, Tweet origin, MidForwards midForwards) {
     this(content, author, time, origin);
-    setPreforw(preforw);
+    setMidForwardsJson(midForwards.toJson());
   }
 
   public Tweet(String content, User author, Date time, Blog sourceBlog) {
@@ -109,12 +92,12 @@ public class Tweet {
     this.origin = origin;
   }
 
-  public String getPreforw() {
-    return preforw;
+  public String getMidForwardsJson() {
+    return midForwardsJson;
   }
 
-  public void setPreforw(String preforw) {
-    this.preforw = preforw;
+  public void setMidForwardsJson(String midForwardsJson) {
+    this.midForwardsJson = midForwardsJson;
   }
 
   public Long getBlogId() {
@@ -141,6 +124,11 @@ public class Tweet {
 
   public void setComments(Collection<Comment> comments) {
     this.comments = comments;
+  }
+
+  public MidForwards midForwards() {
+    String json = getMidForwardsJson();
+    return json == null ? null : MidForwards.fromJson(json);
   }
 
   @Override

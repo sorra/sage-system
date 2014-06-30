@@ -2,6 +2,7 @@ package sage.domain.service;
 
 import java.io.PrintStream;
 import java.util.Arrays;
+import java.util.Collections;
 
 import javax.annotation.PostConstruct;
 
@@ -141,10 +142,10 @@ public class ServiceInitializer {
     long b1 = tweetPostService.newTweet(bethia, "Music better!", Arrays.asList(music)).getId();
     long c1 = tweetPostService.newTweet(centos, "Tech status", Arrays.asList(tech)).getId();
 
-    tweetPostService.forward(admin, "forward", a1);
-    tweetPostService.forward(bethia, "OK, good", a2);
-    tweetPostService.forward(admin, "Oh, yeah", b1);
-    tweetPostService.forward(admin, "See it!", c1);
+    tweetPostService.forward(admin, "forward", a1, Collections.emptyList());
+    tweetPostService.forward(bethia, "OK, good", a2, Collections.emptyList());
+    tweetPostService.forward(admin, "Oh, yeah", b1, Collections.emptyList());
+    tweetPostService.forward(admin, "See it!", c1, Collections.emptyList());
   }
 
   private void istream() {

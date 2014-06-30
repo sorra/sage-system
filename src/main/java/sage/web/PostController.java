@@ -43,13 +43,14 @@ public class PostController {
   @RequestMapping("/forward")
   public boolean forward(
       @RequestParam String content,
-      @RequestParam Long originId) {
+      @RequestParam Long originId,
+      @RequestParam(value = "removedIds[]", defaultValue = "") Collection<Long> removedIds) {
     Long uid = Auth.checkCurrentUid();
     if (content.length() > TWEET__MAX_LEN) {
       return false;
     }
 
-    Tweet tweet = tweetPostService.forward(uid, content, originId);
+    Tweet tweet = tweetPostService.forward(uid, content, originId, removedIds);
     logger.info("forward tweet {} success", tweet.getId());
     return true;
   }
