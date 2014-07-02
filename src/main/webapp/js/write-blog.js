@@ -38,7 +38,7 @@ $(document).ready(function(){
 			$submit.prop('disabled', false);
 		})
 		.done(function(resp){
-			if (resp >= 0) postBlogDone(resp);
+			if ($.isNumeric(resp) && resp >= 0) postBlogDone(resp);
 			else postBlogFail(resp);
 		})
 		.fail(function(resp){
