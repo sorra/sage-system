@@ -2,6 +2,7 @@ package sage.domain.service;
 
 import java.util.concurrent.ExecutionException;
 
+import httl.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -9,12 +10,7 @@ import sage.domain.repository.FollowRepository;
 import sage.domain.repository.nosql.BaseCouchbaseRepository;
 import sage.domain.repository.nosql.FollowCatalogRepository;
 import sage.domain.repository.nosql.ResourceCatalogRepository;
-import sage.entity.nosql.Catalog;
-import sage.entity.nosql.FollowCatalog;
-import sage.entity.nosql.FollowCatalogLite;
-import sage.entity.nosql.FollowInfo;
-import sage.entity.nosql.FollowInfoLite;
-import sage.entity.nosql.ResourceCatalog;
+import sage.entity.nosql.*;
 
 @Service
 public class CatalogService {
@@ -30,10 +26,12 @@ public class CatalogService {
   }
   
   public Boolean addResourceCatalog(ResourceCatalog rc, Long ownerId) {
+    rc = escaped(rc);
     return addCatalog(rc, ownerId, resourceCatalogRepo);
   }
   
   public Boolean updateResourceCatalog(ResourceCatalog rc) {
+    rc = escaped(rc);
     try {
       return resourceCatalogRepo.set(rc.getId(), rc).get();
     } catch (InterruptedException | ExecutionException e) {
@@ -91,5 +89,12 @@ public class CatalogService {
     String id = rc.getOwnerId() + "_" + Long.toHexString(time);
     rc.setId(id);
     return id;
+  }
+
+  private ResourceCatalog escaped(ResourceCatalog rc) {
+    ResourceCatalog neo = new ResourceCatalog(rc.getOwnerId(), rc.getName());
+    rc.getList().forEach(info -> neo.getList().add(
+        new ResourceInfo(StringUtils.escapeXml(info.getLink()), StringUtils.escapeXml(info.getDesc()))));
+    return neo;
   }
 }
