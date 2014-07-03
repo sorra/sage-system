@@ -2,6 +2,9 @@ package sage.domain.service;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Optional;
+import static java.util.Optional.ofNullable;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,15 +34,18 @@ public class TagService {
   }
 
   @Transactional(readOnly = true)
-  public TagCard getTagCard(long tagId) {
-    Tag tag = tagRepo.get(tagId);
-    return tag == null ? null : new TagCard(tag);
+  public Optional<TagCard> getTagCard(long tagId) {
+    return ofNullable(tagRepo.get(tagId)).map(TagCard::new);
   }
 
   @Transactional(readOnly = true)
-  public TagLabel getTagLabel(long tagId) {
-    Tag tag = tagRepo.get(tagId);
-    return tag == null ? null : new TagLabel(tag);
+  public Optional<Tag> getTag(long tagId) {
+    return ofNullable(tagRepo.get(tagId));
+  }
+
+  @Transactional(readOnly = true)
+  public Optional<TagLabel> getTagLabel(long tagId) {
+    return ofNullable(tagRepo.get(tagId)).map(TagLabel::new);
   }
 
   @Transactional(readOnly = true)
@@ -54,7 +60,7 @@ public class TagService {
 
   @Transactional(readOnly = true)
   public Collection<Tag> getQueryTags(long tagId) {
-    return TagRepository.getQueryTags(tagRepo.get(tagId));
+    return ofNullable(tagRepo.get(tagId)).map(TagRepository::getQueryTags).orElse(Collections.emptySet());
   }
 
   @Transactional(readOnly = true)
