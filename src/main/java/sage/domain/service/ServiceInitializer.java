@@ -51,18 +51,24 @@ public class ServiceInitializer {
   long admin, bethia, centos;
 
   private void tag() {
-    life = tagService.newTag("生活", root);
-    society = tagService.newTag("社会", root);
-    culture = tagService.newTag("文化", root);
-    economy = tagService.newTag("经济", root);
-    tech = tagService.newTag("科技", root);
+    life = createTag("生活", root);
+    society = createTag("社会", root);
+    culture = createTag("文化", root);
+    economy = createTag("经济", root);
+    tech = createTag("科技", root);
 
-    view = tagService.newTag("观察", society);
-    art = tagService.newTag("艺术", culture);
-    painting = tagService.newTag("绘画", art);
-    music = tagService.newTag("音乐", art);
-    prog = tagService.newTag("编程", tech);
-    digital = tagService.newTag("数码", tech);
+    view = createTag("观察", society);
+    art = createTag("艺术", culture);
+    painting = createTag("绘画", art);
+    music = createTag("音乐", art);
+    prog = createTag("编程", tech);
+    digital = createTag("数码", tech);
+  }
+
+  private long createTag(String name, long parentId) {
+    long tagId = tagService.newTag(name, parentId);
+    tagService.setIntro(tagId, "这就是" + name);
+    return tagId;
   }
 
   private void user() {

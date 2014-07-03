@@ -3,6 +3,7 @@ package sage.web.page;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -32,17 +33,22 @@ public class StreamPageController {
     
     List<TagLabel> coreTags = new ArrayList<>();
     List<TagLabel> nonCoreTags = new ArrayList<>();
-    TagCard tagCard = tagService.getTagCard(id);
-    for (TagLabel child : tagCard.getChildren()) {
-      if (child.getIsCore()) {
-        coreTags.add(child);
-      } else {
-        nonCoreTags.add(child);
+    Optional<Tag> oTag = tagService.getTag(id);
+    if (oTag.isPresent()) {
+      model.put("intro", oTag.get().getIntro());
+      for (TagLabel child : new TagCard(oTag.get()).getChildren()) {
+        if (child.getIsCore()) {
+          coreTags.add(child);
+        } else {
+          nonCoreTags.add(child);
+        }
       }
+    } else {
+      throw new IllegalArgumentException("tag id " + id + " does not exist!");
     }
-    
+
     Collection<Tag> sameNameTags = tagService.getSameNameTags(id);
-    
+
     fm.put("coreTags", coreTags);
     fm.put("nonCoreTags", nonCoreTags);
     fm.put("sameNameTags", sameNameTags);

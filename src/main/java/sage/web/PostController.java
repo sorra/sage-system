@@ -68,9 +68,7 @@ public class PostController {
 
     Blog blog = blogService.newBlog(uid, title, content, tagIds);
     tweetPostService.share(uid, blog);
-    if (true) {
-      logger.info("post blog {} success", blog.getId());
-    }
+    logger.info("post blog {} success", blog.getId());
     return blog.getId();
   }
 

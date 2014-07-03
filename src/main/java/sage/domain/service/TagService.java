@@ -76,6 +76,10 @@ public class TagService {
     return tagsByName;
   }
 
+  public void setIntro(long id, String intro) {
+    tagRepo.load(id).setIntro(intro);
+  }
+
   public void changeParent(long id, long parentId) {
     tagRepo.get(id).setParent(tagRepo.load(parentId));
   }

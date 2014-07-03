@@ -6,12 +6,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 
 import sage.domain.IdCommons;
 
@@ -26,6 +21,8 @@ public class Tag {
   private Long id;
   private String name;
   private boolean isCore;
+  private String intro;
+
   private Set<Tag> children = new HashSet<>();
   private Tag parent;
 
@@ -41,12 +38,10 @@ public class Tag {
     this.parent = parent;
   }
 
-  @Id
-  @GeneratedValue
+  @Id @GeneratedValue
   public Long getId() {
     return id;
   }
-
   public void setId(long id) {
     this.id = id;
   }
@@ -54,7 +49,6 @@ public class Tag {
   public String getName() {
     return name;
   }
-
   public void setName(String name) {
     this.name = name;
   }
@@ -62,16 +56,24 @@ public class Tag {
   public boolean isCore() {
     return isCore;
   }
-  
   public void setCore(boolean isCore) {
     this.isCore = isCore;
   }
 
-  @OneToMany(mappedBy = "parent")
+
+  @Column(columnDefinition = "TEXT")
+  @Lob @Basic
+  public String getIntro() {
+    return intro;
+  }
+  public void setIntro(String intro) {
+    this.intro = intro;
+  }
+
+  @OneToMany(mappedBy = "parent", fetch = FetchType.EAGER)
   public Set<Tag> getChildren() {
     return children;
   }
-
   public void setChildren(Set<Tag> children) {
     this.children = children;
   }
@@ -80,7 +82,6 @@ public class Tag {
   public Tag getParent() {
     return parent;
   }
-
   public void setParent(Tag parent) {
     this.parent = parent;
   }
@@ -89,7 +90,6 @@ public class Tag {
   public Collection<Tweet> getTweets() {
     return tweets;
   }
-
   public void setTweets(Collection<Tweet> tweets) {
     this.tweets = tweets;
   }
@@ -98,7 +98,6 @@ public class Tag {
   public Collection<Blog> getBlogs() {
     return blogs;
   }
-
   public void setBlogs(Collection<Blog> blogs) {
     this.blogs = blogs;
   }
@@ -107,7 +106,6 @@ public class Tag {
   public Collection<Follow> getFollows() {
     return follows;
   }
-
   public void setFollows(Collection<Follow> follows) {
     this.follows = follows;
   }

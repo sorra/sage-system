@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 #set(components = ["bootstrap", "layout", "stream", "tag", "usercard"])
+#set(String intro)
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<title>公共主页</title>
@@ -23,7 +24,7 @@ $!{include("navbar.httl")}
      <div>关联标签</div>
 		</div>
 		<div class="main span9">
-		  <div id="bkg-intro" class="row" style="text-align:center;padding:10px">背景介绍</div>
+		  <div id="bkg-intro" class="row" style="text-align:center;padding:10px">${intro == null ? "没有背景介绍" : intro}</div>
 			<div class="stream row">
 				<div class="slist span9"></div>
 			</div>

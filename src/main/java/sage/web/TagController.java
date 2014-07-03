@@ -17,7 +17,7 @@ public class TagController {
 
   @RequestMapping("/card/{id}")
   public TagCard tagCard(@PathVariable Long id) {
-    return tagService.getTagCard(id);
+    return tagService.getTagCard(id).orElse(null);
   }
 
   @RequestMapping("/tree")
