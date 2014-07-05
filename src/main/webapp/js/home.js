@@ -16,7 +16,7 @@ $(document).ready(function(){
   }
   $friends.appendTo($('.friends'));
     
-	buildTagSels();
+	buildTagSels(window.userSelf.topTags);
 	buildTagPlus();
 
 	// prepare tweet-submit-button

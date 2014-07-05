@@ -27,11 +27,6 @@
 </head>
 <body>
 $!{include("navbar.httl")}
-<div class="data-holder">
-	#if(blog != null)
-	<span id="blog-id">$!{blog.id}</span>
-	#end
-</div>
 <div class="container" id="container">
 	<div class="row">
 		<form class="blog span12">

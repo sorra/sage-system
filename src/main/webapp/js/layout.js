@@ -105,6 +105,8 @@ function userLinkAttrs(id) {
 $(document).ready(function(){
     if ($('#front-map').length > 0) {
       window.frontMap = $.parseJSON($('#front-map').text());
+    } else {
+      window.frontMap = {};
     }
   
     if ($('#user-self-json').length > 0) {

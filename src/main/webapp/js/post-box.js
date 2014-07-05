@@ -8,8 +8,8 @@ function createTagSel(tagLabel) {
       });
 }
 
-function buildTagSels() {
-	$.each(window.userSelf.topTags, function(idx, item){
+function buildTagSels(tags) {
+	$.each(tags, function(idx, item){
 		createTagSel(item).insertBefore($('.tag-plus'));
 	});
 }

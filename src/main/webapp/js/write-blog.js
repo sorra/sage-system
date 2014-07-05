@@ -2,12 +2,25 @@
 
 $(document).ready(function(){
   $('#nav-write-blog').addClass('active');
-  
-  if ($('#blog-id').length > 0) {
-      window.blogId = parseInt($('#blog-id').text());
+
+  var existingTags = window.frontMap.existingTags;
+  var topTags = window.userSelf.topTags;
+  if (existingTags) {
+    buildTagSels(existingTags);
+    $('.tag-sel').addClass('btn-success');
+    var tmpTags = [];
+    for (var _i in topTags) {
+      var noSame = true;
+      for (var _j in existingTags) {
+        if (topTags[_i].id == existingTags[_j].id) {
+          noSame = false; break;
+        }
+      }
+      if (noSame) {tmpTags.push(topTags[_i])}
+    }
+    topTags = tmpTags;
   }
-    
-	buildTagSels();
+	buildTagSels(topTags);
 	buildTagPlus();
 
 	$('form.blog .btn[type=submit]')
@@ -28,7 +41,8 @@ $(document).ready(function(){
 			console.log('fff');
 		});
 
-		var submitUrl = webroot + (window.blogId ? '/post/edit-blog/'+window.blogId : '/post/blog');
+    var blogId = window.frontMap.blogId;
+		var submitUrl = webroot + (blogId ? '/post/edit-blog/'+blogId : '/post/blog');
 		$.post(submitUrl, {
 			title: $('.blog .title').val(),
 			content: $('.blog .content').val(),

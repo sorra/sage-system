@@ -68,6 +68,8 @@ public class PageController {
     BlogData blog = blogReadService.getBlogData(blogId);
     if (blog.getAuthorId().equals(currentUid)) {
       model.addAttribute("blog", blog);
+      FrontMap.from(model).addAttribute("blogId", blog.getId())
+          .addAttribute("existingTags", blog.getTags());
       return "write-blog";
     }
     else
