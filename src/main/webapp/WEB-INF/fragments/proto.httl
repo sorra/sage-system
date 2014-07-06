@@ -1,25 +1,4 @@
 <div class="proto" style="display:none">
-	<div class="tweet stream-item row">
-		<a class="avatar span1"><img src=""/></a>
-		<div class="t-part span7">
-			<div class="row">
-				<a class="author-name"></a>
-				<p class="content"></p>
-				<div class="origin"></div>
-			</div>
-			<div class="row">
-				<a class="time span">time</a>
-				<span class="tags span">tags</span>
-				<span class="span pull-right">
-					<a class="forward" href="javascript:;">转发<span class="count"></span></a>
-					<a class="comment" href="javascript:;">评论<span class="count"></span></a>
-				</span>
-			</div>
-		</div>
-	</div>
-	
-	<div class="combine stream-item row"></div>
-
 	<div class="blog">
 		<a class="avatar span1"><img src=""/></a>
 		<a class="author-name"></a>
