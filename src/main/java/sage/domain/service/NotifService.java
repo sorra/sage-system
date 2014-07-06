@@ -42,6 +42,10 @@ public class NotifService {
   public void mentionedByComment(Long toUser, Long fromUser, Long sourceId) {
     sendNotif(new Notif(toUser, fromUser, Type.MENTIONED_COMMENT, sourceId));
   }
+
+  public void followed(Long toUser, Long fromUser) {
+    sendNotif(new Notif(toUser, fromUser, Type.FOLLOWED, null));
+  }
   
   private Boolean sendNotif(Notif notif) {
     // Don't send to oneself

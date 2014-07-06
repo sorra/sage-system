@@ -24,11 +24,13 @@ import sage.transfer.UserLabel;
 public class RelationService {
   private Logger logger = LoggerFactory.getLogger(getClass());
   @Autowired
-  UserRepository userRepo;
+  private UserRepository userRepo;
   @Autowired
-  FollowRepository followRepo;
+  private FollowRepository followRepo;
   @Autowired
-  TagRepository tagRepo;
+  private TagRepository tagRepo;
+  @Autowired
+  private NotifService notifService;
 
   /**
    * Act as 'follow' or 'editFollow'
@@ -41,14 +43,9 @@ public class RelationService {
       logger.warn("user {} should not follow himself!", userId);
       return;
     }
-    Follow follow = followRepo.find(userId, targetId);
-    if (follow == null) {
-      follow = new Follow(userRepo.load(userId), userRepo.load(targetId), tagRepo.byIds(tagIds));
-      followRepo.save(follow);
-    } else {
-      follow.setTags(tagRepo.byIds(tagIds));
-      followRepo.merge(follow);
-    }
+    Follow follow = new Follow(userRepo.load(userId), userRepo.load(targetId), tagRepo.byIds(tagIds));
+    followRepo.merge(follow);
+    notifService.followed(targetId, userId);
   }
 
   public void unfollow(long userId, long targetId) {
