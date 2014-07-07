@@ -255,16 +255,17 @@ function createCommentList(tweetId, funcRetach) {
         });
     var $loading = $('<div>').text('评论加载中').appendTo($cl);
 
-    var $list = $('<ul>').appendTo($cl);
+    var $list = $('<div>').appendTo($cl);
     $.get(webroot+'/read/'+tweetId+'/comments')
     .done(function(resp){
         console.log(resp.length);
         $.each(resp, function(idx, item){
-            var $li = $('<li>').appendTo($list);
-            $('<a>').append($('<img>').attr('src', '')).appendTo($li);
-            $('<a>').text(item.authorName).appendTo($li);
-            $('<p>').text(item.content).appendTo($li);
-            $('<a>').text(showTime(item.time));
+            var $comment = $('.proto .comment-item').clone().appendTo($list);
+            $comment.find('.avatar, .author-name').attr(userLinkAttrs(item.authorId))
+                .find('img').attr('src', item.avatar).css({width: '30px', height: '30px'});
+            $comment.find('.author-name').text(item.authorName);
+            $comment.find('.content').text(item.content);
+            $comment.find('.time').text(showTime(item.time));
         });
         $('<div>').text('评论').replaceAll($loading);
     })
