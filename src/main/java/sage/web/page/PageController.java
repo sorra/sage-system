@@ -17,7 +17,6 @@ import sage.web.context.FrontMap;
 import sage.web.context.Json;
 
 @Controller
-@RequestMapping
 public class PageController {
   private final static Logger logger = LoggerFactory.getLogger(PageController.class);
   @Autowired
@@ -52,6 +51,7 @@ public class PageController {
   
   @RequestMapping("/fav")
   public String fav(ModelMap model) {
+    Auth.checkCurrentUid();
     return "fav";
   }
 

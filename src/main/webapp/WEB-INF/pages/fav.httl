@@ -1,9 +1,67 @@
 <!DOCTYPE html>
 <html>
+#set(components = ["bootstrap", "layout", "stream", "tag", "usercard"])
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
   <title>收藏夹</title>
+  $!{includeCSS()}
 </head>
 <body>
+$!{include("navbar.httl")}
+
+<div class="container" id="container">
+  <div id="fav-list">
+  </div>
+</div>
+
+<div class="proto" style="display:none">
+  <div class="fav-link">
+    <a class="the-link"></a>
+    <div>
+      <span class="time" style="font-size: 0.8em">time</span>
+      <a class="remove-fav pull-right" href="javascript:;">取消收藏</a>
+    </div>
+  </div>
+</div>
+$!{includeProto}
+$!{includeJS()}
+<script>
+$(document).ready(function(){
+  loadFavs()
+})
+function loadFavs() {
+  $.get(webroot+'/favs/get', {})
+    .done(function(resp){
+      for (var i in resp) {
+        var favInfo = resp[i]
+        if (favInfo.link.indexOf("tweet:") === 0) {
+          //createTweet()
+        } else {
+          createFavLink(favInfo).appendTo($('#fav-list'))
+        }
+      }
+    })
+    .fail(function(resp){
+      console.error(resp);
+    })
+}
+function createFavLink(favInfo) {
+  var $favLink = $('.proto .fav-link').clone()
+  $favLink.data('id', favInfo.id)
+  $favLink.find('.the-link').attr('href', favInfo.link).text(favInfo.link)
+  $favLink.find('.time').text(showTime(favInfo.time))
+  $favLink.find('.remove-fav').click(function(){
+    $.post(webroot+'/favs/'+favInfo.id+'/delete', {})
+      .done(function(){
+        $favLink.remove()
+      })
+      .fail(function(){
+        //Popup
+        console.error("Ah")
+      })
+  })
+  return $favLink
+}
+</script>
 </body>
 </html>

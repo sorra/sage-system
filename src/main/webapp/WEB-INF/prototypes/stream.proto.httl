@@ -24,7 +24,10 @@
     <a class="avatar pull-left" style="margin-right: 10px"><img/></a>
     <div>
       <a class="author-name"></a>: <span class="content"></span>
-      <div><span class="time" style="font-size: 0.8em">time</span> <a class="pull-right" href="javascript:;">回复</a></div>
+      <div>
+        <span class="time" style="font-size: 0.8em">time</span>
+        <a class="reply pull-right" href="javascript:;">回复</a>
+      </div>
     </div>
   </div>
 </div>

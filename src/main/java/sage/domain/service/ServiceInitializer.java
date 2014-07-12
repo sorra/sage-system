@@ -33,6 +33,8 @@ public class ServiceInitializer {
   BlogPostService blogPostService;
   @Autowired
   StreamService streamService;
+  @Autowired
+  FavService favService;
 
   @PostConstruct
   public void init() {
@@ -42,7 +44,7 @@ public class ServiceInitializer {
     user();
     relation();
     post();
-    // istream();
+    fav();
   }
 
   long root = Tag.ROOT_ID;
@@ -152,6 +154,11 @@ public class ServiceInitializer {
     tweetPostService.forward(bethia, "OK, good", a2, Collections.emptyList());
     tweetPostService.forward(admin, "Oh, yeah", b1, Collections.emptyList());
     tweetPostService.forward(admin, "See it!", c1, Collections.emptyList());
+  }
+
+  private void fav() {
+    favService.addFav(admin, "https://github.com/sorra");
+    favService.addFav(admin, "http://segmentfault.com/u/sorra");
   }
 
   private void istream() {
