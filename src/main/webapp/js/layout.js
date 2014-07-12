@@ -98,6 +98,23 @@ function tipover($node, text, duration) {
     window.setTimeout(function(){$node.tooltip('hide');}, duration);   
 }
 
+function commonConfirmPopover($node, action, message, placement) {
+    var $block = $('<div>')
+    $('<button class="btn">').text('是').appendTo($block).click(function(){
+        action.apply($node)
+        $node.popover('hide')
+    })
+    $('<button class="btn">').text('否').appendTo($block).click(function(){
+        $node.popover('hide')
+    })
+    $node.popover({
+        html: true,
+        title: message,
+        placement: placement,
+        content: $block
+    })
+}
+
 function userLinkAttrs(id) {
     return {uid: id, href: webroot+'/private/'+id};
 }

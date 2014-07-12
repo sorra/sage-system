@@ -111,7 +111,8 @@ function createStreamBefore(stream) {
 
 function createTweetCard(tweet) {
     var $tc = $('.proto > .tweet').clone();
-    $tc.data('id', tweet.id);    
+    $tc.data('id', tweet.id);
+    $tc.data('authorId', tweet.authorId);
     $tc.find('a.avatar').attr(userLinkAttrs(tweet.authorId))
         .find('img').attr('src', tweet.avatar);
     $tc.find('.author-name').attr(userLinkAttrs(tweet.authorId)).text(tweet.authorName); 
@@ -151,7 +152,7 @@ function createTweetCard(tweet) {
 }
 
 function createOriginCard(origin) {
-    var $oc = createTweetCard(origin).removeClass('item').addClass('origin');
+    var $oc = createTweetCard(origin).removeClass('stream-item').addClass('origin');
     $oc.find('.avatar').remove();
     $oc.find('.tags').remove();
     return $oc;
@@ -276,41 +277,33 @@ function createCommentList(tweetId, funcRetach) {
     return $cl;
 }
 
-function initConfirmBox($del, id) {
+function initConfirmBox($tweet, $del, id) {
     function doDelete(id){
         if (!id) {
-            console.warn('this id is '+id);
-            return;
+            console.warn('this id is '+id)
+            return
         }
-        $.post(webroot+'/tweet/'+id+'/delete');
-        //TODO return done or fail
+        $.post(webroot+'/tweet/'+id+'/delete')
+          .done(function(resp){
+            if(resp == true) {$tweet.remove()}
+            else {console.error("Tweet "+id+" delete failed.")}
+          })
+          .fail(function(resp){console.error("Tweet "+id+" delete failed. Error: "+resp)})
     }
-    var $block = $('<div>');
-    $('<button class="btn">').text('是').appendTo($block).click(function(){
-        doDelete(id);
-    });
-    $('<button class="btn">').text('否').appendTo($block).click(function(){
-        $del.popover('hide');
-    });
-    $del.popover({
-        html: true,
-        title: '确认要删除吗？',
-        placement: 'left',
-        content: $block
-    });
+    commonConfirmPopover($del, function(){doDelete(id)}, '确认要删除吗？', 'left')
 }
+
 function addDelBtnIfNeeded($tweet, selfId){
-	var id = $tweet.data('id');
-	if (selfId === id) {
+	if (selfId === $tweet.data('authorId')) {
         var $del = $('<a href="javascript:;">').text('删除')
         	.css({marginLeft: '0.5em', marginRight: '0.5em'});
-        initConfirmBox($del, id);
-        console.log(id);
-        $(this).find('>.t-part>div>span .forward').before($del);
+        initConfirmBox($tweet, $del, $tweet.data('id'));
+        console.log(selfId);
+        $tweet.find('>.t-part>div>span .forward').before($del);
 	}
 };
 function addDeleteButtons($tweetList){
-    $tweetList.warnEmpty().each(function(){addDelBtnIfNeeded($(this), window.uid);});
+    $tweetList.warnEmpty().each(function(){addDelBtnIfNeeded($(this), window.userSelf.id);});
 }
 
 function showTime(time) {
