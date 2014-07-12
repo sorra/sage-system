@@ -25,7 +25,7 @@ public class FavService {
   
   @Transactional(readOnly=true)
   public Collection<Fav> favs(long userId) {
-    List<Fav> favs = new ArrayList<>(favs(userId));
+    List<Fav> favs = new ArrayList<>(favRepo.favs(userId));
     Collections.sort(favs, Comparators.favOnId);
     return favs;
   }
