@@ -11,7 +11,6 @@ import java.util.Collection;
 @RestController
 @RequestMapping("/favs")
 public class FavController {
-  public final String TWEET_PR = "tweet:";
   
   @Autowired
   private FavService favService;
@@ -23,7 +22,7 @@ public class FavController {
     if (link != null && tweetId == null) {
       favService.addFav(uid, link);
     } else if (tweetId != null && link == null) {
-      favService.addFav(uid, TWEET_PR + tweetId);
+      favService.addFav(uid, FavInfo.TWEET_PR + tweetId);
     } else {
       throw new IllegalArgumentException();
     }
@@ -40,6 +39,6 @@ public class FavController {
   public Collection<FavInfo> favs() {
     Long uid = Auth.checkCurrentUid();
     
-    return FavInfo.listOf(favService.favs(uid));
+    return favService.favs(uid);
   }
 }

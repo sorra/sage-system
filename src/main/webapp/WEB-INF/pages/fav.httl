@@ -15,7 +15,7 @@ $!{include("navbar.httl")}
 </div>
 
 <div class="proto" style="display:none">
-  <div class="fav-link">
+  <div class="fav-link" style="max-width: 50em">
     <a class="the-link"></a>
     <div>
       <span class="time" style="font-size: 0.8em">time</span>
@@ -32,12 +32,18 @@ $(document).ready(function(){
 function loadFavs() {
   $.get(webroot+'/favs/get', {})
     .done(function(resp){
+      var $favList = $('#fav-list')
       for (var i in resp) {
         var favInfo = resp[i]
         if (favInfo.link.indexOf("tweet:") === 0) {
-          //createTweet()
+          var $tc = createTweetCard(favInfo.tweet)
+          var id = favInfo.id
+          $tc.find('.forward').before(
+            $('<a class="remove-fav" href="javascript:;">取消收藏</a>')
+              .css('margin-right', '1em').click(function(){removeFav(id, $tc)}))
+          $tc.appendTo($favList)
         } else {
-          createFavLink(favInfo).appendTo($('#fav-list'))
+          createFavLink(favInfo).appendTo($favList)
         }
       }
     })
@@ -47,21 +53,27 @@ function loadFavs() {
 }
 function createFavLink(favInfo) {
   var $favLink = $('.proto .fav-link').clone()
-  $favLink.data('id', favInfo.id)
-  $favLink.find('.the-link').attr('href', favInfo.link).text(favInfo.link)
+  var linkStr = favInfo.link
+  if (linkStr.length > 50) {
+    linkStr = linkStr.substr(0, 50) + '...'
+  }
+  $favLink.find('.the-link').attr('href', favInfo.link).text(linkStr)
   $favLink.find('.time').text(showTime(favInfo.time))
-  $favLink.find('.remove-fav').click(function(){
-    $.post(webroot+'/favs/'+favInfo.id+'/delete', {})
+  var id = favInfo.id
+  $favLink.find('.remove-fav').click(function(){removeFav(id, $favLink)})
+  return $favLink
+}
+
+function removeFav(id, $fav){
+    $.post(webroot+'/favs/'+id+'/delete', {})
       .done(function(){
-        $favLink.remove()
+        $fav.remove()
       })
       .fail(function(){
         //Popup
         console.error("Ah")
       })
-  })
-  return $favLink
-}
+  }
 </script>
 </body>
 </html>

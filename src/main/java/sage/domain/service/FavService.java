@@ -14,6 +14,7 @@ import sage.domain.Comparators;
 import sage.domain.repository.FavRepository;
 import sage.domain.repository.UserRepository;
 import sage.entity.Fav;
+import sage.transfer.FavInfo;
 
 @Service
 @Transactional
@@ -22,12 +23,15 @@ public class FavService {
   private FavRepository favRepo;
   @Autowired
   private UserRepository userRepo;
+  @Autowired
+  private TweetReadService tweetRead;
   
   @Transactional(readOnly=true)
-  public Collection<Fav> favs(long userId) {
+  public Collection<FavInfo> favs(long userId) {
     List<Fav> favs = new ArrayList<>(favRepo.favs(userId));
     Collections.sort(favs, Comparators.favOnId);
-    return favs;
+
+    return FavInfo.listOf(favs, tweetRead::getTweetCard);
   }
   
   public void addFav(long userId, String link) {

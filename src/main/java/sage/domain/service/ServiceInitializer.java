@@ -159,6 +159,7 @@ public class ServiceInitializer {
   private void fav() {
     favService.addFav(admin, "https://github.com/sorra");
     favService.addFav(admin, "http://segmentfault.com/u/sorra");
+    favService.addFav(admin, "tweet:1");
   }
 
   private void istream() {
