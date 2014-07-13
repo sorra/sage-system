@@ -115,6 +115,14 @@ function commonConfirmPopover($node, action, message, placement) {
     })
 }
 
+function limitStrLen(str, maxLen) {
+  if (str.length > maxLen+3) {
+    return str.substr(0, maxLen) + '...'
+  } else {
+    return str
+  }
+}
+
 function userLinkAttrs(id) {
     return {uid: id, href: webroot+'/private/'+id};
 }

@@ -52,11 +52,7 @@ function loadFavs() {
 }
 function createFavLink(favInfo) {
   var $favLink = $('.proto .fav-link').clone()
-  var linkStr = favInfo.link
-  if (linkStr.length > 50) {
-    linkStr = linkStr.substr(0, 50) + '...'
-  }
-  $favLink.find('.the-link').attr('href', favInfo.link).text(linkStr)
+  $favLink.find('.the-link').attr('href', favInfo.link).text(limitStrLen(favInfo.link, 50))
   $favLink.find('.time').text(showTime(favInfo.time))
   var id = favInfo.id
   $favLink.find('.remove-fav').each(function(){unfavPopover($(this), function(){removeFav(id, $favLink)})})
