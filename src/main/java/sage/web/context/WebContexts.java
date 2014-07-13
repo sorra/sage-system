@@ -13,7 +13,7 @@ public class WebContexts {
     return current().getAttribute(name, RequestAttributes.SCOPE_REQUEST);
   }
 
-  public static void setRequestBean(String name, Object value) {
+  public static void setRequestAttr(String name, Object value) {
     current().setAttribute(name, value, RequestAttributes.SCOPE_REQUEST);
   }
 
