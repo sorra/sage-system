@@ -32,24 +32,23 @@ $(document).ready(function(){
 function loadFavs() {
   $.get(webroot+'/favs/get', {})
     .done(function(resp){
-      var $favList = $('#fav-list')
-      for (var i in resp) {
-        var favInfo = resp[i]
-        if (favInfo.link.indexOf("tweet:") === 0) {
-          var $tc = createTweetCard(favInfo.tweet)
-          var id = favInfo.id
-          $tc.find('.forward').before(
-            $('<a class="remove-fav" href="javascript:;">取消收藏</a>')
-              .css('margin-right', '1em').click(function(){removeFav(id, $tc)}))
-          $tc.appendTo($favList)
-        } else {
-          createFavLink(favInfo).appendTo($favList)
+        var $favList = $('#fav-list')
+        for (var i in resp) {
+          var favInfo = resp[i]
+          if (favInfo.link.indexOf("tweet:") === 0) {
+            var $tc = createTweetCard(favInfo.tweet)
+            var id = favInfo.id
+            $tc.find('.forward').before($('<a class="remove-fav" href="javascript:;">取消收藏</a>').css('margin-right', '1em')
+                .each(function(){unfavPopover($(this), function(){removeFav(id, $tc)})}))
+            $tc.appendTo($favList)
+          } else {
+            createFavLink(favInfo).appendTo($favList)
+          }
         }
-      }
-    })
+      })
     .fail(function(resp){
-      console.error(resp);
-    })
+        console.error(resp);
+      })
 }
 function createFavLink(favInfo) {
   var $favLink = $('.proto .fav-link').clone()
@@ -60,19 +59,23 @@ function createFavLink(favInfo) {
   $favLink.find('.the-link').attr('href', favInfo.link).text(linkStr)
   $favLink.find('.time').text(showTime(favInfo.time))
   var id = favInfo.id
-  $favLink.find('.remove-fav').click(function(){removeFav(id, $favLink)})
+  $favLink.find('.remove-fav').each(function(){unfavPopover($(this), function(){removeFav(id, $favLink)})})
   return $favLink
+}
+
+function unfavPopover($node, action) {
+  commonConfirmPopover($node, action, '确定要取消收藏吗?', 'top')
 }
 
 function removeFav(id, $fav){
     $.post(webroot+'/favs/'+id+'/delete', {})
       .done(function(){
-        $fav.remove()
-      })
+          $fav.remove()
+        })
       .fail(function(){
-        //Popup
-        console.error("Ah")
-      })
+          //Popup
+          console.error("Ah")
+        })
   }
 </script>
 </body>
