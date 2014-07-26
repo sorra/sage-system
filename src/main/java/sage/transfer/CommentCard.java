@@ -14,6 +14,7 @@ public class CommentCard {
   private String authorName;
   private String avatar;
   private Date time;
+  private Long replyUserId;
 
   CommentCard() {}
   
@@ -24,6 +25,7 @@ public class CommentCard {
     authorName = comment.getAuthor().getName();
     avatar = comment.getAuthor().getAvatar();
     time = comment.getTime();
+    replyUserId = comment.getReplyUserId();
   }
 
   public long getId() {
@@ -49,7 +51,11 @@ public class CommentCard {
   public Date getTime() {
     return time;
   }
-  
+
+  public Long getReplyUserId() {
+    return replyUserId;
+  }
+
   public static List<CommentCard> listOf(Collection<Comment> comments) {
     List<CommentCard> cards = new ArrayList<>();
     for (Comment comment : comments) {

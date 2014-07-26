@@ -161,7 +161,7 @@ function createOriginCard(origin) {
 function createCombineGroup(group) {
     var $cg = $('.proto > .combine').clone();
     $.each(group.forwards, function(idx, forward){
-        createTweetCard(forward).removeClass('item').addClass('forward').appendTo($cg);
+        createTweetCard(forward).removeClass('stream-item').addClass('forward').appendTo($cg);
     });
     createOriginCard(group.origin).addClass('offset1').appendTo($cg);
     return $cg;
@@ -261,7 +261,7 @@ function createCommentList(tweetId, funcRetach) {
     .done(function(resp){
         console.log(resp.length);
         $.each(resp, function(idx, item){
-            var $comment = $('.proto .comment-item').clone().appendTo($list);
+            var $comment = $('.proto .tweet-comment').clone().appendTo($list);
             $comment.find('.avatar, .author-name').attr(userLinkAttrs(item.authorId))
                 .find('img').attr('src', item.avatar).css({width: '30px', height: '30px'});
             $comment.find('.author-name').text(item.authorName);

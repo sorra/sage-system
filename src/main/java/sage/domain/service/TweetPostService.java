@@ -86,7 +86,7 @@ public class TweetPostService {
     
     Tweet source = tweetRepo.load(sourceId);
     Comment comment = new Comment(content, userRepo.load(userId),
-        new Date(), source);
+        new Date(), source, replyUserId);
     commentRepo.save(comment);
     
     notifService.commented(source.getAuthor().getId(), userId, comment.getId());

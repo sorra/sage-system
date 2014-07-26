@@ -3,6 +3,7 @@ package sage.domain.service;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,6 +15,7 @@ import sage.domain.repository.FollowRepository;
 import sage.domain.repository.TagRepository;
 import sage.domain.repository.UserRepository;
 import sage.entity.Follow;
+import sage.entity.Tag;
 import sage.entity.User;
 import sage.entity.nosql.FollowCatalogLite;
 import sage.entity.nosql.FollowInfoLite;
@@ -38,14 +40,26 @@ public class RelationService {
    * @param targetId The target user to follow
    * @param tagIds The tags to follow
    */
-  public void follow(long userId, long targetId, Collection<Long> tagIds) {
+  public void follow(long userId, long targetId, String reason, Collection<Long> tagIds) {
     if (userId == targetId) {
       logger.warn("user {} should not follow himself!", userId);
       return;
     }
-    Follow follow = new Follow(userRepo.load(userId), userRepo.load(targetId), tagRepo.byIds(tagIds));
-    followRepo.merge(follow);
-    notifService.followed(targetId, userId);
+    Follow follow = followRepo.find(userId, targetId);
+    Set<Tag> neoTags = tagRepo.byIds(tagIds);
+    if (follow != null) {
+      if (!neoTags.equals(follow.getTags())) {
+        follow.setTags(neoTags);
+        followRepo.update(follow);
+      }
+    } else {
+      followRepo.save(new Follow(userRepo.load(userId), userRepo.load(targetId), reason, neoTags));
+      notifService.followed(targetId, userId);
+    }
+  }
+
+  public void follow(long userId, long targetId, Collection<Long> tagIds) {
+    follow(userId, targetId, null, tagIds);
   }
 
   public void unfollow(long userId, long targetId) {
@@ -59,18 +73,8 @@ public class RelationService {
   
   public void applyFollows(Long userId, FollowCatalogLite fcl) {
     for (FollowInfoLite info : fcl.getList()) {
-      follow(userId, info.getUserId(), info.getTagIds());
+      follow(userId, info.getUserId(), fcl.getName(), info.getTagIds());
     }
-  }
-
-  /*
-   * Optional method for 'editFollow'
-   */
-  @Deprecated
-  public void editFollow(long followId, Collection<Long> tagIds) {
-    Follow follow = followRepo.get(followId);
-    follow.setTags(tagRepo.byIds(tagIds));
-    followRepo.merge(follow);
   }
 
   @Transactional(readOnly = true)

@@ -17,6 +17,16 @@ body>.container{
     margin: 5px 0 -5px 0;
 }
 
+.avatar img {
+  width: 50px;
+  height: 50px;
+}
+
+.user-card .name{
+  font-weight: bold;
+  color: black;
+}
+
 .followings, .followers {
 	color: green;
 }

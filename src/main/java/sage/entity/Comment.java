@@ -16,23 +16,27 @@ public class Comment {
   private User author;
   private Date time;
   private Tweet source;
+  private Long replyUserId;
 
   public Comment() {
   }
 
   public Comment(String content, User author, Date time, Tweet source) {
+    this(content, author, time, source, null);
+  }
+
+  public Comment(String content, User author, Date time, Tweet source, Long replyUserId) {
     this.content = content;
     this.author = author;
     this.time = time;
     this.source = source;
+    this.replyUserId = replyUserId;
   }
 
-  @Id
-  @GeneratedValue
+  @Id @GeneratedValue
   public Long getId() {
     return id;
   }
-
   public void setId(Long id) {
     this.id = id;
   }
@@ -40,7 +44,6 @@ public class Comment {
   public String getContent() {
     return content;
   }
-
   public void setContent(String content) {
     this.content = content;
   }
@@ -49,7 +52,6 @@ public class Comment {
   public User getAuthor() {
     return author;
   }
-
   public void setAuthor(User author) {
     this.author = author;
   }
@@ -57,7 +59,6 @@ public class Comment {
   public Date getTime() {
     return time;
   }
-
   public void setTime(Date time) {
     this.time = time;
   }
@@ -66,9 +67,15 @@ public class Comment {
   public Tweet getSource() {
     return source;
   }
-
   public void setSource(Tweet source) {
     this.source = source;
+  }
+
+  public Long getReplyUserId() {
+    return replyUserId;
+  }
+  public void setReplyUserId(Long replyUserId) {
+    this.replyUserId = replyUserId;
   }
 
   @Override

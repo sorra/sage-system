@@ -18,25 +18,15 @@ public class RelationController {
 
   @RequestMapping("/follow/{targetId}")
   public void follow(@PathVariable Long targetId,
+      @RequestParam(value = "reason", required = false) String reason,
       @RequestParam(value = "tagIds[]", required = false) Collection<Long> tagIds) {
     Long uid = Auth.checkCurrentUid();
 
     if (tagIds == null) {
       tagIds = Collections.emptyList();
     }
-    relationService.follow(uid, targetId, tagIds);
+    relationService.follow(uid, targetId, reason, tagIds);
     // Send "followed" notification
-  }
-
-  @RequestMapping("/editfollow/{targetId}")
-  public void editFollow(@PathVariable Long targetId,
-      @RequestParam(value = "tagIds[]", required = false) Collection<Long> tagIds) {
-    Long uid = Auth.checkCurrentUid();
-
-    if (tagIds == null) {
-      tagIds = Collections.emptyList();
-    }
-    relationService.follow(uid, targetId, tagIds);
   }
 
   @RequestMapping("/unfollow/{targetId}")

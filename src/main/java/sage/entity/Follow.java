@@ -17,17 +17,19 @@ public class Follow {
   private Long id;
   private User source;
   private User target;
+  private String reason;
   private Set<Tag> tags = new HashSet<>();
 
   public Follow() {
   }
 
-  public Follow(User source, User target, Set<Tag> tags) {
+  public Follow(User source, User target, String reason, Set<Tag> tags) {
     if (source.getId() == target.getId()) {
       throw new IllegalArgumentException("source should not equal to target!");
     }
     this.source = source;
     this.target = target;
+    this.reason = reason;
     this.tags.addAll(tags);
   }
 
@@ -54,6 +56,13 @@ public class Follow {
   }
   public void setTarget(User target) {
     this.target = target;
+  }
+
+  public String getReason() {
+    return reason;
+  }
+  public void setReason(String reason) {
+    this.reason = reason;
   }
 
   @ManyToMany(fetch = FetchType.EAGER)

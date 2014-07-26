@@ -196,7 +196,7 @@
             <id>tomcat-deploy</id>
             <phase>deploy</phase>
             <goals>
-              <goal>tomcat7:deploy</goal>
+              <goal>deploy</goal>
             </goals>
           </execution>
         </executions>
