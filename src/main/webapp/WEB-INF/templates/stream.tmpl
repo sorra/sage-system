@@ -1,0 +1,59 @@
+<script id="tmpl-tweet" type="text/html">
+  <div class="tweet {{if isForward}}forward{{else if isOrigin}}origin{{else}}stream-item{{/if}} row"
+      {{if isOrigin}}style="margin-left: 0"{{/if}}>
+    <a class="avatar span1" href="{{webroot()}}/private/{{authorId}}" uid="{{authorId}}"><img src="{{avatar}}"/></a>
+    <div class="span7">
+      <div class="row">
+        <a class="author-name" href="{{webroot()}}/private/{{authorId}}" uid="{{authorId}}">{{authorName}}</a>
+        <p class="tweet-content">
+        {{#content | replaceMention}}
+        {{if midForwards}}
+          {{each midForwards.forwardMsgs as msg i}}
+          {{#msg | replaceMention}}
+          {{/each}}
+        {{/if}}
+        </p>
+        {{if origin}}
+          {{if origin.isOrigin = true}}{{/if}}
+          {{include 'tmpl-tweet' origin}}
+        {{/if}}
+      </div>
+      <div class="row">
+        <a class="time span" href="{{webroot()}}/tweet/{{id}}">{{time | showTime}}</a>
+        <span class="tags span">
+        {{if tags = origin ? origin.tags : tags}}{{/if}}
+        {{each tags as tag i}}
+          {{include 'tmpl-tag-label' tag}}
+        {{/each}}
+        </span>
+        <span class="span pull-right">
+          <a class="forward" href="javascript:;">转发{{if forwardCount > 0}}({{forwardCount}}){{/if}}</a>
+          <a class="comment" href="javascript:;">评论{{if commentCount > 0}}({{commentCount}}){{/if}}</a>
+        </span>
+      </div>
+    </div>
+  </div>
+</script>
+<script id="tmpl-combine" type="text/html">
+  <div class="combine stream-item row">
+  {{each forwards as forward i}}
+    {{if forward.isForward = true}}{{/if}}
+    {{include 'tmpl-tweet' forward}}
+  {{/each}}
+
+  {{if origin.isOrigin = true}}{{/if}}
+  {{include 'tmpl-tweet' origin}}
+  </div>
+</script>
+<script id="tmpl-tweet-comment" type="text/html">
+  <div class="tweet-comment">
+    <a class="avatar pull-left" href="{{webroot()}}/private/{{authorId}}" style="margin-right: 10px"><img src="{{avatar}}"/></a>
+    <div>
+      <a class="author-name" href="{{webroot()}} /private/{{authorId}}">{{authorName}}</a>: <span class="content">{{content}}</span>
+      <div>
+        <span class="time" style="font-size: 0.8em">{{time | showTime}}</span>
+        <a class="reply pull-right" href="javascript:;">回复</a>
+      </div>
+    </div>
+  </div>
+</script>

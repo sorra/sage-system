@@ -19,4 +19,10 @@ public class ViewComponentResource {
     String[] components = (String[]) Context.getContext().get("components");
     return ComponentResourceManager.instance().includeProtos(components);
   }
+
+  public static Collection<String> includeTemplates() {
+    String[] components = (String[]) Context.getContext().get("components");
+    return ComponentResourceManager.instance().includeTemplates(components);
+  }
+
 }

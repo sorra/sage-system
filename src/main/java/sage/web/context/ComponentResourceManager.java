@@ -1,10 +1,11 @@
 package sage.web.context;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
+import java.io.IOException;
+import java.io.UncheckedIOException;
+import java.nio.file.Files;
+import java.util.*;
+import java.util.function.Consumer;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.ServletContext;
@@ -20,12 +21,19 @@ public class ComponentResourceManager {
   @Autowired
   private ServletContext servletContext;
 
+  private boolean developmentMode = true;
+
+  public boolean isDevelopmentMode() {return developmentMode;}
+  public void setDevelopmentMode(boolean value) {developmentMode = value;}
+
   /**
    * *.css
    * *.js
    * *.proto.httl
    */
   private final Set<String> presentFileNames = new HashSet<>();
+
+  private final Map<String, JsTemplate> templates = new HashMap<>();
 
   public static ComponentResourceManager instance() {
     return instance;
@@ -35,27 +43,22 @@ public class ComponentResourceManager {
   public void init() {
     instance = this;
 
-    File cssRoot = new File(servletContext.getRealPath("/css/"));
-    Assert.isTrue(cssRoot.exists());
-    for (File css : cssRoot.listFiles()) {
-      if (css.getPath().endsWith(".css")) {
-        presentFileNames.add(css.getName());
-      }
-    }
+    includeFileType(".css", "/css/");
+    includeFileType(".js", "/js/");
+    includeFileType(".proto.httl", "/WEB-INF/prototypes/");
+    forFileType(".tmpl", "/WEB-INF/templates/", file -> templates.put(file.getName(), new JsTemplate(file)));
+  }
 
-    File jsRoot = new File(servletContext.getRealPath("/js/"));
-    Assert.isTrue(jsRoot.exists());
-    for (File js : jsRoot.listFiles()) {
-      if (js.getPath().endsWith(".js")) {
-        presentFileNames.add(js.getName());
-      }
-    }
-    
-    File protoRoot = new File(servletContext.getRealPath("/WEB-INF/prototypes/"));
-    Assert.isTrue(protoRoot.exists());
-    for (File proto : protoRoot.listFiles()) {
-      if (proto.getPath().endsWith(".proto.httl")) {
-        presentFileNames.add(proto.getName());
+  private void includeFileType(String postfix, String root) {
+    forFileType(postfix, root, file -> presentFileNames.add(file.getName()));
+  }
+
+  private void forFileType(String postfix, String root, Consumer<File> func) {
+    File rootDir = new File(servletContext.getRealPath(root));
+    Assert.isTrue(rootDir.exists());
+    for (File file : rootDir.listFiles()) {
+      if (file.getPath().endsWith(postfix)) {
+        func.accept(file);
       }
     }
   }
@@ -71,7 +74,9 @@ public class ComponentResourceManager {
   }
 
   public String includeJS(String[] components) {
-    StringBuilder sb = new StringBuilder(includeOneJS("jquery-1.9.1")).append('\n');
+    StringBuilder sb = new StringBuilder(160);
+    sb.append(includeOneJS("jquery-1.9.1"));
+    sb.append(includeOneJS("template"));
     for (String each : components) {
       if (presentFileNames.contains(each + ".js")) {
         sb.append(includeOneJS(each));
@@ -90,6 +95,17 @@ public class ComponentResourceManager {
       }
     }
     return protos;
+  }
+
+  public Collection<String> includeTemplates(String[] components) {
+    Collection<String> tmpls = new ArrayList<>(components.length);
+    for (String comp : components) {
+      JsTemplate tmpl = templates.get(comp+".tmpl");
+      if (tmpl != null) {
+        tmpls.add(tmpl.getSource());
+      }
+    }
+    return tmpls;
   }
 
   private String includeOneCSS(String componentName) {

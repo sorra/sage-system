@@ -1,5 +1,7 @@
 'use strict';
 
+template.helper('replaceMention', replaceMention)
+
 function getStream(url) {
     return $.get(url, {})
         .done(function(resp){
@@ -110,61 +112,19 @@ function createStreamBefore(stream) {
 }
 
 function createTweetCard(tweet) {
-    var $tc = $('.proto > .tweet').clone();
-    $tc.data('id', tweet.id);
-    $tc.data('authorId', tweet.authorId);
-    $tc.find('a.avatar').attr(userLinkAttrs(tweet.authorId))
-        .find('img').attr('src', tweet.avatar);
-    $tc.find('.author-name').attr(userLinkAttrs(tweet.authorId)).text(tweet.authorName); 
-    var content = tweet.preforw ? tweet.content+tweet.preforw : tweet.content;
-    $tc.find('.content').html(replaceMention(content));
-    
-    $tc.find('a[uid]').mouseenter(launchUcOpener).mouseleave(launchUcCloser);
-    
-    if (tweet.origin)
-        $tc.find('.origin').replaceWith(createOriginCard(tweet.origin));
-    else
-        $tc.find('.origin').remove();
-    
-    $tc.children('.t-part').children('.row').children('.time')
-      .text(showTime(tweet.time)).attr('href', webroot+'/tweet/'+tweet.id);
-    var $tags = $tc.find('.tags');
-    var tags = tweet.origin ? tweet.origin.tags : tweet.tags;
-    if (tags && tags.length > 0) {
-        $tags.html('');
-        $.each(tweet.tags, function(idx, tag){
-            createTagLabel(tag).appendTo($tags);
-        });
-    }
-    else {
-        $tags.remove();
-    }
-    
-    if (tweet.forwardCount > 0) {
-        $tc.find('.forward .count').text('('+tweet.forwardCount+')');
-    }
-    if (tweet.commentCount > 0) {
-        $tc.find('.comment .count').text('('+tweet.commentCount+')');
-    }
-    $tc.find('.forward').on('click', {tweet: tweet}, forwardAction);
-    $tc.find('.comment').on('click', {tweet: tweet, $tc: $tc}, commentAction);
-    return $tc;
-}
+  var $tc = $(template('tmpl-tweet', tweet))
 
-function createOriginCard(origin) {
-    var $oc = createTweetCard(origin).removeClass('stream-item').addClass('origin');
-    $oc.find('.avatar').remove();
-    $oc.find('.tags').remove();
-    return $oc;
+  $tc.data('id', tweet.id)
+  $tc.data('authorId', tweet.authorId)
+
+  $tc.find('a[uid]').mouseenter(launchUcOpener).mouseleave(launchUcCloser)
+  $tc.find('.forward').on('click', {tweet: tweet}, forwardAction);
+  $tc.find('.comment').on('click', {tweet: tweet, $tc: $tc}, commentAction);
+  return $tc;
 }
 
 function createCombineGroup(group) {
-    var $cg = $('.proto > .combine').clone();
-    $.each(group.forwards, function(idx, forward){
-        createTweetCard(forward).removeClass('stream-item').addClass('forward').appendTo($cg);
-    });
-    createOriginCard(group.origin).addClass('offset1').appendTo($cg);
-    return $cg;
+  return $(template('tmpl-combine', group))
 }
 
 function forwardAction(event) {
@@ -306,9 +266,6 @@ function addDeleteButtons($tweetList){
     $tweetList.warnEmpty().each(function(){addDelBtnIfNeeded($(this), window.userSelf.id);});
 }
 
-function showTime(time) {
-    return new Date(time).toLocaleString();
-}
 
 function replaceMention(content) {
     var indexOfAt = content.indexOf('@');

@@ -7,14 +7,12 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class MidForwards {
-  private List<Long> forwardIds;
-  private List<String> forwardMsgs;
+  private List<Long> forwardIds = new LinkedList<>();
+  private List<String> forwardMsgs = new LinkedList<>();
 
   MidForwards() {}
 
   public MidForwards(Tweet directForward) {
-    forwardIds = new LinkedList<>();
-    forwardMsgs = new LinkedList<>();
     addForward(directForward);
     MidForwards formerMidForwards = directForward.midForwards();
     if (formerMidForwards != null) {
