@@ -45,7 +45,7 @@ function createStream(stream, url) {
         .click(function() {
             var largest = null;
             $('.slist .tweet').each(function(){
-                var id = $(this).data('id');
+                var id = $(this).attr('tweet-id');
                 if (id != undefined && id != null && (id > largest || largest == null)) {
                     largest = id;
                 }
@@ -67,7 +67,7 @@ function createStream(stream, url) {
         .click(function() {
             var smallest = null;
             $('.slist .tweet').each(function(){
-                var id = $(this).data('id');
+                var id = $(this).attr('tweet-id');
                 if (id != undefined && id != null && (id < smallest || smallest == null)) {
                     smallest = id;
                 }
@@ -114,65 +114,66 @@ function createStreamBefore(stream) {
 function createTweetCard(tweet) {
   var $tc = $(template('tmpl-tweet', tweet))
 
-  $tc.data('id', tweet.id)
-  $tc.data('authorId', tweet.authorId)
-
   $tc.find('a[uid]').mouseenter(launchUcOpener).mouseleave(launchUcCloser)
-  $tc.find('.forward').on('click', {tweet: tweet}, forwardAction);
-  $tc.find('.comment').on('click', {tweet: tweet, $tc: $tc}, commentAction);
+  $tc.find('.forward').click(forwardAction)
+  $tc.find('.comment').click(commentAction)
   return $tc;
 }
 
 function createCombineGroup(group) {
-  return $(template('tmpl-combine', group))
+  var $cg = $(template('tmpl-combine', group))
+
+  $cg.find('a[uid]').mouseenter(launchUcOpener).mouseleave(launchUcCloser)
+  $cg.find('.forward').click(forwardAction)
+  $cg.find('.comment').click(commentAction)
+  return $cg
 }
 
-function forwardAction(event) {
-    event.preventDefault();
-    var tweet = event.data.tweet;
-    var $dialog = $('<div class="forward-dialog modal">')
-        .css({
-            width: '435px',
-            minHeight: '100px',
-            borderRadius: '10px'
-        });
-    $('<div class="modal-header">').text('转发微博').appendTo($dialog);
-    $('<textarea class="input modal-body">').css({width: '400px', height: '100px'}).appendTo($dialog);
-    var $footer = $('<div class="modal-footer">').appendTo($dialog);
-    $('<button class="btn btn-primary">').text('转发').css({float: 'right'}).appendTo($footer)
-        .click(function() {
-            $.post(webroot+'/post/forward', {
-                content: $dialog.find('.input').val(),
-                originId: tweet.id
-            });
-            $dialog.modal('hide');
-        });
+function forwardAction() {
+  var $tc = $(this).parents('.tweet')
+  var tweetId = $tc.attr('tweet-id')
+  var $dialog = $('<div class="forward-dialog modal">')
+    .css({
+      width: '435px',
+      minHeight: '100px',
+      borderRadius: '10px'
+    });
+  $('<div class="modal-header">').text('转发微博').appendTo($dialog);
+  $('<textarea class="input modal-body">').css({width: '400px', height: '100px'}).appendTo($dialog);
+  var $footer = $('<div class="modal-footer">').appendTo($dialog);
+  $('<button class="btn btn-primary">').text('转发').css({float: 'right'}).appendTo($footer)
+    .click(function() {
+      $.post(webroot+'/post/forward', {
+          content: $dialog.find('.input').val(),
+          originId: tweetId
+      });
+      $dialog.modal('hide');
+    });
 
-    $dialog.appendTo('#container').modal();
+  $dialog.appendTo('#container').modal();
 }
 
-function commentAction(event){
-    event.preventDefault();
-    var tweet = event.data.tweet;
-    var $tc = event.data.$tc;
-    var $this = $(this);
-    var clKey = 'comment-list';
-    var $cl = $this.data(clKey);
+function commentAction(){
+  var $this = $(this)
+  var $tc = $this.parents('.tweet')
+  var tweetId = $tc.attr('tweet-id')
+  var clKey = 'comment-list'
+  var $cl = $this.data(clKey)
 
-    if ($cl) {
-        $cl.remove();
-        $this.removeData(clKey);
-    }
-    else {
-      var retach = function(funcSelf, $commentList){
-        var $clOld = $this.data(clKey);
-        if ($clOld) $clOld.remove();
+  if ($cl) {
+    $cl.remove()
+    $this.removeData(clKey)
+  }
+  else {
+    var retach = function(funcSelf, $commentList){
+      var $clOld = $this.data(clKey)
+      if ($clOld) $clOld.remove()
 
-        var $clNew = $commentList.appendTo($tc.find('.t-part'));
-        $this.data(clKey, $clNew);
-      };
-      retach(retach, createCommentList(tweet.id, retach));
-    }
+      var $clNew = $commentList.appendTo($tc.find('.t-part'))
+      $this.data(clKey, $clNew)
+    };
+    retach(retach, createCommentList(tweetId, retach))
+  }
 }
 
 function createBlogData(blog) {
@@ -254,10 +255,10 @@ function initConfirmBox($tweet, $del, id) {
 }
 
 function addDelBtnIfNeeded($tweet, selfId){
-	if (selfId === $tweet.data('authorId')) {
+	if (selfId === $tweet.attr('author-id')) {
         var $del = $('<a href="javascript:;">').text('删除')
         	.css({marginLeft: '0.5em', marginRight: '0.5em'});
-        initConfirmBox($tweet, $del, $tweet.data('id'));
+        initConfirmBox($tweet, $del, $tweet.attr('tweet-id'));
         console.log(selfId);
         $tweet.find('>.t-part>div>span .forward').before($del);
 	}

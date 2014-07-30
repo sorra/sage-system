@@ -1,5 +1,6 @@
 <script id="tmpl-tweet" type="text/html">
-  <div class="tweet {{if isForward}}forward{{else if isOrigin}}origin{{else}}stream-item{{/if}} row"
+  <div class="tweet {{if isForward}}forwarded{{else if isOrigin}}origin{{else}}stream-item{{/if}} row"
+      tweet-id="{{id}}" author-id="{{authorId}}"
       {{if isOrigin}}style="margin-left: 0"{{/if}}>
     <a class="avatar span1" href="{{webroot()}}/private/{{authorId}}" uid="{{authorId}}"><img src="{{avatar}}"/></a>
     <div class="span7">
