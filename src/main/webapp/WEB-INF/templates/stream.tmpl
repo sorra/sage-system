@@ -8,7 +8,7 @@
         <p class="tweet-content">
         {{#content | replaceMention}}
         {{if midForwards}}
-          {{each midForwards.forwardMsgs as msg i}}
+          {{each midForwards.msgs as msg i}}
           {{#msg | replaceMention}}
           {{/each}}
         {{/if}}

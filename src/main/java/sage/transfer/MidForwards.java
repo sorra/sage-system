@@ -7,8 +7,8 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class MidForwards {
-  private List<Long> forwardIds = new LinkedList<>();
-  private List<String> forwardMsgs = new LinkedList<>();
+  private List<Long> ids = new LinkedList<>();
+  private List<String> msgs = new LinkedList<>();
 
   MidForwards() {}
 
@@ -16,23 +16,23 @@ public class MidForwards {
     addForward(directForward);
     MidForwards formerMidForwards = directForward.midForwards();
     if (formerMidForwards != null) {
-      forwardIds.addAll(formerMidForwards.getForwardIds());
-      forwardMsgs.addAll(formerMidForwards.getForwardMsgs());
+      ids.addAll(formerMidForwards.getIds());
+      msgs.addAll(formerMidForwards.getMsgs());
     }
   }
 
   MidForwards addForward(Tweet forward) {
     Tweet t = forward;
-    forwardIds.add(t.getId());
+    ids.add(t.getId());
     String asString = " ||@" + t.getAuthor().getName() + "#" + t.getAuthor().getId() + " : " + t.getContent();
-    forwardMsgs.add(asString);
+    msgs.add(asString);
     return this;
   }
 
   public MidForwards removeById(Long idToRemove) {
-    int idx = getForwardIds().indexOf(idToRemove);
-    getForwardIds().remove(idx);
-    getForwardMsgs().remove(idx);
+    int idx = getIds().indexOf(idToRemove);
+    getIds().remove(idx);
+    getMsgs().remove(idx);
     return this;
   }
 
@@ -48,10 +48,10 @@ public class MidForwards {
     return Json.json(this);
   }
 
-  public List<Long> getForwardIds() {
-    return forwardIds;
+  public List<Long> getIds() {
+    return ids;
   }
-  public List<String> getForwardMsgs() {
-    return forwardMsgs;
+  public List<String> getMsgs() {
+    return msgs;
   }
 }
