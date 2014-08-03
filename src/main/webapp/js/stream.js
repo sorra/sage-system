@@ -169,7 +169,7 @@ function commentAction(){
       var $clOld = $this.data(clKey)
       if ($clOld) $clOld.remove()
 
-      var $clNew = $commentList.appendTo($tc.find('.t-part'))
+      var $clNew = $commentList.appendTo($tc.find('.tweet-body'))
       $this.data(clKey, $clNew)
     };
     retach(retach, createCommentList(tweetId, retach))
@@ -220,14 +220,8 @@ function createCommentList(tweetId, funcRetach) {
     var $list = $('<div>').appendTo($cl);
     $.get(webroot+'/read/'+tweetId+'/comments')
     .done(function(resp){
-        console.log(resp.length);
         $.each(resp, function(idx, item){
-            var $comment = $('.proto .tweet-comment').clone().appendTo($list);
-            $comment.find('.avatar, .author-name').attr(userLinkAttrs(item.authorId))
-                .find('img').attr('src', item.avatar).css({width: '30px', height: '30px'});
-            $comment.find('.author-name').text(item.authorName);
-            $comment.find('.content').text(item.content);
-            $comment.find('.time').text(showTime(item.time));
+            $(template('tmpl-tweet-comment', item)).appendTo($list)
         });
         $('<div>').text('评论').replaceAll($loading);
     })

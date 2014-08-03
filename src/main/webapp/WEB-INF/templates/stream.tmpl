@@ -3,7 +3,7 @@
       tweet-id="{{id}}" author-id="{{authorId}}"
       {{if isOrigin}}style="margin-left: 0"{{/if}}>
     <a class="avatar span1" href="{{webroot()}}/private/{{authorId}}" uid="{{authorId}}"><img src="{{avatar}}"/></a>
-    <div class="span7">
+    <div class="tweet-body span7">
       <div class="row">
         <a class="author-name" href="{{webroot()}}/private/{{authorId}}" uid="{{authorId}}">{{authorName}}</a>
         <p class="tweet-content">
@@ -48,9 +48,11 @@
 </script>
 <script id="tmpl-tweet-comment" type="text/html">
   <div class="tweet-comment">
-    <a class="avatar pull-left" href="{{webroot()}}/private/{{authorId}}" style="margin-right: 10px"><img src="{{avatar}}"/></a>
+    <a class="avatar pull-left" href="{{webroot()}}/private/{{authorId}}" style="margin-right: 10px">
+      <img src="{{avatar}}" style="width: 30px; height: 30px"/>
+    </a>
     <div>
-      <a class="author-name" href="{{webroot()}} /private/{{authorId}}">{{authorName}}</a>: <span class="content">{{content}}</span>
+      <a class="author-name" href="{{webroot()}} /private/{{authorId}}">{{authorName}}</a>: <span>{{content}}</span>
       <div>
         <span class="time" style="font-size: 0.8em">{{time | showTime}}</span>
         <a class="reply pull-right" href="javascript:;">回复</a>
