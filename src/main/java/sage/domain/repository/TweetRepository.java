@@ -90,7 +90,7 @@ public class TweetRepository extends BaseRepository<Tweet> {
         originIds.add(origin.getId());
       }
       Query queryReshares = session().createQuery(
-          "from Tweet t where t.origin.id in :ids")
+          "from Tweet t where t.originId in :ids")
           .setParameterList("ids", originIds);
       connected.addAll(queryReshares.list());
     }
@@ -100,14 +100,22 @@ public class TweetRepository extends BaseRepository<Tweet> {
 
   public List<Tweet> byOrigin(long originId) {
     return session().createQuery(
-        "from Tweet t where t.origin.id = :originId")
+        "from Tweet t where t.originId = :originId")
         .setLong("originId", originId)
         .list();
   }
 
+  public Tweet getOrigin(Tweet tweet) {
+    if (tweet.hasOrigin()) {
+      return get(tweet.getOriginId());
+    } else {
+      return null;
+    }
+  }
+
   public long forwardCount(long originId) {
     Query query = session().createQuery(
-        "select count(*) from Tweet t  where t.origin.id = :originId")
+        "select count(*) from Tweet t  where t.originId = :originId")
         .setLong("originId", originId);
     return (long) query.uniqueResult();
   }

@@ -12,9 +12,11 @@ public class Tweet {
   private String content;
   private User author;
   private Date time;
-  private Tweet origin = null;
+
+  private Long originId = -1L;
+
   private String midForwardsJson = null;
-  private Long blogId = null;
+  private Long blogId = -1L;
   private Set<Tag> tags = new HashSet<>();
   private Collection<Comment> comments = new ArrayList<>();
 
@@ -30,8 +32,8 @@ public class Tweet {
 
   public Tweet(String content, User author, Date time, Tweet initialOrigin) {
     this(content, author, time, initialOrigin.getTags());
-    setOrigin(initialOrigin);
-    if (initialOrigin.getOrigin() != null) {
+    setOriginId(initialOrigin.getId());
+    if (initialOrigin.hasOrigin()) {
       throw new IllegalArgumentException("tweet's origin should not be nested!");
     }
   }
@@ -83,36 +85,39 @@ public class Tweet {
     this.time = time;
   }
 
-  @OneToOne
-  public Tweet getOrigin() {
-    return origin;
+  @Column(nullable = false)
+  public Long getOriginId() {
+    return originId;
   }
-
-  public void setOrigin(Tweet origin) {
-    this.origin = origin;
+  public void setOriginId(Long originId) {
+    this.originId = originId;
+  }
+  public boolean hasOrigin() {
+    return originId >= 0;
   }
 
   public String getMidForwardsJson() {
     return midForwardsJson;
   }
-
   public void setMidForwardsJson(String midForwardsJson) {
     this.midForwardsJson = midForwardsJson;
   }
 
+  @Column(nullable = false)
   public Long getBlogId() {
     return blogId;
   }
-
   public void setBlogId(Long blogId) {
     this.blogId = blogId;
+  }
+  public boolean hasBlog() {
+    return blogId >= 0;
   }
 
   @ManyToMany(fetch = FetchType.EAGER)
   public Set<Tag> getTags() {
     return tags;
   }
-
   public void setTags(Set<Tag> tags) {
     this.tags = tags;
   }
@@ -121,7 +126,6 @@ public class Tweet {
   public Collection<Comment> getComments() {
     return comments;
   }
-
   public void setComments(Collection<Comment> comments) {
     this.comments = comments;
   }

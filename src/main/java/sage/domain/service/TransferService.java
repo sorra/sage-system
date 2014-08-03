@@ -29,7 +29,7 @@ public class TransferService {
   private static final int MIN_LIST_SIZE = 20;
 
   public TweetCard toTweetCard(Tweet tweet) {
-    return new TweetCard(tweet,
+    return new TweetCard(tweet, tweetRepo.getOrigin(tweet),
         forwardCount(tweet.getId()),
         commentCount(tweet.getId()));
   }
@@ -43,7 +43,7 @@ public class TransferService {
   }
 
   public TweetCard toTweetCardNoCount(Tweet tweet) {
-    return new TweetCard(tweet, 0, 0);
+    return new TweetCard(tweet, tweetRepo.getOrigin(tweet), 0, 0);
   }
 
   public long forwardCount(long originId) {

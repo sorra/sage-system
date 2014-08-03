@@ -60,7 +60,7 @@ public class TweetPostService {
     Tweet directOrigin = tweetRepo.load(originId);
     Deque<Tweet> origins = new LinkedList<>();
     Tweet tweet;
-    if (directOrigin.getOrigin() == null) {
+    if (directOrigin.hasOrigin()) {
       origins.add(directOrigin);
       tweet = new Tweet(content, userRepo.load(userId), new Date(), directOrigin);
     }
@@ -68,7 +68,7 @@ public class TweetPostService {
       origins = allOrigins(directOrigin);
       Tweet initialOrigin = origins.getLast();
       MidForwards midForwards = new MidForwards(directOrigin);
-      removedForwardIds.forEach(each -> midForwards.removeById(each));
+      removedForwardIds.forEach(midForwards::removeById);
       tweet = new Tweet(content, userRepo.load(userId), new Date(), initialOrigin, midForwards);
     }
     tweetRepo.save(tweet);
@@ -141,10 +141,10 @@ public class TweetPostService {
   private Deque<Tweet> allOrigins(Tweet directOrigin) {
     Deque<Tweet> origins = new LinkedList<>();
     origins.add(directOrigin);
-    Tweet origin = directOrigin.getOrigin();
+    Tweet origin = tweetRepo.getOrigin(directOrigin);
     while (origin != null) {
       origins.add(origin);
-      origin = origin.getOrigin();
+      origin = tweetRepo.getOrigin(origin);
     }
     return origins;
   }

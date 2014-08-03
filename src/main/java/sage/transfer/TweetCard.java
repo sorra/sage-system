@@ -29,15 +29,15 @@ public class TweetCard implements Item {
 
   TweetCard() {}
   
-  public TweetCard(Tweet tweet, long forwardCount, long commentCount) {
+  public TweetCard(Tweet tweet, Tweet origin, long forwardCount, long commentCount) {
     id = tweet.getId();
     authorId = tweet.getAuthor().getId();
     authorName = tweet.getAuthor().getName();
     avatar = tweet.getAuthor().getAvatar();
     content = tweet.getContent();
     time = tweet.getTime();
-    if (tweet.getOrigin() != null) {
-      origin = new TweetCard(tweet.getOrigin(), 0, 0);
+    if (origin != null) {
+      this.origin = new TweetCard(origin, null, 0, 0);
     }
     midForwards = tweet.midForwards();
     for (Tag tag : tweet.getTags()) {
