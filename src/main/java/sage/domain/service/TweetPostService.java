@@ -58,14 +58,12 @@ public class TweetPostService {
     content = parsedContent.content;
     
     Tweet directOrigin = tweetRepo.load(originId);
-    Deque<Tweet> origins = new LinkedList<>();
+    Deque<Tweet> origins = allOrigins(directOrigin);
     Tweet tweet;
-    if (directOrigin.hasOrigin()) {
-      origins.add(directOrigin);
+    if (origins.getLast() != directOrigin) {
       tweet = new Tweet(content, userRepo.load(userId), new Date(), directOrigin);
     }
     else {
-      origins = allOrigins(directOrigin);
       Tweet initialOrigin = origins.getLast();
       MidForwards midForwards = new MidForwards(directOrigin);
       removedForwardIds.forEach(midForwards::removeById);
