@@ -12,7 +12,9 @@ public class HeededTag {
   private Long id;
   private User user;
   private Tag tag;
-  
+
+  HeededTag() {}
+
   public HeededTag(User user, Tag tag) {
     this.user = user;
     this.tag = tag;

@@ -1,18 +1,19 @@
 package sage.domain.service;
 
-import java.util.concurrent.ExecutionException;
-
 import httl.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Assert;
+import sage.domain.repository.*;
+import sage.entity.FollowCatalogEntity;
+import sage.entity.ResourceCatalogEntity;
+import sage.transfer.*;
 
-import sage.domain.repository.FollowRepository;
-import sage.domain.repository.nosql.BaseCouchbaseRepository;
-import sage.domain.repository.nosql.FollowCatalogRepository;
-import sage.domain.repository.nosql.ResourceCatalogRepository;
-import sage.entity.nosql.*;
+import java.util.ArrayList;
 
 @Service
+@Transactional
 public class CatalogService {
   @Autowired
   private ResourceCatalogRepository resourceCatalogRepo;
@@ -20,79 +21,56 @@ public class CatalogService {
   private FollowCatalogRepository followCatalogRepo;
   @Autowired
   private FollowRepository followRepo;
+  @Autowired
+  private UserRepository userRepo;
+  @Autowired
+  private TagRepository tagRepo;
   
-  public ResourceCatalog getResourceCatalog(String key) {
-    return resourceCatalogRepo.get(key);
+  public ResourceCatalog getResourceCatalog(Long id) {
+    return ResourceCatalog.fromEntity(resourceCatalogRepo.get(id));
   }
   
-  public Boolean addResourceCatalog(ResourceCatalog rc, Long ownerId) {
-    rc = escaped(rc);
-    return addCatalog(rc, ownerId, resourceCatalogRepo);
+  public Long addResourceCatalog(ResourceCatalog rc, Long userId) {
+    ResourceCatalogEntity entity = escaped(rc).toEntity();
+    entity.setOwnerId(userId);
+    resourceCatalogRepo.save(entity);
+    return entity.getId();
   }
   
-  public Boolean updateResourceCatalog(ResourceCatalog rc) {
-    rc = escaped(rc);
-    try {
-      return resourceCatalogRepo.set(rc.getId(), rc).get();
-    } catch (InterruptedException | ExecutionException e) {
-      throw new RuntimeException(e);
-    }
-  }
-  
-  public FollowCatalog getFollowCatalog(String key) {
-    return followCatalogRepo.get(key);
-  }
-  
-  public Boolean addFollowCatalog(FollowCatalogLite fcLite, Long ownerId) {
-    return addCatalog(toFollowCatalog(fcLite), ownerId, followCatalogRepo);
-  }
-  
-  public Boolean updateFollowCatalog(FollowCatalogLite fcLite) {
-    FollowCatalog fc = toFollowCatalog(fcLite);
-    try {
-      return followCatalogRepo.set(fc.getId(), fc).get();
-    } catch (InterruptedException | ExecutionException e) {
-      throw new RuntimeException(e);
-    }
-  }
-  
-  private FollowCatalog toFollowCatalog(FollowCatalogLite fcl) {
-    final Long ownerId = fcl.getOwnerId();
-    FollowCatalog fc = new FollowCatalog(ownerId, fcl.getName());
-    for (FollowInfoLite followInfoLite : fcl.getList()) {
-      Long targetId = followInfoLite.getUserId();
-      FollowInfo followInfo = new FollowInfo(followRepo.find(ownerId, targetId));
-      fc.getList().add(followInfo);
-    }
-    return fc;
-  }
+  public void updateResourceCatalog(ResourceCatalog rc, Long userId) {
+    ResourceCatalogEntity entity = resourceCatalogRepo.get(rc.getId());
+    Assert.isTrue(entity.getOwnerId().equals(userId));
 
-  private <T extends Catalog> Boolean addCatalog(Catalog catalog, Long ownerId, BaseCouchbaseRepository<T> repo) {
-    catalog.setOwnerId(ownerId);
-    long time = System.currentTimeMillis();
-    String id = generateId(catalog, time);
-    try {
-      Boolean success = repo.add(id, (T) catalog).get();
-      if (success) {
-        return success;
-      } else {
-        // Retry once
-        id = generateId(catalog, time+1);
-        return repo.add(id, (T) catalog).get();
-      }
-    } catch (InterruptedException | ExecutionException e) {
-      throw new RuntimeException(e);
-    }
+    ResourceCatalogEntity neo = escaped(rc).toEntity();
+    entity.setName(neo.getName());
+    entity.setListJson(neo.getListJson());
+    resourceCatalogRepo.update(entity);
   }
   
-  private String generateId(Catalog rc, long time) {
-    String id = rc.getOwnerId() + "_" + Long.toHexString(time);
-    rc.setId(id);
-    return id;
+  public FollowCatalog getFollowCatalog(Long id) {
+    return FollowCatalogLite.fromEntity(followCatalogRepo.get(id))
+        .toFull($ -> new UserLabel(userRepo.get($)), $ -> new TagLabel(tagRepo.get($)));
+  }
+  
+  public Long addFollowCatalog(FollowCatalogLite fcLite, Long ownerId) {
+    FollowCatalogEntity entity = fcLite.toEntity();
+    entity.setOwnerId(ownerId);
+    followCatalogRepo.save(entity);
+    return entity.getId();
+  }
+  
+  public void updateFollowCatalog(FollowCatalogLite fcLite, Long userId) {
+    FollowCatalogEntity entity = followCatalogRepo.get(fcLite.getId());
+    Assert.isTrue(entity.getOwnerId().equals(userId));
+
+    FollowCatalogEntity neo = fcLite.toEntity();
+    entity.setName(neo.getName());
+    entity.setListJson(neo.getListJson());
+    followCatalogRepo.update(entity);
   }
 
   private ResourceCatalog escaped(ResourceCatalog rc) {
-    ResourceCatalog neo = new ResourceCatalog(rc.getOwnerId(), rc.getName());
+    ResourceCatalog neo = new ResourceCatalog(rc.getId(), rc.getOwnerId(), rc.getName(), new ArrayList<>());
     rc.getList().forEach(info -> neo.getList().add(
         new ResourceInfo(StringUtils.escapeXml(info.getLink()), StringUtils.escapeXml(info.getDesc()))));
     return neo;

@@ -18,8 +18,7 @@ public class Comment {
   private Tweet source;
   private Long replyUserId;
 
-  public Comment() {
-  }
+  Comment() {}
 
   public Comment(String content, User author, Date time, Tweet source) {
     this(content, author, time, source, null);

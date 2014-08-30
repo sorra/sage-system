@@ -16,7 +16,7 @@ public class Fav {
   private User owner;
   private Date time;
   
-  public Fav() {}
+  Fav() {}
   
   public Fav(String link, User owner, Date time) {
     this.link = link;

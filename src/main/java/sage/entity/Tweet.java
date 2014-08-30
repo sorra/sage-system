@@ -20,8 +20,7 @@ public class Tweet {
   private Set<Tag> tags = new HashSet<>();
   private Collection<Comment> comments = new ArrayList<>();
 
-  public Tweet() {
-  }
+  Tweet() {}
 
   public Tweet(String content, User author, Date time, Set<Tag> tags) {
     this.content = content;

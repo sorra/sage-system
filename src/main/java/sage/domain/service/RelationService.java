@@ -17,8 +17,8 @@ import sage.domain.repository.UserRepository;
 import sage.entity.Follow;
 import sage.entity.Tag;
 import sage.entity.User;
-import sage.entity.nosql.FollowCatalogLite;
-import sage.entity.nosql.FollowInfoLite;
+import sage.transfer.FollowCatalogLite;
+import sage.transfer.FollowInfoLite;
 import sage.transfer.UserLabel;
 
 @Service

@@ -24,8 +24,7 @@ public class Blog {
   private Date time;
   private Set<Tag> tags = new HashSet<>();
 
-  public Blog() {
-  }
+  Blog() {}
 
   public Blog(String title, String content, User author, Date time, Set<Tag> tags) {
     this.title = title;

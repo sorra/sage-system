@@ -1,4 +1,4 @@
-package sage.entity.nosql;
+package sage.transfer;
 
 public class ResourceInfo {
   private String link;

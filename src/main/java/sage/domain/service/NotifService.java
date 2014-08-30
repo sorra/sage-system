@@ -1,24 +1,26 @@
 package sage.domain.service;
 
 import java.util.Collection;
-import java.util.concurrent.ExecutionException;
+import java.util.Objects;
 
-import org.elasticsearch.common.base.Objects;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import org.springframework.transaction.annotation.Transactional;
 import sage.domain.repository.nosql.NotifRepository;
-import sage.entity.nosql.Notif;
-import sage.entity.nosql.Notif.Type;
+import sage.entity.Notif;
+import sage.entity.Notif.Type;
 
 @Service
+@Transactional
 public class NotifService {
 
   @Autowired
   private NotifRepository notifRepo;
-  
+
+  @Transactional(readOnly=true)
   public Collection<Notif> getNotifs(Long userId) {
-    return notifRepo.findAll(userId);
+    return notifRepo.byOwner(userId);
   }
   
   //TODO filter & black-list
@@ -47,37 +49,12 @@ public class NotifService {
     sendNotif(new Notif(toUser, fromUser, Type.FOLLOWED, null));
   }
   
-  private Boolean sendNotif(Notif notif) {
+  private void sendNotif(Notif notif) {
     // Don't send to oneself
-    if (Objects.equal(notif.getOwnerId(), notif.getSenderId())) {
-      return false;
+    if (Objects.equals(notif.getOwnerId(), notif.getSenderId())) {
+      return;
     }
-    
-    long time = System.currentTimeMillis();
-    String id = generateId(notif, time);
-    try {
-      Boolean success = notifRepo.add(id, notif).get();
-      if (success) {
-        return success;
-      } else {
-        // Retry once
-        id = generateId(notif, time+1);
-        return notifRepo.add(id, notif).get();
-      }
-    } catch (InterruptedException | ExecutionException e) {
-      throw new RuntimeException(e);
-    }
+    notifRepo.save(notif);
   }
   
-  /**
-   * Format: senderId_timeHexString
-   * @param notif The notif
-   * @param time Current system time
-   * @return generated doc id
-   */
-  private String generateId(Notif notif, long time) {
-    String id = notif.getSenderId() + "_" + Long.toHexString(time);
-    notif.setId(id);
-    return id;
-  }
 }

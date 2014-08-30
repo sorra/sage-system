@@ -30,8 +30,7 @@ public class Tag {
   private Collection<Blog> blogs;
   private Collection<Follow> follows;
 
-  public Tag() {
-  }
+  Tag() {}
 
   public Tag(String name, Tag parent) {
     this.name = name;

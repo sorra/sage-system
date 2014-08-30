@@ -20,8 +20,7 @@ public class Follow {
   private String reason;
   private Set<Tag> tags = new HashSet<>();
 
-  public Follow() {
-  }
+  Follow() {}
 
   public Follow(User source, User target, String reason, Set<Tag> tags) {
     if (source.getId() == target.getId()) {

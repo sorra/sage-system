@@ -1,5 +1,6 @@
-package sage.entity.nosql;
+package sage.transfer;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 
@@ -8,6 +9,12 @@ public class FollowInfoLite {
   private Collection<Long> tagIds;
   
   FollowInfoLite() {}
+
+  FollowInfoLite(FollowInfo followInfo) {
+    userId = followInfo.getTarget().getId();
+    tagIds = new ArrayList<>();
+    followInfo.getTags().forEach(tag -> tagIds.add(tag.getId()));
+  }
   
   public Long getUserId() {
     return userId;

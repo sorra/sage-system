@@ -3,7 +3,7 @@ package sage.web;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import sage.domain.service.RelationService;
-import sage.entity.nosql.FollowCatalogLite;
+import sage.transfer.FollowCatalogLite;
 import sage.web.auth.Auth;
 import sage.web.context.Json;
 
