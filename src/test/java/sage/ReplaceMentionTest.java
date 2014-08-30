@@ -19,7 +19,7 @@ public class ReplaceMentionTest {
         UserRepository ur = new UserRepository() {
             @Override
             public User findByName(String name) {
-                User user = new User();
+                User user = new User("admin@a.a", "123");
                 user.setId(1000L);
                 user.setName(name);
                 return user;
