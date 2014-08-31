@@ -1,10 +1,10 @@
 package sage.entity;
 
+import java.util.*;
+import javax.persistence.*;
+
 import sage.domain.IdCommons;
 import sage.transfer.MidForwards;
-
-import javax.persistence.*;
-import java.util.*;
 
 @Entity(name = "Tweet")
 public class Tweet {

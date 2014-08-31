@@ -1,14 +1,14 @@
 package sage.web;
 
+import java.util.Collection;
+import java.util.Collections;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import sage.domain.service.RelationService;
 import sage.transfer.FollowListLite;
 import sage.web.auth.Auth;
 import sage.web.context.Json;
-
-import java.util.Collection;
-import java.util.Collections;
 
 @RestController
 @RequestMapping(method = RequestMethod.POST)

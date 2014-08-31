@@ -3,7 +3,6 @@ package sage.domain.repository;
 import java.util.List;
 
 import org.springframework.stereotype.Repository;
-
 import sage.entity.HeededTag;
 
 @Repository

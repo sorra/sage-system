@@ -1,14 +1,9 @@
 package sage.web.context;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Random;
-
 import javax.annotation.PostConstruct;
 
 import org.slf4j.Logger;
@@ -17,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 import org.springframework.web.context.WebApplicationContext;
-
 import sage.domain.service.BlogPostService;
 import sage.domain.service.ServiceInitializer;
 import sage.domain.service.TagService;

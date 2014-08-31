@@ -1,14 +1,11 @@
 package sage.domain.search;
 
-import static org.elasticsearch.index.query.QueryBuilders.queryString;
-
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
-
 import javax.annotation.PreDestroy;
 
 import org.elasticsearch.action.search.SearchResponse;
@@ -18,10 +15,11 @@ import org.elasticsearch.common.transport.InetSocketTransportAddress;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
-
 import sage.transfer.BlogData;
 import sage.transfer.TweetCard;
 import sage.web.context.Json;
+
+import static org.elasticsearch.index.query.QueryBuilders.queryString;
 
 @Component
 public class SearchBase {

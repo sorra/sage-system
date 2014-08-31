@@ -1,15 +1,10 @@
 package sage.domain.service;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import sage.domain.Comparators;
 import sage.domain.repository.FavRepository;
 import sage.domain.repository.UserRepository;

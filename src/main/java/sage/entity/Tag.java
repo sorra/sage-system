@@ -1,11 +1,6 @@
 package sage.entity;
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
-
+import java.util.*;
 import javax.persistence.*;
 
 import sage.domain.IdCommons;

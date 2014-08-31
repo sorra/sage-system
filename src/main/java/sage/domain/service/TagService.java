@@ -4,18 +4,18 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Optional;
-import static java.util.Optional.ofNullable;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import sage.domain.repository.TagRepository;
 import sage.entity.Tag;
 import sage.transfer.TagCard;
 import sage.transfer.TagLabel;
 import sage.transfer.TagNode;
 import sage.web.context.Json;
+
+import static java.util.Optional.ofNullable;
 
 @Service
 @Transactional

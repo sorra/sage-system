@@ -1,5 +1,7 @@
 package sage.domain.service;
 
+import java.util.ArrayList;
+
 import httl.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -9,8 +11,6 @@ import sage.domain.repository.*;
 import sage.entity.FollowListEntity;
 import sage.entity.ResourceListEntity;
 import sage.transfer.*;
-
-import java.util.ArrayList;
 
 @Service
 @Transactional

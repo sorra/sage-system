@@ -1,13 +1,13 @@
 package sage.web;
 
+import java.util.Collection;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import sage.domain.service.NotifService;
 import sage.entity.Notif;
 import sage.web.auth.Auth;
-
-import java.util.Collection;
 
 @RestController
 @RequestMapping("/notifs")

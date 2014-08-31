@@ -1,10 +1,10 @@
 package sage.transfer;
 
-import sage.entity.Tweet;
-import sage.web.context.Json;
-
 import java.util.LinkedList;
 import java.util.List;
+
+import sage.entity.Tweet;
+import sage.web.context.Json;
 
 public class MidForwards {
   private List<Long> ids = new LinkedList<>();

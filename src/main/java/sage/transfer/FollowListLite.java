@@ -1,12 +1,12 @@
 package sage.transfer;
 
-import com.fasterxml.jackson.databind.JavaType;
-import sage.entity.FollowListEntity;
-import sage.web.context.Json;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
+
+import com.fasterxml.jackson.databind.JavaType;
+import sage.entity.FollowListEntity;
+import sage.web.context.Json;
 
 public class FollowListLite extends AList {
   private List<FollowInfoLite> list;

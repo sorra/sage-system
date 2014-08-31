@@ -1,12 +1,8 @@
 package sage.web.context;
 
 import java.io.File;
-import java.io.IOException;
-import java.io.UncheckedIOException;
-import java.nio.file.Files;
 import java.util.*;
 import java.util.function.Consumer;
-
 import javax.annotation.PostConstruct;
 import javax.servlet.ServletContext;
 

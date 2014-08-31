@@ -3,8 +3,6 @@ package sage.transfer;
 import java.util.Collection;
 
 import sage.entity.Follow;
-import sage.transfer.TagLabel;
-import sage.transfer.UserLabel;
 
 public class FollowInfo {
   private UserLabel target;

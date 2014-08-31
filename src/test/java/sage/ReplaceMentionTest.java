@@ -6,7 +6,6 @@ import java.util.HashSet;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.util.ReflectionUtils;
-
 import sage.domain.repository.UserRepository;
 import sage.domain.service.TweetPostService;
 import sage.entity.User;

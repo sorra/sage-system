@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.hibernate.Query;
 import org.springframework.stereotype.Repository;
-
 import sage.entity.Follow;
 
 @Repository

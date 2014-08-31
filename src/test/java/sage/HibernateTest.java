@@ -6,7 +6,6 @@ import org.hibernate.Transaction;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import org.junit.Before;
-import org.junit.Test;
 
 public class HibernateTest {
 

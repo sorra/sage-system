@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.function.Function;
 
 import sage.entity.Fav;
-import sage.entity.Tweet;
 
 public class FavInfo {
   public static final String TWEET_PR = "tweet:";

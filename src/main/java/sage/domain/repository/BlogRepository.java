@@ -4,7 +4,6 @@ import java.util.Collection;
 import java.util.List;
 
 import org.springframework.stereotype.Repository;
-
 import sage.entity.Blog;
 import sage.entity.Tag;
 

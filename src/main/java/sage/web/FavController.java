@@ -1,12 +1,12 @@
 package sage.web;
 
+import java.util.Collection;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import sage.domain.service.FavService;
 import sage.transfer.FavInfo;
 import sage.web.auth.Auth;
-
-import java.util.Collection;
 
 @RestController
 @RequestMapping("/favs")

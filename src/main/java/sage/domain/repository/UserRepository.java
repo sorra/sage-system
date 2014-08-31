@@ -2,7 +2,6 @@ package sage.domain.repository;
 
 import org.hibernate.Query;
 import org.springframework.stereotype.Repository;
-
 import sage.entity.User;
 
 @Repository

@@ -7,14 +7,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-
 import sage.domain.service.BlogReadService;
 import sage.domain.service.TweetReadService;
 import sage.transfer.BlogData;
 import sage.transfer.TweetCard;
 import sage.web.auth.Auth;
 import sage.web.context.FrontMap;
-import sage.web.context.Json;
 
 @Controller
 public class PageController {

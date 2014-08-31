@@ -1,14 +1,12 @@
 package sage.domain.service;
 
-import httl.util.StringUtils;
-
 import java.util.Collection;
 import java.util.Date;
 
+import httl.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import sage.domain.repository.BlogRepository;
 import sage.domain.repository.TagRepository;
 import sage.domain.repository.UserRepository;
