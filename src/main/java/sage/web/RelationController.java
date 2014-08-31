@@ -3,7 +3,7 @@ package sage.web;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import sage.domain.service.RelationService;
-import sage.transfer.FollowCatalogLite;
+import sage.transfer.FollowListLite;
 import sage.web.auth.Auth;
 import sage.web.context.Json;
 
@@ -37,11 +37,11 @@ public class RelationController {
   }
   
   @RequestMapping("/apply-follows")
-  public void applyFollows(@RequestParam String catalogLite) {
+  public void applyFollows(@RequestParam String listLite) {
     Long uid = Auth.checkCurrentUid();
     
-    FollowCatalogLite fcl = Json.object(catalogLite, FollowCatalogLite.class);
-    //TODO Be able to unapply this catalog
+    FollowListLite fcl = Json.object(listLite, FollowListLite.class);
+    //TODO Be able to unapply this list
     relationService.applyFollows(uid, fcl);
   }
 }

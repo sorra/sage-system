@@ -1,21 +1,19 @@
 package sage.transfer;
 
 import com.fasterxml.jackson.databind.JavaType;
-import sage.entity.FollowCatalogEntity;
+import sage.entity.FollowListEntity;
 import sage.web.context.Json;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.function.Function;
-import java.util.function.Supplier;
 
-public class FollowCatalogLite extends Catalog {
+public class FollowListLite extends AList {
   private List<FollowInfoLite> list;
   
-  FollowCatalogLite() {}
+  FollowListLite() {}
 
-  public FollowCatalogLite(Long id, Long ownerId, String name, List<FollowInfoLite> list) {
+  public FollowListLite(Long id, Long ownerId, String name, List<FollowInfoLite> list) {
     super(id, ownerId, name);
     this.list = list;
   }
@@ -24,7 +22,7 @@ public class FollowCatalogLite extends Catalog {
     return list;
   }
 
-  public FollowCatalog toFull(Function<Long, UserLabel> getUser, Function<Long, TagLabel> getTag) {
+  public FollowList toFull(Function<Long, UserLabel> getUser, Function<Long, TagLabel> getTag) {
     List<FollowInfo> infoList = new ArrayList<>();
     for (FollowInfoLite infoLite : getList()) {
       List<TagLabel> tags = new ArrayList<>();
@@ -32,15 +30,15 @@ public class FollowCatalogLite extends Catalog {
       infoList.add(new FollowInfo(getUser.apply(infoLite.getUserId()), tags));
     }
 
-    return new FollowCatalog(getId(), getOwnerId(), getName(), infoList);
+    return new FollowList(getId(), getOwnerId(), getName(), infoList);
   }
 
-  public FollowCatalogEntity toEntity() {
-    return new FollowCatalogEntity(getOwnerId(), getName(), Json.json(getList()));
+  public FollowListEntity toEntity() {
+    return new FollowListEntity(getOwnerId(), getName(), Json.json(getList()));
   }
 
-  public static FollowCatalogLite fromEntity(FollowCatalogEntity entity) {
-    return new FollowCatalogLite(entity.getId(), entity.getOwnerId(), entity.getName(), Json.object(entity.getListJson(), FIL_LIST));
+  public static FollowListLite fromEntity(FollowListEntity entity) {
+    return new FollowListLite(entity.getId(), entity.getOwnerId(), entity.getName(), Json.object(entity.getListJson(), FIL_LIST));
   }
 
   private static JavaType FIL_LIST = Json.typeFactory().constructCollectionType(ArrayList.class, FollowInfoLite.class);

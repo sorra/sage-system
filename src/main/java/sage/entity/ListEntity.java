@@ -1,9 +1,6 @@
 package sage.entity;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-
-public interface CatalogEntity {
+public interface ListEntity {
 
   Long getId();
   void setId(Long id);

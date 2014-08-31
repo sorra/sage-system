@@ -1,17 +1,14 @@
 package sage.transfer;
 
-import sage.entity.FollowCatalogEntity;
-import sage.web.context.Json;
-
 import java.util.ArrayList;
 import java.util.List;
 
-public class FollowCatalog extends Catalog {
+public class FollowList extends AList {
   private List<FollowInfo> list;
 
-  FollowCatalog() {}
+  FollowList() {}
 
-  public FollowCatalog(Long id, Long ownerId, String name, List<FollowInfo> list) {
+  public FollowList(Long id, Long ownerId, String name, List<FollowInfo> list) {
     super(id, ownerId, name);
     this.list = list;
   }
@@ -20,12 +17,12 @@ public class FollowCatalog extends Catalog {
     return list;
   }
 
-  public FollowCatalogLite toLite() {
+  public FollowListLite toLite() {
     List<FollowInfoLite> liteList = new ArrayList<>();
     for (FollowInfo each : getList()) {
       liteList.add(new FollowInfoLite(each));
     }
 
-    return new FollowCatalogLite(getId(), getOwnerId(), getName(), liteList);
+    return new FollowListLite(getId(), getOwnerId(), getName(), liteList);
   }
 }

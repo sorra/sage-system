@@ -17,7 +17,7 @@ import sage.domain.repository.UserRepository;
 import sage.entity.Follow;
 import sage.entity.Tag;
 import sage.entity.User;
-import sage.transfer.FollowCatalogLite;
+import sage.transfer.FollowListLite;
 import sage.transfer.FollowInfoLite;
 import sage.transfer.UserLabel;
 
@@ -71,7 +71,7 @@ public class RelationService {
     }
   }
   
-  public void applyFollows(Long userId, FollowCatalogLite fcl) {
+  public void applyFollows(Long userId, FollowListLite fcl) {
     for (FollowInfoLite info : fcl.getList()) {
       follow(userId, info.getUserId(), fcl.getName(), info.getTagIds());
     }

@@ -5,22 +5,21 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
 @Entity
-public class ResourceCatalogEntity implements CatalogEntity {
+public class FollowListEntity implements ListEntity {
   private Long id;
   private Long ownerId;
   private String name;
   private String listJson;
   
-  ResourceCatalogEntity() {}
+  FollowListEntity() {}
   
-  public ResourceCatalogEntity(Long ownerId, String name, String listJson) {
+  public FollowListEntity(Long ownerId, String name, String listJson) {
     this.ownerId = ownerId;
     this.name = name;
     this.listJson = listJson;
   }
 
-  @Id
-  @GeneratedValue
+  @Id @GeneratedValue
   public Long getId() {
     return id;
   }

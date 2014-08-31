@@ -1,13 +1,13 @@
 package sage.transfer;
 
-public abstract class Catalog {
+public abstract class AList {
   private Long id;
   private Long ownerId;
   private String name;
 
-  protected Catalog() {}
+  protected AList() {}
 
-  protected Catalog(Long id, Long ownerId, String name) {
+  protected AList(Long id, Long ownerId, String name) {
     this.id = id;
     this.ownerId = ownerId;
     this.name = name;

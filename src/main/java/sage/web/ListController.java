@@ -3,70 +3,70 @@ package sage.web;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
-import sage.domain.service.CatalogService;
+import sage.domain.service.ListService;
 import sage.domain.service.RelationService;
-import sage.transfer.FollowCatalogLite;
-import sage.transfer.FollowCatalog;
-import sage.transfer.ResourceCatalog;
+import sage.transfer.FollowList;
+import sage.transfer.FollowListLite;
+import sage.transfer.ResourceList;
 import sage.web.auth.Auth;
 import sage.web.context.Json;
 
 @RestController
-@RequestMapping("/catalog")
-public class CatalogController {
+@RequestMapping("/list")
+public class ListController {
   @Autowired
-  private CatalogService catalogs;
+  private ListService listService;
   @Autowired
   RelationService rs;
   
   @RequestMapping(value = "/resource/{id}", method = RequestMethod.GET)
-  public ResourceCatalog getResourceCatalog(@PathVariable Long id) {
+  public ResourceList getResourceList(@PathVariable Long id) {
     Auth.checkCurrentUid();
-    return catalogs.getResourceCatalog(id);
+    return listService.getResourceList(id);
   }
   
   @RequestMapping(value = "/resource/{id}", method = RequestMethod.POST)
-  public Boolean updateResourceCatalog(@PathVariable Long id, @RequestParam String catalog) {
+  public Boolean updateResourceList(@PathVariable Long id, @RequestParam String list) {
     Long uid = Auth.checkCurrentUid();
     
-    ResourceCatalog rc = Json.object(catalog, ResourceCatalog.class);
+    ResourceList rc = Json.object(list, ResourceList.class);
     Assert.isTrue(rc.getOwnerId().equals(uid));
     Assert.isTrue(rc.getId().equals(id));
-    catalogs.updateResourceCatalog(rc, uid);
+    listService.updateResourceList(rc, uid);
     return true;
   }
 
   @RequestMapping(value = "/resource/add", method = RequestMethod.POST)
-  public Long addResourceCatalog(@RequestParam String catalog) {
+  public Long addResourceList(@RequestParam String list) {
     Long uid = Auth.checkCurrentUid();
     
-    ResourceCatalog rc = Json.object(catalog, ResourceCatalog.class);
-    return catalogs.addResourceCatalog(rc, uid);
+    ResourceList rc = Json.object(list, ResourceList.class);
+    return listService.addResourceList(rc, uid);
   }
   
   @RequestMapping(value = "/follow/{id}", method = RequestMethod.GET)
-  public FollowCatalog getFollowCatalog(@PathVariable Long id) {
+  public FollowList getFollowList(@PathVariable Long id) {
     Auth.checkCurrentUid();
-    return catalogs.getFollowCatalog(id);
+    return listService.getFollowList(id);
   }
   
   @RequestMapping(value = "/follow/{id}", method = RequestMethod.POST)
-  public Boolean updateFollowCatalog(@PathVariable String id, @RequestParam String catalogLite) {
+  public Boolean updateFollowList(@PathVariable String id, @RequestParam String listLite) {
     Long uid = Auth.checkCurrentUid();
     
-    FollowCatalogLite fcLite = Json.object(catalogLite, FollowCatalogLite.class);
+    FollowListLite fcLite = Json.object(listLite, FollowListLite.class);
     Assert.isTrue(fcLite.getOwnerId().equals(uid));
     Assert.isTrue(fcLite.getId().equals(id));
-    catalogs.updateFollowCatalog(fcLite, uid);
+    listService.updateFollowList(fcLite, uid);
     return true;
   }
 
   @RequestMapping(value = "/follow/add", method = RequestMethod.POST)
-  public Long addFollowCatalog(@RequestParam String catalogLite) {
+  public Long addFollowList(@RequestParam String listLite) {
     Long uid = Auth.checkCurrentUid();
 
-    FollowCatalogLite fcLite = Json.object(catalogLite, FollowCatalogLite.class);
+    FollowListLite fcLite = Json.object(listLite, FollowListLite.class);
     Assert.isTrue(fcLite.getOwnerId().equals(uid));
-    return catalogs.addFollowCatalog(fcLite, uid);
+    return listService.addFollowList(fcLite, uid);
   }
 }
