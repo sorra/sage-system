@@ -19,7 +19,7 @@ public class SceneTest {
     TagService tagService;
     StreamService streamService;
     
-    @Before
+//    @Before
     public void setUp() {
         ApplicationContext ac = new ClassPathXmlApplicationContext("root-context.xml");
         userService = ac.getBean(UserService.class);
@@ -30,7 +30,7 @@ public class SceneTest {
         streamService = ac.getBean(StreamService.class);
     }
     
-    @Test
+//    @Test
     public void procedure() {
         Stream s1 = streamService.istream(1);
         Stream s2 = streamService.istream(2);
