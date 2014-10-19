@@ -1,5 +1,6 @@
 package sage.web;
 
+import java.util.Collection;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import sage.domain.Edge;
 import sage.domain.service.StreamService;
+import sage.domain.service.TransferService;
 import sage.domain.service.TweetReadService;
 import sage.transfer.CommentCard;
 import sage.transfer.Stream;
@@ -25,6 +27,8 @@ public class ReadController {
   private StreamService streamService;
   @Autowired
   private TweetReadService tweetReadService;
+  @Autowired
+  private TransferService transfers;
 
   @RequestMapping("/istream")
   public Stream istream(
@@ -41,8 +45,13 @@ public class ReadController {
     return new Stream(tcs);
   }
 
+  @RequestMapping("/{tweetId}/forwards")
+  public Collection<TweetCard> forwards(@PathVariable Long tweetId){
+    return transfers.toTweetCards(tweetReadService.getForwards(tweetId), false, false);
+  }
+
   @RequestMapping("/{tweetId}/comments")
-  public List<CommentCard> comments(@PathVariable Long tweetId) {
+  public Collection<CommentCard> comments(@PathVariable Long tweetId) {
     return CommentCard.listOf(tweetReadService.getComments(tweetId));
   }
 
