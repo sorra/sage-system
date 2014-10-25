@@ -4,7 +4,7 @@ import java.util.*;
 
 import org.hibernate.Query;
 import org.springframework.stereotype.Repository;
-import sage.domain.Edge;
+import sage.domain.commons.Edge;
 import sage.entity.Tag;
 import sage.entity.Tweet;
 

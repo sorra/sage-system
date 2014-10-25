@@ -5,7 +5,7 @@ import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.*;
 
-import sage.domain.IdCommons;
+import sage.domain.commons.IdCommons;
 
 @Entity(name = "Blog")
 public class Blog {

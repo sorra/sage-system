@@ -5,7 +5,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
 
-import sage.domain.IdCommons;
+import sage.domain.commons.IdCommons;
 
 @Entity(name = "HeededTag")
 public class HeededTag {

@@ -1,6 +1,5 @@
 package sage.domain.service;
 
-import java.io.PrintStream;
 import java.util.Arrays;
 import java.util.Collections;
 import javax.annotation.PostConstruct;
@@ -8,17 +7,17 @@ import javax.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
-import sage.domain.Constants;
+import sage.domain.commons.Constants;
 import sage.entity.Blog;
 import sage.entity.Tag;
 import sage.entity.User;
-import sage.transfer.Item;
 import sage.transfer.Stream;
+
+import static java.lang.System.out;
 
 @Component
 @Scope("singleton")
 public class ServiceInitializer {
-  PrintStream out = System.out;
   @Autowired
   TagService tagService;
   @Autowired
@@ -168,9 +167,7 @@ public class ServiceInitializer {
 
   private void printStream(Stream st) {
     out.println(st.toString());
-    for (Item t : st.getItems()) {
-      out.println(t);
-    }
+    st.getItems().forEach(out::println);
     out.println();
   }
 }

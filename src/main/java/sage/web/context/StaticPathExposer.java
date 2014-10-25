@@ -5,7 +5,7 @@ import javax.servlet.ServletContext;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import sage.domain.Constants;
+import sage.domain.commons.Constants;
 
 @Component
 public class StaticPathExposer {

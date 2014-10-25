@@ -1,4 +1,4 @@
-package sage.domain;
+package sage.domain.commons;
 
 import java.util.Comparator;
 

@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import sage.domain.IdCommons;
+import sage.domain.commons.IdCommons;
 import sage.entity.Tag;
 import sage.entity.Tweet;
 

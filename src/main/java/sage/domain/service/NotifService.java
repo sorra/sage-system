@@ -6,7 +6,7 @@ import java.util.Objects;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import sage.domain.repository.nosql.NotifRepository;
+import sage.domain.repository.NotifRepository;
 import sage.entity.Notif;
 import sage.entity.Notif.Type;
 

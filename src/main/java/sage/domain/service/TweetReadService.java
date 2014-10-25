@@ -8,8 +8,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import sage.domain.Comparators;
-import sage.domain.Edge;
+import sage.domain.commons.Comparators;
+import sage.domain.commons.Edge;
 import sage.domain.repository.CommentRepository;
 import sage.domain.repository.FollowRepository;
 import sage.domain.repository.TagRepository;
@@ -19,6 +19,7 @@ import sage.entity.Follow;
 import sage.entity.Tag;
 import sage.entity.Tweet;
 import sage.transfer.TweetCard;
+import sage.util.Colls;
 
 @Service
 @Transactional(readOnly = true)
@@ -85,10 +86,6 @@ public class TweetReadService {
    * @return a sequential list of connected tweets
    */
   public List<TweetCard> connectTweets(long blogId) {
-    List<TweetCard> tcs = new ArrayList<>();
-    for (Tweet tweet : tweetRepo.connectTweets(blogId)) {
-      tcs.add(transfers.toTweetCard(tweet));
-    }
-    return tcs;
+    return Colls.map(tweetRepo.connectTweets(blogId), transfers::toTweetCard);
   }
 }

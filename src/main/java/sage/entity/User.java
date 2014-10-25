@@ -4,7 +4,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
-import sage.domain.IdCommons;
+import sage.domain.commons.IdCommons;
 
 @Entity(name = "User")
 public class User {

@@ -19,6 +19,7 @@ import sage.entity.User;
 import sage.transfer.FollowInfoLite;
 import sage.transfer.FollowListLite;
 import sage.transfer.UserLabel;
+import sage.util.Colls;
 
 @Service
 @Transactional
@@ -93,15 +94,8 @@ public class RelationService {
 
   @Transactional(readOnly = true)
   public Collection<UserLabel> friends(long userId) {
-    final List<User> followingUsers = new ArrayList<>();
-    for (Follow f : followings(userId)) {
-      followingUsers.add(f.getTarget());
-    }
-
-    List<User> followerUsers = new ArrayList<>();
-    for (Follow f : followers(userId)) {
-      followerUsers.add(f.getSource());
-    }
+    final List<User> followingUsers = Colls.map(followings(userId), Follow::getTarget);
+    final List<User> followerUsers = Colls.map(followers(userId), Follow::getSource);
 
     followingUsers.retainAll(followerUsers);
     final List<User> friends = followingUsers;

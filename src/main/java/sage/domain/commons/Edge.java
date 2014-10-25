@@ -1,4 +1,4 @@
-package sage.domain;
+package sage.domain.commons;
 
 public class Edge {
   public final EdgeType type;

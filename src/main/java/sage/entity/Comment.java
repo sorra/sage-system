@@ -6,7 +6,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
-import sage.domain.IdCommons;
+import sage.domain.commons.IdCommons;
 
 @Entity(name = "Comment")
 public class Comment {

@@ -5,7 +5,7 @@ import java.util.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import sage.domain.Comparators;
+import sage.domain.commons.Comparators;
 import sage.domain.repository.FavRepository;
 import sage.domain.repository.UserRepository;
 import sage.entity.Fav;

@@ -3,7 +3,7 @@ package sage.entity;
 import java.util.*;
 import javax.persistence.*;
 
-import sage.domain.IdCommons;
+import sage.domain.commons.IdCommons;
 
 /**
  * This should be a permanently cached entity-type

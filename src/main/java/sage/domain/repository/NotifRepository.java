@@ -1,9 +1,8 @@
-package sage.domain.repository.nosql;
+package sage.domain.repository;
 
 import java.util.Collection;
 
 import org.springframework.stereotype.Repository;
-import sage.domain.repository.BaseRepository;
 import sage.entity.Notif;
 
 @Repository

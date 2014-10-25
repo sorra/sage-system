@@ -6,12 +6,13 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import sage.domain.Edge;
+import sage.domain.commons.Edge;
 import sage.domain.repository.BlogRepository;
 import sage.domain.repository.FollowRepository;
 import sage.entity.Blog;
 import sage.entity.Follow;
 import sage.transfer.BlogData;
+import sage.util.Colls;
 
 @Service
 @Transactional(readOnly = true)
@@ -20,8 +21,6 @@ public class BlogReadService {
   private BlogRepository blogRepo;
   @Autowired
   private FollowRepository followRepo;
-
-  private static final int MIN_LIST_SIZE = 20;
 
   /**
    * @return blogData | null
@@ -53,10 +52,6 @@ public class BlogReadService {
     if (eagerCopy) {
       blogs = new ArrayList<>(blogs);
     }
-    List<BlogData> bds = new ArrayList<>(MIN_LIST_SIZE);
-    for (Blog b : blogs) {
-      bds.add(new BlogData(b));
-    }
-    return bds;
+    return Colls.map(blogs, BlogData::new);
   }
 }

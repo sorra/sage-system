@@ -33,6 +33,10 @@ public class TransferService {
         commentCount(tweet.getId()));
   }
 
+  public TweetCard toTweetCardNoCount(Tweet tweet) {
+    return new TweetCard(tweet, tweetRepo.getOrigin(tweet), 0, 0);
+  }
+
   public List<TweetCard> toTweetCards(Collection<Tweet> tweets, boolean showOrigin, boolean showCounts) {
     List<TweetCard> tcs = new ArrayList<>(MIN_LIST_SIZE);
     for (Tweet t : tweets) {
@@ -44,8 +48,8 @@ public class TransferService {
     return tcs;
   }
 
-  public TweetCard toTweetCardNoCount(Tweet tweet) {
-    return new TweetCard(tweet, tweetRepo.getOrigin(tweet), 0, 0);
+  public List<TweetCard> toTweetCards(Collection<Tweet> tweets) {
+    return toTweetCards(tweets, true, true);
   }
 
   public long forwardCount(long originId) {

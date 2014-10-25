@@ -6,7 +6,7 @@ import httl.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import sage.domain.Constants;
+import sage.domain.commons.Constants;
 import sage.domain.repository.CommentRepository;
 import sage.domain.repository.TagRepository;
 import sage.domain.repository.TweetRepository;
