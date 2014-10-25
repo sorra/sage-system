@@ -9,10 +9,18 @@ public class FrontMap extends ModelMap {
   public static final String NAME = "frontMap";
   
   protected FrontMap() {}
-  
+
+  /**
+   *  Get the front map from model, create one if not exist
+   * @param model
+   * @return the front map
+   */
   public static FrontMap from(ModelMap model) {
-    FrontMap fm = new FrontMap();
-    model.addAttribute(NAME, fm);
+    FrontMap fm = (FrontMap) model.get(NAME);
+    if (fm == null) {
+      fm = new FrontMap();
+      model.addAttribute(NAME, fm);
+    }
     return fm;
   }
 
