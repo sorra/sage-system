@@ -26,16 +26,16 @@ function buildTagPlus() {
 			selector: '#tag-tree-popover',
 			content: $tagTree
 	}).popover('show');
-	$('.tag-plus').data('popover').tip().hide();
+	$('.tag-plus').data('bs.popover').tip().hide();
 
 	$('.tag-plus').click(function(){
 		if ($(this).data('show-popover')) {
 			$(this).data('show-popover', false)
-				   .data('popover').tip().hide();
+				   .data('bs.popover').tip().hide();
 		}
 		else {
 			$(this).data('show-popover', true)
-				   .data('popover').tip().show();
+				   .data('bs.popover').tip().show();
 		}
 	});
 }

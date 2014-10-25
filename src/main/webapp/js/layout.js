@@ -93,10 +93,10 @@ function buildNavTagTree($lnk, tagTree) {
 function tipover($node, text, duration) {
     if (!duration) duration = 1000;
     
-    if (!$node.data('tooltip')) {
+    if (!$node.data('bs.tooltip')) {
         $node.tooltip({placement: 'top', trigger: 'manual'});
     }
-    $node.data('tooltip').options.title = text;
+    $node.data('bs.tooltip').options.title = text;
     $node.tooltip('show');
     window.setTimeout(function(){$node.tooltip('hide');}, duration);   
 }
