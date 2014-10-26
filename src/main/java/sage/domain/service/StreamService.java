@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import sage.domain.commons.Comparators;
 import sage.domain.commons.Edge;
-import sage.entity.HeededTag;
+import sage.entity.TagHeed;
 import sage.entity.Tweet;
 import sage.transfer.CombineGroup;
 import sage.transfer.Item;
@@ -31,7 +31,7 @@ public class StreamService {
     List<TweetCard> tcsByFols = transfers.toTweetCards(tweetRead.byFollowings(userId, edge));
     
     List<TweetCard> tcsByTags = new ArrayList<>();
-    for (HeededTag ht : heed.heededTags(userId)) {
+    for (TagHeed ht : heed.tagHeeds(userId)) {
       Long tagId = ht.getTag().getId();
       List<TweetCard> tagTcs = transfers.toTweetCards(tweetRead.byTag(tagId, edge));
       for (TweetCard t : tagTcs) {

@@ -7,15 +7,15 @@ import javax.persistence.OneToOne;
 
 import sage.domain.commons.IdCommons;
 
-@Entity(name = "HeededTag")
-public class HeededTag {
+@Entity
+public class TagHeed {
   private Long id;
   private User user;
   private Tag tag;
 
-  HeededTag() {}
+  TagHeed() {}
 
-  public HeededTag(User user, Tag tag) {
+  public TagHeed(User user, Tag tag) {
     this.user = user;
     this.tag = tag;
   }
@@ -58,7 +58,7 @@ public class HeededTag {
     if (getClass() != obj.getClass())
       return false;
     
-    HeededTag other = (HeededTag) obj;
+    TagHeed other = (TagHeed) obj;
     return IdCommons.equal(getId(), other.getId());
   }
 }
