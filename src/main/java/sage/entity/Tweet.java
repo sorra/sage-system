@@ -52,7 +52,6 @@ public class Tweet {
   public Long getId() {
     return id;
   }
-
   public void setId(Long id) {
     this.id = id;
   }
@@ -62,7 +61,6 @@ public class Tweet {
   public String getContent() {
     return content;
   }
-
   public void setContent(String content) {
     this.content = content;
   }
@@ -71,7 +69,6 @@ public class Tweet {
   public User getAuthor() {
     return author;
   }
-
   public void setAuthor(User author) {
     this.author = author;
   }
@@ -79,7 +76,6 @@ public class Tweet {
   public Date getTime() {
     return time;
   }
-
   public void setTime(Date time) {
     this.time = time;
   }
@@ -109,9 +105,6 @@ public class Tweet {
   public void setBlogId(Long blogId) {
     this.blogId = blogId;
   }
-  public boolean hasBlog() {
-    return blogId >= 0;
-  }
 
   @ManyToMany(fetch = FetchType.EAGER)
   public Set<Tag> getTags() {
@@ -127,6 +120,11 @@ public class Tweet {
   }
   public void setComments(Collection<Comment> comments) {
     this.comments = comments;
+  }
+
+
+  public boolean hasBlog() {
+    return blogId >= 0;
   }
 
   public MidForwards midForwards() {
