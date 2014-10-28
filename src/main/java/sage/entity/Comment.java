@@ -8,7 +8,7 @@ import javax.persistence.ManyToOne;
 
 import sage.domain.commons.IdCommons;
 
-@Entity(name = "Comment")
+@Entity
 public class Comment {
   private Long id;
   private String content;

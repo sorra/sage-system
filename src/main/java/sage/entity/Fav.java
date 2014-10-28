@@ -8,7 +8,7 @@ import javax.persistence.OneToOne;
 
 import sage.domain.commons.IdCommons;
 
-@Entity(name = "Fav")
+@Entity
 public class Fav {
   private Long id;
   private String link;

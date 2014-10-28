@@ -8,7 +8,7 @@ import sage.domain.commons.IdCommons;
 /**
  * This should be a permanently cached entity-type
  */
-@Entity(name = "Tag")
+@Entity
 public class Tag {
   public static final long ROOT_ID = 1;
   public static final String ROOT_NAME = "无";

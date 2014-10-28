@@ -6,7 +6,7 @@ import javax.persistence.*;
 
 import sage.domain.commons.IdCommons;
 
-@Entity(name = "Follow")
+@Entity
 public class Follow {
   private Long id;
   private User source;

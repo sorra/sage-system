@@ -6,7 +6,7 @@ import javax.persistence.*;
 import sage.domain.commons.IdCommons;
 import sage.transfer.MidForwards;
 
-@Entity(name = "Tweet")
+@Entity
 public class Tweet {
   private Long id;
   private String content;

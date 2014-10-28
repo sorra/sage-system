@@ -6,7 +6,7 @@ import javax.persistence.Id;
 
 import sage.domain.commons.IdCommons;
 
-@Entity(name = "User")
+@Entity
 public class User {
   private Long id;
   private String email;

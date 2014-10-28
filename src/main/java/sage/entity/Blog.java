@@ -7,7 +7,7 @@ import javax.persistence.*;
 
 import sage.domain.commons.IdCommons;
 
-@Entity(name = "Blog")
+@Entity
 public class Blog {
   private Long id;
   private String title;
