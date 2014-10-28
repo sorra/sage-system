@@ -137,16 +137,6 @@
     </dependency>
 
     <dependency>
-      <groupId>com.couchbase.client</groupId>
-      <artifactId>couchbase-client</artifactId>
-      <version>1.4.2</version>
-    </dependency>
-    <dependency>
-      <groupId>org.elasticsearch</groupId>
-      <artifactId>elasticsearch</artifactId>
-      <version>1.2.1</version>
-    </dependency>
-    <dependency>
       <groupId>com.github.httl</groupId>
       <artifactId>httl</artifactId>
       <version>1.0.11</version>
@@ -163,13 +153,19 @@
       <version>1.9.2</version>
     </dependency>
 
-      <dependency>
-        <groupId>junit</groupId>
-        <artifactId>junit</artifactId>
-        <version>4.11</version>
-        <scope>test</scope>
-      </dependency>
-    </dependencies>
+    <dependency>
+      <groupId>org.elasticsearch</groupId>
+      <artifactId>elasticsearch</artifactId>
+      <version>1.2.1</version>
+    </dependency>
+
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.11</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
   <build>
     <finalName>sage</finalName>
     <plugins>
