@@ -20,10 +20,10 @@ public class MessageController {
     return ms.all(uid);
   }
 
-  @RequestMapping(value = "/from/{fromUser}", method = RequestMethod.GET)
-  public Collection<Message> messagesFrom(@PathVariable Long fromUser) {
+  @RequestMapping(value = "/with/{withUser}", method = RequestMethod.GET)
+  public Collection<Message> messagesWith(@PathVariable Long withUser) {
     Long uid = Auth.checkCurrentUid();
-    return ms.fromSomeone(uid, fromUser);
+    return ms.withSomeone(uid, withUser);
   }
 
   @RequestMapping(value = "/send", method = RequestMethod.POST)

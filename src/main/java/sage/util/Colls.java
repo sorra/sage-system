@@ -1,8 +1,6 @@
 package sage.util;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 import java.util.function.Function;
 
 public abstract class Colls {
@@ -12,5 +10,19 @@ public abstract class Colls {
       result.add(transformer.apply(t));
     }
     return result;
+  }
+
+  public static <T> List<T> copy(Collection<T>... colls) {
+    List<T> list = new ArrayList<>();
+    for (Collection<T> coll : colls) {
+      list.addAll(coll);
+    }
+    return list;
+  }
+
+  public static <T> List<T> copySort(Comparator<T> comparator, Collection<T>... colls) {
+    List<T> list = copy(colls);
+    Collections.sort(list, comparator);
+    return list;
   }
 }

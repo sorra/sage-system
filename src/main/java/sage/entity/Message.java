@@ -1,5 +1,6 @@
 package sage.entity;
 
+import java.util.Date;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -10,6 +11,7 @@ public class Message {
   private String content;
   private Long fromUser;
   private Long toUser;
+  private Date time;
 
   Message() {}
 
@@ -17,6 +19,7 @@ public class Message {
     this.content = content;
     this.fromUser = fromUser;
     this.toUser = toUser;
+    time = new Date();
   }
 
   @Id @GeneratedValue
@@ -46,5 +49,12 @@ public class Message {
   }
   public void setToUser(Long toUser) {
     this.toUser = toUser;
+  }
+
+  public Date getTime() {
+    return time;
+  }
+  public void setTime(Date time) {
+    this.time = time;
   }
 }
