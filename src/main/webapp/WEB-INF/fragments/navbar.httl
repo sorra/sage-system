@@ -13,7 +13,7 @@
       
       <ul class="nav pull-right">
 				<li>
-					<form class="search" action="/sage/search" method="get" accept-charset="UTF-8">
+					<form class="search" action="$!{base}/search" method="get" accept-charset="UTF-8">
 						<input type="text" name="q" placeholder="搜索"/>
 					</form>
 				</li>
@@ -39,7 +39,7 @@ $(document).ready(function(){
 		event.preventDefault();
         var q = $('form.search > *[name=q]').val();
 		console.log(encodeURI(q));
-        window.open('/sage/search?q='+encodeURI(q));
+        window.open(webroot+'/search?q='+encodeURI(q));
 	});
 });
 </script>

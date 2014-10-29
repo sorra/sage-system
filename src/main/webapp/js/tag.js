@@ -50,7 +50,7 @@ function createTagLabel(tagLabel) {
 	$tl.data('tagId', tagLabel.id);
 	$tl.text(tagLabel.name)
 	   .attr('tag-id', tagLabel.id)
-	   .attr('href', "/sage/public/"+tagLabel.id)
+	   .attr('href', webroot+'/public/'+tagLabel.id)
 	   .click(function(event) {
 	     event.preventDefault();
 	     gotoTag($(this).data('tagId'));
