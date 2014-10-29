@@ -40,7 +40,7 @@ public class DataInitializer {
     File docFolder = new File(docRootPath);
     Assert.isTrue(docFolder.exists());
     for (File doc : docFolder.listFiles()) {
-      try (BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(doc)));) {
+      try (BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(doc), "UTF-8"));) {
         loadDoc(br);
       }
       catch (IOException e) {
