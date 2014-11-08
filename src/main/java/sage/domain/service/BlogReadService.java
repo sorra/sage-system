@@ -26,7 +26,7 @@ public class BlogReadService {
    * @return blogData | null
    */
   public BlogData getBlogData(long blogId) {
-    Blog blog = blogRepo.get(blogId);
+    Blog blog = blogRepo.nullable(blogId);
     return blog == null ? null : new BlogData(blog);
   }
 

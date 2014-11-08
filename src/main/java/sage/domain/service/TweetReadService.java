@@ -68,7 +68,7 @@ public class TweetReadService {
   }
 
   public TweetCard getTweetCard(long tweetId) {
-    Tweet tweet = tweetRepo.get(tweetId);
+    Tweet tweet = tweetRepo.nullable(tweetId);
     return tweet == null ? null : transfers.toTweetCard(tweet);
   }
 

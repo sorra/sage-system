@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import sage.domain.commons.Comparators;
+import sage.domain.commons.DomainRuntimeException;
+import sage.domain.commons.IdCommons;
 import sage.domain.repository.FavRepository;
 import sage.domain.repository.UserRepository;
 import sage.entity.Fav;
@@ -34,17 +36,11 @@ public class FavService {
     favRepo.save(fav);
   }
   
-  public boolean deleteFav(long userId, long favId) {
+  public void deleteFav(long userId, long favId) {
     Fav fav = favRepo.get(favId);
-    if (fav == null) {
-      return false;
+    if (!IdCommons.equal(fav.getOwner().getId(), userId)) {
+      throw new DomainRuntimeException("User[%d] is not the owner of Fav[%d]", userId, favId);
     }
-    
-    if (fav.getOwner().getId().equals(userId)) {
-      favRepo.delete(fav);
-      return true;
-    } else {
-      return false;
-    }
+    favRepo.delete(fav);
   }
 }

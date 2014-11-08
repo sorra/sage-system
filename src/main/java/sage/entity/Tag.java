@@ -27,9 +27,14 @@ public class Tag {
 
   Tag() {}
 
-  public Tag(String name, Tag parent) {
+  public Tag(String name, Tag parent, String intro) {
     this.name = name;
     this.parent = parent;
+    this.intro = intro;
+  }
+
+  public Tag(String name, Tag parent) {
+    this(name, parent, null);
   }
 
   @Id @GeneratedValue

@@ -7,6 +7,7 @@ import httl.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import sage.domain.commons.DomainRuntimeException;
 import sage.domain.commons.IdCommons;
 import sage.domain.repository.BlogRepository;
 import sage.domain.repository.TagRepository;
@@ -18,6 +19,7 @@ import sage.transfer.BlogData;
 @Service
 @Transactional
 public class BlogPostService {
+
   @Autowired
   private SearchBase searchBase;
   @Autowired
@@ -38,34 +40,27 @@ public class BlogPostService {
 
   public Blog edit(long userId, long blogId, String title, String content, Collection<Long> tagIds) {
     Blog blog = blogRepo.get(blogId);
-    if (IdCommons.equal(blog.getAuthor().getId(), userId)) {
-      blog.setTitle(title);
-      blog.setContent(content);
-      blog.setTime(new Date());
-      blog.setTags(tagRepo.byIds(tagIds));
-      escapeAndSetText(blog);
-
-      blogRepo.update(blog);
-      searchBase.index(blog.getId(), new BlogData(blog));
-      return blog;
+    if (!IdCommons.equal(blog.getAuthor().getId(), userId)) {
+      throw new DomainRuntimeException("User[%d] is not the author of Blog[%d]", userId, blogId);
     }
-    else
-      return null;
+    blog.setTitle(title);
+    blog.setContent(content);
+    blog.setTime(new Date());
+    blog.setTags(tagRepo.byIds(tagIds));
+    escapeAndSetText(blog);
+
+    blogRepo.update(blog);
+    searchBase.index(blog.getId(), new BlogData(blog));
+    return blog;
   }
 
-  public boolean delete(long userId, long blogId) {
+  public void delete(long userId, long blogId) {
     Blog blog = blogRepo.get(blogId);
-    if (blog == null) {
-      return false;
+    if (!IdCommons.equal(blog.getAuthor().getId(), userId)) {
+      throw new DomainRuntimeException("User[%d] is not the author of Blog[%d]", userId, blogId);
     }
-    
-    if (IdCommons.equal(blog.getAuthor().getId(), userId)) {
-      blogRepo.delete(blog);
-      searchBase.delete(BlogData.class, blog.getId());
-      return true;
-    }
-    else
-      return false;
+    blogRepo.delete(blog);
+    searchBase.delete(BlogData.class, blog.getId());
   }
 
   private void escapeAndSetText(Blog blog) {

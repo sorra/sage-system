@@ -16,14 +16,13 @@ import sage.transfer.TagLabel;
 import sage.transfer.TagNode;
 import sage.web.context.Json;
 
-import static java.util.Optional.ofNullable;
-
 @Service
-@Transactional
+@Transactional(readOnly = true)
 public class TagService {
   @Autowired
   private TagRepository tagRepo;
 
+  @Transactional(readOnly = false)
   public Long newTag(String name, long parentId) {
     Tag tag = new Tag(name, tagRepo.load(parentId));
     if (tagRepo.byNameAndParent(name, parentId) == null) {
@@ -34,22 +33,28 @@ public class TagService {
       return null;
   }
 
-  @Transactional(readOnly = true)
+  @Transactional(readOnly = false)
+  public void setIntro(long id, String intro) {
+    tagRepo.load(id).setIntro(intro);
+  }
+
+  @Transactional(readOnly = false)
+  public void changeParent(long id, long parentId) {
+    tagRepo.get(id).setParent(tagRepo.load(parentId));
+  }
+
   public Optional<TagCard> getTagCard(long tagId) {
-    return ofNullable(tagRepo.get(tagId)).map(TagCard::new);
+    return tagRepo.optional(tagId).map(TagCard::new);
   }
 
-  @Transactional(readOnly = true)
   public Optional<Tag> getTag(long tagId) {
-    return ofNullable(tagRepo.get(tagId));
+    return tagRepo.optional(tagId);
   }
 
-  @Transactional(readOnly = true)
   public Optional<TagLabel> getTagLabel(long tagId) {
-    return ofNullable(tagRepo.get(tagId)).map(TagLabel::new);
+    return tagRepo.optional(tagId).map(TagLabel::new);
   }
 
-  @Transactional(readOnly = true)
   public TagNode getTagTree() {
     return new TagNode(tagRepo.get(Tag.ROOT_ID));
   }
@@ -59,30 +64,19 @@ public class TagService {
     return Json.json(getTagTree());
   }
 
-  @Transactional(readOnly = true)
   public Collection<Tag> getQueryTags(long tagId) {
-    return ofNullable(tagRepo.get(tagId)).map(TagRepository::getQueryTags).orElse(Collections.emptySet());
+    return tagRepo.optional(tagId).map(TagRepository::getQueryTags).orElse(Collections.emptySet());
   }
 
-  @Transactional(readOnly = true)
   public Collection<Tag> getTagsByName(String name) {
     return new ArrayList<>(tagRepo.byName(name));
   }
   
-  @Transactional(readOnly = true)
   public Collection<Tag> getSameNameTags(long tagId) {
     Tag tag = tagRepo.get(tagId);
     Collection<Tag> tagsByName = getTagsByName(tag.getName());
     tagsByName.remove(tag);
     return tagsByName;
-  }
-
-  public void setIntro(long id, String intro) {
-    tagRepo.load(id).setIntro(intro);
-  }
-
-  public void changeParent(long id, long parentId) {
-    tagRepo.get(id).setParent(tagRepo.load(parentId));
   }
 
   public synchronized void init() {

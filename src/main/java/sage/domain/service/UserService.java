@@ -43,7 +43,7 @@ public class UserService {
   }
 
   public UserCard getUserCard(long selfId, long userId) {
-    User user = userRepo.get(userId);
+    User user = userRepo.nullable(userId);
     if (user == null) {
       return null;
     }
@@ -97,7 +97,7 @@ public class UserService {
     List<PersonValue> list = new ArrayList<>();
     List<TagLabel> selfTags = topTags(userId);
     for (long i = 1;; i++) {
-      User person = userRepo.get(i);
+      User person = userRepo.nullable(i);
       if (person == null) {
         break;
       }

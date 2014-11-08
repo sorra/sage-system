@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import sage.domain.commons.Constants;
+import sage.domain.commons.DomainRuntimeException;
 import sage.domain.commons.IdCommons;
 import sage.domain.repository.CommentRepository;
 import sage.domain.repository.TagRepository;
@@ -112,19 +113,13 @@ public class TweetPostService {
     searchBase.index(tweet.getId(), transfers.toTweetCardNoCount(tweet));
   }
 
-  public boolean delete(long userId, long tweetId) {
+  public void delete(long userId, long tweetId) {
     Tweet tweet = tweetRepo.get(tweetId);
-    if (tweet == null) {
-      return false;
+    if (!IdCommons.equal(userId, tweet.getAuthor().getId())) {
+      throw new DomainRuntimeException("User[%d] is not the author of Tweet[%d]", userId, tweetId);
     }
-    
-    if (IdCommons.equal(userId, tweet.getAuthor().getId())) {
-      tweetRepo.delete(tweet);
-      searchBase.delete(TweetCard.class, tweetId);
-      return true;
-    }
-    else
-      return false;
+    tweetRepo.delete(tweet);
+    searchBase.delete(TweetCard.class, tweetId);
   }
 
   private String blogRef(Blog blog) {

@@ -31,8 +31,8 @@ public class DeleteController {
   @RequestMapping("/blog/{id}/delete")
   public boolean deleteBlog(@PathVariable Long id) {
     long uid = Auth.checkCurrentUid();
-    boolean result = blogPostService.delete(uid, id);
-    logger.debug("delete blog {}, {}", id, result);
-    return result;
+    blogPostService.delete(uid, id);
+    logger.debug("delete blog {}", id);
+    return true;
   }
 }
