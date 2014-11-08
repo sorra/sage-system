@@ -8,6 +8,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Assert;
 import sage.domain.repository.TagRepository;
 import sage.entity.Tag;
 import sage.transfer.TagCard;
@@ -23,14 +24,14 @@ public class TagService {
   @Autowired
   private TagRepository tagRepo;
 
-  public long newTag(String name, long parentId) {
+  public Long newTag(String name, long parentId) {
     Tag tag = new Tag(name, tagRepo.load(parentId));
     if (tagRepo.byNameAndParent(name, parentId) == null) {
       tagRepo.save(tag);
       return tag.getId();
     }
     else
-      return -1;
+      return null;
   }
 
   @Transactional(readOnly = true)
@@ -84,12 +85,14 @@ public class TagService {
     tagRepo.get(id).setParent(tagRepo.load(parentId));
   }
 
-  public void init() {
-    if (needInitialize) {
-      tagRepo.save(new Tag(Tag.ROOT_NAME, null));
-      needInitialize = false;
+  public synchronized void init() {
+    if (!needInitialize) {
+      throw new RuntimeException();
     }
+    Assert.isTrue(
+        tagRepo.save(new Tag(Tag.ROOT_NAME, null)).getId().equals(Tag.ROOT_ID));
+    needInitialize = false;
   }
 
-  private static boolean needInitialize = true;
+  private static volatile boolean needInitialize = true;
 }

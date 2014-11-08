@@ -23,8 +23,9 @@ public abstract class BaseRepository<T> {
     return (T) session().get(entityClass(), id);
   }
 
-  public void save(T entity) {
+  public T save(T entity) {
     session().save(entity);
+    return entity;
   }
 
   public void update(T entity) {

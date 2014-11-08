@@ -18,7 +18,7 @@ public class RelationController {
 
   @RequestMapping("/follow/{targetId}")
   public void follow(@PathVariable Long targetId,
-      @RequestParam(value = "reason", required = false) String reason,
+      @RequestParam(required = false) String reason,
       @RequestParam(value = "tagIds[]", required = false) Collection<Long> tagIds) {
     Long uid = Auth.checkCurrentUid();
 

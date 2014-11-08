@@ -15,7 +15,7 @@ public class Tag {
 
   private Long id;
   private String name;
-  private boolean isCore;
+  private boolean core;
   private String intro;
 
   private Set<Tag> children = new HashSet<>();
@@ -48,10 +48,10 @@ public class Tag {
   }
   
   public boolean isCore() {
-    return isCore;
+    return core;
   }
   public void setCore(boolean isCore) {
-    this.isCore = isCore;
+    this.core = isCore;
   }
 
 

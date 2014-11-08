@@ -69,9 +69,9 @@ public class UserService {
   }
 
   @Transactional(readOnly = false)
-  public long register(User user) {
+  public Long register(User user) {
     if (existsEmail(user)) {
-      return -1;
+      return null;
     }
     // XXX existsName?
 
