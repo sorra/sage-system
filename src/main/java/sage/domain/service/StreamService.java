@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import sage.domain.commons.Comparators;
 import sage.domain.commons.Edge;
+import sage.domain.commons.IdCommons;
 import sage.entity.TagHeed;
 import sage.entity.Tweet;
 import sage.transfer.CombineGroup;
@@ -123,7 +124,7 @@ public class StreamService {
 
   private CombineGroup findInSeq(long id, List<CombineGroup> groupSequence) {
     for (CombineGroup group : groupSequence) {
-      if (group.getOrigin().getId() == id) {
+      if (IdCommons.equal(group.getOrigin().getId(), id)) {
         return group;
       }
     }

@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import sage.domain.commons.IdCommons;
 import sage.domain.repository.FollowRepository;
 import sage.domain.repository.TagRepository;
 import sage.domain.repository.UserRepository;
@@ -41,7 +42,7 @@ public class RelationService {
    * @param tagIds The tags to follow
    */
   public void follow(long userId, long targetId, String reason, Collection<Long> tagIds) {
-    if (userId == targetId) {
+    if (IdCommons.equal(userId, targetId)) {
       logger.warn("user {} should not follow himself!", userId);
       return;
     }

@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import sage.domain.commons.Constants;
+import sage.domain.commons.IdCommons;
 import sage.domain.repository.CommentRepository;
 import sage.domain.repository.TagRepository;
 import sage.domain.repository.TweetRepository;
@@ -117,7 +118,7 @@ public class TweetPostService {
       return false;
     }
     
-    if (userId == tweet.getAuthor().getId()) {
+    if (IdCommons.equal(userId, tweet.getAuthor().getId())) {
       tweetRepo.delete(tweet);
       searchBase.delete(TweetCard.class, tweetId);
       return true;

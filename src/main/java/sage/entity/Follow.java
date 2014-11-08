@@ -17,7 +17,7 @@ public class Follow {
   Follow() {}
 
   public Follow(User source, User target, String reason, Set<Tag> tags) {
-    if (source.getId() == target.getId()) {
+    if (IdCommons.equal(source.getId(), target.getId())) {
       throw new IllegalArgumentException("source should not equal to target!");
     }
     this.source = source;

@@ -7,6 +7,7 @@ import httl.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import sage.domain.commons.IdCommons;
 import sage.domain.repository.BlogRepository;
 import sage.domain.repository.TagRepository;
 import sage.domain.repository.UserRepository;
@@ -37,7 +38,7 @@ public class BlogPostService {
 
   public Blog edit(long userId, long blogId, String title, String content, Collection<Long> tagIds) {
     Blog blog = blogRepo.get(blogId);
-    if (blog.getAuthor().getId() == userId) {
+    if (IdCommons.equal(blog.getAuthor().getId(), userId)) {
       blog.setTitle(title);
       blog.setContent(content);
       blog.setTime(new Date());
@@ -58,7 +59,7 @@ public class BlogPostService {
       return false;
     }
     
-    if (blog.getAuthor().getId() == userId) {
+    if (IdCommons.equal(blog.getAuthor().getId(), userId)) {
       blogRepo.delete(blog);
       searchBase.delete(BlogData.class, blog.getId());
       return true;

@@ -9,6 +9,7 @@ import org.jasypt.util.password.StrongPasswordEncryptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import sage.domain.commons.IdCommons;
 import sage.domain.repository.*;
 import sage.entity.Blog;
 import sage.entity.Tag;
@@ -100,7 +101,7 @@ public class UserService {
       if (person == null) {
         break;
       }
-      if (person.getId() == userId) {
+      if (IdCommons.equal(person.getId(), userId)) {
         continue;
       }
       int value = 0;
@@ -109,7 +110,7 @@ public class UserService {
         List<TagLabel> personTags = topTags(i);
         int k = personTags.size();
         for (TagLabel pt : personTags) {
-          if (st.getId() == pt.getId()) {
+          if (IdCommons.equal(st.getId(), pt.getId())) {
             value += j * k;
           }
           k--;
@@ -144,7 +145,7 @@ public class UserService {
 
   private void countTags(Collection<Tag> tags, List<TagCounter> topping) {
     for (Tag tag : tags) {
-      if (tag.getId() == Tag.ROOT_ID) {
+      if (tag.getId().equals(Tag.ROOT_ID)) {
         continue;
       }
       TagCounter counter = new TagCounter(tag);
@@ -176,7 +177,7 @@ public class UserService {
       if (obj instanceof TagCounter == false) {
         return false;
       }
-      return tag.getId() == ((TagCounter) obj).tag.getId();
+      return IdCommons.equal(tag.getId(), ((TagCounter) obj).tag.getId());
     }
   }
 

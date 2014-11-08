@@ -109,11 +109,11 @@ public class Tag {
    */
   public List<Tag> chainUp() {
     List<Tag> chain = new LinkedList<>();
-    if (getId() == ROOT_ID)
+    if (getId().equals(ROOT_ID))
       return chain;
 
     Tag current = this;
-    while (current.getId() != ROOT_ID) {
+    while (!current.getId().equals(ROOT_ID)) {
       chain.add(current);
       current = current.getParent();
     }

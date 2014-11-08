@@ -5,6 +5,7 @@ import java.util.*;
 import org.hibernate.Query;
 import org.springframework.stereotype.Repository;
 import sage.domain.commons.Edge;
+import sage.domain.commons.IdCommons;
 import sage.entity.Tag;
 import sage.entity.Tweet;
 
@@ -137,7 +138,7 @@ public class TweetRepository extends BaseRepository<Tweet> {
 
   private boolean hasRoot(Collection<Tag> tags) {
     for (Tag tag : tags) {
-      if (tag.getId() == Tag.ROOT_ID) {
+      if (tag.getId().equals(Tag.ROOT_ID)) {
         return true;
       }
     }
