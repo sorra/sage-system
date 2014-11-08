@@ -32,7 +32,8 @@ public class FavController {
   public boolean deleteFav(@PathVariable Long favId) {
     Long uid = Auth.checkCurrentUid();
     
-    return favService.deleteFav(uid, favId);
+    favService.deleteFav(uid, favId);
+    return true;
   }
   
   @RequestMapping(value="/get")

@@ -23,9 +23,9 @@ public class DeleteController {
   @RequestMapping("/tweet/{id}/delete")
   public boolean deleteTweet(@PathVariable Long id) {
     long uid = Auth.checkCurrentUid();
-    boolean result = tweetPostService.delete(uid, id);
-    logger.debug("delete tweet {}, {}", id, result);
-    return result;
+    tweetPostService.delete(uid, id);
+    logger.debug("delete tweet {}", id);
+    return true;
   }
 
   @RequestMapping("/blog/{id}/delete")

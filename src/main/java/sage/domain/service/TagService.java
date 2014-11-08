@@ -79,6 +79,7 @@ public class TagService {
     return tagsByName;
   }
 
+  @Transactional(readOnly = false)
   public synchronized void init() {
     if (!needInitialize) {
       throw new RuntimeException();
