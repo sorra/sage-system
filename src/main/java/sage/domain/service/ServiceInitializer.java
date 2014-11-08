@@ -73,13 +73,13 @@ public class ServiceInitializer {
   private void user() {
     admin = userService.register(
         new User("admin@a.com", "123", "Admin", "伟大的Admin",
-            Constants.WEB_CONTEXT_ROOT + "/rs/img/1.jpg"));
+            Constants.WEB_ROOT + "/rs/img/1.jpg"));
     bethia = userService.register(
         new User("bethia@b.com", "123", "Bethia", "Elegant user",
-            Constants.WEB_CONTEXT_ROOT + "/rs/img/2.jpg"));
+            Constants.WEB_ROOT + "/rs/img/2.jpg"));
     centos = userService.register(
         new User("centkuma@c.com", "123", "CentKuma", "CentOS Fans Kuma",
-            Constants.WEB_CONTEXT_ROOT + "/rs/img/3.jpg"));
+            Constants.WEB_ROOT + "/rs/img/3.jpg"));
   }
 
   private void relation() {

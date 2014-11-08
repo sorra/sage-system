@@ -9,8 +9,8 @@ import sage.domain.commons.Constants;
 
 @Component
 public class StaticPathExposer {
-  public static final String BASE = Constants.WEB_CONTEXT_ROOT;
-  public static final String RS = Constants.WEB_CONTEXT_ROOT + "/rs";
+  public static final String BASE = Constants.WEB_ROOT;
+  public static final String RS = Constants.WEB_ROOT + "/rs";
 
   @Autowired
   private ServletContext servletContext;

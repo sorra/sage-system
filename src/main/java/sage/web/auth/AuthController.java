@@ -33,7 +33,7 @@ public class AuthController {
     String referer = request.getHeader("referer");
     logger.debug("Referer: {}", referer);
 
-    final String destContext = "?goto=" + Constants.WEB_CONTEXT_ROOT;
+    final String destContext = "?goto=" + Constants.WEB_ROOT;
     int idx = referer.lastIndexOf(destContext);
     String dest = idx < 0 ? null : referer.substring(
         idx + destContext.length(), referer.length());

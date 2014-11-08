@@ -129,7 +129,7 @@ public class TweetPostService {
 
   private String blogRef(Blog blog) {
     return String.format("<a href=\"%s\">%s</a>",
-        Constants.WEB_CONTEXT_ROOT + "/blog/" + blog.getId(), blog.getTitle());
+        Constants.WEB_ROOT + "/blog/" + blog.getId(), blog.getTitle());
   }
 
   /*
