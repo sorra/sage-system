@@ -21,6 +21,8 @@ public class ServiceInitializer {
   @Autowired
   TagService tagService;
   @Autowired
+  TagChangeService tagChangeService;
+  @Autowired
   UserService userService;
   @Autowired
   RelationService relationService;
@@ -65,8 +67,7 @@ public class ServiceInitializer {
   }
 
   private long createTag(String name, long parentId) {
-    long tagId = tagService.newTag(name, parentId);
-    tagService.setIntro(tagId, "这就是" + name);
+    long tagId = tagChangeService.newTag(name, parentId, "这就是" + name);
     return tagId;
   }
 

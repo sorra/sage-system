@@ -22,27 +22,6 @@ public class TagService {
   @Autowired
   private TagRepository tagRepo;
 
-  @Transactional(readOnly = false)
-  public Long newTag(String name, long parentId, String intro) {
-    Tag tag = new Tag(name, tagRepo.load(parentId), intro);
-    if (tagRepo.byNameAndParent(name, parentId) == null) {
-      tagRepo.save(tag);
-      return tag.getId();
-    }
-    else
-      return null;
-  }
-
-  @Transactional(readOnly = false)
-  public void setIntro(long id, String intro) {
-    tagRepo.get(id).setIntro(intro);
-  }
-
-  @Transactional(readOnly = false)
-  public void changeParent(long id, long parentId) {
-    tagRepo.get(id).setParent(tagRepo.load(parentId));
-  }
-
   public Optional<TagCard> getTagCard(long tagId) {
     return tagRepo.optional(tagId).map(TagCard::new);
   }
