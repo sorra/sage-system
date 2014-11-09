@@ -19,10 +19,6 @@ public class Comment {
 
   Comment() {}
 
-  public Comment(String content, User author, Date time, Tweet source) {
-    this(content, author, time, source, null);
-  }
-
   public Comment(String content, User author, Date time, Tweet source, Long replyUserId) {
     this.content = content;
     this.author = author;
