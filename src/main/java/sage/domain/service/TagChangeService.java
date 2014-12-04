@@ -1,5 +1,7 @@
 package sage.domain.service;
 
+import java.util.Collection;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -10,6 +12,7 @@ import sage.domain.repository.TagRepository;
 import sage.domain.repository.UserRepository;
 import sage.entity.Tag;
 import sage.entity.TagChangeRequest;
+import sage.util.Colls;
 
 @Service
 @Transactional
@@ -37,6 +40,14 @@ public class TagChangeService {
 
   public TagChangeRequest requestSetIntro(Long userId, Long tagId, String intro) {
     return requestRepo.save(TagChangeRequest.forSetIntro(tagRepo.load(tagId), userRepo.load(userId), intro));
+  }
+
+  public Collection<TagChangeRequest> getRequestsOfTag(long tagId) {
+    return Colls.copy(requestRepo.byTag(tagId));
+  }
+
+  public Collection<TagChangeRequest> getRequestsOfTagScope(long tagId) {
+    return Colls.copy(requestRepo.byTagScope(tagRepo.get(tagId)));
   }
 
   public void cancelRequest(Long userId, Long reqId) {

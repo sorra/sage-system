@@ -31,11 +31,24 @@ public class TagController {
 
   @RequestMapping("/new")
   public long newTag(@RequestParam String name, @RequestParam Long parentId, @RequestParam(required = false) String intro) {
+    Auth.checkCurrentUid();
     return tagChangeService.newTag(name, parentId, intro);
   }
 
-  @RequestMapping("/move")
-  public void changeParent(@RequestParam Long id, @RequestParam Long parentId) {
+  @RequestMapping("/{id}/move")
+  public void move(@PathVariable Long id, @RequestParam Long parentId) {
     tagChangeService.requestMove(Auth.checkCurrentUid(), id, parentId);
+  }
+
+  @RequestMapping("/{id}/requests")
+  public void requests(@PathVariable Long id) {
+    Auth.checkCurrentUid();
+    tagChangeService.getRequestsOfTag(id);
+  }
+
+  @RequestMapping("/{id}/scope/requests")
+  public void scopeRequests(@PathVariable Long id) {
+    Auth.checkCurrentUid();
+    tagChangeService.getRequestsOfTagScope(id);
   }
 }
