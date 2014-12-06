@@ -39,13 +39,13 @@ public class ComponentResourceManager {
   public void init() {
     instance = this;
 
-    includeFileType(".css", "/css/");
-    includeFileType(".js", "/js/");
-    includeFileType(".proto.httl", "/WEB-INF/prototypes/");
+    addFileType(".css", "/css/");
+    addFileType(".js", "/js/");
+    addFileType(".proto.httl", "/WEB-INF/prototypes/");
     forFileType(".tmpl", "/WEB-INF/templates/", file -> templates.put(file.getName(), new JsTemplate(file)));
   }
 
-  private void includeFileType(String postfix, String root) {
+  private void addFileType(String postfix, String root) {
     forFileType(postfix, root, file -> presentFileNames.add(file.getName()));
   }
 
@@ -60,6 +60,9 @@ public class ComponentResourceManager {
   }
 
   public String includeCSS(String[] components) {
+    if (components == null) {
+      return "";
+    }
     StringBuilder sb = new StringBuilder();
     for (String each : components) {
       if (presentFileNames.contains(each + ".css")) {
@@ -72,6 +75,9 @@ public class ComponentResourceManager {
   public String includeJS(String[] components) {
     StringBuilder sb = new StringBuilder(160);
     sb.append(includeOneJS("jquery-1.9.1"));
+    if (components == null) {
+      return sb.toString();
+    }
     sb.append(includeOneJS("template"));
     for (String each : components) {
       if (presentFileNames.contains(each + ".js")) {
@@ -82,6 +88,9 @@ public class ComponentResourceManager {
   }
   
   public Collection<String> includeProtos(String[] components) {
+    if (components == null) {
+      return new ArrayList<>();
+    }
     Collection<String> protos = new ArrayList<>(components.length);
     protos.add("proto.httl");
     for (String comp : components) {
@@ -94,6 +103,9 @@ public class ComponentResourceManager {
   }
 
   public Collection<String> includeTemplates(String[] components) {
+    if (components == null) {
+      return new ArrayList<>();
+    }
     Collection<String> tmpls = new ArrayList<>(components.length);
     for (String comp : components) {
       JsTemplate tmpl = templates.get(comp+".tmpl");
