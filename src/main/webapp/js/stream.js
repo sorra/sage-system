@@ -1,6 +1,15 @@
 'use strict';
 
 template.helper('replaceMention', replaceMention)
+template.helper('showCount', function(count){
+  return count>0 ? '('+count+')' : ''
+})
+template.helper('asOrigin', function(origin){
+  origin.isOrigin = true; return origin
+})
+template.helper('asForward', function(forward){
+  forward.isForward = true; return forward
+})
 
 function getStream(url) {
     return $.get(url, {})
@@ -138,7 +147,7 @@ function forwardAction() {
       minHeight: '100px',
       borderRadius: '10px'
     });
-  $('<div class="modal-header">').text('转发微博').appendTo($dialog);
+  $('<div class="modal-header">').text('转发').appendTo($dialog);
   $('<textarea class="input modal-body">').css({width: '400px', height: '100px'}).appendTo($dialog);
   var $footer = $('<div class="modal-footer">').appendTo($dialog);
   $('<button class="btn btn-primary">').text('转发').css({float: 'right'}).appendTo($footer)

@@ -134,9 +134,6 @@ template.helper('webroot', function(){return webroot})
 template.helper('showTime', function(time){
   return new Date(parseInt(time)).toLocaleString()
 })
-template.helper('showCount', function(count){
-  return count>0 ? '('+count+')' : ''
-})
 
 $(document).ready(function(){
   if ($('#front-map').length > 0) {

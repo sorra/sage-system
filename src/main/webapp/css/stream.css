@@ -11,6 +11,7 @@
 	width: 538px;
 }
 .stream-item .origin{
+  margin-left: 0;
 	background: #e0e0e0;
 	border: solid 1px #e5e5e5;
 	border-radius: 10px;

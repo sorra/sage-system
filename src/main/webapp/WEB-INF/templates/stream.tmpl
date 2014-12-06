@@ -1,7 +1,6 @@
 <script id="tmpl-tweet" type="text/html">
   <div class="tweet {{if isForward}}forwarded{{else if isOrigin}}origin{{else}}stream-item{{/if}} row"
-      tweet-id="{{id}}" author-id="{{authorId}}"
-      {{if isOrigin}}style="margin-left: 0"{{/if}}>
+      tweet-id="{{id}}" author-id="{{authorId}}">
     <a class="avatar span1" href="{{webroot()}}/private/{{authorId}}" uid="{{authorId}}"><img src="{{avatar}}"/></a>
     <div class="tweet-body span7">
       <div class="row">
@@ -15,8 +14,7 @@
         {{/if}}
         </p>
         {{if origin}}
-            {{if origin.isOrigin = true}}{{/if}}
-          {{include 'tmpl-tweet' origin}}
+          {{include 'tmpl-tweet' asOrigin(origin)}}
         {{/if}}
       </div>
       <div class="row">
@@ -38,12 +36,10 @@
 <script id="tmpl-combine" type="text/html">
   <div class="combine stream-item row">
   {{each forwards as forward i}}
-      {{if forward.isForward = true}}{{/if}}
-    {{include 'tmpl-tweet' forward}}
+    {{include 'tmpl-tweet' asForward(forward)}}
   {{/each}}
 
-    {{if origin.isOrigin = true}}{{/if}}
-  {{include 'tmpl-tweet' origin}}
+  {{include 'tmpl-tweet' asOrigin(origin)}}
   </div>
 </script>
 <script id="tmpl-tweet-comment" type="text/html">
