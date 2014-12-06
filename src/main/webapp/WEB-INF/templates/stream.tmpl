@@ -28,8 +28,8 @@
         {{/each}}
         </span>
         <span class="span pull-right">
-          <a class="forward" href="javascript:;">转发{{if forwardCount > 0}}({{forwardCount}}){{/if}}</a>
-          <a class="comment" href="javascript:;">评论{{if commentCount > 0}}({{commentCount}}){{/if}}</a>
+          <a class="forward" href="javascript:;">转发{{forwardCount | showCount}}</a>
+          <a class="comment" href="javascript:;">评论{{commentCount | showCount}}</a>
         </span>
       </div>
     </div>

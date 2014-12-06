@@ -127,12 +127,15 @@ function limitStrLen(str, maxLen) {
 }
 
 function userLinkAttrs(id) {
-  return {uid: id, href: webroot+'/private/'+id};
+  return {uid: id, href: webroot+'/private/'+id}
 }
 
 template.helper('webroot', function(){return webroot})
 template.helper('showTime', function(time){
-  return new Date(parseInt(time)).toLocaleString();
+  return new Date(parseInt(time)).toLocaleString()
+})
+template.helper('showCount', function(count){
+  return count>0 ? '('+count+')' : ''
 })
 
 $(document).ready(function(){
