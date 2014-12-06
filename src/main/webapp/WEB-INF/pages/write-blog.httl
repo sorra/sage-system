@@ -29,18 +29,18 @@
 $!{include("navbar.httl")}
 <div class="container" id="container">
 	<div class="row">
-		<form class="blog span12">
+		<form class="blog col-md-12">
 			<div class="row">
-				<textarea id="title" class="span8" placeholder="这里是标题">${blog.title}</textarea>
+				<textarea id="title" class="col-md-8" placeholder="这里是标题">${blog.title}</textarea>
 			</div>
 			<ul id="tabs" class="nav nav-tabs">
 				<li><a href="#content" data-toggle="tab">写作</a></li>
 				<li><a href="#preview" data-toggle="tab">预览</a></li>
 			</ul>
 			<div class="row tab-content">
-				<textarea id="content" class="span12 tab-pane active"
+				<textarea id="content" class="col-md-12 tab-pane active"
 					placeholder="这里是内容">${blog.content}</textarea>
-				<div id="preview" class="span9 tab-pane"></div>
+				<div id="preview" class="col-md-9 tab-pane"></div>
 			</div>
 			<div class="row">
 				<a class="tag-plus btn btn-info">+</a>

@@ -1,29 +1,27 @@
 <script id="tmpl-tweet" type="text/html">
-  <div class="tweet {{if isForward}}forwarded{{else if isOrigin}}origin{{else}}stream-item{{/if}} row"
+  <div class="tweet {{if isForward}}forward{{else if isOrigin}}origin{{else}}stream-item{{/if}}"
       tweet-id="{{id}}" author-id="{{authorId}}">
-    <a class="avatar span1" href="{{webroot()}}/private/{{authorId}}" uid="{{authorId}}"><img src="{{avatar}}"/></a>
-    <div class="tweet-body span7">
-      <div class="row">
-        <a class="author-name" href="{{webroot()}}/private/{{authorId}}" uid="{{authorId}}">{{authorName}}</a>
-        <p class="tweet-content">
+    <a class="avatar" href="{{webroot()}}/private/{{authorId}}" uid="{{authorId}}"><img src="{{avatar}}"/></a>
+    <div class="tweet-body">
+      <a class="author-name" href="{{webroot()}}/private/{{authorId}}" uid="{{authorId}}">{{authorName}}</a>
+      <p class="tweet-content">
         {{#content | replaceMention}}
         {{if midForwards}}
           {{each midForwards.msgs as msg i}}
           {{#msg | replaceMention}}
           {{/each}}
         {{/if}}
-        </p>
-        {{if origin}}
-          {{include 'tmpl-tweet' asOrigin(origin)}}
-        {{/if}}
-      </div>
-      <div class="row">
+      </p>
+      {{if origin}}
+        {{include 'tmpl-tweet' asOrigin(origin)}}
+      {{/if}}
+      <div>
         <a class="time span" href="{{webroot()}}/tweet/{{id}}">{{time | showTime}}</a>
         <span class="tags span">
-          {{if tags = origin ? origin.tags : tags}}{{/if}}
-        {{each tags as tag i}}
-          {{include 'tmpl-tag-label' tag}}
-        {{/each}}
+            {{if tags = origin ? origin.tags : tags}}{{/if}}
+          {{each tags as tag i}}
+            {{include 'tmpl-tag-label' tag}}
+          {{/each}}
         </span>
         <span class="span pull-right">
           <a class="forward" href="javascript:;">转发{{forwardCount | showCount}}</a>
@@ -34,7 +32,7 @@
   </div>
 </script>
 <script id="tmpl-combine" type="text/html">
-  <div class="combine stream-item row">
+  <div class="combine stream-item">
   {{each forwards as forward i}}
     {{include 'tmpl-tweet' asForward(forward)}}
   {{/each}}

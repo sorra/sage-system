@@ -16,17 +16,17 @@ $!{include("navbar.httl")}
 <div class="container" id="container">
 	<div id="chain"></div>
 	<div class="row" style="margin-top:50px">
-		<div class="side span3">
+		<div class="side">
      <div>订阅</div>
      <div>核心子标签</div>
      <div>普通子标签</div>
      <div>同名标签</div>
      <div>关联标签</div>
 		</div>
-		<div class="main span9">
+		<div class="main">
 		  <div id="bkg-intro" class="row" style="text-align:center;padding:10px">${intro == null ? "没有背景介绍" : intro}</div>
 			<div class="stream row">
-				<div class="slist span9"></div>
+				<div class="slist"></div>
 			</div>
 		</div>
 	</div>

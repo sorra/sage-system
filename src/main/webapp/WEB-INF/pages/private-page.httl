@@ -11,10 +11,10 @@ $!{include("navbar.httl")}
 
 <div class="container" id="container">
 	<div class="row">
-		<div class="side span3"><div style="height:30px;"></div></div>
-		<div class="main span9">
+		<div class="side"><div style="height:30px;"></div></div>
+		<div class="main">
 			<div class="stream row">
-				<div class="slist span9"></div>
+				<div class="slist"></div>
 			</div>
 		</div>
 	</div>

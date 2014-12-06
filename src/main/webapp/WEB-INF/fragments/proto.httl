@@ -1,6 +1,6 @@
 <div class="proto" style="display:none">
 	<div class="blog">
-		<a class="avatar span1"><img src=""/></a>
+		<a class="avatar"><img src=""/></a>
 		<a class="author-name"></a>
 		<a class="title"></a>
 		<p class="content"></p>
@@ -10,7 +10,7 @@
 	
 	<div class="user-card">
 		<div class="row">
-			<div class="avatar span1"><a><img /></a></div>
+			<div class="avatar"><a><img /></a></div>
 			<div class="span">
 				<p class="name"></p>
 				<p class="intro"></p>

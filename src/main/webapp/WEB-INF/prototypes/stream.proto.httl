@@ -1,7 +1,7 @@
 <div class="proto" style="display:none">
   <div class="tweet stream-item row">
-    <a class="avatar span1"><img/></a>
-    <div class="t-part span7">
+    <a class="avatar"><img/></a>
+    <div class="t-part col-md-7">
       <div class="row">
         <a class="author-name"></a>
         <p class="content"></p>

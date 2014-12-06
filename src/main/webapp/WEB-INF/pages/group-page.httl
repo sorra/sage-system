@@ -14,10 +14,10 @@ $!{include("navbar.httl")}
 <div class="container" id="container">
     <div id="chain"></div>
     <div class="row">
-        <div class="side span3"></div>
-        <div class="main span9">
+        <div class="side"></div>
+        <div class="main">
             <div class="stream row">
-                <div class="slist span9"></div>
+                <div class="slist"></div>
             </div>
         </div>
     </div>
