@@ -50,7 +50,7 @@ function createStream(stream, url) {
     console.log(stream.items.length);
     var $stream = $('.stream');
     var $slist = $('.slist').empty().warnEmpty();
-    $('<a class="newfeed btn">').text('看看新的').css('margin-left', '320px').prependTo($stream)
+    $('<a class="newfeed btn">').text('看看新的').prependTo($stream)
         .click(function() {
             var largest = null;
             $('.slist .tweet').each(function(){
@@ -72,7 +72,7 @@ function createStream(stream, url) {
         }
     });
 
-    $('<a class="oldfeed btn">').text('看看更早的').css('margin-left', '320px').appendTo($stream)
+    $('<a class="oldfeed btn">').text('看看更早的').appendTo($stream)
         .click(function() {
             var smallest = null;
             $('.slist .tweet').each(function(){

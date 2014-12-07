@@ -1,5 +1,5 @@
 <form class="top-box">
-	<div class="row"><textarea class="input span9" placeholder="写微博"></textarea></div>
+	<div class="row"><textarea class="input" placeholder="写微博" style="width: 620px"></textarea></div>
 	<div class="row">
 		<a class="tag-plus btn btn-info">+</a>
 		<button class="btn btn-primary pull-right" type="submit">发表</button>

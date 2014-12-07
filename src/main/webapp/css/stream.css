@@ -1,6 +1,9 @@
 .slist{
   width: 620px;
 }
+.newfeed, .oldfeed{
+  margin-left: 320px;
+}
 .stream-item{
   width: 600px;
 	background: #f0f0f0;
