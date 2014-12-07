@@ -124,7 +124,7 @@ function createTweetCard(tweet) {
   var $tc = $(template('tmpl-tweet', tweet))
 
   $tc.find('a[uid]').mouseenter(launchUcOpener).mouseleave(launchUcCloser)
-  $tc.find('.forward').click(forwardAction)
+  $tc.find('.forward').click(forwardDialog)
   $tc.find('.comment').click(commentAction)
   return $tc;
 }
@@ -133,33 +133,23 @@ function createCombineGroup(group) {
   var $cg = $(template('tmpl-combine', group))
 
   $cg.find('a[uid]').mouseenter(launchUcOpener).mouseleave(launchUcCloser)
-  $cg.find('.forward').click(forwardAction)
+  $cg.find('.forward').click(forwardDialog)
   $cg.find('.comment').click(commentAction)
   return $cg
 }
 
-function forwardAction() {
+function forwardDialog() {
   var $tc = $(this).parents('.tweet')
   var tweetId = $tc.attr('tweet-id')
-  var $dialog = $('<div class="forward-dialog modal">')
-    .css({
-      width: '435px',
-      minHeight: '100px',
-      borderRadius: '10px'
-    });
-  $('<div class="modal-header">').text('转发').appendTo($dialog);
-  $('<textarea class="input modal-body">').css({width: '400px', height: '100px'}).appendTo($dialog);
-  var $footer = $('<div class="modal-footer">').appendTo($dialog);
-  $('<button class="btn btn-primary">').text('转发').css({float: 'right'}).appendTo($footer)
-    .click(function() {
+  var $dialog = $(template('tmpl-forward-dialog'))
+  $dialog.find('.btn-primary').click(function() {
       $.post(webroot+'/post/forward', {
           content: $dialog.find('.input').val(),
           originId: tweetId
-      });
-      $dialog.modal('hide');
-    });
-
-  $dialog.appendTo('#container').modal();
+      })
+      $dialog.modal('hide')
+    })
+  $dialog.appendTo('#container').modal()
 }
 
 function commentAction(){
