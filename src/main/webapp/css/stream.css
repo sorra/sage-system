@@ -52,3 +52,9 @@
 .stream-item .tags a{
 	margin-left: 0.5em;
 }
+.comment-dialog textarea{
+  overflow: hidden;
+  resize: none;
+  width: 400px;
+  height: 1em;
+}

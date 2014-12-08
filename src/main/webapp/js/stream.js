@@ -125,7 +125,7 @@ function createTweetCard(tweet) {
 
   $tc.find('a[uid]').mouseenter(launchUcOpener).mouseleave(launchUcCloser)
   $tc.find('.forward').click(forwardDialog)
-  $tc.find('.comment').click(commentAction)
+  $tc.find('.comment').click(commentDialog)
   return $tc;
 }
 
@@ -134,7 +134,7 @@ function createCombineGroup(group) {
 
   $cg.find('a[uid]').mouseenter(launchUcOpener).mouseleave(launchUcCloser)
   $cg.find('.forward').click(forwardDialog)
-  $cg.find('.comment').click(commentAction)
+  $cg.find('.comment').click(commentDialog)
   return $cg
 }
 
@@ -152,7 +152,7 @@ function forwardDialog() {
   $dialog.appendTo('#container').modal()
 }
 
-function commentAction(){
+function commentDialog(){
   var $this = $(this)
   var $tc = $this.parents('.tweet')
   var tweetId = $tc.attr('tweet-id')
@@ -162,16 +162,16 @@ function commentAction(){
   if ($cl) {
     $cl.remove()
     $this.removeData(clKey)
-  }
-  else {
-    var retach = function(funcSelf, $commentList){
+  } else {
+    var retach = function($commentList){
       var $clOld = $this.data(clKey)
-      if ($clOld) $clOld.remove()
-
+      if ($clOld) {
+        $clOld.remove()
+      }
       var $clNew = $commentList.appendTo($tc.find('.tweet-body'))
       $this.data(clKey, $clNew)
-    };
-    retach(retach, createCommentList(tweetId, retach))
+    }
+    retach(createCommentList(tweetId, retach))
   }
 }
 
@@ -200,35 +200,31 @@ function createBlogData(blog) {
     return $bd;
 }
 
-function createCommentList(tweetId, funcRetach) {
-    var $cl = $('<div>');
-    var $input = $('<textarea>').css({overflow: 'hidden', resize: 'none', width: '400px', height: '1em'})
-        .on('keyup', textareaAutoResize).appendTo($cl);
-    $('<button class="btn btn-small btn-success">').text('评论').appendTo($cl)
-        .click(function(){
-           $.post(webroot+'/post/comment', {
-               content: $input.val(),
-               sourceId: tweetId
-           }).success(function(){
-             funcRetach(funcRetach, createCommentList(tweetId, funcRetach));
-           });
-           $input.val('');
-        });
-    var $loading = $('<div>').text('评论加载中').appendTo($cl);
+function createCommentList(tweetId, retach) {
+  var $cl = $('#tmpl-comment-dialog').children().clone()
+  var $input = $cl.find('textarea').on('keyup', textareaAutoResize)
+  $cl.find('.btn-success').click(function(){
+     $.post(webroot+'/post/comment', {
+       content: $input.val(), sourceId: tweetId
+     }).success(function(){
+       retach(retach, createCommentList(tweetId, retach))
+     })
+     $input.val('')
+  })
+  var $loading = $cl.find('.loading')
+  var $list = $cl.find('.comment-list')
 
-    var $list = $('<div>').appendTo($cl);
-    $.get(webroot+'/read/'+tweetId+'/comments')
+  $.get(webroot+'/read/'+tweetId+'/comments')
     .done(function(resp){
-        $.each(resp, function(idx, item){
-            $(template('tmpl-tweet-comment', item)).appendTo($list)
-        });
-        $('<div>').text('评论').replaceAll($loading);
+      $.each(resp, function(idx, item){
+        $(template('tmpl-tweet-comment', item)).appendTo($list)
+      })
+      $loading.text('评论')
     })
     .fail(function(){
-        $('<div>').text('评论加载失败').replaceAll($loading);
-    });
-
-    return $cl;
+      $loading.text('评论加载失败')
+    })
+  return $cl
 }
 
 function initConfirmBox($tweet, $del, id) {
