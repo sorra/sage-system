@@ -1,9 +1,6 @@
 package sage.domain.service;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Optional;
+import java.util.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -63,10 +60,16 @@ public class TagService {
     if (!needInitialize) {
       throw new RuntimeException();
     }
-    Assert.isTrue(
-        tagRepo.save(new Tag(Tag.ROOT_NAME, null)).getId().equals(Tag.ROOT_ID));
+    assertEqual(tagRepo.save(new Tag(Tag.ROOT_NAME, null)).getId(), Tag.ROOT_ID);
     needInitialize = false;
   }
 
   private static volatile boolean needInitialize = true;
+
+  private static void assertEqual(Object a, Object b) {
+    boolean equal = Objects.equals(a, b);
+    if (!equal) {
+      throw new AssertionError("Not equal! a = "+a+", b = "+b);
+    }
+  }
 }
