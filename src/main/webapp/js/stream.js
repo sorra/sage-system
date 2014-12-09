@@ -141,7 +141,7 @@ function createCombineGroup(group) {
 function forwardDialog() {
   var $tc = $(this).parents('.tweet')
   var tweetId = $tc.attr('tweet-id')
-  var $dialog = $(template('tmpl-forward-dialog'))
+  var $dialog = $(template('tmpl-forward-dialog', {}))
   $dialog.find('.btn-primary').click(function() {
       $.post(webroot+'/post/forward', {
           content: $dialog.find('.input').val(),
