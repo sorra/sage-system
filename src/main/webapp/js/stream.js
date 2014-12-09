@@ -175,31 +175,6 @@ function commentDialog(){
   }
 }
 
-function createBlogData(blog) {
-    var $bd = $('.proto > .blog').clone();
-
-    $bd.find('.avatar').attr(userLinkAttrs(blog.authorId))
-        .find('img').attr('src', blog.avatar);  
-    $bd.find('.author-name').attr(userLinkAttrs(blog.authorId)).text(blog.authorName);
-    $bd.find('.title').text(blog.title);
-    $bd.find('.content').html(blog.content);
-    $bd.find('.time').text(showTime(blog.time)).attr('href', webroot+'/blog/'+blog.id);
-
-    var $tags = $bd.find('.tags');
-    var tags = blog.tags;
-    if (tags && tags.length > 0) {
-        $tags.html('');
-        $.each(blog.tags, function(idx, tag){
-            createTagLabel(tag).appendTo($tags);
-        });
-    }
-    else {
-        $tags.remove();
-    }
-
-    return $bd;
-}
-
 function createCommentList(tweetId, retach) {
   var $cl = $('#tmpl-comment-dialog').children().clone()
   var $input = $cl.find('textarea').on('keyup', textareaAutoResize)
@@ -207,7 +182,7 @@ function createCommentList(tweetId, retach) {
      $.post(webroot+'/post/comment', {
        content: $input.val(), sourceId: tweetId
      }).success(function(){
-       retach(retach, createCommentList(tweetId, retach))
+       retach(createCommentList(tweetId, retach))
      })
      $input.val('')
   })
@@ -225,6 +200,31 @@ function createCommentList(tweetId, retach) {
       $loading.text('评论加载失败')
     })
   return $cl
+}
+
+function createBlogData(blog) {
+  var $bd = $('.proto > .blog').clone();
+
+  $bd.find('.avatar').attr(userLinkAttrs(blog.authorId))
+    .find('img').attr('src', blog.avatar);
+  $bd.find('.author-name').attr(userLinkAttrs(blog.authorId)).text(blog.authorName);
+  $bd.find('.title').text(blog.title);
+  $bd.find('.content').html(blog.content);
+  $bd.find('.time').text(showTime(blog.time)).attr('href', webroot+'/blog/'+blog.id);
+
+  var $tags = $bd.find('.tags');
+  var tags = blog.tags;
+  if (tags && tags.length > 0) {
+    $tags.html('');
+    $.each(blog.tags, function(idx, tag){
+      createTagLabel(tag).appendTo($tags);
+    });
+  }
+  else {
+    $tags.remove();
+  }
+
+  return $bd;
 }
 
 function initConfirmBox($tweet, $del, id) {
