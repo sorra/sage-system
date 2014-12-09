@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-#set(components = ["bootstrap","layout", "tag", "stream", "usercard"])
+#set(components = ["bootstrap","layout", "tag", "stream", "user"])
 <head>
 <meta charset="UTF-8">
 <title>贤者：微博</title>

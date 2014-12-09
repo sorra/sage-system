@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-#set(components = ["bootstrap", "layout", "stream", "tag", "usercard"])
+#set(components = ["bootstrap", "layout", "stream", "tag", "user"])
 #set(String intro)
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />

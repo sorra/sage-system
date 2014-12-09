@@ -3,7 +3,7 @@
 $(document).ready(function(){
   $('#nav-home').addClass('active');
   
-  var $selfCard = createUserCard(window.userSelf).css('border', '').css('border-radius', '');
+  var $selfCard = createUserCard(window.userSelf).css('border', '0').css('border-radius', '0');
   $selfCard.find('.follow').remove();
   $selfCard.appendTo($('.self-card'));
   

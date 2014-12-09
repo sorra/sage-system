@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-#set(components = ["bootstrap", "layout", "stream", "tag", "usercard", "markdown"])
+#set(components = ["bootstrap", "layout", "stream", "tag", "user", "markdown"])
 #set(BlogData blog, List<TweetCard> tweets)
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">

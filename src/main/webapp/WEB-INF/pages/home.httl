@@ -1,24 +1,26 @@
 <!DOCTYPE html>
 <html>
-#set(components = ["bootstrap", "layout", "stream", "tag", "usercard", "post-box", "home"])
+#set(components = ["bootstrap", "layout", "stream", "tag", "user", "post-box", "home"])
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<title>贤者：首页</title>
-	$!{includeCSS()}
+  <link rel="shortcut icon" href="img/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  $!{includeCSS()}
 </head>
-<body>
+<body class="background-dark">
 $!{include("navbar.httl")}
 
 <div id="container" class="container">
 	<div class="row">
-		<div class="side span3" style="width: 260px">
+		<div class="side">
 		  <div class="self-card"></div>
 		  <ul class="friends unstyled">好友</ul>
 		</div>
-		<div class="main span9" style="width: 660px">
+		<div class="main">
 			$!{include("top-box.httl")}
-			<div class="stream row">
-				<div class="slist span9"></div>
+			<div class="stream">
+				<div class="slist"></div>
 			</div>
 		</div>
 	</div>

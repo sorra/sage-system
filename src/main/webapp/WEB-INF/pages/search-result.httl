@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-#set(components = ["bootstrap", "layout", "stream", "tag", "usercard", "search-result"])
+#set(components = ["bootstrap", "layout", "stream", "tag", "user", "search-result"])
 #set(List<String> hits)
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />

@@ -1,4 +1,4 @@
-.data-holder{
+.data-holder, .tmpl{
 	display:none;
 }
 body{
@@ -7,7 +7,6 @@ body{
 body>.container{
     margin-top: 50px;
 }
-
 .mybrand{
     color: #000;
     font-weight:bold;
@@ -17,10 +16,15 @@ body>.container{
     margin: 5px 0 -5px 0;
 }
 .side{
-  width: 180px;
+  width: 220px;
+  float: left;
 }
 .main{
-  width: 640px;
+  width: 660px;
+  float: left;
+}
+.footer {
+  clear: both;
 }
 
 .avatar{

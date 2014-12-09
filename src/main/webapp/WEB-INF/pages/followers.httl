@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-#set(components = ["bootstrap", "layout", "tag", "usercard", "followers"])
+#set(components = ["bootstrap", "layout", "tag", "user", "followers"])
 #set(List<String> followers)
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />

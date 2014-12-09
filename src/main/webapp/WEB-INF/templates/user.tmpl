@@ -1,19 +1,17 @@
 <script id="tmpl-user-card" type="text/html">
   <div class="user-card">
-    <div class="row">
-      <a class="avatar" href="/private/{{id}}"><img src="{{avatar}}"/></a>
-      <div class="span">
-        <p class="name">{{name}}</p>
-        <p class="intro">{{intro}}</p>
-        <div>
-          <a href="/followings/{{id}}">关注</a>
-          <a href="/followers/{{id}}">粉丝</a>：{{followerCount}}
-          博客：{{blogCount}}
-          微博：{{tweetCount}}
-        </div>
+    <a class="avatar" href="/private/{{id}}"><img src="{{avatar}}"/></a>
+    <div class="name-intro">
+      <p class="name">{{name}}</p>
+      <p class="intro">{{intro}}</p>
+      <div>
+        <a href="/followings/{{id}}">关注</a>: *
+        <a href="/followers/{{id}}">粉丝</a>: {{followerCount}}
+        博客: {{blogCount}}
+        微博: {{tweetCount}}
       </div>
-      <button class="follow"></button>
     </div>
+    <button class="follow"></button>
   </div>
 </script>
 <script id="tmpl-user-label" type="text/html">
