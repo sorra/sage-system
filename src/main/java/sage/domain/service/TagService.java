@@ -44,6 +44,7 @@ public class TagService {
     return tagRepo.optional(tagId).map(TagRepository::getQueryTags).orElse(Collections.emptySet());
   }
 
+  
   public Collection<Tag> getTagsByName(String name) {
     return new ArrayList<>(tagRepo.byName(name));
   }

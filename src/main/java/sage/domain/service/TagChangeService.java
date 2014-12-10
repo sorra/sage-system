@@ -29,9 +29,9 @@ public class TagChangeService {
     if (tagRepo.byNameAndParent(name, parentId) == null) {
       tagRepo.save(tag);
       return tag.getId();
+    } else {
+      throw new DomainRuntimeException("Tag[name: %s, parentId: %s] already exists", name, parentId);
     }
-    else
-      return null;
   }
 
   public TagChangeRequest requestMove(Long userId, Long tagId, Long parentId) {

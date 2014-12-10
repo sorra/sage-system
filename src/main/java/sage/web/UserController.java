@@ -33,6 +33,6 @@ public class UserController {
 
   @RequestMapping("/info/{id}")
   public ModelAndView userInfo(@PathVariable Long id) {
-    return null;
+    throw new UnsupportedOperationException();
   }
 }

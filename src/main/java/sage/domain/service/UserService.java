@@ -9,6 +9,7 @@ import org.jasypt.util.password.StrongPasswordEncryptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import sage.domain.commons.DomainRuntimeException;
 import sage.domain.commons.IdCommons;
 import sage.domain.repository.*;
 import sage.entity.Blog;
@@ -43,11 +44,7 @@ public class UserService {
   }
 
   public UserCard getUserCard(long selfId, long userId) {
-    User user = userRepo.nullable(userId);
-    if (user == null) {
-      return null;
-    }
-    return new UserCard(user,
+    return new UserCard(userRepo.get(userId),
         followRepo.followerCount(userId),
         blogRepo.countByAuthor(userId),
         tweetRepo.countByAuthor(userId),
@@ -60,19 +57,19 @@ public class UserService {
   public User login(String email, String password) {
     User user = userRepo.findByEmail(email);
     if (user == null) {
-      return null;
+      throw new DomainRuntimeException("User[email: %s] does not exist", email);
     }
     if (checkPassword(password, user.getPassword())) {
       return user;
+    } else {
+      throw new DomainRuntimeException("Login failed, wrong user or password");
     }
-    else
-      return null;
   }
 
   @Transactional(readOnly = false)
   public Long register(User user) {
     if (existsEmail(user)) {
-      return null;
+      throw new DomainRuntimeException("Email(%s) already registered", user.getEmail());
     }
     // XXX existsName?
 
