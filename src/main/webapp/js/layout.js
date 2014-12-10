@@ -134,6 +134,9 @@ template.helper('webroot', function(){return webroot})
 template.helper('showTime', function(time){
   return new Date(parseInt(time)).toLocaleString()
 })
+template.helper('userLinkAttrs', function (id){
+  return 'href="'+webroot+'/private/'+id+'" uid="'+id+'"'
+})
 
 $(document).ready(function(){
   if ($('#front-map').length > 0) {

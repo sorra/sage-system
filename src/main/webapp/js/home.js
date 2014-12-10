@@ -77,13 +77,7 @@ function postTweetFail() {
 }
 
 function createUserLabel(ulabel) {
-    var $ulb = $('.proto > .user-label').clone();
-    
-    $ulb.data("id", ulabel.id);
-    $ulb.find('.name').attr(userLinkAttrs(ulabel.id)).text(ulabel.name);
-    $ulb.find('.avatar').attr(userLinkAttrs(ulabel.id))
-        .find('img').attr('src', ulabel.avatar);
-    $ulb.find('a[uid]').mouseenter(launchUcOpener).mouseleave(launchUcCloser);
-    
-    return $ulb;
+  var $ulb = $(template('tmpl-user-label', ulabel))
+  $ulb.find('a[uid]').mouseenter(launchUcOpener).mouseleave(launchUcCloser);
+  return $ulb;
 }

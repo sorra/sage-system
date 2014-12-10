@@ -1,9 +1,9 @@
 <script id="tmpl-tweet" type="text/html">
   <div class="tweet {{if isForward}}forward{{else if isOrigin}}origin{{else}}stream-item{{/if}}"
       tweet-id="{{id}}" author-id="{{authorId}}">
-    <a class="avatar" href="{{webroot()}}/private/{{authorId}}" uid="{{authorId}}"><img src="{{avatar}}"/></a>
+    <a class="avatar" {{authorId | userLinkAttrs}}><img src="{{avatar}}"/></a>
     <div class="tweet-body">
-      <a class="author-name" href="{{webroot()}}/private/{{authorId}}" uid="{{authorId}}">{{authorName}}</a>
+      <a class="author-name" {{authorId | userLinkAttrs}}>{{authorName}}</a>
       <p class="tweet-content">
         {{#content | replaceMention}}
         {{if midForwards}}
@@ -42,11 +42,11 @@
 </script>
 <script id="tmpl-tweet-comment" type="text/html">
   <div class="tweet-comment">
-    <a class="avatar pull-left" href="{{webroot()}}/private/{{authorId}}" style="margin-right: 10px">
+    <a class="avatar pull-left" {{authorId | userLinkAttrs}} style="margin-right: 10px">
       <img src="{{avatar}}" style="width: 30px; height: 30px"/>
     </a>
     <div>
-      <a class="author-name" href="{{webroot()}} /private/{{authorId}}">{{authorName}}</a>: <span>{{content}}</span>
+      <a class="author-name" {{authorId | userLinkAttrs}}>{{authorName}}</a>: <span>{{content}}</span>
       <div>
         <span class="time" style="font-size: 0.8em">{{time | showTime}}</span>
         <a class="reply pull-right" href="javascript:;">回复</a>
