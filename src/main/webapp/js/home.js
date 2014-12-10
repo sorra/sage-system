@@ -77,7 +77,7 @@ function postTweetFail() {
 }
 
 function createUserLabel(ulabel) {
-  var $ulb = $(template('tmpl-user-label', ulabel))
+  var $ulb = $(renderTmpl('tmpl-user-label', ulabel))
   $ulb.find('a[uid]').mouseenter(launchUcOpener).mouseleave(launchUcCloser);
   return $ulb;
 }

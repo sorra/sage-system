@@ -130,6 +130,12 @@ function userLinkAttrs(id) {
   return {uid: id, href: webroot+'/private/'+id}
 }
 
+function renderTmpl(tmplId, object) {
+  if (!object || object == "") {
+    throw new Error
+  }
+  return template(tmplId, object)
+}
 template.helper('webroot', function(){return webroot})
 template.helper('showTime', function(time){
   return new Date(parseInt(time)).toLocaleString()

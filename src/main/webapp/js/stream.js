@@ -121,7 +121,7 @@ function createStreamBefore(stream) {
 }
 
 function createTweetCard(tweet) {
-  var $tc = $(template('tmpl-tweet', tweet))
+  var $tc = $(renderTmpl('tmpl-tweet', tweet))
 
   $tc.find('a[uid]').mouseenter(launchUcOpener).mouseleave(launchUcCloser)
   $tc.find('.forward').click(forwardDialog)
@@ -130,7 +130,7 @@ function createTweetCard(tweet) {
 }
 
 function createCombineGroup(group) {
-  var $cg = $(template('tmpl-combine', group))
+  var $cg = $(renderTmpl('tmpl-combine', group))
 
   $cg.find('a[uid]').mouseenter(launchUcOpener).mouseleave(launchUcCloser)
   $cg.find('.forward').click(forwardDialog)
@@ -141,7 +141,7 @@ function createCombineGroup(group) {
 function forwardDialog() {
   var $tc = $(this).parents('.tweet')
   var tweetId = $tc.attr('tweet-id')
-  var $dialog = $(template('tmpl-forward-dialog', {}))
+  var $dialog = $(renderTmpl('tmpl-forward-dialog', {}))
   $dialog.find('.btn-primary').click(function() {
       $.post(webroot+'/post/forward', {
           content: $dialog.find('.input').val(),
@@ -192,7 +192,7 @@ function createCommentList(tweetId, retach) {
   $.get(webroot+'/read/'+tweetId+'/comments')
     .done(function(resp){
       $.each(resp, function(idx, item){
-        $(template('tmpl-tweet-comment', item)).appendTo($list)
+        $(renderTmpl('tmpl-tweet-comment', item)).appendTo($list)
       })
       $loading.text('评论')
     })
