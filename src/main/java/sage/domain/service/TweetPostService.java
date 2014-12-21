@@ -58,11 +58,11 @@ public class TweetPostService {
     content = parsedContent.content;
     
     Tweet directOrigin = tweetRepo.load(originId);
-    Deque<Tweet> origins = allOrigins(directOrigin);
+    Deque<Tweet> origins = fromDirectToInitialOrigin(directOrigin);
     Tweet initialOrigin = origins.getLast();
     Tweet tweet;
-    if (initialOrigin != directOrigin) {
-      tweet = new Tweet(content, userRepo.load(userId), new Date(), directOrigin);
+    if (initialOrigin == directOrigin) {
+      tweet = new Tweet(content, userRepo.load(userId), new Date(), initialOrigin);
     }
     else {
       MidForwards midForwards = new MidForwards(directOrigin);
@@ -130,7 +130,7 @@ public class TweetPostService {
   /*
    * Find all nested origins including the direct origin
    */
-  private Deque<Tweet> allOrigins(Tweet directOrigin) {
+  private Deque<Tweet> fromDirectToInitialOrigin(Tweet directOrigin) {
     Deque<Tweet> origins = new LinkedList<>();
     origins.add(directOrigin);
     Tweet origin = tweetRepo.getOrigin(directOrigin);
