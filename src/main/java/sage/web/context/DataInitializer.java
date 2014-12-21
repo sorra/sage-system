@@ -33,7 +33,6 @@ public class DataInitializer {
   @Autowired
   private TweetPostService tweetPostService;
 
-  @PostConstruct
   public void init() {
     String docRootPath = wac.getServletContext().getRealPath("/docs");
     logger.info("Reading docRootPath: " + docRootPath);

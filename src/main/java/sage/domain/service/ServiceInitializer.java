@@ -16,7 +16,6 @@ import sage.transfer.Stream;
 import static java.lang.System.out;
 
 @Component
-@Scope("singleton")
 public class ServiceInitializer {
   @Autowired
   TagService tagService;
@@ -35,7 +34,6 @@ public class ServiceInitializer {
   @Autowired
   FavService favService;
 
-  @PostConstruct
   public void init() {
     tagService.init();
 
