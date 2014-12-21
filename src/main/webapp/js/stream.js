@@ -10,6 +10,21 @@ template.helper('asOrigin', function(origin){
 template.helper('asForward', function(forward){
   forward.isForward = true; return forward
 })
+template.helper('saveMidForwards', function(midForwards, tweetId){
+  console.log(midForwards+' '+tweetId)
+  $('body').data('mf-tweet-'+tweetId, midForwards)
+  return ''
+})
+function loadTweet(tweetId) {
+  var mfs = $('body').data('tweet-'+tweetId)
+  return mfs ? mfs : {}
+}
+
+$(document).ready(function() {
+  $('body').on('click', '.forward-dialog *[mf-id]', function() {
+    $(this).addClass('mf-removed')
+  })
+})
 
 function getStream(url) {
     return $.get(url, {})
@@ -124,7 +139,7 @@ function createTweetCard(tweet) {
   var $tc = $(renderTmpl('tmpl-tweet', tweet))
 
   $tc.find('a[uid]').mouseenter(launchUcOpener).mouseleave(launchUcCloser)
-  $tc.find('.forward').click(forwardDialog)
+  $tc.find('.forward').each(forwardDialogEach)
   $tc.find('.comment').click(commentDialog)
   return $tc;
 }
@@ -133,23 +148,35 @@ function createCombineGroup(group) {
   var $cg = $(renderTmpl('tmpl-combine', group))
 
   $cg.find('a[uid]').mouseenter(launchUcOpener).mouseleave(launchUcCloser)
-  $cg.find('.forward').click(forwardDialog)
+  $cg.find('.forward').each(forwardDialogEach)
   $cg.find('.comment').click(commentDialog)
   return $cg
 }
 
-function forwardDialog() {
-  var $tc = $(this).parents('.tweet')
-  var tweetId = $tc.attr('tweet-id')
-  var $dialog = $(renderTmpl('tmpl-forward-dialog', {}))
-  $dialog.find('.btn-primary').click(function() {
-      $.post(webroot+'/post/forward', {
-          content: $dialog.find('.input').val(),
-          originId: tweetId
-      })
-      $dialog.modal('hide')
+function forwardDialogEach() {
+  var tweetId = $(this).parents('.tweet').warnEmpty().attr('tweet-id')
+  if (!tweetId) {
+    console.warn('tweet-id attr is not present on tweet!')
+  }
+  var html = renderTmpl('tmpl-forward-dialog', loadTweet(tweetId))
+  var $dialog = $(html)
+  var submit = function() {
+    $.post(webroot+'/post/forward', {
+      content: $dialog.find('.input').val(),
+      originId: tweetId,
+      removedIds: $dialog.find('.mf-removed').map(function () {
+        return $(this).attr('mf-id')
+      }).get()
     })
-  $dialog.appendTo('#container').modal()
+    $dialog.modal('hide')
+  }
+
+  $dialog.appendTo('#container').modal('hide')
+  $(this).click(function (event) {
+    $dialog.outerHTML(html)
+    $dialog.find('.btn-primary').click(submit)
+    $dialog.modal('show')
+  })
 }
 
 function commentDialog(){
@@ -249,7 +276,7 @@ function addDelBtnIfNeeded($tweet, selfId){
         	.css({marginLeft: '0.5em', marginRight: '0.5em'});
         initConfirmBox($tweet, $del, $tweet.attr('tweet-id'));
         console.log(selfId);
-        $tweet.find('>.t-part>div>span .forward').before($del);
+        $tweet.find('.forward:not(.origin .forward)').warnEmpty().before($del);
 	}
 };
 function addDeleteButtons($tweetList){

@@ -26,7 +26,7 @@
 .origin .tweet-body{
 	width: 505px;
 }
-.stream-item .origin{
+.stream-item .t-origin{
   margin-left: 20px;
 	background: #e0e0e0;
 	border: solid 1px #e5e5e5;
@@ -36,10 +36,10 @@
 	border-left: solid 1px #e5e5e5;
 	border-right: solid 1px #e5e5e5;
 }
-.stream-item .combine .tweet.forward{
+.stream-item .combine .t-forward{
 	margin-left: 0;
 }
-.stream-item .combine .tweet.origin{
+.stream-item .combine .t-origin{
 	margin-left: 80px;
 }
 .stream-item .avatar{
@@ -53,6 +53,13 @@
 }
 .stream-item .tags a{
 	margin-left: 0.5em;
+}
+.forward-dialog *[mf-id]{
+  background-color: lightgrey;
+  padding: 2px;
+}
+.forward-dialog .mf-removed{
+	display: none;
 }
 .comment-dialog textarea{
   overflow: hidden;

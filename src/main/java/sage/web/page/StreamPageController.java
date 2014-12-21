@@ -72,7 +72,6 @@ public class StreamPageController {
     }
     fm.put("thisUser", userService.getUserCard(uid, id));
     
-    model.remove("userSelfJson");
     return "private-page";
   }
 

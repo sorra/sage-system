@@ -33,7 +33,9 @@ public class Tweet {
     this(content, author, time, initialOrigin.getTags());
     setOriginId(initialOrigin.getId());
     if (initialOrigin.hasOrigin()) {
-      throw new IllegalArgumentException("tweet's origin should not be nested!");
+      throw new IllegalArgumentException(String.format(
+          "tweet's origin should not be nested! initialOrigin[%s] and its origin[%s]",
+          initialOrigin.getId(), initialOrigin.getOriginId()));
     }
   }
 

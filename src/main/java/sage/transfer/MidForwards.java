@@ -24,7 +24,7 @@ public class MidForwards {
   MidForwards addForward(Tweet forward) {
     Tweet t = forward;
     ids.add(t.getId());
-    String asString = " ||@" + t.getAuthor().getName() + "#" + t.getAuthor().getId() + " : " + t.getContent();
+    String asString = "@" + t.getAuthor().getName() + "#" + t.getAuthor().getId() + " : " + t.getContent();
     msgs.add(asString);
     return this;
   }
