@@ -102,37 +102,32 @@ function createStream(stream, url) {
 }
 
 function createStreamAfter(stream) {
-    if (stream.items.length == 0) {
-        tipover($('.stream .newfeed').warnEmpty(), '还没有新的');
-    }
-    console.log(stream.items.length);
-    console.log(stream);
-    var $slist = $('.slist');
-    $.each(stream.items.reverse(), function(idx, item){
-        if (item.type == 'TweetCard') {
-            createTweetCard(item).prependTo($slist);
-        }
-        else if (item.type == 'CombineGroup') {
-            createCombineGroup(item).prependTo($slist);
-        }
-    });
+  if (stream.items.length == 0) {
+    tipover($('.stream .newfeed').warnEmpty(), '还没有新的')
+  }
+  console.debug(stream.items.length)
+  console.debug(stream)
+  var $slist = $('.slist');
+  $.each(stream.items.reverse(), function(idx, item){
+    createStreamItem(item).prependTo($slist)
+  });
 }
 
 function createStreamBefore(stream) {
-    if (stream.items.length ==0) {
-        tipover($('.stream .oldfeed').warnEmpty(), '没有更早的了');
-    }
-    console.log(stream.items.length);
-    console.log(stream);
-    var $slist = $('.slist');
-    $.each(stream.items, function(idx, item){
-        if (item.type == 'TweetCard') {
-            createTweetCard(item).appendTo($slist);
-        }
-        else if (item.type == 'CombineGroup') {
-            createCombineGroup(item).appendTo($slist);
-        }
-    });
+  if (stream.items.length ==0) {
+    tipover($('.stream .oldfeed').warnEmpty(), '没有更早的了')
+  }
+  console.debug(stream.items.length)
+  console.debug(stream)
+  var $slist = $('.slist')
+  $.each(stream.items, function(idx, item){
+    createStreamItem(item).appendTo($slist)
+  });
+}
+
+function createStreamItem(item) {
+  if (item.type == 'TweetCard') {return createTweetCard(item)}
+  else if (item.type == 'CombineGroup') {return createCombineGroup(item)}
 }
 
 function createTweetCard(tweet) {
