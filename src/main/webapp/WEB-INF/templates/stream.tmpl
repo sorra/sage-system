@@ -24,7 +24,6 @@
           {{/each}}
         </span>
         <span class="span pull-right">
-          {{(saveMidForwards(midForwards, id))}}
           <a class="forward" href="javascript:;">转发{{forwardCount | showCount}}</a>
           <a class="comment" href="javascript:;">评论{{commentCount | showCount}}</a>
         </span>
@@ -59,9 +58,14 @@
   <div class="forward-dialog modal" style="width: 435px; min-height: 100px;  border-radius: 10px">
     <div class="modal-header">
       <span>转发</span>
-      {{each ids as id i}}
-        <span mf-id="{{id}}">||{{msgs[i] | replaceMention}}</span>
-      {{/each}}
+      {{if t.isForward}}
+        <span mf-id="{{t.id}}">||{{toFw(t) | replaceMention}}</span>
+      {{/if}}
+      {{if mfs}}
+        {{each mfs.ids as id i}}
+          <span mf-id="{{id}}">||{{mfs.msgs[i] | replaceMention}}</span>
+        {{/each}}
+      {{/if}}
     </div>
     <textarea class="input modal-body" style="width: 400px; height: 100px"></textarea>
     <div class="modal-footer">

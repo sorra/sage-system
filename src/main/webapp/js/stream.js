@@ -10,18 +10,31 @@ template.helper('asOrigin', function(origin){
 template.helper('asForward', function(forward){
   forward.isForward = true; return forward
 })
-template.helper('saveMidForwards', function(midForwards, tweetId){
-  console.log(midForwards+' '+tweetId)
-  $('body').data('mf-tweet-'+tweetId, midForwards)
-  return ''
+template.helper('toFw', function(t){
+  return '@' + t.authorName + '#' + t.authorId + ' : ' + t.content
 })
-function loadTweet(tweetId) {
-  var mfs = $('body').data('tweet-'+tweetId)
-  return mfs ? mfs : {}
+
+var tweetCache = {
+  prefix: 'tweet-',
+  set: function(t){
+    $(document).data(this.prefix + t.id, t)
+  },
+  get: function(id){
+    return $(document).data(this.prefix + id)
+  },
+  getNonNull: function(id){
+    var t = this.get(id)
+    if (!t) {throw new Error}
+    return t
+  },
+  getOrEmpty: function(id){
+    var t = this.get(id)
+    return t ? t : {}
+  }
 }
 
 $(document).ready(function() {
-  $('body').on('click', '.forward-dialog *[mf-id]', function() {
+  $(document).on('click', '.forward-dialog *[mf-id]', function() {
     $(this).addClass('mf-removed')
   })
 })
@@ -62,7 +75,6 @@ function getStreamBefore(url, beforeId) {
 }
 
 function createStream(stream, url) {
-    console.log(stream.items.length);
     var $stream = $('.stream');
     var $slist = $('.slist').empty().warnEmpty();
     $('<a class="newfeed btn">').text('看看新的').prependTo($stream)
@@ -105,8 +117,6 @@ function createStreamAfter(stream) {
   if (stream.items.length == 0) {
     tipover($('.stream .newfeed').warnEmpty(), '还没有新的')
   }
-  console.debug(stream.items.length)
-  console.debug(stream)
   var $slist = $('.slist');
   $.each(stream.items.reverse(), function(idx, item){
     createStreamItem(item).prependTo($slist)
@@ -117,8 +127,6 @@ function createStreamBefore(stream) {
   if (stream.items.length ==0) {
     tipover($('.stream .oldfeed').warnEmpty(), '没有更早的了')
   }
-  console.debug(stream.items.length)
-  console.debug(stream)
   var $slist = $('.slist')
   $.each(stream.items, function(idx, item){
     createStreamItem(item).appendTo($slist)
@@ -131,6 +139,7 @@ function createStreamItem(item) {
 }
 
 function createTweetCard(tweet) {
+  tweetCache.set(tweet)
   var $tc = $(renderTmpl('tmpl-tweet', tweet))
 
   $tc.find('a[uid]').mouseenter(launchUcOpener).mouseleave(launchUcCloser)
@@ -140,6 +149,10 @@ function createTweetCard(tweet) {
 }
 
 function createCombineGroup(group) {
+  tweetCache.set(group.origin)
+  for(var i in group.forwards) {
+    tweetCache.set(group.forwards[i])
+  }
   var $cg = $(renderTmpl('tmpl-combine', group))
 
   $cg.find('a[uid]').mouseenter(launchUcOpener).mouseleave(launchUcCloser)
@@ -150,10 +163,9 @@ function createCombineGroup(group) {
 
 function forwardDialogEach() {
   var tweetId = $(this).parents('.tweet').warnEmpty().attr('tweet-id')
-  if (!tweetId) {
-    console.warn('tweet-id attr is not present on tweet!')
-  }
-  var html = renderTmpl('tmpl-forward-dialog', loadTweet(tweetId))
+  if (!tweetId) {console.warn('tweet-id attr is not present on tweet!')}
+  var tweet = tweetCache.get(tweetId)
+  var html = renderTmpl('tmpl-forward-dialog', {t: tweet, mfs: tweet.midForwards})
   var $dialog = $(html)
   var submit = function() {
     $.post(webroot+'/post/forward', {
@@ -168,7 +180,7 @@ function forwardDialogEach() {
 
   $dialog.appendTo('#container').modal('hide')
   $(this).click(function (event) {
-    $dialog.outerHTML(html)
+    $dialog[0].outerHTML = html
     $dialog.find('.btn-primary').click(submit)
     $dialog.modal('show')
   })
