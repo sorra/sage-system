@@ -34,6 +34,11 @@ public class HomeController {
     return "login";
   }
 
+  @RequestMapping("/logout")
+  public String logout() {
+    return "forward:/auth/logout";
+  }
+
   @RequestMapping("/register")
   public String register() {
     return "register";
