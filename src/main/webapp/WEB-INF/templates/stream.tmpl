@@ -59,11 +59,11 @@
     <div class="modal-header">
       <span>转发</span>
       {{if t.isForward}}
-        <span mf-id="{{t.id}}">||{{toFw(t) | replaceMention}}</span>
+        <span mf-id="{{t.id}}">||{{toFw(t) | reduceMention}}</span>
       {{/if}}
       {{if mfs}}
         {{each mfs.ids as id i}}
-          <span mf-id="{{id}}">||{{mfs.msgs[i] | replaceMention}}</span>
+          <span mf-id="{{id}}">||{{mfs.msgs[i] | reduceMention}}</span>
         {{/each}}
       {{/if}}
     </div>

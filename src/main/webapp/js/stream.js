@@ -1,6 +1,7 @@
 'use strict';
 
 template.helper('replaceMention', replaceMention)
+template.helper('reduceMention', reduceMention)
 template.helper('showCount', function(count){
   return count>0 ? '('+count+')' : ''
 })
@@ -295,9 +296,9 @@ function addDeleteButtons($tweetList){
 function replaceMention(content) {
     var indexOfAt = content.indexOf('@');
     var indexOfSpace = content.indexOf(' ', indexOfAt);
-    var indexOfInnerAt = content.lastIndexOf('@', indexOfSpace-1);
     
-    if (indexOfAt >= 0 && indexOfSpace >=0) {
+    if (indexOfAt >= 0 && indexOfSpace > 0) {
+        var indexOfInnerAt = content.lastIndexOf('@', indexOfSpace-1);
         if (indexOfInnerAt > indexOfAt && indexOfInnerAt < indexOfSpace) {
             indexOfAt = indexOfInnerAt;
         }
@@ -316,4 +317,19 @@ function replaceMention(content) {
         }
     }
     return content;
+}
+
+function reduceMention(text) {
+  var indexOfAt = text.indexOf('@')
+  var indexOfSpace = text.indexOf(' ', indexOfAt)
+  var indexOfSharp = text.indexOf('#', indexOfAt)
+
+  if (indexOfAt >= 0 && indexOfSpace > 0 && indexOfSharp > 0 && indexOfSharp < indexOfSpace) {
+    var indexOfInnerAt = text.lastIndexOf('@', indexOfSharp-1);
+    if (indexOfInnerAt > indexOfAt && indexOfInnerAt < indexOfSharp) {
+      indexOfAt = indexOfInnerAt;
+    }
+    return text.slice(0, indexOfSharp) + reduceMention(text.slice(indexOfSpace, text.length))
+  }
+  return text
 }
