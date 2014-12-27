@@ -38,4 +38,9 @@ function buildTagPlus() {
 				   .data('bs.popover').tip().show();
 		}
 	});
+
+	$('.tag-clear').click(function (){
+		$(this).parent().find('.tag-sel').removeClass('btn-success')
+		$tagTree.find('.tag-sel').removeClass('btn-success')
+	})
 }
