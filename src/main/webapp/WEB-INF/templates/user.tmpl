@@ -5,8 +5,8 @@
       <p class="name">{{name}}</p>
       <p class="intro">{{intro}}</p>
       <div>
-        <a href="/followings/{{id}}">关注</a>: *
-        <a href="/followers/{{id}}">粉丝</a>: {{followerCount}}
+        <a href="{{webroot()}}/followings/{{id}}">关注</a>: *
+        <a href="{{webroot()}}/followers/{{id}}">粉丝</a>: {{followerCount}}
         博客: {{blogCount}}
         微博: {{tweetCount}}
       </div>

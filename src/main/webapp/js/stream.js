@@ -76,42 +76,42 @@ function getStreamBefore(url, beforeId) {
 }
 
 function createStream(stream, url) {
-    var $stream = $('.stream');
-    var $slist = $('.slist').empty().warnEmpty();
-    $('<a class="newfeed btn">').text('看看新的').prependTo($stream)
-        .click(function() {
-            var largest = null;
-            $('.slist .tweet').each(function(){
-                var id = $(this).attr('tweet-id');
-                if (id != undefined && id != null && (id > largest || largest == null)) {
-                    largest = id;
-                }
-            });
-            console.log("largest "+largest);
-            getStreamAfter(url, largest);
-        });
+  var $stream = $('.stream')
+  var $slist = $('.slist').empty().warnEmpty()
+  $.each(stream.items, function(idx, item){
+    if (item.type == 'TweetCard') {
+      createTweetCard(item).appendTo($slist)
+    }
+    else if (item.type == 'CombineGroup') {
+      createCombineGroup(item).appendTo($slist)
+    }
+  })
 
-    $.each(stream.items, function(idx, item){
-        if (item.type == 'TweetCard') {
-            createTweetCard(item).appendTo($slist);
+  $('<a class="newfeed btn">').text('看看新的').prependTo($stream)
+    .click(function() {
+      var largest = null
+      $('.slist .tweet').each(function(){
+        var id = $(this).attr('tweet-id')
+        if (id && (id > largest || largest == null)) {
+          largest = id
         }
-        else if (item.type == 'CombineGroup') {
-            createCombineGroup(item).appendTo($slist);
-        }
-    });
+      })
+      console.log("largest "+largest)
+      getStreamAfter(url, largest)
+    })
 
-    $('<a class="oldfeed btn">').text('看看更早的').appendTo($stream)
-        .click(function() {
-            var smallest = null;
-            $('.slist .tweet').each(function(){
-                var id = $(this).attr('tweet-id');
-                if (id != undefined && id != null && (id < smallest || smallest == null)) {
-                    smallest = id;
-                }
-            });
-            console.log("smallest "+smallest);
-            getStreamBefore(url, smallest);
-        });
+  $('<a class="oldfeed btn">').text('看看更早的').appendTo($stream)
+    .click(function() {
+      var smallest = null
+      $('.slist .tweet').each(function(){
+        var id = $(this).attr('tweet-id')
+        if (id && (id < smallest || smallest == null)) {
+          smallest = id
+        }
+      })
+      console.log("smallest "+smallest)
+      getStreamBefore(url, smallest)
+    })
 }
 
 function createStreamAfter(stream) {
