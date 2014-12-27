@@ -3,6 +3,8 @@ package sage.transfer;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.util.Assert;
+
 public class CombineGroup implements Item {
   private final String type = "CombineGroup";
 
@@ -16,14 +18,15 @@ public class CombineGroup implements Item {
     CombineGroup group = new CombineGroup();
     group.origin = first.getOrigin();
     group.containsOrigin = false;
-
     group.addForward(first);
+    Assert.notNull(group.origin);
     return group;
   }
 
   public static CombineGroup newByOrigin(TweetCard origin) {
     CombineGroup group = new CombineGroup();
     group.addOrigin(origin);
+    Assert.notNull(group.origin);
     return group;
   }
 
