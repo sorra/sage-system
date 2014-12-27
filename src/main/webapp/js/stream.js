@@ -141,6 +141,7 @@ function createStreamItem(item) {
 
 function createTweetCard(tweet) {
   tweetCache.set(tweet)
+  if(tweet.origin) {tweetCache.set(tweet.origin)}
   var $tc = $(renderTmpl('tmpl-tweet', tweet))
 
   $tc.find('a[uid]').mouseenter(launchUcOpener).mouseleave(launchUcCloser)
