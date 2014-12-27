@@ -1,13 +1,5 @@
 'use strict';
 var webroot = '/sage';
-$.fn.outerHTML = function(s) {
-    if (s) {
-      if (this.length > 0) {this[0].outerHTML = s; return this}
-      else {return undefined}
-    } else {
-      return this.length > 0 ? this[0].outerHTML : undefined
-    }
-};
 
 $.fn.warnEmpty = function() {
     if (this.length == 0) {console.warn('Empty NodeList for '+this.selector+'!');}

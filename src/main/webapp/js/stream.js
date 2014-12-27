@@ -165,8 +165,9 @@ function forwardDialogEach() {
   var tweetId = $(this).parents('.tweet').warnEmpty().attr('tweet-id')
   if (!tweetId) {console.warn('tweet-id attr is not present on tweet!')}
   var tweet = tweetCache.get(tweetId)
-  var html = renderTmpl('tmpl-forward-dialog', {t: tweet, mfs: tweet.midForwards})
-  var $dialog = $(html)
+  var $dialog = $(renderTmpl('tmpl-forward-dialog', {t: tweet, mfs: tweet.midForwards}))
+  var innerHtml = $dialog.html()
+
   var submit = function() {
     $.post(webroot+'/post/forward', {
       content: $dialog.find('.input').val(),
@@ -179,8 +180,8 @@ function forwardDialogEach() {
   }
 
   $dialog.appendTo('#container').modal('hide')
-  $(this).click(function (event) {
-    $dialog[0].outerHTML = html
+  $(this).click(function () {
+    $dialog.html(innerHtml)
     $dialog.find('.btn-primary').click(submit)
     $dialog.modal('show')
   })
@@ -285,7 +286,7 @@ function addDelBtnIfNeeded($tweet, selfId){
         console.log(selfId);
         $tweet.find('.forward:not(.origin .forward)').warnEmpty().before($del);
 	}
-};
+}
 function addDeleteButtons($tweetList){
     $tweetList.warnEmpty().each(function(){addDelBtnIfNeeded($(this), window.userSelf.id);});
 }
@@ -306,7 +307,7 @@ function replaceMention(content) {
             var name = mention.slice(0, indexOfSharp);
             var id = mention.slice(indexOfSharp+1, mention.length);
             return content.slice(0, indexOfAt)
-                + $('<a>').text('@'+name).attr(userLinkAttrs(id)).outerHTML()
+                + $('<a>').text('@'+name).attr(userLinkAttrs(id))[0].outerHTML
                 + replaceMention(content.slice(indexOfSpace, content.length));
         }
         else {
