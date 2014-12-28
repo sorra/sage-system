@@ -3,34 +3,59 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<title>登录</title>
-	<style type="text/css">
-	   table{
-	       margin-top: 100px;
-	       margin-left: auto;
-	       margin-right: auto;
-	   }
-	   body{
-	       background: #e5e5e5;
-	   }
-	</style>
+  <link href="rs/css/bootstrap.css" rel="stylesheet">
+  <link href="rs/css/layout.css" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta charset="utf-8">
+  <style>
+    body{
+      min-height: 600px;
+    }
+    form{
+      width: 400px;
+      margin: 15% auto auto auto;
+      background-color: rgba(51,51,51,0.4);
+    }
+    label, input{
+      display: block;
+    }
+    input{
+      width: 20em;
+    }
+    .input-group{
+      display: block;
+      margin: 0.5em auto 0.5em auto;
+      padding: 0.5em 0 0 0;
+      width: 20em;
+    }
+    #login-action{
+      width: auto;
+      margin: 1em 0 0 0;
+      padding: 2em;
+      background-color: rgba(51,51,51,0.25);
+      text-align: center;
+    }
+  </style>
 </head>
-<body>
-	<form method="POST" action="#!{base}/auth/login">
-		<table>
-		    <tr><td>贤者系统</td></tr>
-			<tr>
-				<td>邮箱：</td>
-				<td><input type="text" name="email" /></td>
-			</tr>
-			<tr>
-				<td>密码：</td>
-				<td><input type="password" name="password" /></td>
-			</tr>
-			<tr>
-				<td><input type="submit" value="登录" /></td>
-        <td><button><a href="#!{base}/register">注册</a></button></td>
-			</tr>
-		</table>
-	</form>
+<body class="background-dark">
+  <form action="#{base}/auth/login" method="post">
+    <div class="input-group">
+      <label for="email">邮箱</label>
+      <input id="email" name="email" type="text" placeholder="请输入您的邮箱" />
+    </div>
+    <div class="input-group">
+      <label for="password">密码</label>
+      <input id="password" name="password" type="password" placeholder="请输入密码" />
+    </div>
+    <div class="input-group" id="login-action">
+      <button type="submit" class="btn btn-block btn-lg btn-danger">
+        <span class="small-circle"><i class="fa fa-caret-right"></i></span>
+        <small>登录</small>
+      </button>
+      <a class="btn" href="#{base}/register">注册新的账号</a>
+    </div>
+  </form>
+  $!{includeJS()}
 </body>
 </html>
