@@ -19,7 +19,7 @@ import sage.entity.User;
 @Controller
 @RequestMapping("/auth")
 public class AuthController {
-  private final static Logger logger = LoggerFactory.getLogger(AuthController.class);
+  private final static Logger log = LoggerFactory.getLogger(AuthController.class);
 
   @Autowired
   UserService userService;
@@ -31,18 +31,18 @@ public class AuthController {
     if (email.isEmpty() || password.isEmpty()) {
       throw new DomainRuntimeException("Empty input!");
     }
-    logger.info("login email: {}", email);
+    log.info("Login email: {}", email);
     Auth.invalidateSession(request);
 
     String referer = request.getHeader("referer");
-    logger.debug("Referer: {}", referer);
+    log.debug("Referer: {}", referer);
 
     final String destContext = "?goto=" + Constants.WEB_ROOT;
     int idx = referer.lastIndexOf(destContext);
     String dest = idx < 0 ? null : referer.substring(
         idx + destContext.length(), referer.length());
     if (dest != null && dest.contains(":")) {
-      logger.info("XSS URL = " + dest);
+      log.info("XSS URL = " + dest);
       dest = null; // Escape cross-site url
     }
 
@@ -50,7 +50,7 @@ public class AuthController {
     if (user != null) {
       HttpSession sesison = request.getSession(true);
       sesison.setAttribute(SessionKeys.UID, user.getId());
-      logger.info("User {} logged in.", user);
+      log.info("User {} logged in.", user);
       if (dest == null) {
         return "redirect:/";
       }
@@ -59,7 +59,7 @@ public class AuthController {
       }
     }
     else {
-      logger.info("{} login failed.", email);
+      log.info("{} login failed.", email);
       if (dest == null) {
         return "redirect:/login";
       }
@@ -71,10 +71,8 @@ public class AuthController {
 
   @RequestMapping("/logout")
   public String logout(HttpServletRequest request) {
-    HttpSession session = request.getSession(false);
-    if (session != null) {
-      session.invalidate();
-    }
+    log.info("Logout uid: ", Auth.currentUid());
+    Auth.invalidateSession(request);
     return "redirect:/login";
   }
 
@@ -83,9 +81,9 @@ public class AuthController {
   public String register(
       @RequestParam("email") String email,
       @RequestParam("password") String password) {
-    logger.info("register email: {}", email);
+    log.info("Try to register email: {}", email);
     
-    if (email.length() > 0) {
+    if (email.length() > 50) {
       return EMAIL_TOO_LONG;
     }
     int idxOfAt = email.indexOf('@');
