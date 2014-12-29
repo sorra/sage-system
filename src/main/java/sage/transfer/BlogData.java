@@ -7,6 +7,7 @@ import java.util.List;
 import sage.entity.Blog;
 import sage.entity.Tag;
 import sage.entity.User;
+import sage.util.Colls;
 
 public class BlogData {
 
@@ -33,10 +34,7 @@ public class BlogData {
     content = blog.getContent();
     time = blog.getTime();
 
-    tags = new ArrayList<>();
-    for (Tag tag : blog.getTags()) {
-      tags.add(new TagLabel(tag));
-    }
+    tags = Colls.map(blog.getTags(), TagLabel::new);
   }
 
   public Long getId() {
