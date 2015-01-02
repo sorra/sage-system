@@ -12,6 +12,7 @@ public abstract class Colls {
     return result;
   }
 
+  @SafeVarargs
   public static <T> List<T> copy(Collection<T>... colls) {
     List<T> list = new ArrayList<>();
     for (Collection<T> coll : colls) {
@@ -20,6 +21,7 @@ public abstract class Colls {
     return list;
   }
 
+  @SafeVarargs
   public static <T> List<T> copySort(Comparator<T> comparator, Collection<T>... colls) {
     List<T> list = copy(colls);
     Collections.sort(list, comparator);
