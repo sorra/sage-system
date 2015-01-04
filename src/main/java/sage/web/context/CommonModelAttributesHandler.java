@@ -8,7 +8,7 @@ import sage.domain.service.TagService;
 import sage.domain.service.UserService;
 import sage.web.auth.Auth;
 
-@ControllerAdvice(annotations = Controller.class)
+@ControllerAdvice("sage.web.page")
 public class CommonModelAttributesHandler {
   @Autowired
   private UserService userService;
