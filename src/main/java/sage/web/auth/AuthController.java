@@ -80,36 +80,38 @@ public class AuthController {
   @ResponseBody
   public String register(
       @RequestParam("email") String email,
-      @RequestParam("password") String password) {
+      @RequestParam("password") String password,
+      @RequestParam(value = "repeatPassword", required = false) String repeatPassword) {
     log.info("Try to register email: {}", email);
     
     if (email.length() > 50) {
       return EMAIL_TOO_LONG;
     }
     int idxOfAt = email.indexOf('@');
-    if (idxOfAt <= 0) {
-      return EMAIL_INVALID;
+    if (idxOfAt <= 0 || email.indexOf('.', idxOfAt) <= 0) {
+      return EMAIL_WRONG_FORMAT;
     }
-    if (email.indexOf('.', idxOfAt) <= 0) {
-      return EMAIL_INVALID;
-    }
-    
+
     if (password.length() < 8) {
       return PASSWORD_TOO_SHORT;
     }
     if (password.length() > 20) {
       return PASSWORD_TOO_LONG;
     }
+    if (repeatPassword != null && !repeatPassword.equals(password)) {
+      return REPEAT_PASSWORD_NOT_MATCH;
+    }
     
     if (userService.register(new User(email, password)) >= 0) {
-      return "成功注册";
+      return "注册成功";
     } else {
       return "注册失败";
     }
   }
   
   private static final String EMAIL_TOO_LONG = "Email不能超过50个字符",
-      EMAIL_INVALID = "Email无效",
+      EMAIL_WRONG_FORMAT = "Email格式错误",
       PASSWORD_TOO_SHORT = "密码太短，至少要8位",
-      PASSWORD_TOO_LONG = "密码太长，不要超过20位";
+      PASSWORD_TOO_LONG = "密码太长，不要超过20位",
+      REPEAT_PASSWORD_NOT_MATCH = "两次输入的密码不一致";
 }
