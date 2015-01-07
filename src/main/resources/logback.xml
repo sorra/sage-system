@@ -54,6 +54,12 @@
 	<logger name="httl">
 		<level value="INFO"></level>
 	</logger>
+	<logger name="com.mchange">
+		<level value="INFO"></level>
+	</logger>
+	<logger name="org.elasticsearch">
+		<level value="INFO"></level>
+	</logger>
 
 	<root level="DEBUG">
 		<appender-ref ref="stdout" />

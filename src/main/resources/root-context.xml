@@ -13,15 +13,7 @@
 		p:configLocation="classpath:hibernate.cfg.xml" p:dataSource-ref="dataSource"></bean> -->
 	<context:component-scan base-package="sage.domain.*"></context:component-scan>
 
-	<bean id="myDataSource" class="org.apache.commons.dbcp.BasicDataSource"
-		destroy-method="close">
-		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
-		<property name="url" value="jdbc:mysql://localhost:3306/sage" />
-		<property name="username" value="sage" />
-		<property name="password" value="1234" />
-	</bean>
 	<bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
-		<property name="dataSource" ref="myDataSource"/>
 		<property name="packagesToScan" value="sage.entity"/>
 		<property name="hibernateProperties">
 			<props>
@@ -29,9 +21,13 @@
 				<prop key="hibernate.show_sql">false</prop>
 				<prop key="hibernate.format_sql">true</prop>
 				<prop key="hibernate.hbm2ddl.auto">update</prop>
+				<prop key="hibernate.connection.driver_class">com.mysql.jdbc.Driver</prop>
+				<prop key="hibernate.connection.url">jdbc:mysql://localhost:3306/sage</prop>
+				<prop key="hibernate.connection.username">sage</prop>
+				<prop key="hibernate.connection.password">1234</prop>
+				<prop key="hibernate.connection.provider_class">org.hibernate.connection.C3P0ConnectionProvider</prop>
 				<prop key="hibernate.connection.autoReconnect">true</prop>
 				<prop key="hibernate.connection.autoReconnectForPools">true</prop>
-				<prop key="hibernate.connection.is-connection-validation-required">true</prop>
 			</props>
 		</property>
 	</bean>
