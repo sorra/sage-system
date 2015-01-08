@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import sage.domain.commons.BadArgumentException;
 import sage.domain.service.BlogPostService;
 import sage.domain.service.TweetPostService;
 import sage.entity.Blog;
@@ -17,6 +18,7 @@ import sage.web.auth.Auth;
 public class PostController {
   private static final int TWEET__MAX_LEN = 2000, COMMENT_MAX_LEN = 200,
       BLOG_TITLE_MAX_LEN = 100, BLOG_CONTENT_MAX_LEN = 10000;
+  private static final BadArgumentException BAD_INPUT_LENGTH = new BadArgumentException("输入长度不正确");
 
   private final Logger logger = LoggerFactory.getLogger(getClass());
   @Autowired
@@ -31,7 +33,7 @@ public class PostController {
       @RequestParam(value = "tagIds[]", defaultValue = "") Collection<Long> tagIds) {
     Long uid = Auth.checkCurrentUid();
     if (content.isEmpty() || content.length() > TWEET__MAX_LEN) {
-      return false;
+      throw BAD_INPUT_LENGTH;
     }
 
     //TODO Process attachments
@@ -47,7 +49,7 @@ public class PostController {
       @RequestParam(value = "removedIds[]", defaultValue = "") Collection<Long> removedIds) {
     Long uid = Auth.checkCurrentUid();
     if (content.length() > TWEET__MAX_LEN) {
-      return false;
+      throw BAD_INPUT_LENGTH;
     }
 
     Tweet tweet = tweetPostService.forward(uid, content, originId, removedIds);
@@ -63,7 +65,7 @@ public class PostController {
     Long uid = Auth.checkCurrentUid();
     if (title.isEmpty() || title.length() > BLOG_TITLE_MAX_LEN
         || content.isEmpty() || content.length() > BLOG_CONTENT_MAX_LEN) {
-      return null;
+      throw BAD_INPUT_LENGTH;
     }
 
     Blog blog = blogService.newBlog(uid, title, content, tagIds);
@@ -81,7 +83,7 @@ public class PostController {
     Long uid = Auth.checkCurrentUid();
     if (title.isEmpty() || title.length() > BLOG_TITLE_MAX_LEN
         || content.isEmpty() || content.length() > BLOG_CONTENT_MAX_LEN) {
-      return null;
+      throw BAD_INPUT_LENGTH;
     }
 
     Blog blog = blogService.edit(uid, blogId, title, content, tagIds);
@@ -96,7 +98,7 @@ public class PostController {
       @RequestParam(required = false) Long replyUserId) {
     Long uid = Auth.checkCurrentUid();
     if (content.isEmpty() || content.length() > COMMENT_MAX_LEN) {
-      return false;
+      throw BAD_INPUT_LENGTH;
     }
 
     //TODO save reply info in the comment
