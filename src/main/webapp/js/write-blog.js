@@ -44,8 +44,8 @@ $(document).ready(function(){
     var blogId = window.frontMap.blogId;
 		var submitUrl = webroot + (blogId ? '/post/edit-blog/'+blogId : '/post/blog');
 		$.post(submitUrl, {
-			title: $('.blog .title').val(),
-			content: $('.blog .content').val(),
+			title: $('#title').val(),
+			content: $('#content').val(),
 			tagIds: selectedTagIds
 		})
 		.always(function(resp){
