@@ -22,7 +22,7 @@ public class DeleteController {
 
   @RequestMapping("/tweet/{id}/delete")
   public boolean deleteTweet(@PathVariable Long id) {
-    long uid = Auth.checkCurrentUid();
+    long uid = Auth.checkCuid();
     tweetPostService.delete(uid, id);
     logger.debug("delete tweet {}", id);
     return true;
@@ -30,7 +30,7 @@ public class DeleteController {
 
   @RequestMapping("/blog/{id}/delete")
   public boolean deleteBlog(@PathVariable Long id) {
-    long uid = Auth.checkCurrentUid();
+    long uid = Auth.checkCuid();
     blogPostService.delete(uid, id);
     logger.debug("delete blog {}", id);
     return true;

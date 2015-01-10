@@ -20,7 +20,7 @@ public class RelationController {
   public void follow(@PathVariable Long targetId,
       @RequestParam(required = false) String reason,
       @RequestParam(value = "tagIds[]", required = false) Collection<Long> tagIds) {
-    Long uid = Auth.checkCurrentUid();
+    Long uid = Auth.checkCuid();
 
     if (tagIds == null) {
       tagIds = Collections.emptyList();
@@ -31,14 +31,14 @@ public class RelationController {
 
   @RequestMapping("/unfollow/{targetId}")
   public void unfollow(@PathVariable Long targetId) {
-    Long uid = Auth.checkCurrentUid();
+    Long uid = Auth.checkCuid();
 
     relationService.unfollow(uid, targetId);
   }
   
   @RequestMapping("/apply-follows")
   public void applyFollows(@RequestParam String listLite) {
-    Long uid = Auth.checkCurrentUid();
+    Long uid = Auth.checkCuid();
     
     FollowListLite fcl = Json.object(listLite, FollowListLite.class);
     //TODO Be able to unapply this list

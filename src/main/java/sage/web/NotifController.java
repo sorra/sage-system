@@ -18,7 +18,7 @@ public class NotifController {
   
   @RequestMapping("/get")
   public Collection<Notif> notifs() {
-    Long uid = Auth.checkCurrentUid();
+    Long uid = Auth.checkCuid();
     return notifSvc.getNotifs(uid);
   }
 }

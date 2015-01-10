@@ -10,7 +10,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import sage.domain.commons.BadArgumentException;
 import sage.domain.commons.Constants;
 import sage.domain.commons.DomainRuntimeException;
@@ -72,7 +71,7 @@ public class AuthController {
 
   @RequestMapping("/logout")
   public String logout(HttpServletRequest request) {
-    log.info("Logout uid: ", Auth.currentUid());
+    log.info("Logout uid: ", Auth.cuid());
     Auth.invalidateSession(request);
     return "redirect:/login";
   }

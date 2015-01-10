@@ -12,7 +12,6 @@ import sage.domain.service.TagService;
 import sage.transfer.TagCard;
 import sage.transfer.TagChangeRequestCard;
 import sage.transfer.TagNode;
-import sage.util.Colls;
 import sage.web.auth.Auth;
 
 @RestController
@@ -35,29 +34,29 @@ public class TagController {
 
   @RequestMapping("/new")
   public long newTag(@RequestParam String name, @RequestParam Long parentId, @RequestParam(required = false) String intro) {
-    Auth.checkCurrentUid();
+    Auth.checkCuid();
     return tagChangeService.newTag(name, parentId, intro);
   }
 
   @RequestMapping("/{id}/move")
   public void move(@PathVariable Long id, @RequestParam Long parentId) {
-    tagChangeService.requestMove(Auth.checkCurrentUid(), id, parentId);
+    tagChangeService.requestMove(Auth.checkCuid(), id, parentId);
   }
 
   @RequestMapping("/{id}/setIntro")
   public void setIntro(@PathVariable Long id, @RequestParam String intro) {
-    tagChangeService.requestSetIntro(Auth.checkCurrentUid(), id, intro);
+    tagChangeService.requestSetIntro(Auth.checkCuid(), id, intro);
   }
 
   @RequestMapping("/{id}/requests")
   public Collection<TagChangeRequestCard> requests(@PathVariable Long id) {
-    Auth.checkCurrentUid();
+    Auth.checkCuid();
     return tagChangeService.getRequestsOfTag(id);
   }
 
   @RequestMapping("/{id}/scope-requests")
   public Collection<TagChangeRequestCard> scopeRequests(@PathVariable Long id) {
-    Auth.checkCurrentUid();
+    Auth.checkCuid();
     return tagChangeService.getRequestsOfTagScope(id);
   }
 }

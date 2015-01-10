@@ -16,19 +16,19 @@ public class MessageController {
 
   @RequestMapping(value = "/", method = RequestMethod.GET)
   public Collection<Message> messages() {
-    Long uid = Auth.checkCurrentUid();
+    Long uid = Auth.checkCuid();
     return ms.all(uid);
   }
 
   @RequestMapping(value = "/with/{withUser}", method = RequestMethod.GET)
   public Collection<Message> messagesWith(@PathVariable Long withUser) {
-    Long uid = Auth.checkCurrentUid();
+    Long uid = Auth.checkCuid();
     return ms.withSomeone(uid, withUser);
   }
 
   @RequestMapping(value = "/send", method = RequestMethod.POST)
   public void send(@RequestParam Long to, @RequestParam String content) {
-    Long uid = Auth.checkCurrentUid();
+    Long uid = Auth.checkCuid();
     ms.send(uid, to, content);
   }
 

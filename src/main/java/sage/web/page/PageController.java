@@ -49,19 +49,19 @@ public class PageController {
   
   @RequestMapping("/fav")
   public String fav(ModelMap model) {
-    Auth.checkCurrentUid();
+    Auth.checkCuid();
     return "fav";
   }
 
   @RequestMapping("/write-blog")
   public String writeBlog() {
-    Auth.checkCurrentUid();
+    Auth.checkCuid();
     return "write-blog";
   }
 
   @RequestMapping("/blog/{blogId}/edit")
   public String blogEdit(@PathVariable Long blogId, ModelMap model) {
-    Long currentUid = Auth.checkCurrentUid();
+    Long currentUid = Auth.checkCuid();
 
     BlogData blog = blogReadService.getBlogData(blogId);
     if (blog.getAuthorId().equals(currentUid)) {

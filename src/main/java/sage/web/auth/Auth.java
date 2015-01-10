@@ -1,6 +1,7 @@
 package sage.web.auth;
 
 import java.io.UnsupportedEncodingException;
+import java.util.Optional;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -12,8 +13,8 @@ import sage.web.context.WebContexts;
 public class Auth {
   private final static Logger logger = LoggerFactory.getLogger(Auth.class);
 
-  public static Long checkCurrentUid() {
-    Long cuid = currentUid();
+  public static Long checkCuid() {
+    Long cuid = cuid();
     if (cuid == null) {
       logger.debug("require login");
       throw new RequireLoginException();
@@ -22,8 +23,12 @@ public class Auth {
       return cuid;
   }
 
-  public static Long currentUid() {
+  public static Long cuid() {
     return (Long) WebContexts.getSessionAttr(SessionKeys.UID);
+  }
+
+  public static Optional<Long> cuidOpt() {
+    return Optional.ofNullable(cuid());
   }
 
   public static void invalidateSession(HttpServletRequest request) {

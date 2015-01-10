@@ -60,12 +60,12 @@ public class StreamPageController {
 
   @RequestMapping("/private")
   public String privatePage() {
-    return "forward:/private/" + Auth.checkCurrentUid();
+    return "forward:/private/" + Auth.checkCuid();
   }
 
   @RequestMapping("/private/{id}")
   public String privatePage(@PathVariable long id, ModelMap model) {
-    Long uid = Auth.checkCurrentUid();
+    Long uid = Auth.checkCuid();
     FrontMap fm = FrontMap.from(model);
     
     fm.put("id", id);

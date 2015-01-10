@@ -21,13 +21,13 @@ public class ListController {
   
   @RequestMapping(value = "/resource/{id}", method = RequestMethod.GET)
   public ResourceList getResourceList(@PathVariable Long id) {
-    Auth.checkCurrentUid();
+    Auth.checkCuid();
     return listService.getResourceList(id);
   }
   
   @RequestMapping(value = "/resource/{id}", method = RequestMethod.POST)
   public Boolean updateResourceList(@PathVariable Long id, @RequestParam String list) {
-    Long uid = Auth.checkCurrentUid();
+    Long uid = Auth.checkCuid();
     
     ResourceList rc = Json.object(list, ResourceList.class);
     Assert.isTrue(rc.getOwnerId().equals(uid));
@@ -38,7 +38,7 @@ public class ListController {
 
   @RequestMapping(value = "/resource/add", method = RequestMethod.POST)
   public Long addResourceList(@RequestParam String list) {
-    Long uid = Auth.checkCurrentUid();
+    Long uid = Auth.checkCuid();
     
     ResourceList rc = Json.object(list, ResourceList.class);
     return listService.addResourceList(rc, uid);
@@ -46,13 +46,13 @@ public class ListController {
   
   @RequestMapping(value = "/follow/{id}", method = RequestMethod.GET)
   public FollowList getFollowList(@PathVariable Long id) {
-    Auth.checkCurrentUid();
+    Auth.checkCuid();
     return listService.getFollowList(id);
   }
   
   @RequestMapping(value = "/follow/{id}", method = RequestMethod.POST)
   public Boolean updateFollowList(@PathVariable String id, @RequestParam String listLite) {
-    Long uid = Auth.checkCurrentUid();
+    Long uid = Auth.checkCuid();
     
     FollowListLite fcLite = Json.object(listLite, FollowListLite.class);
     Assert.isTrue(fcLite.getOwnerId().equals(uid));
@@ -63,7 +63,7 @@ public class ListController {
 
   @RequestMapping(value = "/follow/add", method = RequestMethod.POST)
   public Long addFollowList(@RequestParam String listLite) {
-    Long uid = Auth.checkCurrentUid();
+    Long uid = Auth.checkCuid();
 
     FollowListLite fcLite = Json.object(listLite, FollowListLite.class);
     Assert.isTrue(fcLite.getOwnerId().equals(uid));

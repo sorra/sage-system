@@ -44,7 +44,7 @@ public class UploadController {
   
   @RequestMapping("/picture")
   public Collection<String> uploadPicture(@RequestParam MultipartFile[] files) throws IOException {
-    Auth.checkCurrentUid();
+    Auth.checkCuid();
     
     Collection<String> destinations = new ArrayList<>();    
     for (MultipartFile file : files) {

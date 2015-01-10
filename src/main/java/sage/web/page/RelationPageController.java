@@ -24,12 +24,12 @@ public class RelationPageController {
 
   @RequestMapping("/followings")
   public String followings() {
-    return "forward:/followings/" + Auth.checkCurrentUid();
+    return "forward:/followings/" + Auth.checkCuid();
   }
 
   @RequestMapping("/followings/{userId}")
   public String followings(@PathVariable long userId, ModelMap model) {
-    Long curUid = Auth.checkCurrentUid();
+    Long curUid = Auth.checkCuid();
     
     List<UserCard> followings = new ArrayList<>();
     for (Follow follow : relationService.followings(userId)) {
@@ -43,12 +43,12 @@ public class RelationPageController {
 
   @RequestMapping("/followers")
   public String followers() {
-    return "forward:/followers/" + Auth.checkCurrentUid();
+    return "forward:/followers/" + Auth.checkCuid();
   }
 
   @RequestMapping("/followers/{userId}")
   public String followers(@PathVariable long userId, ModelMap model) {
-    Long curUid = Auth.checkCurrentUid();
+    Long curUid = Auth.checkCuid();
     
     List<UserCard> followers = new ArrayList<>();
     for (Follow follow : relationService.followers(userId)) {

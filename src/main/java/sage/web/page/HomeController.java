@@ -22,7 +22,7 @@ public class HomeController {
 
   @RequestMapping({ "/", "/home" })
   public String home(ModelMap model) {
-    Long uid = Auth.checkCurrentUid();
+    Long uid = Auth.checkCuid();
     FrontMap fm = FrontMap.from(model);
     
     fm.put("friends", relationService.friends(uid));

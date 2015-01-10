@@ -16,11 +16,11 @@ public class TagAdminController {
 
   @RequestMapping(value = "/accept", method = RequestMethod.POST)
   public void acceptRequest(@RequestParam Long requestId) {
-    tagChangeService.acceptRequest(Auth.checkCurrentUid(), requestId);
+    tagChangeService.acceptRequest(Auth.checkCuid(), requestId);
   }
 
   @RequestMapping(value = "/reject", method = RequestMethod.POST)
   public void rejectRequest(@RequestParam Long requestId) {
-    tagChangeService.rejectRequest(Auth.checkCurrentUid(), requestId);
+    tagChangeService.rejectRequest(Auth.checkCuid(), requestId);
   }
 }

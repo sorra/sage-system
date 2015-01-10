@@ -31,7 +31,7 @@ public class PostController {
       @RequestParam String content,
       @RequestParam(value = "attachmentRefs[]", defaultValue = "") Collection<String> attachmentRefs,
       @RequestParam(value = "tagIds[]", defaultValue = "") Collection<Long> tagIds) {
-    Long uid = Auth.checkCurrentUid();
+    Long uid = Auth.checkCuid();
     if (content.isEmpty() || content.length() > TWEET__MAX_LEN) {
       throw BAD_INPUT_LENGTH;
     }
@@ -47,7 +47,7 @@ public class PostController {
       @RequestParam String content,
       @RequestParam Long originId,
       @RequestParam(value = "removedIds[]", defaultValue = "") Collection<Long> removedIds) {
-    Long uid = Auth.checkCurrentUid();
+    Long uid = Auth.checkCuid();
     if (content.length() > TWEET__MAX_LEN) {
       throw BAD_INPUT_LENGTH;
     }
@@ -62,7 +62,7 @@ public class PostController {
       @RequestParam String title,
       @RequestParam String content,
       @RequestParam(value = "tagIds[]", defaultValue = "") Collection<Long> tagIds) {
-    Long uid = Auth.checkCurrentUid();
+    Long uid = Auth.checkCuid();
     if (title.isEmpty() || title.length() > BLOG_TITLE_MAX_LEN
         || content.isEmpty() || content.length() > BLOG_CONTENT_MAX_LEN) {
       throw BAD_INPUT_LENGTH;
@@ -80,7 +80,7 @@ public class PostController {
       @RequestParam String title,
       @RequestParam String content,
       @RequestParam(value = "tagIds[]", defaultValue = "") Collection<Long> tagIds) {
-    Long uid = Auth.checkCurrentUid();
+    Long uid = Auth.checkCuid();
     if (title.isEmpty() || title.length() > BLOG_TITLE_MAX_LEN
         || content.isEmpty() || content.length() > BLOG_CONTENT_MAX_LEN) {
       throw BAD_INPUT_LENGTH;
@@ -96,7 +96,7 @@ public class PostController {
       @RequestParam String content,
       @RequestParam Long sourceId,
       @RequestParam(required = false) Long replyUserId) {
-    Long uid = Auth.checkCurrentUid();
+    Long uid = Auth.checkCuid();
     if (content.isEmpty() || content.length() > COMMENT_MAX_LEN) {
       throw BAD_INPUT_LENGTH;
     }
