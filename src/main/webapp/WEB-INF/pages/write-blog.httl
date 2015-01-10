@@ -16,7 +16,7 @@
 }
 
 #title {
-	height: 1em;
+	height: 2em;
   margin-left: 120px;
 }
 
