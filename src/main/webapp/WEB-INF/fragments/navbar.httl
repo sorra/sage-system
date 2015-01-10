@@ -8,7 +8,9 @@
       <li id="nav-private"><a href="$!{base}/private">私人</a></li>
       <li id="nav-write-blog"><a href="$!{base}/write-blog">写博客</a></li>
       <li id="nav-fav"><a href="$!{base}/fav">收藏夹</a></li>
-      <li id="nav-fav"><a href="$!{base}/logout">退出</a></li>
+      #if(uid != null)
+      <li id="nav-logout"><a href="$!{base}/logout">退出</a></li>
+      #end
     </ul>
 
     <ul class="nav pull-right">

@@ -15,6 +15,11 @@ public class CommonModelAttributesHandler {
   @Autowired
   private TagService tagService;
 
+  @ModelAttribute
+  public Long uid() {
+    return Auth.currentUid();
+  }
+
   @ModelAttribute("userSelfJson")
   public String userSelfJson() {
     Long uid = Auth.currentUid();
