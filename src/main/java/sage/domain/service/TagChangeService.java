@@ -15,6 +15,7 @@ import sage.domain.repository.UserRepository;
 import sage.entity.Tag;
 import sage.entity.TagChangeRequest;
 import sage.entity.User;
+import sage.transfer.TagChangeRequestCard;
 import sage.util.Colls;
 
 @Service
@@ -55,12 +56,12 @@ public class TagChangeService {
     return req;
   }
 
-  public Collection<TagChangeRequest> getRequestsOfTag(long tagId) {
-    return Colls.copy(reqRepo.byTag(tagId));
+  public Collection<TagChangeRequestCard> getRequestsOfTag(long tagId) {
+    return Colls.map(reqRepo.byTag(tagId), TagChangeRequestCard::new);
   }
 
-  public Collection<TagChangeRequest> getRequestsOfTagScope(long tagId) {
-    return Colls.copy(reqRepo.byTagScope(tagRepo.get(tagId)));
+  public Collection<TagChangeRequestCard> getRequestsOfTagScope(long tagId) {
+    return Colls.map(reqRepo.byTagScope(tagRepo.get(tagId)), TagChangeRequestCard::new);
   }
 
   public void cancelRequest(Long userId, Long reqId) {

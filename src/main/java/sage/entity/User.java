@@ -1,10 +1,9 @@
 package sage.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 import sage.domain.commons.IdCommons;
+import sage.domain.concept.Authority;
 
 @Entity
 public class User {
@@ -14,6 +13,7 @@ public class User {
   private String password;
   private String intro;
   private String avatar;
+  private Authority authority = Authority.USER;
 
   User() {}
 
@@ -29,20 +29,17 @@ public class User {
     this.avatar = avatar;
   }
 
-  @Id
-  @GeneratedValue
+  @Id @GeneratedValue
   public Long getId() {
     return id;
   }
-
-  public void setId(Long id) {
+  void setId(Long id) {
     this.id = id;
   }
 
   public String getEmail() {
     return email;
   }
-
   public void setEmail(String email) {
     this.email = email;
   }
@@ -50,7 +47,6 @@ public class User {
   public String getName() {
     return name;
   }
-
   public void setName(String name) {
     this.name = name;
   }
@@ -58,7 +54,6 @@ public class User {
   public String getPassword() {
     return password;
   }
-
   public void setPassword(String password) {
     this.password = password;
   }
@@ -66,7 +61,6 @@ public class User {
   public String getIntro() {
     return intro;
   }
-
   public void setIntro(String intro) {
     this.intro = intro;
   }
@@ -74,9 +68,15 @@ public class User {
   public String getAvatar() {
     return avatar;
   }
-
   public void setAvatar(String avatar) {
     this.avatar = avatar;
+  }
+
+  public Authority getAuthority() {
+    return authority;
+  }
+  public void setAuthority(Authority authority) {
+    this.authority = authority;
   }
 
   @Override

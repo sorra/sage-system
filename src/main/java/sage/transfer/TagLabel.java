@@ -52,7 +52,7 @@ public class TagLabel {
 
   @Override
   public String toString() {
-    return name;
+    return String.format("%s[id=%s, name=%s]", getClass().getSimpleName(), id, name);
   }
   
   public static List<TagLabel> listOf(Collection<Tag> tags) {

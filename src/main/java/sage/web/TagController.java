@@ -1,5 +1,7 @@
 package sage.web;
 
+import java.util.Collection;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -8,7 +10,9 @@ import org.springframework.web.bind.annotation.RestController;
 import sage.domain.service.TagChangeService;
 import sage.domain.service.TagService;
 import sage.transfer.TagCard;
+import sage.transfer.TagChangeRequestCard;
 import sage.transfer.TagNode;
+import sage.util.Colls;
 import sage.web.auth.Auth;
 
 @RestController
@@ -40,15 +44,20 @@ public class TagController {
     tagChangeService.requestMove(Auth.checkCurrentUid(), id, parentId);
   }
 
-  @RequestMapping("/{id}/requests")
-  public void requests(@PathVariable Long id) {
-    Auth.checkCurrentUid();
-    tagChangeService.getRequestsOfTag(id);
+  @RequestMapping("/{id}/setIntro")
+  public void setIntro(@PathVariable Long id, @RequestParam String intro) {
+    tagChangeService.requestSetIntro(Auth.checkCurrentUid(), id, intro);
   }
 
-  @RequestMapping("/{id}/scope/requests")
-  public void scopeRequests(@PathVariable Long id) {
+  @RequestMapping("/{id}/requests")
+  public Collection<TagChangeRequestCard> requests(@PathVariable Long id) {
     Auth.checkCurrentUid();
-    tagChangeService.getRequestsOfTagScope(id);
+    return tagChangeService.getRequestsOfTag(id);
+  }
+
+  @RequestMapping("/{id}/scope-requests")
+  public Collection<TagChangeRequestCard> scopeRequests(@PathVariable Long id) {
+    Auth.checkCurrentUid();
+    return tagChangeService.getRequestsOfTagScope(id);
   }
 }

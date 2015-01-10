@@ -10,6 +10,7 @@ import sage.entity.Tag;
 public class TagCard {
   private long id;
   private String name;
+  private String intro;
   private boolean isCore;
   private List<TagLabel> chainUp = new ArrayList<>();
   private Collection<TagLabel> children = new HashSet<>();
@@ -37,7 +38,11 @@ public class TagCard {
   public String getName() {
     return name;
   }
-  
+
+  public String getIntro() {
+    return intro;
+  }
+
   public boolean isCore() {
     return isCore;
   }

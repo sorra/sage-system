@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import sage.domain.commons.BadArgumentException;
 import sage.domain.service.TagService;
 import sage.domain.service.UserService;
 import sage.entity.Tag;
@@ -32,10 +33,11 @@ public class StreamPageController {
     
     List<TagLabel> coreTags = new ArrayList<>();
     List<TagLabel> nonCoreTags = new ArrayList<>();
-    Optional<Tag> oTag = tagService.getTag(id);
-    if (oTag.isPresent()) {
-      model.put("intro", oTag.get().getIntro());
-      for (TagLabel child : new TagCard(oTag.get()).getChildren()) {
+    Optional<Tag> tagOpt = tagService.getTag(id);
+    if (tagOpt.isPresent()) {
+      TagCard tagCard = new TagCard(tagOpt.get());
+      model.put("tag", tagCard);
+      for (TagLabel child : tagCard.getChildren()) {
         if (child.getIsCore()) {
           coreTags.add(child);
         } else {
@@ -43,7 +45,7 @@ public class StreamPageController {
         }
       }
     } else {
-      throw new IllegalArgumentException("tag id " + id + " does not exist!");
+      throw new BadArgumentException("tag id " + id + " does not exist!");
     }
 
     Collection<Tag> sameNameTags = tagService.getSameNameTags(id);

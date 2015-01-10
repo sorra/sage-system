@@ -5,6 +5,7 @@ import java.util.HashSet;
 
 import org.junit.Assert;
 import org.junit.Test;
+import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.util.ReflectionUtils;
 import sage.domain.repository.UserRepository;
 import sage.domain.service.TweetPostService;
@@ -19,7 +20,7 @@ public class ReplaceMentionTest {
             @Override
             public User findByName(String name) {
                 User user = new User("admin@a.a", "123");
-                user.setId(1000L);
+                ReflectionTestUtils.setField(user, "id", 1000L);
                 user.setName(name);
                 return user;
             }
