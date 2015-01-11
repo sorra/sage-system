@@ -12,6 +12,7 @@ import sage.domain.service.RelationService;
 import sage.domain.service.UserService;
 import sage.entity.Follow;
 import sage.transfer.UserCard;
+import sage.util.Colls;
 import sage.web.auth.Auth;
 import sage.web.context.FrontMap;
 
@@ -29,13 +30,12 @@ public class RelationPageController {
 
   @RequestMapping("/followings/{userId}")
   public String followings(@PathVariable long userId, ModelMap model) {
-    Long curUid = Auth.checkCuid();
-    
-    List<UserCard> followings = new ArrayList<>();
-    for (Follow follow : relationService.followings(userId)) {
-      UserCard following = userService.getUserCard(curUid, follow.getTarget().getId());
-      followings.add(following);
-    }
+    Long cuid = Auth.checkCuid();
+
+    model.put("thisUser", userService.getUserCard(cuid, userId));
+
+    List<UserCard> followings = Colls.map(relationService.followings(userId),
+        fol -> userService.getUserCard(cuid, fol.getTarget().getId()));
     
     FrontMap.from(model).put("followings", followings);
     return "followings";
@@ -48,13 +48,12 @@ public class RelationPageController {
 
   @RequestMapping("/followers/{userId}")
   public String followers(@PathVariable long userId, ModelMap model) {
-    Long curUid = Auth.checkCuid();
+    Long cuid = Auth.checkCuid();
+
+    model.put("thisUser", userService.getUserCard(cuid, userId));
     
-    List<UserCard> followers = new ArrayList<>();
-    for (Follow follow : relationService.followers(userId)) {
-      UserCard follower = userService.getUserCard(curUid, follow.getSource().getId());
-      followers.add(follower);
-    }
+    List<UserCard> followers = Colls.map(relationService.followers(userId),
+        fol -> userService.getUserCard(cuid, fol.getSource().getId()));
     
     FrontMap.from(model).put("followers", followers);
     return "followers";

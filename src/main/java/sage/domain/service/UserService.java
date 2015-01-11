@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.jasypt.util.password.StrongPasswordEncryptor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,7 @@ import sage.entity.User;
 import sage.transfer.TagLabel;
 import sage.transfer.UserCard;
 import sage.transfer.UserSelf;
+import sage.util.Colls;
 
 @Service
 @Transactional(readOnly = true)
@@ -43,13 +45,13 @@ public class UserService {
         topTags(userId));
   }
 
-  public UserCard getUserCard(long selfId, long userId) {
+  public UserCard getUserCard(long cuid, long userId) {
     return new UserCard(userRepo.get(userId),
         followRepo.followerCount(userId),
         blogRepo.countByAuthor(userId),
         tweetRepo.countByAuthor(userId),
-        followRepo.find(selfId, userId),
-        followRepo.find(userId, selfId),
+        followRepo.find(cuid, userId),
+        followRepo.find(userId, cuid),
         // TBD
         topTags(userId));
   }
@@ -90,7 +92,16 @@ public class UserService {
     return new StrongPasswordEncryptor().encryptPassword(plainPassword);
   }
 
-  public List<PersonValue> recommend(long userId) {
+  public Collection<UserCard> people(long selfId) {
+    return Colls.map(userRepo.all(), user -> getUserCard(selfId, user.getId()));
+  }
+
+  public Collection<UserCard> recommendByTag(long selfId) {
+    return recommend(selfId).stream().map(PersonValue::getId).map(personId -> getUserCard(selfId, personId))
+        .collect(Collectors.toList());
+  }
+
+  List<PersonValue> recommend(long userId) {
     List<PersonValue> list = new ArrayList<>();
     List<TagLabel> selfTags = topTags(userId);
     for (long i = 1;; i++) {
@@ -186,6 +197,9 @@ public class UserService {
       this.id = id;
       this.value = value;
     }
+
+    public long getId() {return id;}
+    public int getValue() {return value;}
 
     @Override
     public int compareTo(PersonValue o) {

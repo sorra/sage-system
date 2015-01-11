@@ -10,6 +10,9 @@ import sage.entity.Follow;
 public class FollowRepository extends BaseRepository<Follow> {
 
   public Follow find(long sourceId, long targetId) {
+    if (sourceId == targetId) {
+      return null;
+    }
     Query query = session().createQuery(
         "from Follow f where f.source.id=:sourceId and f.target.id=:targetId")
         .setLong("sourceId", sourceId).setLong("targetId", targetId);

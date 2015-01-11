@@ -24,6 +24,11 @@ public class FrontMap extends ModelMap {
     return fm;
   }
 
+  public FrontMap attr(String key, Object value) {
+    addAttribute(key, value);
+    return this;
+  }
+
   /**
    * Use for rendering in template engine
    * @return JSON string

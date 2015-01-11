@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import sage.domain.service.BlogReadService;
 import sage.domain.service.TweetReadService;
+import sage.domain.service.UserService;
 import sage.transfer.BlogData;
 import sage.transfer.TweetCard;
 import sage.web.auth.Auth;
@@ -18,14 +19,24 @@ import sage.web.context.FrontMap;
 public class PageController {
   private final static Logger logger = LoggerFactory.getLogger(PageController.class);
   @Autowired
+  private UserService userService;
+  @Autowired
   private BlogReadService blogReadService;
   @Autowired
   private TweetReadService tweetReadService;
 
+  @RequestMapping("/people")
+  String people(ModelMap model) {
+    FrontMap.from(model)
+        .attr("people", userService.people(Auth.checkCuid()))
+        .attr("recomms", userService.recommendByTag(Auth.checkCuid()));
+    return "people";
+  }
+
   @RequestMapping("/tweet/{id}")
   public String tweetPage(@PathVariable long id, ModelMap model) {
     TweetCard tc = tweetReadService.getTweetCard(id);
-    FrontMap.from(model).put("tc", tc);
+    FrontMap.from(model).attr("tc", tc);
     return "tweet";
   }
 
@@ -66,8 +77,7 @@ public class PageController {
     BlogData blog = blogReadService.getBlogData(blogId);
     if (blog.getAuthorId().equals(currentUid)) {
       model.addAttribute("blog", blog);
-      FrontMap.from(model).addAttribute("blogId", blog.getId())
-          .addAttribute("existingTags", blog.getTags());
+      FrontMap.from(model).attr("blogId", blog.getId()).attr("existingTags", blog.getTags());
       return "write-blog";
     }
     else

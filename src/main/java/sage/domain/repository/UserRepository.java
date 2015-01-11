@@ -1,5 +1,7 @@
 package sage.domain.repository;
 
+import java.util.Collection;
+
 import org.hibernate.Query;
 import org.springframework.stereotype.Repository;
 import sage.entity.User;
@@ -17,6 +19,10 @@ public class UserRepository extends BaseRepository<User> {
     Query query = session().createQuery("from User u where u.name=:name")
         .setString("name", name);
     return (User) query.uniqueResult();
+  }
+
+  public Collection<User> all() {
+    return session().createQuery("from User").list();
   }
 
   @Override
