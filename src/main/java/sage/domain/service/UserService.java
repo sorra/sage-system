@@ -19,6 +19,7 @@ import sage.entity.Tweet;
 import sage.entity.User;
 import sage.transfer.TagLabel;
 import sage.transfer.UserCard;
+import sage.transfer.UserLabel;
 import sage.transfer.UserSelf;
 import sage.util.Colls;
 
@@ -56,6 +57,20 @@ public class UserService {
         topTags(userId));
   }
 
+  public UserLabel getUserLabel(long userId) {
+    return new UserLabel(userRepo.get(userId));
+  }
+
+  public void changeInfo(long userId, String intro, String avatar) {
+    User user = userRepo.get(userId);
+    if (user.getIntro().equals(intro) && avatar == null) {
+      return;
+    }
+    user.setIntro(intro);
+    user.setAvatar(avatar);
+    userRepo.update(user);
+  }
+
   public User login(String email, String password) {
     User user = userRepo.findByEmail(email);
     if (user == null) {
@@ -73,10 +88,10 @@ public class UserService {
     if (existsEmail(user)) {
       throw new DomainRuntimeException("Email(%s) already registered", user.getEmail());
     }
-    // XXX existsName?
-
     user.setPassword(encryptPassword(user.getPassword()));
     userRepo.save(user);
+    user.setName("u"+user.getId());
+    userRepo.update(user);
     return user.getId();
   }
 
