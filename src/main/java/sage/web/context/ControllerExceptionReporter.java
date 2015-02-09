@@ -42,8 +42,8 @@ public class ControllerExceptionReporter {
   }
 
   @ExceptionHandler
-  public void any(Throwable e, HttpServletResponse response) throws IOException {
-    log.error("Controller error: ", e);
+  public void any(Throwable e, HttpServletRequest request, HttpServletResponse response) throws IOException {
+    log.error("URI: " + request.getRequestURI() + "\nController error: ", e);
     response.sendError(HttpStatus.INTERNAL_SERVER_ERROR.value(), e.getMessage());
   }
 }
