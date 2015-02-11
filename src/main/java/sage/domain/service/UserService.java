@@ -24,7 +24,7 @@ import sage.transfer.UserSelf;
 import sage.util.Colls;
 
 @Service
-@Transactional(readOnly = true)
+@Transactional
 public class UserService {
   @Autowired
   private UserRepository userRepo;
@@ -37,6 +37,7 @@ public class UserService {
   @Autowired
   private BlogRepository blogRepo;
 
+  @Transactional(readOnly = true)
   public UserSelf getSelf(long userId) {
     return new UserSelf(userRepo.get(userId),
         followRepo.followingCount(userId),
@@ -46,6 +47,7 @@ public class UserService {
         topTags(userId));
   }
 
+  @Transactional(readOnly = true)
   public UserCard getUserCard(long cuid, long userId) {
     return new UserCard(userRepo.get(userId),
         followRepo.followerCount(userId),
@@ -57,6 +59,7 @@ public class UserService {
         topTags(userId));
   }
 
+  @Transactional(readOnly = true)
   public UserLabel getUserLabel(long userId) {
     return new UserLabel(userRepo.get(userId));
   }
@@ -95,7 +98,6 @@ public class UserService {
     }
   }
 
-  @Transactional(readOnly = false)
   public Long register(User user) {
     if (existsEmail(user)) {
       throw new DomainRuntimeException("Email(%s) already registered", user.getEmail());
@@ -119,10 +121,12 @@ public class UserService {
     return new StrongPasswordEncryptor().encryptPassword(plainPassword);
   }
 
+  @Transactional(readOnly = true)
   public Collection<UserCard> people(long selfId) {
     return Colls.map(userRepo.all(), user -> getUserCard(selfId, user.getId()));
   }
 
+  @Transactional(readOnly = true)
   public Collection<UserCard> recommendByTag(long selfId) {
     return recommend(selfId).stream().map(PersonValue::getId).map(personId -> getUserCard(selfId, personId))
         .collect(Collectors.toList());
