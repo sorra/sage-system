@@ -71,6 +71,18 @@ public class UserService {
     userRepo.update(user);
   }
 
+  public void changeIntro(long userId, String intro) {
+    User user = userRepo.get(userId);
+    user.setIntro(intro);
+    userRepo.update(user);
+  }
+
+  public void changeAvatar(long userId, String avatar) {
+    User user = userRepo.get(userId);
+    user.setAvatar(avatar);
+    userRepo.update(user);
+  }
+
   public User login(String email, String password) {
     User user = userRepo.findByEmail(email);
     if (user == null) {
