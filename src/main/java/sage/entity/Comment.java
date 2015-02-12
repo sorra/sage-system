@@ -1,11 +1,10 @@
 package sage.entity;
 
 import java.util.Date;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
 import sage.domain.commons.IdCommons;
 
 @Entity
@@ -57,7 +56,10 @@ public class Comment {
     this.time = time;
   }
 
+  /** Nullable */
   @ManyToOne
+  @NotFound(action = NotFoundAction.IGNORE)
+  @JoinColumn(foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
   public Tweet getSource() {
     return source;
   }
