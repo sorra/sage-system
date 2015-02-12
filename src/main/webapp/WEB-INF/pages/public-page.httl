@@ -39,7 +39,7 @@ $(document).ready(function(){
   $('#nav-tags').addClass('active');
   
 	var tagId = window.frontMap.id;
-	getStream(webroot+'/read/tag/' + tagId).done(function(){addDeleteButtons($('.slist .tweet'));});
+	getStream('/read/tag/' + tagId).done(function(){addDeleteButtons($('.slist .tweet'));});
 	getTagChain(tagId, $('#chain'));
 });
 </script>

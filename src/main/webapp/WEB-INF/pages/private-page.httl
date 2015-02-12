@@ -33,7 +33,7 @@ $!{includeJS()}
     $thisUser.find('.follow').remove();
     $thisUser.appendTo($('.side'));
 
-    var deferred = getStream(webroot + '/read/u/' + window.frontMap.id);
+    var deferred = getStream('/read/u/' + window.frontMap.id);
     if (window.frontMap.isSelfPage) {
       deferred.done(function() {
         addDeleteButtons($('.slist .tweet'));

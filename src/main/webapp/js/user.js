@@ -38,7 +38,7 @@ function openUserCard() {
 	cancelUcOpener();
 	closeUserCard();
 	console.log("open");
-	$.get(webroot+'/user/card/' + $(target).attr('uid'), {})
+	$.get('/user/card/' + $(target).attr('uid'), {})
 		.done(function(resp) {
 			createPopupUserCard(target, resp).hide()
 					.appendTo($('body')).fadeIn();
@@ -115,7 +115,7 @@ function setAsFollowed($follow, uc) {
 			});
 
 			console.log("tagIds: " + selectedTagIds);
-			$.post(webroot+'/editfollow/'+uc.id, {tagIds: selectedTagIds})
+			$.post('/editfollow/'+uc.id, {tagIds: selectedTagIds})
 			.fail(function(){
 				alert('操作失败');
 			});
@@ -125,7 +125,7 @@ function setAsFollowed($follow, uc) {
 		$('<button>').text('取消关注').addClass('btn btn-inverse')
 		.appendTo($dialog.find('.modal-footer'))
 		.click(function(){
-			$.post(webroot+'/unfollow/'+uc.id)
+			$.post('/unfollow/'+uc.id)
 			.fail(function(){
 				alert('操作失败');
 			});
@@ -152,7 +152,7 @@ function setAsNotFollowed($follow, uc) {
 			});
 
 			console.log("tagIds: " + selectedTagIds);
-			$.post(webroot+'/follow/'+uc.id, {tagIds: selectedTagIds})
+			$.post('/follow/'+uc.id, {tagIds: selectedTagIds})
 			.fail(function(){
 				alert('操作失败');
 			});

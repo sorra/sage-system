@@ -171,7 +171,7 @@ function forwardDialogEach() {
   var innerHtml = $dialog.html()
 
   var submit = function() {
-    $.post(webroot+'/post/forward', {
+    $.post('/post/forward', {
       content: $dialog.find('.input').val(),
       originId: tweetId,
       removedIds: $dialog.find('.mf-removed').map(function () {
@@ -216,7 +216,7 @@ function createCommentList(tweetId, retach) {
   var $cl = $('#tmpl-comment-dialog').children().clone()
   var $input = $cl.find('textarea').on('keyup', textareaAutoResize)
   $cl.find('.btn-success').click(function(){
-     $.post(webroot+'/post/comment', {
+     $.post('/post/comment', {
        content: $input.val(), sourceId: tweetId
      }).success(function(){
        retach(createCommentList(tweetId, retach))
@@ -226,7 +226,7 @@ function createCommentList(tweetId, retach) {
   var $loading = $cl.find('.loading')
   var $list = $cl.find('.comment-list')
 
-  $.get(webroot+'/read/'+tweetId+'/comments')
+  $.get('/read/'+tweetId+'/comments')
     .done(function(resp){
       $.each(resp, function(idx, item){
         $(renderTmpl('tmpl-tweet-comment', item)).appendTo($list)
@@ -247,7 +247,7 @@ function createBlogData(blog) {
   $bd.find('.author-name').attr(userLinkAttrs(blog.authorId)).text(blog.authorName);
   $bd.find('.title').text(blog.title);
   $bd.find('.content').html(blog.content);
-  $bd.find('.time').text(showTime(blog.time)).attr('href', webroot+'/blog/'+blog.id);
+  $bd.find('.time').text(showTime(blog.time)).attr('href', '/blog/'+blog.id);
 
   var $tags = $bd.find('.tags');
   var tags = blog.tags;
@@ -270,7 +270,7 @@ function initConfirmBox($tweet, $del, id) {
             console.warn('this id is '+id)
             return
         }
-        $.post(webroot+'/tweet/'+id+'/delete')
+        $.post('/tweet/'+id+'/delete')
           .done(function(resp){
             if(resp == true) {$tweet.remove()}
             else {console.error("Tweet "+id+" delete failed.")}

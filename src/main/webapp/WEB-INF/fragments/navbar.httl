@@ -41,7 +41,7 @@ $(document).ready(function(){
 		event.preventDefault();
         var q = $('form.search > *[name=q]').val();
 		console.log(encodeURI(q));
-        window.open(webroot+'/search?q='+encodeURI(q));
+        window.open('/search?q='+encodeURI(q));
 	});
 });
 </script>

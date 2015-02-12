@@ -44,7 +44,7 @@ $(document).ready(function(){
 			return;
 		} 
 
-		$.post(webroot+'/post/tweet', {
+		$.post('/post/tweet', {
 			content: input,
 			tagIds: selectedTagIds
 		})
@@ -62,7 +62,7 @@ $(document).ready(function(){
 	});
 
 	// load istream
-	getStream(webroot+'/read/istream').done(function(){addDeleteButtons($('.slist .tweet'));});
+	getStream('/read/istream').done(function(){addDeleteButtons($('.slist .tweet'));});
 });
 
 function postTweetDone() {

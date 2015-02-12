@@ -30,7 +30,7 @@ $(document).ready(function(){
   loadFavs()
 })
 function loadFavs() {
-  $.get(webroot+'/favs/get', {})
+  $.get('/favs/get', {})
     .done(function(resp){
         var $favList = $('#fav-list')
         for (var i in resp) {
@@ -64,7 +64,7 @@ function unfavPopover($node, action) {
 }
 
 function removeFav(id, $fav){
-    $.post(webroot+'/favs/'+id+'/delete', {})
+    $.post('/favs/'+id+'/delete', {})
       .done(function(){
           $fav.remove()
         })

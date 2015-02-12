@@ -49,7 +49,7 @@ function unescape(str) {
 var $content = $('.content').warnEmpty();
 $content.html(markdown.toHTML(unescape($content.html())));
 
-getStream(webroot+'/read/connect/'+$('#id').text())
+getStream('/read/connect/'+$('#id').text())
     .done(function(){
         $('.newfeed').remove();
         $('.oldfeed').remove();

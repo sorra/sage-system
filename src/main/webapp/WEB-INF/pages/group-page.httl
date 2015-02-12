@@ -27,7 +27,7 @@ $!{includeProto}
 $!{includeJS()}
 <script type="text/javascript">
 $(document).ready(function(){
-	getStream(webroot+'/read/group/'+$('id-holder').text()).done(function(){addDeleteButtons($('.slist .tweet'));});
+	getStream('/read/group/'+$('id-holder').text()).done(function(){addDeleteButtons($('.slist .tweet'));});
 });
 </script>
 </html>

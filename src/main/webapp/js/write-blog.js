@@ -42,7 +42,7 @@ $(document).ready(function(){
 		});
 
     var blogId = window.frontMap.blogId;
-		var submitUrl = webroot + (blogId ? '/post/edit-blog/'+blogId : '/post/blog');
+		var submitUrl = blogId ? '/post/edit-blog/'+blogId : '/post/blog';
 		$.post(submitUrl, {
 			title: $('#title').val(),
 			content: $('#content').val(),
@@ -89,7 +89,7 @@ $(document).ready(function() {
 function postBlogDone(blogId) {
 	var $submit = $('form.blog .btn[type=submit]');
     tipover($submit, '发表成功', 1000);
-    setTimeout(function(){window.location = webroot + '/blog/'+blogId}, 1000);
+    setTimeout(function(){window.location = '/blog/' + blogId}, 1000);
 }
 
 function postBlogFail(resp) {

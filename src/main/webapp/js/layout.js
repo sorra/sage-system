@@ -1,5 +1,4 @@
 'use strict';
-var webroot = '/sage';
 
 $.fn.warnEmpty = function() {
     if (this.length == 0) {console.warn('Empty NodeList for '+this.selector+'!');}
@@ -52,7 +51,7 @@ function buildNavTagTree($lnk, tagTree) {
     var $footer = $dialog.find('.modal-footer');
     $('<button class="btn btn-primary">').text('确定').css({float: 'right'}).appendTo($footer)
         .click(function() {
-            $.post(webroot+'/tag/new', {
+            $.post('/tag/new', {
                 name: $dialog.find('#name').val(),
                 parentId: $dialog.find('#parent-id').val()
             });
@@ -119,7 +118,7 @@ function limitStrLen(str, maxLen) {
 }
 
 function userLinkAttrs(id) {
-  return {uid: id, href: webroot+'/private/'+id}
+  return {uid: id, href: '/private/'+id}
 }
 
 function renderTmpl(tmplId, object) {
@@ -128,12 +127,11 @@ function renderTmpl(tmplId, object) {
   }
   return template(tmplId, object)
 }
-template.helper('webroot', function(){return webroot})
 template.helper('showTime', function(time){
   return new Date(parseInt(time)).toLocaleString()
 })
 template.helper('userLinkAttrs', function (id){
-  return 'href="'+webroot+'/private/'+id+'" uid="'+id+'"'
+  return 'href="'+'/private/'+id+'" uid="'+id+'"'
 })
 
 $(document).ready(function(){
