@@ -1,0 +1,15 @@
+.user-card{
+  min-width: 200px;
+  background: #f0f0f0;
+  padding: 2px;
+  border: orange solid 2px;
+  border-radius: 8px;
+}
+.user-card .avatar, .user-card .name-intro{
+  float: left;
+}
+.user-card:after{
+  display: table;
+  content: " ";
+  clear: both;
+}
