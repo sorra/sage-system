@@ -28,15 +28,17 @@ public class UserPageController {
   }
 
   @RequestMapping(value = "/user-info", method = RequestMethod.POST)
-  String changeInfo(@RequestParam String intro, @RequestParam(required = false) MultipartFile avatar) throws IOException {
+  String changeInfo(@RequestParam(required = false) String name,
+                    @RequestParam(required = false) String intro,
+                    @RequestParam(required = false) MultipartFile avatar) throws IOException {
     Long cuid = Auth.checkCuid();
     String path;
-    if (avatar != null) {
-      path = "/files/" + filesService.upload(avatar, FilesService.Folder.AVATAR);
-    } else {
+    if (avatar == null || avatar.isEmpty()) {
       path = null;
+    } else {
+      path = "/files/" + filesService.upload(avatar, FilesService.Folder.AVATAR);
     }
-    userService.changeInfo(cuid, intro, path);
+    userService.changeInfo(cuid, name, intro, path);
     return "redirect:/user-info";
   }
 }

@@ -61,13 +61,16 @@ public class UserService {
     return new UserLabel(userRepo.get(userId));
   }
 
-  public void changeInfo(long userId, String intro, String avatar) {
+  public void changeInfo(long userId, String name, String intro, String avatar) {
     User user = userRepo.get(userId);
-    if (Objects.equals(intro, user.getIntro()) && avatar == null) {
+    if (Objects.equals(name, user.getName()) && Objects.equals(intro, user.getIntro()) && avatar == null) {
       return;
     }
+    user.setName(name);
     user.setIntro(intro);
-    user.setAvatar(avatar);
+    if (avatar != null) {
+      user.setAvatar(avatar);
+    }
     userRepo.update(user);
   }
 
