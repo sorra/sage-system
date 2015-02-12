@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import sage.domain.commons.BadArgumentException;
-import sage.domain.commons.Constants;
 import sage.domain.commons.DomainRuntimeException;
 import sage.domain.service.UserService;
 import sage.entity.User;
@@ -37,7 +36,7 @@ public class AuthController {
     String referer = request.getHeader("referer");
     log.debug("Referer: {}", referer);
 
-    final String destContext = "?goto=" + Constants.WEB_ROOT;
+    final String destContext = "?goto=";
     int idx = referer.lastIndexOf(destContext);
     String dest = idx < 0 ? null : referer.substring(
         idx + destContext.length(), referer.length());

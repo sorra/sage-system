@@ -7,7 +7,6 @@ import javax.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
-import sage.domain.commons.Constants;
 import sage.entity.Blog;
 import sage.entity.Tag;
 import sage.entity.User;

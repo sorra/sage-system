@@ -6,7 +6,6 @@ import httl.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import sage.domain.commons.Constants;
 import sage.domain.commons.DomainRuntimeException;
 import sage.domain.commons.IdCommons;
 import sage.domain.repository.CommentRepository;
@@ -123,8 +122,7 @@ public class TweetPostService {
   }
 
   private String blogRef(Blog blog) {
-    return String.format("<a href=\"%s\">%s</a>",
-        Constants.WEB_ROOT + "/blog/" + blog.getId(), blog.getTitle());
+    return String.format("<a href=\"%s\">%s</a>", "/blog/" + blog.getId(), blog.getTitle());
   }
 
   /*

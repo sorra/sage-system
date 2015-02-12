@@ -5,19 +5,16 @@ import javax.servlet.ServletContext;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import sage.domain.commons.Constants;
 
 @Component
 public class StaticPathExposer {
-  public static final String BASE = Constants.WEB_ROOT;
-  public static final String RS = Constants.WEB_ROOT + "/rs";
+  public static final String RS = "/rs";
 
   @Autowired
   private ServletContext servletContext;
 
   @PostConstruct
   public void init() {
-    servletContext.setAttribute("base", BASE);
     servletContext.setAttribute("rs", RS);
   }
 
