@@ -1,9 +1,9 @@
 #set(UserSelf userSelf)
 <div class="navbar navbar-inverse navbar-fixed-top">
   <div class="container">
-    <a class="navbar-brand mybrand" href="">贤者系统</a>
+    <a class="navbar-brand mybrand" href="/">贤者系统</a>
     <ul class="nav navbar-nav">
-      <li id="nav-home"><a href="">首页</a></li>
+      <li id="nav-home"><a href="/">首页</a></li>
       <li id="nav-tags"><a href="javascript:;">标签们</a></li>
       <li id="nav-people"><a href="/people">人们</a></li>
       <li id="nav-write-blog"><a href="/write-blog">写博客</a></li>
