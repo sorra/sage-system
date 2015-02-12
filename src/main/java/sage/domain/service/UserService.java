@@ -1,9 +1,6 @@
 package sage.domain.service;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import org.jasypt.util.password.StrongPasswordEncryptor;
@@ -66,7 +63,7 @@ public class UserService {
 
   public void changeInfo(long userId, String intro, String avatar) {
     User user = userRepo.get(userId);
-    if (user.getIntro().equals(intro) && avatar == null) {
+    if (Objects.equals(intro, user.getIntro()) && avatar == null) {
       return;
     }
     user.setIntro(intro);
