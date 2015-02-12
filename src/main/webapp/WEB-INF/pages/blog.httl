@@ -24,7 +24,7 @@ $!{include("navbar.httl")}
 		<span id="id" style="display:none">$!{blog.id}</span>
 		<h3 class="title">$!{blog.title}</h3>
 		#if(uid.equals(blog.authorId))
-		<a href="$!{base}/blog/$!{blog.id}/edit">编辑</a>
+		<a href="/blog/$!{blog.id}/edit">编辑</a>
 		#end
 		<span>$!{blog.time}</span>
 		<div class="tags">
