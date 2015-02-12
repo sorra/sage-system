@@ -101,7 +101,8 @@ public class AuthController {
     }
     
     userService.register(new User(email, password));
-    return login(request, email, password);
+    login(request, email, password);
+    return "redirect:/people";
   }
   
   private static final BadArgumentException
