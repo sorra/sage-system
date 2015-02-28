@@ -68,6 +68,8 @@ public class FilesService {
     Path path = Paths.get(fm.DIR + "/" + filename);
 
     Files.write(path, bytes, StandardOpenOption.CREATE_NEW);
+
+    log.info("File saved: " + path);
     return folder.name().toLowerCase() + "/" + filename;
   }
 
