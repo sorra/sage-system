@@ -10,15 +10,13 @@
 	</appender>
 
 	<!-- 时间滚动输出 level为 DEBUG 日志 -->
-	<appender name="file—debug"
+	<appender name="file-log"
 		class="ch.qos.logback.core.rolling.RollingFileAppender">
-		<filter class="ch.qos.logback.classic.filter.LevelFilter">
-			<level>DEBUG</level>
-			<onMatch>ACCEPT</onMatch>
-			<onMismatch>DENY </onMismatch>
+		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+			<level>INFO</level>
 		</filter>
 		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-			<FileNamePattern>logs/debug.%d{yyyy-MM-dd}.log
+			<FileNamePattern>logs/server.%d{yyyy-MM-dd}.log
 			</FileNamePattern>
 			<MaxHistory>30</MaxHistory>
 		</rollingPolicy>
@@ -28,12 +26,12 @@
 	</appender>
 
 	<!-- 时间滚动输出 level为 ERROR 日志 -->
-	<appender name="file—error"
+	<appender name="file-error"
 		class="ch.qos.logback.core.rolling.RollingFileAppender">
 		<filter class="ch.qos.logback.classic.filter.LevelFilter">
 			<level>ERROR</level>
 			<onMatch>ACCEPT</onMatch>
-			<onMismatch>DENY </onMismatch>
+			<onMismatch>DENY</onMismatch>
 		</filter>
 		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
 			<FileNamePattern>logs/error.%d{yyyy-MM-dd}.log
@@ -63,8 +61,8 @@
 
 	<root level="DEBUG">
 		<appender-ref ref="stdout" />
-		<appender-ref ref="file—debug" />
-		<appender-ref ref="file—error" />
+		<appender-ref ref="file-log" />
+		<appender-ref ref="file-error" />
 	</root>
 
 </configuration>
