@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 #set(components = ["bootstrap", "layout", "stream", "tag", "user"])
+#set(Map frontMap)
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<title>私人主页</title>
@@ -11,7 +12,12 @@ $!{include("navbar.httl")}
 
 <div class="container" id="container">
 	<div class="row">
-		<div class="side"><div style="height:30px;"></div></div>
+		<div class="side">
+      <div style="height:30px;"></div>
+      #if(frontMap.get("isSelfPage") == true)
+      <a href="/user-info">修改信息</a>
+      #end
+    </div>
 		<div class="main">
 			<div class="stream row">
 				<div class="slist"></div>
