@@ -20,7 +20,8 @@ public class FilesService {
   private static final long MAX_PICTURE_BYTES = 4*1024*1024;
   // Only for trial
   private static final String SUFFIX = ".jpg";
-  private static final String[] DIR_ROOTS = {"C:", "D:", System.getProperty("user.home")};
+  private static final String ENV_SAGE_FILES_HOME = System.getenv("SAGE_FILES_HOME");
+  private static final String USER_HOME = System.getProperty("user.home");
   private static final String SUBDIR_PIC = "/programs/pic_files";
   private static final String SUBDIR_AVATAR = "/programs/avatar_files";
 
@@ -82,14 +83,12 @@ public class FilesService {
     private AtomicLong maxNumber = new AtomicLong();
     FileManager(String subdir) {
       File dir = null;
-      for (String root : DIR_ROOTS) {
-        if (new File(root).exists()) {
-          DIR = root + subdir;
-          dir = new File(DIR);
-          if ((dir.exists() || dir.mkdirs()) && dir.canWrite()) {
-            log.info("Select the Upload Directory: " + DIR);
-            break;
-          }
+      String root = ENV_SAGE_FILES_HOME != null ? ENV_SAGE_FILES_HOME : USER_HOME;
+      if (new File(root).exists()) {
+        DIR = root + subdir;
+        dir = new File(DIR);
+        if ((dir.exists() || dir.mkdirs()) && dir.canWrite()) {
+          log.info("Select the Upload Directory: " + DIR);
         }
       }
       if (dir == null) {
