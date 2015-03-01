@@ -79,9 +79,6 @@ public class StreamService {
   }
 
   private List<Item> higherSort(List<TweetCard> tcs) {
-    List<Item> cleanList = new ArrayList<>();
-    cleanList.addAll(tcs);
-  
     // TODO Pull-near
     return combine(tcs);
   }
