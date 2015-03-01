@@ -1,9 +1,6 @@
 package sage.domain.service;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,34 +30,59 @@ public class RelationService {
   @Autowired
   private TagRepository tagRepo;
   @Autowired
+  private UserService userService;
+  @Autowired
   private NotifService notifService;
 
   /**
    * Act as 'follow' or 'editFollow'
    * @param userId The acting user
    * @param targetId The target user to follow
+   * @param reason The reason of following
    * @param tagIds The tags to follow
+   * @param includeNew If auto-include new tags
+   * @param includeAll If include all tags, ignoring selected tags
    */
-  public void follow(long userId, long targetId, String reason, Collection<Long> tagIds) {
+  public void follow(long userId, long targetId, String reason, Collection<Long> tagIds,
+                     boolean includeNew, boolean includeAll) {
     if (IdCommons.equal(userId, targetId)) {
       logger.warn("user {} should not follow himself!", userId);
       return;
     }
     Follow follow = followRepo.find(userId, targetId);
-    Set<Tag> neoTags = tagRepo.byIds(tagIds);
-    if (follow != null) {
-      if (!neoTags.equals(follow.getTags())) {
-        follow.setTags(neoTags);
-        followRepo.update(follow);
-      }
-    } else {
-      followRepo.save(new Follow(userRepo.load(userId), userRepo.load(targetId), reason, neoTags));
+    Set<Tag> followedTags = tagRepo.byIds(tagIds);
+
+    if (follow == null) {
+      follow = new Follow(userRepo.load(userId), userRepo.load(targetId), reason, followedTags, includeNew, includeAll);
+      postProcessForIncludeNew(follow);
+      followRepo.save(follow);
       notifService.followed(targetId, userId);
+    } else {
+      follow.setTags(followedTags);
+      follow.setReason(reason);
+      follow.setIncludeNew(includeNew);
+      follow.setIncludeAll(includeAll);
+      postProcessForIncludeNew(follow);
+      followRepo.update(follow);
     }
   }
 
+  /** Must be done every time the follow is updated while includeNew==true, since the used tags of target user may change */
+  private void postProcessForIncludeNew(Follow follow) {
+    if (!follow.isIncludeNew()) {
+      return;
+    }
+    Collection<Tag> targetUserTags = Colls.map(
+        userService.getUserCard(follow.getSource().getId(), follow.getTarget().getId()).getTags(),
+        tagLabel -> tagRepo.get(tagLabel.getId()));
+    Set<Tag> disabledTags = new HashSet<>(targetUserTags);
+    disabledTags.removeAll(TagRepository.getQueryTags(follow.getTags()));
+
+    follow.setDisabledTags(disabledTags);
+  }
+
   public void follow(long userId, long targetId, Collection<Long> tagIds) {
-    follow(userId, targetId, null, tagIds);
+    follow(userId, targetId, null, tagIds, true, false);
   }
 
   public void unfollow(long userId, long targetId) {
@@ -74,7 +96,7 @@ public class RelationService {
   
   public void applyFollows(Long userId, FollowListLite fcl) {
     for (FollowInfoLite info : fcl.getList()) {
-      follow(userId, info.getUserId(), fcl.getName(), info.getTagIds());
+      follow(userId, info.getUserId(), fcl.getName(), info.getTagIds(), false, false);
     }
   }
 

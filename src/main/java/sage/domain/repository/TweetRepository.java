@@ -71,6 +71,18 @@ public class TweetRepository extends BaseRepository<Tweet> {
         .list();
   }
 
+  public List<Tweet> byAuthorAndDisabledTags(long authorId, Collection<Tag> disabledTags, Edge edge) {
+    if(disabledTags.isEmpty()) {
+      return byAuthor(authorId, edge);
+    }
+    disabledTags = TagRepository.getQueryTags(disabledTags);
+    String q = "select t from Tweet t join t.tags ta where t.author.id=:authorId and ta not in :distags";
+    return enhanceQuery(q, edge)
+        .setLong("authorId", authorId)
+        .setParameterList("distags", disabledTags)
+        .list();
+  }
+
   public List<Tweet> connectTweets(long blogId) {
     Query queryShares = session().createQuery(
         "from Tweet t where t.blogId = :bid")

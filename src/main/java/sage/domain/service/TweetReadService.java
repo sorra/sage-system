@@ -45,8 +45,16 @@ public class TweetReadService {
     // Find and merge tweets from followings
     List<Follow> followings = new ArrayList<>(followRepo.followings(userId));
     for (Follow follow : followings) {
-      List<Tweet> result = tweetRepo.byAuthorAndTags(
-          follow.getTarget().getId(), follow.getTags(), edge);
+      long authorId = follow.getTarget().getId();
+      List<Tweet> result;
+      if (follow.isIncludeAll()) {
+        result = tweetRepo.byAuthor(authorId, edge);
+      } else if (follow.isIncludeNew()) {
+        result = tweetRepo.byAuthorAndDisabledTags(authorId, follow.getDisabledTags(), edge);
+      } else {
+        result = tweetRepo.byAuthorAndTags(authorId, follow.getTags(), edge);
+      }
+
       tweets.addAll(result);
     }
     Collections.sort(tweets, Comparators.tweetOnId);
