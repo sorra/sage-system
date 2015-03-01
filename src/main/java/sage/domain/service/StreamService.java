@@ -29,8 +29,9 @@ public class StreamService {
   }
 
   public Stream istream(long userId, Edge edge) {
+    // Receive from follows
     List<TweetCard> tcsByFols = transfers.toTweetCards(tweetRead.byFollowings(userId, edge));
-    
+    // Receive from tag heeds
     List<TweetCard> tcsByTags = new ArrayList<>();
     for (TagHeed ht : heed.tagHeeds(userId)) {
       Long tagId = ht.getTag().getId();
@@ -41,8 +42,9 @@ public class StreamService {
       tcsByTags.addAll(tagTcs);
     }
 
-    //TODO heed groups
+    // TODO Receive from group heeds
 
+    // Deduplicate
     Set<TweetCard> mergedSet = new HashSet<>();
     // TweetsByFollowings must be added first, they are prior
     mergedSet.addAll(tcsByFols);
@@ -62,6 +64,7 @@ public class StreamService {
   }
 
   public Stream groupStream(long groupId, Edge edge) {
+    //TODO group stream
     List<Tweet> tweets = null;
     return new Stream(naiveSort(tweets));
   }
