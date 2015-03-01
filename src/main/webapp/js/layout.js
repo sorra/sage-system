@@ -120,6 +120,9 @@ function limitStrLen(str, maxLen) {
 function userLinkAttrs(id) {
   return {uid: id, href: '/private/'+id}
 }
+function showTime(time) {
+  return new Date(parseInt(time)).toLocaleString()
+}
 
 function renderTmpl(tmplId, object) {
   if (!object || object == "") {
@@ -127,9 +130,7 @@ function renderTmpl(tmplId, object) {
   }
   return template(tmplId, object)
 }
-template.helper('showTime', function(time){
-  return new Date(parseInt(time)).toLocaleString()
-})
+template.helper('showTime', showTime)
 template.helper('userLinkAttrs', function (id){
   return 'href="'+'/private/'+id+'" uid="'+id+'"'
 })
