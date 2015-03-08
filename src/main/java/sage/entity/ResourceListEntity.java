@@ -1,8 +1,6 @@
 package sage.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 public class ResourceListEntity implements ListEntity {
@@ -42,6 +40,7 @@ public class ResourceListEntity implements ListEntity {
     this.name = name;
   }
 
+  @Lob @Column(columnDefinition = "TEXT")
   public String getListJson() {
     return listJson;
   }
