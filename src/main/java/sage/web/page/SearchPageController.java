@@ -29,14 +29,15 @@ public class SearchPageController {
     logger.info("query: " + q);
     SearchHit[] hits = searchBase.search(q).getHits().getHits();
 
-    List<String> jsons = new ArrayList<>();
+    List<String> sources = new ArrayList<>();
     for (SearchHit hit : hits) {
       logger.info("~hit~ id:{} type:{}", hit.id(), hit.type());
-      if (hit.sourceAsMap().values().toString().toLowerCase().contains(q.toLowerCase())) {
-        jsons.add(hit.sourceAsString());
-      }
+//      if (hit.sourceAsMap().values().toString().toLowerCase().contains(q.toLowerCase())) {
+//        jsons.add(hit.sourceAsString());
+//      }
+      sources.add(hit.sourceAsString());
     }
-    model.addAttribute("hits", jsons);
+    model.addAttribute("hits", sources);
     return "search-result";
   }
 }
