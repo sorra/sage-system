@@ -97,7 +97,11 @@ function createStream(stream, url) {
         }
       })
       console.log("largest "+largest)
-      getStreamAfter(url, largest)
+      if(largest == null) {
+        getStream(url)
+      } else {
+        getStreamAfter(url, largest)
+      }
     })
 
   $('<a class="oldfeed btn">').text('看看更早的').appendTo($stream)
@@ -110,7 +114,11 @@ function createStream(stream, url) {
         }
       })
       console.log("smallest "+smallest)
-      getStreamBefore(url, smallest)
+      if (smallest == null) {
+        getStream(url)
+      } else {
+        getStreamBefore(url, smallest)
+      }
     })
 }
 
