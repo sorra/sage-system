@@ -94,12 +94,6 @@ public class RelationService {
     }
   }
   
-  public void applyFollows(Long userId, FollowListLite fcl) {
-    for (FollowInfoLite info : fcl.getList()) {
-      follow(userId, info.getUserId(), fcl.getName(), info.getTagIds(), false, false);
-    }
-  }
-
   @Transactional(readOnly = true)
   public Follow getFollow(long sourceId, long targetId) {
     return followRepo.find(sourceId, targetId);

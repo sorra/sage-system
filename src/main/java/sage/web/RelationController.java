@@ -5,11 +5,10 @@ import java.util.Collections;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import sage.domain.service.HeedService;
 import sage.domain.service.NotifService;
 import sage.domain.service.RelationService;
-import sage.transfer.FollowListLite;
 import sage.web.auth.Auth;
-import sage.web.context.Json;
 
 @RestController
 @RequestMapping(method = RequestMethod.POST)
@@ -18,6 +17,8 @@ public class RelationController {
   private RelationService relationService;
   @Autowired
   private NotifService notifService;
+  @Autowired
+  private HeedService heedService;
 
   @RequestMapping("/follow/{targetId}")
   public void follow(@PathVariable Long targetId,
@@ -40,15 +41,6 @@ public class RelationController {
     Long uid = Auth.checkCuid();
 
     relationService.unfollow(uid, targetId);
-  }
-  
-  @RequestMapping("/apply-follows")
-  public void applyFollows(@RequestParam String listLite) {
-    Long uid = Auth.checkCuid();
-    
-    FollowListLite fcl = Json.object(listLite, FollowListLite.class);
-    //TODO Be able to unapply this list
-    relationService.applyFollows(uid, fcl);
   }
 
   private boolean boolValue(Boolean o) {

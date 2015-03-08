@@ -1,29 +1,32 @@
 package sage.domain.service;
 
-import java.util.ArrayList;
 import java.util.Collection;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
-import sage.domain.repository.TagHeedRepository;
-import sage.domain.repository.TagRepository;
-import sage.domain.repository.UserRepository;
+import sage.domain.repository.*;
+import sage.entity.FollowListHeed;
 import sage.entity.TagHeed;
+import sage.util.Colls;
 
 @Service
 @Transactional
 public class HeedService {
   @Autowired
-  private TagHeedRepository tagHeedRepo;
-  @Autowired
   private TagRepository tagRepo;
   @Autowired
   private UserRepository userRepo;
+  @Autowired
+  private TagHeedRepository tagHeedRepo;
+  @Autowired
+  private FollowListHeedRepository followListHeedRepo;
+  @Autowired
+  private FollowListRepository followListRepo;
   
   public Collection<TagHeed> tagHeeds(long userId) {
-    return new ArrayList<>(tagHeedRepo.findByUser(userId));
+    return Colls.copy(tagHeedRepo.findByUser(userId));
   }
   
   public void heedTag(long userId, long tagId) {
@@ -34,5 +37,22 @@ public class HeedService {
     TagHeed ht = tagHeedRepo.find(userId, tagId);
     Assert.notNull(ht);
     tagHeedRepo.delete(ht);
+  }
+
+  public Collection<FollowListHeed> followListHeeds(long userId) {
+    return Colls.copy(followListHeedRepo.byUser(userId));
+  }
+
+  public void heedFollowList(long userId, long followListId) {
+    if (followListHeedRepo.byUserAndList(userId, followListId) == null) {
+      followListHeedRepo.save(new FollowListHeed(userId, followListRepo.load(followListId)));
+    }
+  }
+
+  public void unheedFollowList(long userId, long followListId) {
+    FollowListHeed heed = followListHeedRepo.byUserAndList(userId, followListId);
+    if (heed != null) {
+      followListHeedRepo.delete(heed);
+    }
   }
 }

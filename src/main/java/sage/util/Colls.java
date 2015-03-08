@@ -12,6 +12,14 @@ public abstract class Colls {
     return result;
   }
 
+  public static <T, R> List<R> flatMap(Collection<T> coll, Function<T, Collection<R>> transformer) {
+    List<R> result = new ArrayList<>();
+    for (T t: coll) {
+      result.addAll(transformer.apply(t));
+    }
+    return result;
+  }
+
   @SafeVarargs
   public static <T> List<T> copy(Collection<T>... colls) {
     List<T> list = new ArrayList<>();

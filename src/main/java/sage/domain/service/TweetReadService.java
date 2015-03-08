@@ -18,6 +18,8 @@ import sage.entity.Comment;
 import sage.entity.Follow;
 import sage.entity.Tag;
 import sage.entity.Tweet;
+import sage.transfer.FollowInfoLite;
+import sage.transfer.FollowListLite;
 import sage.transfer.TweetCard;
 import sage.util.Colls;
 
@@ -45,17 +47,7 @@ public class TweetReadService {
     // Find and merge tweets from followings
     List<Follow> followings = new ArrayList<>(followRepo.followings(userId));
     for (Follow follow : followings) {
-      long authorId = follow.getTarget().getId();
-      List<Tweet> result;
-      if (follow.isIncludeAll()) {
-        result = tweetRepo.byAuthor(authorId, edge);
-      } else if (follow.isIncludeNew()) {
-        result = tweetRepo.byAuthorAndDisabledTags(authorId, follow.getDisabledTags(), edge);
-      } else {
-        result = tweetRepo.byAuthorAndTags(authorId, follow.getTags(), edge);
-      }
-
-      tweets.addAll(result);
+      tweets.addAll(byFollow(follow, edge));
     }
     Collections.sort(tweets, Comparators.tweetOnId);
 
@@ -64,6 +56,27 @@ public class TweetReadService {
         ? tweets.subList(0, FETCH_SIZE) : tweets;
     // How to optimize the counting inside, by Hibernate L1 cache?
     return tops;
+  }
+
+  private List<Tweet> byFollow(Follow follow, Edge edge) {
+    long authorId = follow.getTarget().getId();
+    List<Tweet> result;
+    if (follow.isIncludeAll()) {
+      result = tweetRepo.byAuthor(authorId, edge);
+    } else if (follow.isIncludeNew()) {
+      result = tweetRepo.byAuthorAndDisabledTags(authorId, follow.getDisabledTags(), edge);
+    } else {
+      result = tweetRepo.byAuthorAndTags(authorId, follow.getTags(), edge);
+    }
+    return result;
+  }
+
+  public List<Tweet> byFollowListLite(FollowListLite list, Edge edge) {
+    for (FollowInfoLite info : list.getList()) {
+      tweetRepo.byAuthorAndTags(info.getUserId(), tagRepo.byIds(info.getTagIds()), edge);
+    }
+    return Colls.flatMap(list.getList(),
+        info -> tweetRepo.byAuthorAndTags(info.getUserId(), tagRepo.byIds(info.getTagIds()), edge));
   }
 
   public List<Tweet> byTag(long tagId, Edge edge) {
