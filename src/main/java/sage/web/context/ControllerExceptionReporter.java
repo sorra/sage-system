@@ -10,6 +10,7 @@ import org.springframework.beans.TypeMismatchException;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
+import org.springframework.orm.hibernate4.HibernateJdbcException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -39,6 +40,13 @@ public class ControllerExceptionReporter {
                                      HttpServletRequest request, HttpServletResponse response) throws IOException {
     log.error("URI: " + request.getRequestURI(), e);
     response.sendError(HttpStatus.INTERNAL_SERVER_ERROR.value(), e.getMessage());
+  }
+
+  @ExceptionHandler(HibernateJdbcException.class)
+  @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR, reason = "Database error: HibernateJdbcException")
+  public void hibernateJDBCException(HibernateJdbcException e) {
+    // Sometimes there is no sql
+    log.error("SQL: " + e.getSql() + "\n", e);
   }
 
   @ExceptionHandler
