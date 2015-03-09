@@ -13,8 +13,6 @@ public class Follow {
   private User target;
   private String reason;
   private Set<Tag> tags = new HashSet<>();
-  /** Used only when includeNew */
-  private Set<Tag> disabledTags = new HashSet<>();
   /** If auto-include new tags */
   private boolean includeNew;
   /** If include all tags, ignoring selected tags */
@@ -72,14 +70,6 @@ public class Follow {
   }
   public void setTags(Set<Tag> tags) {
     this.tags = tags;
-  }
-
-  @ManyToMany
-  public Set<Tag> getDisabledTags() {
-    return disabledTags;
-  }
-  public void setDisabledTags(Set<Tag> disabledTags) {
-    this.disabledTags = disabledTags;
   }
 
   public boolean isIncludeNew() {

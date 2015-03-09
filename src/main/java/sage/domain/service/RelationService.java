@@ -1,6 +1,9 @@
 package sage.domain.service;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,8 +17,6 @@ import sage.domain.repository.UserRepository;
 import sage.entity.Follow;
 import sage.entity.Tag;
 import sage.entity.User;
-import sage.transfer.FollowInfoLite;
-import sage.transfer.FollowListLite;
 import sage.transfer.UserLabel;
 import sage.util.Colls;
 
@@ -54,7 +55,6 @@ public class RelationService {
 
     if (follow == null) {
       follow = new Follow(userRepo.load(userId), userRepo.load(targetId), reason, followedTags, includeNew, includeAll);
-      postProcessForIncludeNew(follow);
       followRepo.save(follow);
       notifService.followed(targetId, userId);
     } else {
@@ -62,23 +62,8 @@ public class RelationService {
       follow.setReason(reason);
       follow.setIncludeNew(includeNew);
       follow.setIncludeAll(includeAll);
-      postProcessForIncludeNew(follow);
       followRepo.update(follow);
     }
-  }
-
-  /** Must be done every time the follow is updated while includeNew==true, since the used tags of target user may change */
-  private void postProcessForIncludeNew(Follow follow) {
-    if (!follow.isIncludeNew()) {
-      return;
-    }
-    Collection<Tag> targetUserTags = Colls.map(
-        userService.getUserCard(follow.getSource().getId(), follow.getTarget().getId()).getTags(),
-        tagLabel -> tagRepo.get(tagLabel.getId()));
-    Set<Tag> disabledTags = new HashSet<>(targetUserTags);
-    disabledTags.removeAll(TagRepository.getQueryTags(follow.getTags()));
-
-    follow.setDisabledTags(disabledTags);
   }
 
   public void follow(long userId, long targetId, Collection<Long> tagIds) {

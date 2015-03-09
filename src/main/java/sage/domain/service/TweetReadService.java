@@ -64,7 +64,7 @@ public class TweetReadService {
     if (follow.isIncludeAll()) {
       result = tweetRepo.byAuthor(authorId, edge);
     } else if (follow.isIncludeNew()) {
-      result = tweetRepo.byAuthorAndDisabledTags(authorId, follow.getDisabledTags(), edge);
+      result = tweetRepo.byAuthorAndTags(authorId, follow.getTags(), edge);
     } else {
       result = tweetRepo.byAuthorAndTags(authorId, follow.getTags(), edge);
     }
