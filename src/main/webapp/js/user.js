@@ -104,7 +104,7 @@ function setAsFollowed($follow, uc) {
 		var $dialog = createTagDialog(uc);
 		var $body = $dialog.find('.modal-body');
 
-		$('<button>').text('编辑关注').addClass('btn btn-primary')
+		$('<button>').text('修改').addClass('btn btn-primary')
 		.appendTo($dialog.find('.modal-footer'))
 		.click(function(){
 			var selectedTagIds = [];
@@ -115,7 +115,7 @@ function setAsFollowed($follow, uc) {
 			});
 
 			console.log("tagIds: " + selectedTagIds);
-			$.post('/editfollow/'+uc.id, {tagIds: selectedTagIds})
+			$.post('/follow/'+uc.id, {tagIds: selectedTagIds})
 			.fail(function(){
 				alert('操作失败');
 			});
