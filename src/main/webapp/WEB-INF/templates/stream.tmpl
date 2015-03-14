@@ -23,7 +23,10 @@
             {{include 'tmpl-tag-label' tag}}
           {{/each}}
         </span>
-        <span class="span pull-right">
+        <span class="tweet-ops span pull-right">
+          {{if authorId === global().userSelf.id}}
+          <a class="delete" href="javascript:;" style="margin-left: 0.5em; margin-right: 0.5em">删除</a>
+          {{/if}}
           <a class="forward" href="javascript:;">转发{{forwardCount | showCount}}</a>
           <a class="comment" href="javascript:;">评论{{commentCount | showCount}}</a>
         </span>

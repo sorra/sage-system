@@ -151,10 +151,7 @@ function createTweetCard(tweet) {
   tweetCache.set(tweet)
   if(tweet.origin) {tweetCache.set(tweet.origin)}
   var $tc = $(renderTmpl('tmpl-tweet', tweet))
-
-  $tc.find('a[uid]').mouseenter(launchUcOpener).mouseleave(launchUcCloser)
-  $tc.find('.forward').each(forwardDialogEach)
-  $tc.find('.comment').click(commentDialog)
+  enchantTweets($tc)
   return $tc;
 }
 
@@ -164,11 +161,33 @@ function createCombineGroup(group) {
     tweetCache.set(group.forwards[i])
   }
   var $cg = $(renderTmpl('tmpl-combine', group))
-
-  $cg.find('a[uid]').mouseenter(launchUcOpener).mouseleave(launchUcCloser)
-  $cg.find('.forward').each(forwardDialogEach)
-  $cg.find('.comment').click(commentDialog)
+  enchantTweets($cg)
   return $cg
+}
+
+function enchantTweets($elem) {
+  $elem.find('a[uid]').mouseenter(launchUcOpener).mouseleave(launchUcCloser)
+  $elem.find('.tweet-ops .delete').each(deleteDialogEach)
+  $elem.find('.tweet-ops .forward').each(forwardDialogEach)
+  $elem.find('.tweet-ops .comment').click(commentDialog)
+}
+
+function deleteDialogEach() {
+  var $tweet = $(this).parents('.tweet').warnEmpty()
+  var tweetId = $tweet.attr('tweet-id')
+  function doDelete(id){
+    if (!id) {
+      console.warn('this id is '+id)
+      return
+    }
+    $.post('/tweet/'+id+'/delete')
+      .done(function(resp){
+        if(resp == true) {$tweet.remove()}
+        else {console.error("Tweet "+id+" delete failed.")}
+      })
+      .fail(function(resp){console.error("Tweet "+id+" delete failed. Error: "+resp)})
+  }
+  commonConfirmPopover($(this), function(){doDelete(tweetId)}, '确认要删除吗？', 'left')
 }
 
 function forwardDialogEach() {
@@ -271,36 +290,6 @@ function createBlogData(blog) {
 
   return $bd;
 }
-
-function initConfirmBox($tweet, $del, id) {
-    function doDelete(id){
-        if (!id) {
-            console.warn('this id is '+id)
-            return
-        }
-        $.post('/tweet/'+id+'/delete')
-          .done(function(resp){
-            if(resp == true) {$tweet.remove()}
-            else {console.error("Tweet "+id+" delete failed.")}
-          })
-          .fail(function(resp){console.error("Tweet "+id+" delete failed. Error: "+resp)})
-    }
-    commonConfirmPopover($del, function(){doDelete(id)}, '确认要删除吗？', 'left')
-}
-
-function addDelBtnIfNeeded($tweet, selfId){
-	if (selfId === $tweet.attr('author-id')) {
-        var $del = $('<a href="javascript:;">').text('删除')
-        	.css({marginLeft: '0.5em', marginRight: '0.5em'});
-        initConfirmBox($tweet, $del, $tweet.attr('tweet-id'));
-        console.log(selfId);
-        $tweet.find('.forward:not(.origin .forward)').warnEmpty().before($del);
-	}
-}
-function addDeleteButtons($tweetList){
-    $tweetList.warnEmpty().each(function(){addDelBtnIfNeeded($(this), window.userSelf.id);});
-}
-
 
 function replaceMention(content) {
     var indexOfAt = content.indexOf('@');

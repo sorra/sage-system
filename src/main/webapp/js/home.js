@@ -62,7 +62,7 @@ $(document).ready(function(){
 	});
 
 	// load istream
-	getStream('/read/istream').done(function(){addDeleteButtons($('.slist .tweet'));});
+	getStream('/read/istream')
 });
 
 function postTweetDone() {

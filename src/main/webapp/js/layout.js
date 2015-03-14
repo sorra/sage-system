@@ -134,6 +134,7 @@ template.helper('showTime', showTime)
 template.helper('userLinkAttrs', function (id){
   return 'href="'+'/private/'+id+'" uid="'+id+'"'
 })
+template.helper('global', function(){return window})
 
 $(document).ready(function(){
   if ($('#front-map').length > 0) {
