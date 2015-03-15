@@ -2,6 +2,9 @@
 window.ucOpener;
 window.ucCloser;
 
+setupFollowDialog()
+
+
 function launchUcOpener() {
 	if (this == undefined) {
 		console.log("launchUcOpener's this is undefined");
@@ -101,11 +104,11 @@ function cancelUcCloser() {
 
 function setAsFollowed($follow, uc) {
 	$follow.text('已关注').addClass('btn btn-success span pull-right').click(function(){
-		var $dialog = createTagDialog(uc);
-		var $body = $dialog.find('.modal-body');
+		var $dialog = $('#follow-dialog')
+		$dialog.data('usercard', uc)
 
 		$('<button>').text('修改').addClass('btn btn-primary')
-		.appendTo($dialog.find('.modal-footer'))
+		.appendTo($dialog.find('.modal-footer').empty())
 		.click(function(){
 			var selectedTagIds = [];
 			$dialog.find('.modal-body')
@@ -119,7 +122,7 @@ function setAsFollowed($follow, uc) {
 			.fail(function(){
 				alert('操作失败');
 			});
-			destroyTagDialog($dialog);
+				$dialog.modal('hide')
 		});
 
 		$('<button>').text('取消关注').addClass('btn btn-inverse')
@@ -129,20 +132,20 @@ function setAsFollowed($follow, uc) {
 			.fail(function(){
 				alert('操作失败');
 			});
-			destroyTagDialog($dialog);
+			$dialog.modal('hide')
 		});
 
-		$dialog.appendTo($('#container')).modal();
+		$dialog.modal();
 	});
 }
 
 function setAsNotFollowed($follow, uc) {
 	$follow.text('关注').addClass('btn btn-success span pull-right').click(function(){
-		// follow();
-		var $dialog = createTagDialog(uc);
+		var $dialog = $('#follow-dialog')
+		$dialog.data('usercard', uc)
 
 		$('<button>').text('关注').addClass('btn btn-primary')
-		.appendTo($dialog.find('.modal-footer'))
+		.appendTo($dialog.find('.modal-footer').empty())
 		.click(function(){
 			var selectedTagIds = [];
 			$dialog.find('.modal-body')
@@ -156,38 +159,30 @@ function setAsNotFollowed($follow, uc) {
 			.fail(function(){
 				alert('操作失败');
 			});
-			destroyTagDialog($dialog);
+			$dialog.modal('hide')
 		});
 
-		$dialog.appendTo($('#container')).modal();
+		$dialog.modal();
 	});
 }
 
-function createTagDialog(uc) {
-	var $dialog = $('<div>').addClass('tag-dialog modal fade')
-	.css({
-		width: '300px',
-		minHeight: '100px',
-		borderRadius: '10px'
-	});
-	$('<div>').addClass('modal-header').text('请选择0~n个标签').appendTo($dialog);
-	var $body = $('<div>').addClass('modal-body').appendTo($dialog);
-	$.each(uc.tags, function(idx, item){
-		var $tagBtn = $('<button>').text(item.name).attr('tag-id', item.id).addClass('btn').appendTo($body)
-		.click(function(){
-			$(this).toggleClass('btn-success');
-		});
-		console.log('ftids: '+uc.followedTagIds);
-		if ($.inArray(item.id, uc.followedTagIds) >= 0) {
-		    $tagBtn.addClass('btn-success');
-		}
-	});
-	$('<div>').addClass('modal-footer').appendTo($dialog);
-
-	return $dialog;
-}
-
-function destroyTagDialog($dialog) {
-	$dialog.remove();
-	$('.modal-backdrop').remove();
+function setupFollowDialog(){
+	var $fdia = $(renderTmpl('tmpl-modal', {modalId: 'follow-dialog'})).appendTo($('body'))
+	$fdia.find('.modal-title').text('请选择0~n个标签')
+	$('#follow-dialog').on('show.bs.modal', function(){
+		var $this = $(this)
+		var $body = $this.find('.modal-body').empty()
+		var uc = $this.data('usercard')
+		if (!uc) {throw new Error}
+		$.each(uc.tags, function(idx, item){
+			var $tagBtn = $('<button>').text(item.name).attr('tag-id', item.id).addClass('btn').appendTo($body)
+				.click(function(){
+					$(this).toggleClass('btn-success');
+				});
+			console.info('followed tag ids: '+uc.followedTagIds);
+			if ($.inArray(item.id, uc.followedTagIds) >= 0) {
+				$tagBtn.addClass('btn-success');
+			}
+		})
+	})
 }
