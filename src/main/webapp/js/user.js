@@ -167,9 +167,9 @@ function setAsNotFollowed($follow, uc) {
 }
 
 function setupFollowDialog(){
-	var $fdia = $(renderTmpl('tmpl-modal', {modalId: 'follow-dialog'})).appendTo($('body'))
-	$fdia.find('.modal-title').text('请选择0~n个标签')
-	$('#follow-dialog').on('show.bs.modal', function(){
+	var $dia = $(renderTmpl('tmpl-modal', {modalId: 'follow-dialog'})).appendTo($('body'))
+	$dia.find('.modal-title').text('请选择0~n个标签')
+	$dia.on('show.bs.modal', function(){
 		var $this = $(this)
 		var $body = $this.find('.modal-body').empty()
 		var uc = $this.data('usercard')

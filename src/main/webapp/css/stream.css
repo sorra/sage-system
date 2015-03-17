@@ -54,12 +54,22 @@
 .stream-item .tags a{
 	margin-left: 0.5em;
 }
-.forward-dialog *[mf-id]{
+
+#forward-dialog .modal-dialog{
+	width: 450px;
+	min-height: 100px;
+	border-radius: 10px;
+}
+#forward-dialog *[mf-id]{
   background-color: lightgrey;
   padding: 2px;
 }
-.forward-dialog .mf-removed{
+#forward-dialog .mf-removed{
 	display: none;
+}
+#forward-dialog textarea{
+	width: 400px;
+	min-height: 100px;
 }
 .comment-dialog textarea{
   overflow: hidden;

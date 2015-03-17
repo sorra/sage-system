@@ -34,7 +34,6 @@ body>.container{
   width: 50px;
   height: 50px;
 }
-
 .user-card .name{
   font-weight: bold;
   color: black;
@@ -47,4 +46,12 @@ body>.container{
   background-image: url("data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgi…gd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0idXJsKCNncmFkKSIgLz48L3N2Zz4=");
   background-color: rgba(102,105,104,0.9);
   background: radial-gradient(farthest-side ellipse at 10% 0, rgba(102,105,104,0.9),rgba(93,112,119,0.89),rgba(160,174,150,0.9));
+}
+.create-tag{
+  width: 100%;
+}
+#new-tag-dialog .modal-dialog{
+  width: 300px;
+  min-height: 100px;
+  border-radius: 10px;
 }

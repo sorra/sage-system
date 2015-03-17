@@ -33,49 +33,50 @@ $.fn.setCursorPosition = function(pos) {
 };
 
 function buildNavTagTree($lnk, tagTree) {
-    var $navTagTree = $('<div>');
-    var $createTag = $('<btn>').text('新建').addClass('btn btn-warning').css('display', 'block').appendTo($navTagTree);
-    
-//    var $dialog = $('<div class="new-tag-dialog modal">')
-//        .css({
-//            width : '300px',
-//            minHeight : '100px',
-//            borderRadius : '10px'
-//        });
-//    $('<div class="modal-header">').text('新的标签').appendTo($dialog);
-//    var $body = $('<div class="modal-body">').appendTo($dialog);
-//    $('<input id="name">').appendTo($body);
-//    $('<input id="parent-id">').appendTo($body);
-    var $dialog = $('.proto > .new-tag-dialog').warnEmpty().clone();
-    
-    var $footer = $dialog.find('.modal-footer');
-    $('<button class="btn btn-primary">').text('确定').css({float: 'right'}).appendTo($footer)
-        .click(function() {
-            $.post('/tag/new', {
-                name: $dialog.find('#name').val(),
-                parentId: $dialog.find('#parent-id').val()
-            });
-            $dialog.find('#name').val('');
-            $dialog.find('#parent-id').val('');
-            $dialog.modal('hide');
-        });
-    $createTag.click(function(){
-        $dialog.modal('show');
-    });
-    
-    buildTagTree(function(tag){
-        return createTagLabel(tag).addClass('btn')
-            .click(function(){
-                $lnk.popover('hide');
-            });
-    }, $navTagTree, tagTree);
-    $lnk.popover({
-            html: true,
-            placement: 'bottom',
-            trigger: 'manual',
-            selector: '#tag-tree-popover',
-            content: $navTagTree
-    });
+  var $navTagTree = $('<div>');
+  var $createTag = $('<button class="create-tag btn btn-warning">新建</button>').appendTo($navTagTree);
+
+  var $dialog = $(renderTmpl("tmpl-modal", {modalId: 'new-tag-dialog'})).appendTo($('body'))
+  var $nodes = $('#tmpl-new-tag-dialog')
+  nodesCopy('.modal-title', $nodes, $dialog)
+  nodesCopy('.modal-body', $nodes, $dialog)
+  nodesCopy('.modal-footer', $nodes, $dialog)
+
+  $dialog.find('.submit').click(function() {
+    var name = $dialog.find('#name').val()
+    var parentId = $dialog.find('#parent-id').val()
+    if (name && name.length > 0 && parentId && parentId.length > 0) {
+      $.post('/tag/new', {
+        name: name,
+        parentId: parentId
+      })
+    }
+    $dialog.find('#name').val('')
+    $dialog.find('#parent-id').val('')
+    $dialog.modal('hide')
+  });
+
+  $('body').delegate('.create-tag', 'click', function(){
+    $dialog.modal('show');
+  });
+
+  buildTagTree(function(tag){
+    return createTagLabel(tag).addClass('btn')
+      .click(function(){
+        $lnk.popover('hide');
+      });
+  }, $navTagTree, tagTree);
+  $lnk.popover({
+    html: true,
+    placement: 'bottom',
+    trigger: 'manual',
+    selector: '#tag-tree-popover',
+    content: $navTagTree
+  });
+}
+
+function nodesCopy(selector, from, to){
+  from.find(selector).children().clone().appendTo(to.find(selector).empty())
 }
 
 /*

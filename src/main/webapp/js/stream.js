@@ -34,6 +34,8 @@ var tweetCache = {
   }
 }
 
+setupForwardDialog()
+
 $(document).ready(function() {
   $(document).on('click', '.forward-dialog *[mf-id]', function() {
     $(this).addClass('mf-removed')
@@ -193,11 +195,9 @@ function deleteDialogEach() {
 function forwardDialogEach() {
   var tweetId = $(this).parents('.tweet').warnEmpty().attr('tweet-id')
   if (!tweetId) {console.warn('tweet-id attr is not present on tweet!')}
-  var tweet = tweetCache.get(tweetId)
-  var $dialog = $(renderTmpl('tmpl-forward-dialog', {t: tweet, mfs: tweet.midForwards}))
-  var innerHtml = $dialog.html()
 
   var submit = function() {
+    var $dialog = $('#forward-dialog')
     $.post('/post/forward', {
       content: $dialog.find('.input').val(),
       originId: tweetId,
@@ -208,11 +208,8 @@ function forwardDialogEach() {
     $dialog.modal('hide')
   }
 
-  $dialog.appendTo('#container').modal('hide')
   $(this).click(function () {
-    $dialog.html(innerHtml)
-    $dialog.find('.btn-primary').click(submit)
-    $dialog.modal('show')
+    $('#forward-dialog').data('tweetId', tweetId).modal('show').find('.btn-primary').click(submit)
   })
 }
 
@@ -289,6 +286,21 @@ function createBlogData(blog) {
   }
 
   return $bd;
+}
+
+function setupForwardDialog() {
+  var $dia = $(renderTmpl("tmpl-modal", {modalId: 'forward-dialog'})).appendTo($('body'))
+  $dia.find('.modal-title').text('转发')
+  $dia.on('show.bs.modal', function(){
+    var $this = $(this)
+    var tweetId = $this.data('tweetId')
+    if (!tweetId) {throw new Error}
+    var tweet = tweetCache.get(tweetId)
+    var $nodes = $(renderTmpl('tmpl-forward-dialog', {t: tweet, mfs: tweet.midForwards}))
+    nodesCopy('.modal-title', $nodes, $this)
+    nodesCopy('.modal-body', $nodes, $this)
+    nodesCopy('.modal-footer', $nodes, $this)
+  })
 }
 
 function replaceMention(content) {
