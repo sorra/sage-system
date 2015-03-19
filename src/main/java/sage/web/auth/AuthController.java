@@ -108,7 +108,7 @@ public class AuthController {
   private static final BadArgumentException
       EMAIL_TOO_LONG = new BadArgumentException("Email不能超过50个字符"),
       EMAIL_WRONG_FORMAT = new BadArgumentException("Email格式错误"),
-      PASSWORD_TOO_SHORT = new BadArgumentException("密码太短，至少要8位"),
-      PASSWORD_TOO_LONG = new BadArgumentException("密码太长，不要超过20位"),
+      PASSWORD_TOO_SHORT = new BadArgumentException("密码太短，应为8~20位"),
+      PASSWORD_TOO_LONG = new BadArgumentException("密码太长，应为8~20位"),
       REPEAT_PASSWORD_NOT_MATCH = new BadArgumentException("两次输入的密码不一致");
 }
