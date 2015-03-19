@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<title>登录</title>
   <link href="rs/css/bootstrap.css" rel="stylesheet">
   <link href="rs/css/layout.css" rel="stylesheet">
@@ -39,7 +39,7 @@
   </style>
 </head>
 <body class="background-dark">
-  <form action="#{base}/auth/login" method="post">
+  <form action="/auth/login" method="post">
     <div class="input-group">
       <label for="email">邮箱</label>
       <input id="email" name="email" type="text" placeholder="请输入您的邮箱" />
@@ -53,7 +53,7 @@
         <span class="small-circle"><i class="fa fa-caret-right"></i></span>
         <small>登录</small>
       </button>
-      <a class="btn" href="#{base}/register">注册新的账号</a>
+      <a class="btn" href="/register">注册新的账号</a>
     </div>
   </form>
   $!{includeJS()}
