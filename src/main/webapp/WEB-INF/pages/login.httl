@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+#set(components = ["login"])
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<title>登录</title>
@@ -35,6 +36,9 @@
       padding: 2em;
       background-color: rgba(51,51,51,0.25);
       text-align: center;
+    }
+    .validation-alert{
+      color: red;
     }
   </style>
 </head>
