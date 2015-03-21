@@ -62,6 +62,7 @@
         <span class="small-circle"><i class="fa fa-caret-right"></i></span>
         <small>注册</small>
       </button>
+      <a class="btn" href="/login">已有账号，我要登录</a>
     </div>
   </form>
 $!{includeJS()}

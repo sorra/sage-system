@@ -53,7 +53,7 @@
         <span class="small-circle"><i class="fa fa-caret-right"></i></span>
         <small>登录</small>
       </button>
-      <a class="btn" href="/register">注册新的账号</a>
+      <a class="btn" href="/register">没有账号，注册一个</a>
     </div>
   </form>
   $!{includeJS()}
