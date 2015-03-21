@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+#set(components = ["bootstrap", "layout", "tag"])
+#set(UserLabel user)
+<head>
+  <meta charset="UTF-8">
+  <title></title>
+  $!{includeCSS()}
+</head>
+<body>
+$!{include("navbar.httl")}
+<div id="container" class="container">
+  <form id="user-info" action="user-info" method="post" enctype="multipart/form-data">
+    <span>名字：</span>
+    <input name="name" type="text" value="${user.name}" />
+    <br />
+    <span>介绍: </span>
+    <input name="intro" type="text" value="${user.intro}" />
+    <br />
+    <span>头像: </span>
+    <img src="${user.avatar}" />
+    <input name="avatar" type="file" />
+    <input type="submit" />
+  </form>
+</div>
+$!{includeProto}
+$!{includeJS()}
+</body>
+</html>
