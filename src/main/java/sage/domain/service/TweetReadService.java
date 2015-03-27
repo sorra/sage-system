@@ -40,15 +40,11 @@ public class TweetReadService {
   private CommentRepository commentRepo;
 
   public List<Tweet> byFollowings(long userId, Edge edge) {
-    List<Tweet> tweets = new ArrayList<>();
-
-    tweets.addAll(tweetRepo.byAuthor(userId, edge));
+    List<Tweet> tweets = Colls.copy(tweetRepo.byAuthor(userId, edge));
 
     // Find and merge tweets from followings
     List<Follow> followings = new ArrayList<>(followRepo.followings(userId));
-    for (Follow follow : followings) {
-      tweets.addAll(byFollow(follow, edge));
-    }
+    followings.forEach(f -> tweets.addAll(byFollow(f, edge)));
     Collections.sort(tweets, Comparators.tweetOnId);
 
     // Select the top items, for later's higher sort
@@ -72,20 +68,16 @@ public class TweetReadService {
   }
 
   public List<Tweet> byFollowListLite(FollowListLite list, Edge edge) {
-    for (FollowInfoLite info : list.getList()) {
-      tweetRepo.byAuthorAndTags(info.getUserId(), tagRepo.byIds(info.getTagIds()), edge);
-    }
     return Colls.flatMap(list.getList(),
         info -> tweetRepo.byAuthorAndTags(info.getUserId(), tagRepo.byIds(info.getTagIds()), edge));
   }
 
   public List<Tweet> byTag(long tagId, Edge edge) {
-    Tag tag = tagRepo.load(tagId);
-    return new ArrayList<>(tweetRepo.byTag(tag, edge));
+    return Colls.copy(tweetRepo.byTag(tagRepo.load(tagId), edge));
   }
   
   public List<Tweet> byAuthor(long authorId, Edge edge) {
-    return new ArrayList<>(tweetRepo.byAuthor(authorId, edge));
+    return Colls.copy(tweetRepo.byAuthor(authorId, edge));
   }
 
   public TweetCard getTweetCard(long tweetId) {
@@ -94,11 +86,11 @@ public class TweetReadService {
   }
 
   public Collection<Tweet> getForwards(long originId) {
-    return new ArrayList<>(tweetRepo.byOrigin(originId));
+    return Colls.copy(tweetRepo.byOrigin(originId));
   }
 
   public Collection<Comment> getComments(long sourceId) {
-    return new ArrayList<>(commentRepo.bySource(sourceId));
+    return Colls.copy(commentRepo.bySource(sourceId));
   }
 
   /**

@@ -37,10 +37,7 @@ public class BlogReadService {
   public List<BlogData> blogStream(long userId, Edge edge) {
     List<Blog> blogs = new ArrayList<>();
     // TODO also use tags
-    for (Follow follow : followRepo.followings(userId)) {
-      List<Blog> results = blogRepo.byAuthor(follow.getTarget().getId());
-      blogs.addAll(results);
-    }
+    blogs = Colls.flatMap(followRepo.followings(userId), f -> blogRepo.byAuthor(f.getTarget().getId()));
     return listBlogDatas(blogs, false);
   }
 
@@ -48,9 +45,10 @@ public class BlogReadService {
     return listBlogDatas(blogRepo.byAuthor(authorId), true);
   }
 
+  /** eagerCopy aims at Hibernate */
   private List<BlogData> listBlogDatas(List<Blog> blogs, boolean eagerCopy) {
     if (eagerCopy) {
-      blogs = new ArrayList<>(blogs);
+      blogs = Colls.copy(blogs);
     }
     return Colls.map(blogs, BlogData::new);
   }

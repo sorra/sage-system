@@ -12,6 +12,7 @@ import sage.entity.FollowListHeed;
 import sage.entity.TagHeed;
 import sage.entity.Tweet;
 import sage.transfer.*;
+import sage.util.Colls;
 
 @Service
 public class StreamService {
@@ -83,9 +84,7 @@ public class StreamService {
   }
   
   private List<TweetCard> naiveSortTC(Collection<TweetCard> tcs) {
-    List<TweetCard> tcList = new ArrayList<>(tcs);
-    Collections.sort(tcList, Comparators.tweetCardOnId);
-    return tcList;
+    return Colls.copySort(Comparators.tweetCardOnId, tcs);
   }
 
   private List<Item> higherSort(List<TweetCard> tcs) {

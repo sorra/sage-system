@@ -11,32 +11,17 @@ public abstract class Comparators {
   /**
    * Inverse order (larger on front)
    */
-  public static final Comparator<Tweet> tweetOnId = new Comparator<Tweet>() {
-    @Override
-    public int compare(Tweet o1, Tweet o2) {
-      return compareId(o1.getId(), o2.getId());
-    }
-  };
+  public static final Comparator<Tweet> tweetOnId = (o1, o2) -> compareId(o1.getId(), o2.getId());
   
   /**
    * Inverse order (larger on front)
    */
-  public static final Comparator<TweetCard> tweetCardOnId = new Comparator<TweetCard>() {
-    @Override
-    public int compare(TweetCard o1, TweetCard o2) {
-      return compareId(o1.getId(), o2.getId());
-    }
-  };
+  public static final Comparator<TweetCard> tweetCardOnId = (o1, o2) -> compareId(o1.getId(), o2.getId());
   
   /**
    * Inverse order (larger on front)
    */
-  public static final Comparator<Fav> favOnId = new Comparator<Fav>() {
-    @Override
-    public int compare(Fav o1, Fav o2) {
-      return compareId(o1.getId(), o2.getId());
-    }
-  };
+  public static final Comparator<Fav> favOnId = (o1, o2) -> compareId(o1.getId(), o2.getId());
 
   /**
    * Inverse order (larger on front)
