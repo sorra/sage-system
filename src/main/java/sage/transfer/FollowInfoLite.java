@@ -11,7 +11,7 @@ public class FollowInfoLite {
   FollowInfoLite() {}
 
   FollowInfoLite(FollowInfo followInfo) {
-    userId = followInfo.getTarget().getId();
+    userId = followInfo.getUser().getId();
     tagIds = new ArrayList<>();
     followInfo.getTags().forEach(tag -> tagIds.add(tag.getId()));
   }

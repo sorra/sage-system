@@ -5,23 +5,23 @@ import java.util.Collection;
 import sage.entity.Follow;
 
 public class FollowInfo {
-  private UserLabel target;
+  private UserLabel user;
   private Collection<TagLabel> tags;
   
   FollowInfo() {}
 
-  public FollowInfo(UserLabel target, Collection<TagLabel> tags) {
-    this.target = target;
+  public FollowInfo(UserLabel user, Collection<TagLabel> tags) {
+    this.user = user;
     this.tags = tags;
   }
 
   public FollowInfo(Follow follow) {
-    target = new UserLabel(follow.getTarget());
+    user = new UserLabel(follow.getTarget());
     tags = TagLabel.listOf(follow.getTags());
   }
   
-  public UserLabel getTarget() {
-    return target;
+  public UserLabel getUser() {
+    return user;
   }
   
   public Collection<TagLabel> getTags() {

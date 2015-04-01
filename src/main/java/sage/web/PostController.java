@@ -29,14 +29,15 @@ public class PostController {
   @RequestMapping("/tweet")
   public boolean tweet(
       @RequestParam String content,
-      @RequestParam(value = "attachmentRefs[]", defaultValue = "") Collection<String> attachmentRefs,
+      @RequestParam(value = "pictureRefs[]", defaultValue = "") Collection<String> pictureRefs,
       @RequestParam(value = "tagIds[]", defaultValue = "") Collection<Long> tagIds) {
     Long uid = Auth.checkCuid();
     if (content.isEmpty() || content.length() > TWEET__MAX_LEN) {
       throw BAD_INPUT_LENGTH;
     }
 
-    //TODO Process attachments
+    //TODO Process pictures
+    logger.info("Got picture: " + pictureRefs);
     Tweet tweet = tweetPostService.newTweet(uid, content, tagIds);
     logger.info("post tweet {} success", tweet.getId());
     return true;
