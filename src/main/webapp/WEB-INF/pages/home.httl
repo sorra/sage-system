@@ -4,10 +4,9 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<title>贤者：首页</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   $!{includeCSS()}
 </head>
-<body class="background-dark">
+<body>
 $!{include("navbar.httl")}
 
 <div id="container" class="container">
@@ -17,7 +16,7 @@ $!{include("navbar.httl")}
 		  <ul class="friends unstyled">好友</ul>
 		</div>
 		<div class="main">
-			$!{include("top-box.httl")}
+			$!{include("post-box.httl")}
 			<div class="stream">
 				<div class="slist"></div>
 			</div>
