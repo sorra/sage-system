@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+#set(components = ["bootstrap"])
+#set(Collection<Topic> topics)
+<head>
+  <meta charset="UTF-8">
+  <title>"${title}"主题列表</title>
+  $!{includeCSS()}
+</head>
+<body>
+  <div id="container" class="container">
+  #for(topic : topics)
+    <div class="topic">
+      <a href="/topic/${topic.id}">${topic.title}</a>
+      <p>${topic.preview}</p>
+      <span>${topic.createdTime.format("yyyy-MM-dd HH:mm:ss")}</span>
+    </div>
+  #end
+  </div>
+</body>
+</html>

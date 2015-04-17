@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+#set(components = ["bootstrap"])
+#set(TopicDetail topic)
+  <head>
+    <meta charset="UTF-8">
+    <title>${topic.title}</title>
+    $!{includeCSS()}
+  </head>
+  <body>
+  <div id="container" class="container">
+    <div class="topic" topic-id="${topic.id}">
+      <h5>${topic.title}</h5>
+      <div>${topic.content}</div>
+      <span>${topic.author.name}</span>
+      <span>${topic.createdTime.format("yyyy-MM-dd HH:mm:ss")}</span>
+      <span>${topic.modifiedTime.format("yyyy-MM-dd HH:mm:ss")}</span>
+    </div>
+  </div>
+  </body>
+</html>
