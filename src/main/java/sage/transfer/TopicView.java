@@ -6,7 +6,7 @@ import java.util.function.Function;
 import sage.entity.Topic;
 import sage.entity.User;
 
-public class TopicDetail {
+public class TopicView {
   public long id;
   public String title;
   public UserCard author;
@@ -14,9 +14,9 @@ public class TopicDetail {
   public Date createdTime;
   public Date modifiedTime;
 
-  TopicDetail() {}
+  public TopicView() {}
 
-  public TopicDetail(Topic topic, Function<User, UserCard> userToCard) {
+  public TopicView(Topic topic, Function<User, UserCard> userToCard) {
     id = topic.getId();
     title = topic.getTitle();
     author = userToCard.apply(topic.getAuthor());
@@ -24,4 +24,5 @@ public class TopicDetail {
     createdTime = topic.getCreatedTime();
     modifiedTime = topic.getModifiedTime();
   }
+
 }

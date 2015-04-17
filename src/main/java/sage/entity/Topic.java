@@ -15,6 +15,14 @@ public class Topic {
   private Date modifiedTime;
   private Collection<Reply> replies = new ArrayList<>();
 
+  Topic() {}
+  public Topic(String title, String content, User author, Date createdTime) {
+    this.title = title;
+    this.content = content;
+    this.author = author;
+    this.createdTime = createdTime;
+  }
+
   @Id @GeneratedValue
   public Long getId() {
     return id;
