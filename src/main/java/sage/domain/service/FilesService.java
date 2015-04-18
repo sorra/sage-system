@@ -97,10 +97,13 @@ public class FilesService {
       // Find the largest existing number in files
       long max = 0;
       for (String name : dir.list()) {
-        String numStr = name.substring(0, name.length() - SUFFIX.length());
-        long current = Long.parseLong(numStr);
-        if (current > max) {
-          max = current;
+        try {
+          long current = Long.parseLong(name.substring(0, name.length() - SUFFIX.length()));
+          if (current > max) {
+            max = current;
+          }
+        } catch (NumberFormatException e) {
+          log.warn("Non-number named file detected: " + name);
         }
       }
       maxNumber.set(max);
