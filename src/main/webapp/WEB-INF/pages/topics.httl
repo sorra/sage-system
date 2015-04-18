@@ -1,11 +1,16 @@
 <!DOCTYPE html>
 <html>
 #set(components = ["bootstrap"])
-#set(Collection<Topic> topics)
+#set(Collection<TopicPreview> topics)
 <head>
   <meta charset="UTF-8">
   <title>"${title}"主题列表</title>
   $!{includeCSS()}
+  <style>
+    .topic{
+      border: 1px solid
+    }
+  </style>
 </head>
 <body>
   <div id="container" class="container">
