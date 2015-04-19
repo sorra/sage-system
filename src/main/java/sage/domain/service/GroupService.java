@@ -4,6 +4,8 @@ import java.util.Collection;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import sage.domain.commons.DomainRuntimeException;
+import sage.domain.commons.IdCommons;
 import sage.domain.repository.GroupRepository;
 import sage.domain.repository.GroupTopicRepository;
 import sage.domain.repository.TagRepository;
@@ -29,6 +31,9 @@ public class GroupService {
   }
 
   public GroupTopic post(long userId, Blog blog) {
+    if (!IdCommons.equal(userId, blog.getAuthor().getId())) {
+      throw new DomainRuntimeException("Cannot post topic. User[%d] is not the author of Blog[%d]", userId, blog.getId());
+    }
     return groupTopicRepo.save(new GroupTopic(blog));
   }
 
