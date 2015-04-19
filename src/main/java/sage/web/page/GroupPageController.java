@@ -27,7 +27,14 @@ public class GroupPageController {
   @Autowired
   private BlogPostService blogPostService;
 
-  @RequestMapping("/group/{id}/topics")
+  @RequestMapping("/group/new")
+  public String newGroup(@RequestParam String name, @RequestParam String introduction,
+                         @RequestParam("tagIds[]") Collection<Long> tagIds) {
+    long id = groupService.newGroup(Auth.checkCuid(), name, introduction, tagIds).getId();
+    return "redirect:/group/" + id;
+  }
+
+  @RequestMapping("/group/{id}")
   String topics(@PathVariable Long id, ModelMap model) {
     String area = groupService.getGroup(id).getName();
     Collection<BlogPreview> items = Colls.map(groupService.topics(id),

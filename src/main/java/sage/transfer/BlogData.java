@@ -16,7 +16,8 @@ public class BlogData {
   private UserCard authorCard = null;
   private String title;
   private String content;
-  private Date time;
+  private Date createdTime;
+  private Date modifiedTime;
   private List<TagLabel> tags;
   
   BlogData() {}
@@ -30,7 +31,8 @@ public class BlogData {
 
     title = blog.getTitle();
     content = blog.getContent();
-    time = blog.getCreatedTime();
+    createdTime = blog.getCreatedTime();
+    modifiedTime = blog.getModifiedTime();
 
     tags = Colls.map(blog.getTags(), TagLabel::new);
   }
@@ -63,8 +65,12 @@ public class BlogData {
     return content;
   }
 
-  public Date getTime() {
-    return time;
+  public Date getCreatedTime() {
+    return createdTime;
+  }
+
+  public Date getModifiedTime() {
+    return modifiedTime;
   }
 
   public List<TagLabel> getTags() {

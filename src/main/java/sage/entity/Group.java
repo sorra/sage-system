@@ -13,6 +13,17 @@ public class Group {
   private Date createdTime;
   private Set<User> members = new HashSet<>();
 
+  Group() {}
+
+  public Group(String name, String introduction, Set<Tag> tags, User creator, Date createdTime) {
+    this.name = name;
+    this.introduction = introduction;
+    this.tags = tags;
+    this.creator = creator;
+    this.createdTime = createdTime;
+    this.members.add(creator);
+  }
+
   @Id @GeneratedValue
   public Long getId() {
     return id;
