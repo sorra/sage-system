@@ -6,6 +6,7 @@ body{
 }
 body>.container{
     margin-top: 50px;
+    min-height: 600px;
 }
 .mybrand{
     color: #000;

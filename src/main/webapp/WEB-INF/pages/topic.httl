@@ -1,13 +1,19 @@
 <!DOCTYPE html>
 <html>
-#set(components = ["bootstrap"])
+#set(components = ["bootstrap", "layout"])
 #set(TopicView topic)
-  <head>
-    <meta charset="UTF-8">
-    <title>${topic.title}</title>
-    $!{includeCSS()}
-  </head>
-  <body>
+<head>
+  <meta charset="UTF-8">
+  <title>${topic.title}</title>
+  $!{includeCSS()}
+  <style>
+    .topic{
+      background: #f0f0f0
+    }
+  </style>
+</head>
+<body>
+  $!{include("navbar.httl")}
   <div id="container" class="container">
     <div class="topic" topic-id="${topic.id}">
       <h5>${topic.title}</h5>
@@ -17,5 +23,5 @@
       <span>${topic.modifiedTime.format("yyyy-MM-dd HH:mm:ss")}</span>
     </div>
   </div>
-  </body>
+</body>
 </html>

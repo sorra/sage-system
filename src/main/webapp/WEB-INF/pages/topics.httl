@@ -1,18 +1,19 @@
 <!DOCTYPE html>
 <html>
-#set(components = ["bootstrap"])
+#set(components = ["bootstrap", "layout"])
 #set(Collection<TopicPreview> topics)
 <head>
   <meta charset="UTF-8">
-  <title>"${title}"主题列表</title>
+  <title>{${title}}主题列表</title>
   $!{includeCSS()}
   <style>
     .topic{
-      border: 1px solid
+      background: #f0f0f0
     }
   </style>
 </head>
 <body>
+$!{include("navbar.httl")}
   <div id="container" class="container">
   #for(topic : topics)
     <div class="topic">
