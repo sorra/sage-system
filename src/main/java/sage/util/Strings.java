@@ -1,5 +1,7 @@
 package sage.util;
 
+import java.util.Collection;
+
 /**
  * String utilities
  */
@@ -21,6 +23,17 @@ public class Strings {
     } else {
       return source.substring(beginIndex, endIndex);
     }
+  }
+
+  public static String join(Collection<String> strings, String sep) {
+    StringBuilder buf = new StringBuilder();
+    for (String value : strings) {
+      if (buf.length() > 0) {
+        buf.append(sep);
+      }
+      buf.append(value);
+    }
+    return buf.toString();
   }
 
   /**

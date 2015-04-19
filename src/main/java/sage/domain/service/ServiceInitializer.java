@@ -2,10 +2,8 @@ package sage.domain.service;
 
 import java.util.Arrays;
 import java.util.Collections;
-import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import sage.entity.Blog;
 import sage.entity.Tag;
@@ -90,7 +88,7 @@ public class ServiceInitializer {
 
   private void post() {
     Blog posted;
-    posted = blogPostService.newBlog(admin, "浅谈面向对象语言的类型运算",
+    posted = blogPostService.post(admin, "浅谈面向对象语言的类型运算",
         "像C#或者Haskell这样的先进的语言都有一个跟语法分不开的最核心的库。"
             + "譬如说C#的int，是mscorlib.dll里面的System.SInt32，Haskell的(x:xs)"
             + "则定义在了prelude里面。Vczh Library++ 3.0的ManagedX语言也有一个"
@@ -112,7 +110,7 @@ public class ServiceInitializer {
             + "进行讨论，并解释他们之间互相换算的方法。",
         Arrays.asList(tech));
     tweetPostService.share(admin, posted);
-    posted = blogPostService.newBlog(bethia, "潜行吧！奈亚子",
+    posted = blogPostService.post(bethia, "潜行吧！奈亚子",
         "点击:296,371 收藏:2,245 关注人数:2,672 "
             + "同义词:這いよる! ニャルアニ！潜行吧！"
             + "奈亚子W奈亚子W潜行吧!奈亚子W《潜行吧！奈亚子》"
@@ -122,7 +120,7 @@ public class ServiceInitializer {
             + "与此前的FLASH动画不同，本作将回归主线。",
         Arrays.asList(culture));
     tweetPostService.share(bethia, posted);
-    posted = blogPostService.newBlog(centos, "群体对人的影响",
+    posted = blogPostService.post(centos, "群体对人的影响",
         "群体对人的影响，主要是极化，即群体愚蠢或群体智慧。"
             + "理论上，有一个共同的目标，分工互补，就可形成紧密的群。"
             + "《乌合之众》里讲到，群体对于个体有着极端放大和缩小的能力，"
@@ -137,10 +135,10 @@ public class ServiceInitializer {
             + "白蚁可以构筑相当于人类数千层楼高的蚁巢，且通风卫生情况良好。",
         Arrays.asList(society));
     tweetPostService.share(centos, posted);
-    long a1 = tweetPostService.newTweet(admin, "Post at root.", Arrays.asList(root)).getId();
-    long a2 = tweetPostService.newTweet(admin, "HUUSF View age.", Arrays.asList(view)).getId();
-    long b1 = tweetPostService.newTweet(bethia, "Music better!", Arrays.asList(music)).getId();
-    long c1 = tweetPostService.newTweet(centos, "Tech status", Arrays.asList(tech)).getId();
+    long a1 = tweetPostService.post(admin, "Post at root.", Arrays.asList(root)).getId();
+    long a2 = tweetPostService.post(admin, "HUUSF View age.", Arrays.asList(view)).getId();
+    long b1 = tweetPostService.post(bethia, "Music better!", Arrays.asList(music)).getId();
+    long c1 = tweetPostService.post(centos, "Tech status", Arrays.asList(tech)).getId();
 
     tweetPostService.forward(admin, "forward", a1, Collections.emptyList());
     tweetPostService.forward(bethia, "OK, good", a2, Collections.emptyList());

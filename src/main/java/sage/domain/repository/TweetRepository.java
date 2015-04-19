@@ -13,23 +13,13 @@ import sage.entity.Tweet;
 public class TweetRepository extends BaseRepository<Tweet> {
   private static final int MAX_RESULTS = 20;
 
-  public List<Tweet> byTag(Tag tag) {
-    return byTag(tag, Edge.none());
-  }
-  
-  public List<Tweet> byTag(Tag tag, Edge edge) {
-    Collection<Tag> qtags = TagRepository.getQueryTags(tag);
-    return byTags(qtags, edge);
-  }
-
-  List<Tweet> byTags(Collection<Tag> tags, Edge edge) {
+  public List<Tweet> byTags(Collection<Tag> tags, Edge edge) {
     if (tags.isEmpty()) {
       return new LinkedList<>();
     }
-    tags = TagRepository.getQueryTags(tags);
-    String q = "select t from Tweet t join t.tags ta where ta in :tags";
+    String q = "select t from Tweet t join t.tags tgs where tgs in :qtags";
     return enhanceQuery(q, edge)
-        .setParameterList("tags", tags)
+        .setParameterList("qtags", TagRepository.getQueryTags(tags))
         .setMaxResults(MAX_RESULTS)
         .list();
   }

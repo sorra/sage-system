@@ -7,6 +7,7 @@ import httl.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import sage.domain.commons.BadArgumentException;
 import sage.domain.commons.DomainRuntimeException;
 import sage.domain.commons.IdCommons;
 import sage.domain.repository.BlogRepository;
@@ -19,6 +20,9 @@ import sage.transfer.BlogData;
 @Service
 @Transactional
 public class BlogPostService {
+  private static final int BLOG_TITLE_MAX_LEN = 100, BLOG_CONTENT_MAX_LEN = 10000;
+  private static final BadArgumentException BAD_INPUT_LENGTH = new BadArgumentException(
+      "输入长度不正确(标题1~100字,内容1~10000字)");
 
   @Autowired
   private SearchBase searchBase;
@@ -29,7 +33,8 @@ public class BlogPostService {
   @Autowired
   private TagRepository tagRepo;
 
-  public Blog newBlog(long userId, String title, String content, Collection<Long> tagIds) {
+  public Blog post(long userId, String title, String content, Collection<Long> tagIds) {
+    checkLength(title, content);
     Blog blog = new Blog(title, content, userRepo.load(userId), new Date(), tagRepo.byIds(tagIds));
     escapeAndSetText(blog);
 
@@ -39,13 +44,14 @@ public class BlogPostService {
   }
 
   public Blog edit(long userId, long blogId, String title, String content, Collection<Long> tagIds) {
+    checkLength(title, content);
     Blog blog = blogRepo.get(blogId);
     if (!IdCommons.equal(blog.getAuthor().getId(), userId)) {
       throw new DomainRuntimeException("User[%d] is not the author of Blog[%d]", userId, blogId);
     }
     blog.setTitle(title);
     blog.setContent(content);
-    blog.setTime(new Date());
+    blog.setModifiedTime(new Date());
     blog.setTags(tagRepo.byIds(tagIds));
     escapeAndSetText(blog);
 
@@ -61,6 +67,13 @@ public class BlogPostService {
     }
     blogRepo.delete(blog);
     searchBase.delete(BlogData.class, blog.getId());
+  }
+
+  private void checkLength(String title, String content) {
+    if (title.isEmpty() || title.length() > BLOG_TITLE_MAX_LEN
+        || content.isEmpty() || content.length() > BLOG_CONTENT_MAX_LEN) {
+      throw BAD_INPUT_LENGTH;
+    }
   }
 
   private void escapeAndSetText(Blog blog) {

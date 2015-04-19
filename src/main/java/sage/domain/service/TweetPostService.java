@@ -6,6 +6,7 @@ import httl.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import sage.domain.commons.BadArgumentException;
 import sage.domain.commons.DomainRuntimeException;
 import sage.domain.commons.IdCommons;
 import sage.domain.repository.CommentRepository;
@@ -23,6 +24,9 @@ import sage.transfer.TweetCard;
 @Service
 @Transactional
 public class TweetPostService {
+  private static final int TWEET__MAX_LEN = 2000, COMMENT_MAX_LEN = 200;
+  private static final BadArgumentException BAD_INPUT_LENGTH = new BadArgumentException("输入长度不正确(1~200字)");
+
   @Autowired
   private SearchBase searchBase;
   @Autowired
@@ -38,7 +42,10 @@ public class TweetPostService {
   @Autowired
   private CommentRepository commentRepo;
 
-  public Tweet newTweet(long userId, String content, Collection<Long> tagIds) {
+  public Tweet post(long userId, String content, Collection<Long> tagIds) {
+    if (content.isEmpty() || content.length() > TWEET__MAX_LEN) {
+      throw BAD_INPUT_LENGTH;
+    }
     ParsedContent parsedContent = processContent(content);
     content = parsedContent.content;
     
@@ -53,6 +60,9 @@ public class TweetPostService {
   }
 
   public Tweet forward(long userId, String content, long originId, Collection<Long> removedForwardIds) {
+    if (content.length() > TWEET__MAX_LEN) {
+      throw BAD_INPUT_LENGTH;
+    }
     ParsedContent parsedContent = processContent(content);
     content = parsedContent.content;
     
@@ -78,6 +88,9 @@ public class TweetPostService {
   }
 
   public Comment comment(Long userId, String content, Long sourceId, Long replyUserId) {
+    if (content.isEmpty() || content.length() > COMMENT_MAX_LEN) {
+      throw BAD_INPUT_LENGTH;
+    }
     ParsedContent parsedContent = processContent(content);
     content = parsedContent.content;
     

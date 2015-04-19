@@ -6,7 +6,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import sage.domain.commons.BadArgumentException;
 import sage.domain.service.BlogPostService;
 import sage.domain.service.TweetPostService;
 import sage.entity.Blog;
@@ -16,9 +15,6 @@ import sage.web.auth.Auth;
 @RestController
 @RequestMapping(value = "/post", method = RequestMethod.POST)
 public class PostController {
-  private static final int TWEET__MAX_LEN = 2000, COMMENT_MAX_LEN = 200,
-      BLOG_TITLE_MAX_LEN = 100, BLOG_CONTENT_MAX_LEN = 10000;
-  private static final BadArgumentException BAD_INPUT_LENGTH = new BadArgumentException("输入长度不正确");
 
   private final Logger logger = LoggerFactory.getLogger(getClass());
   @Autowired
@@ -32,13 +28,9 @@ public class PostController {
       @RequestParam(value = "pictureRefs[]", defaultValue = "") Collection<String> pictureRefs,
       @RequestParam(value = "tagIds[]", defaultValue = "") Collection<Long> tagIds) {
     Long uid = Auth.checkCuid();
-    if (content.isEmpty() || content.length() > TWEET__MAX_LEN) {
-      throw BAD_INPUT_LENGTH;
-    }
-
     //TODO Process pictures
     logger.info("Got picture: " + pictureRefs);
-    Tweet tweet = tweetPostService.newTweet(uid, content, tagIds);
+    Tweet tweet = tweetPostService.post(uid, content, tagIds);
     logger.info("post tweet {} success", tweet.getId());
     return true;
   }
@@ -49,10 +41,6 @@ public class PostController {
       @RequestParam Long originId,
       @RequestParam(value = "removedIds[]", defaultValue = "") Collection<Long> removedIds) {
     Long uid = Auth.checkCuid();
-    if (content.length() > TWEET__MAX_LEN) {
-      throw BAD_INPUT_LENGTH;
-    }
-
     Tweet tweet = tweetPostService.forward(uid, content, originId, removedIds);
     logger.info("forward tweet {} success", tweet.getId());
     return true;
@@ -64,12 +52,7 @@ public class PostController {
       @RequestParam String content,
       @RequestParam(value = "tagIds[]", defaultValue = "") Collection<Long> tagIds) {
     Long uid = Auth.checkCuid();
-    if (title.isEmpty() || title.length() > BLOG_TITLE_MAX_LEN
-        || content.isEmpty() || content.length() > BLOG_CONTENT_MAX_LEN) {
-      throw BAD_INPUT_LENGTH;
-    }
-
-    Blog blog = blogService.newBlog(uid, title, content, tagIds);
+    Blog blog = blogService.post(uid, title, content, tagIds);
     tweetPostService.share(uid, blog);
     logger.info("post blog {} success", blog.getId());
     return blog.getId();
@@ -82,13 +65,7 @@ public class PostController {
       @RequestParam String content,
       @RequestParam(value = "tagIds[]", defaultValue = "") Collection<Long> tagIds) {
     Long uid = Auth.checkCuid();
-    if (title.isEmpty() || title.length() > BLOG_TITLE_MAX_LEN
-        || content.isEmpty() || content.length() > BLOG_CONTENT_MAX_LEN) {
-      throw BAD_INPUT_LENGTH;
-    }
-
     Blog blog = blogService.edit(uid, blogId, title, content, tagIds);
-
     return blog.getId();
   }
 
@@ -98,10 +75,6 @@ public class PostController {
       @RequestParam Long sourceId,
       @RequestParam(required = false) Long replyUserId) {
     Long uid = Auth.checkCuid();
-    if (content.isEmpty() || content.length() > COMMENT_MAX_LEN) {
-      throw BAD_INPUT_LENGTH;
-    }
-
     //TODO save reply info in the comment
     tweetPostService.comment(uid, content, sourceId, replyUserId);
     return true;

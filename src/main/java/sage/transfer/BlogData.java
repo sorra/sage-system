@@ -1,11 +1,9 @@
 package sage.transfer;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import sage.entity.Blog;
-import sage.entity.Tag;
 import sage.entity.User;
 import sage.util.Colls;
 
@@ -32,7 +30,7 @@ public class BlogData {
 
     title = blog.getTitle();
     content = blog.getContent();
-    time = blog.getTime();
+    time = blog.getCreatedTime();
 
     tags = Colls.map(blog.getTags(), TagLabel::new);
   }

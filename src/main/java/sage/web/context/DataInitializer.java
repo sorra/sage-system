@@ -4,7 +4,6 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Random;
-import javax.annotation.PostConstruct;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -75,7 +74,7 @@ public class DataInitializer {
     }
     long uid = Math.abs(new Random().nextLong()) % 3 + 1;
     logger.info("###{} ###author: {}", title, uid);
-    Blog blog = blogPostService.newBlog(uid, title, content, tagIds);
+    Blog blog = blogPostService.post(uid, title, content, tagIds);
     tweetPostService.share(uid, blog);
   }
 }

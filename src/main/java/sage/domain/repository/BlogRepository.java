@@ -18,10 +18,9 @@ public class BlogRepository extends BaseRepository<Blog> {
   }
 
   public List<Blog> byTags(Collection<Tag> tags) {
-    tags = TagRepository.getQueryTags(tags);
     return session().createQuery(
-        "select b from Blog b join b.tags ta where ta in :tags")
-        .setParameterList("tags", tags)
+        "select b from Blog b join b.tags tgs where tgs in :qtags")
+        .setParameterList("qtags", TagRepository.getQueryTags(tags))
         .setMaxResults(MAX_RESULTS)
         .list();
   }

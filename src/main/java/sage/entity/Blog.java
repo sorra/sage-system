@@ -13,16 +13,17 @@ public class Blog {
   private String title;
   private String content;
   private User author;
-  private Date time;
+  private Date createdTime;
+  private Date modifiedTime;
   private Set<Tag> tags = new HashSet<>();
 
   Blog() {}
 
-  public Blog(String title, String content, User author, Date time, Set<Tag> tags) {
+  public Blog(String title, String content, User author, Date createdTime, Set<Tag> tags) {
     this.title = title;
     this.content = content;
     this.author = author;
-    this.time = time;
+    this.createdTime = createdTime;
     this.tags.addAll(tags);
   }
 
@@ -31,25 +32,21 @@ public class Blog {
   public Long getId() {
     return id;
   }
-
-  public void setId(Long id) {
+  void setId(Long id) {
     this.id = id;
   }
 
   public String getTitle() {
     return title;
   }
-
   public void setTitle(String title) {
     this.title = title;
   }
 
-  @Column(columnDefinition = "TEXT")
-  @Lob
+  @Column(columnDefinition = "TEXT") @Lob
   public String getContent() {
     return content;
   }
-
   public void setContent(String content) {
     this.content = content;
   }
@@ -58,24 +55,28 @@ public class Blog {
   public User getAuthor() {
     return author;
   }
-
-  public void setAuthor(User author) {
+  void setAuthor(User author) {
     this.author = author;
   }
 
-  public Date getTime() {
-    return time;
+  public Date getCreatedTime() {
+    return createdTime;
+  }
+  void setCreatedTime(Date createdTime) {
+    this.createdTime = createdTime;
   }
 
-  public void setTime(Date time) {
-    this.time = time;
+  public Date getModifiedTime() {
+    return modifiedTime;
+  }
+  public void setModifiedTime(Date modifiedTime) {
+    this.modifiedTime = modifiedTime;
   }
 
   @ManyToMany(fetch = FetchType.EAGER)
   public Set<Tag> getTags() {
     return tags;
   }
-
   public void setTags(Set<Tag> tags) {
     this.tags = tags;
   }

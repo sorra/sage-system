@@ -73,7 +73,7 @@ public class TweetReadService {
   }
 
   public List<Tweet> byTag(long tagId, Edge edge) {
-    return Colls.copy(tweetRepo.byTag(tagRepo.load(tagId), edge));
+    return Colls.copy(tweetRepo.byTags(Collections.singleton(tagRepo.load(tagId)), edge));
   }
   
   public List<Tweet> byAuthor(long authorId, Edge edge) {
