@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import sage.domain.service.*;
 import sage.entity.Blog;
+import sage.entity.Group;
 import sage.entity.Tag;
 import sage.transfer.*;
 import sage.util.Colls;
@@ -36,10 +37,11 @@ public class GroupPageController {
 
   @RequestMapping("/group/{id}")
   String group(@PathVariable Long id, ModelMap model) {
-    String name = groupService.getGroup(id).getName();
+    Auth.checkCuid();
+    Group group = groupService.getGroup(id);
     Collection<BlogPreview> items = Colls.map(groupService.topics(id),
         topic -> new BlogPreview(topic.getBlog()));
-    model.put("name", name);
+    model.put("group", group);
     model.put("topics", items);
     return "group";
   }

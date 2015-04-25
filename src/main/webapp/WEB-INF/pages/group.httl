@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html>
 #set(components = ["bootstrap", "layout"])
+#set(Group group)
+#set(Tag tag)
 #set(Collection<BlogPreview> topics)
 <head>
   <meta charset="UTF-8">
-  <title>{${name}}小组</title>
+  <title>{${group.name}}小组</title>
   $!{includeCSS()}
   <style>
     .topic{
@@ -15,14 +17,20 @@
 <body>
 $!{include("navbar.httl")}
   <div id="container" class="container">
-  #for(topic : topics)
-    <div class="topic">
-      <a href="/topic/${topic.id}">${topic.title}</a>
-      <p>${topic.preview}</p>
-      <a>${topic.author.name}</a>
-      <span>${topic.createdTime.format("yyyy-MM-dd HH:mm:ss")}</span>
+    <div class="group">
+      <p>${group.introduction}</p>
+      #for(tag : group.tags)
+       <span>${tag.name}</span>
+      #end
     </div>
-  #end
+    #for(topic : topics)
+      <div class="topic">
+        <a href="/topic/${topic.id}">${topic.title}</a>
+        <p>${topic.preview}</p>
+        <a>${topic.author.name}</a>
+        <span>${topic.createdTime.format("yyyy-MM-dd HH:mm:ss")}</span>
+      </div>
+    #end
   </div>
 </body>
 </html>
