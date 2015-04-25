@@ -15,7 +15,7 @@ import sage.domain.repository.TagRepository;
 import sage.domain.repository.UserRepository;
 import sage.domain.search.SearchBase;
 import sage.entity.Blog;
-import sage.transfer.BlogData;
+import sage.transfer.BlogView;
 
 @Service
 @Transactional
@@ -39,7 +39,7 @@ public class BlogPostService {
     escapeAndSetText(blog);
 
     blogRepo.save(blog);
-    searchBase.index(blog.getId(), new BlogData(blog));
+    searchBase.index(blog.getId(), new BlogView(blog));
     return blog;
   }
 
@@ -56,7 +56,7 @@ public class BlogPostService {
     escapeAndSetText(blog);
 
     blogRepo.update(blog);
-    searchBase.index(blog.getId(), new BlogData(blog));
+    searchBase.index(blog.getId(), new BlogView(blog));
     return blog;
   }
 
@@ -66,7 +66,7 @@ public class BlogPostService {
       throw new DomainRuntimeException("User[%d] is not the author of Blog[%d]", userId, blogId);
     }
     blogRepo.delete(blog);
-    searchBase.delete(BlogData.class, blog.getId());
+    searchBase.delete(BlogView.class, blog.getId());
   }
 
   private void checkLength(String title, String content) {

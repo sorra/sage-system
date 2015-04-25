@@ -16,7 +16,7 @@ import sage.domain.service.TransferService;
 import sage.domain.service.TweetReadService;
 import sage.transfer.CommentCard;
 import sage.transfer.Stream;
-import sage.transfer.TweetCard;
+import sage.transfer.TweetView;
 import sage.web.auth.Auth;
 
 @RestController
@@ -41,13 +41,13 @@ public class ReadController {
 
   @RequestMapping("/connect/{blogId}")
   public Stream connect(@PathVariable Long blogId) {
-    List<TweetCard> tcs = tweetReadService.connectTweets(blogId);
+    List<TweetView> tcs = tweetReadService.connectTweets(blogId);
     return new Stream(tcs);
   }
 
   @RequestMapping("/{tweetId}/forwards")
-  public Collection<TweetCard> forwards(@PathVariable Long tweetId){
-    return transfers.toTweetCards(tweetReadService.getForwards(tweetId), false, false);
+  public Collection<TweetView> forwards(@PathVariable Long tweetId){
+    return transfers.toTweetViews(tweetReadService.getForwards(tweetId), false, false);
   }
 
   @RequestMapping("/{tweetId}/comments")

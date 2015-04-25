@@ -29,9 +29,9 @@ public class StreamService {
 
   public Stream istream(long userId, Edge edge) {
     // Deduplicate
-    Set<TweetCard> mergedSet = new HashSet<>();
+    Set<TweetView> mergedSet = new HashSet<>();
     // TweetsByFollowings must be added first, they are prior
-    mergedSet.addAll(transfers.toTweetCards(tweetRead.byFollowings(userId, edge)));
+    mergedSet.addAll(transfers.toTweetViews(tweetRead.byFollowings(userId, edge)));
     mergedSet.addAll(tcsByTagHeeds(userId, edge));
     // TODO Receive from group heeds
     mergedSet.addAll(tcsByFollowListHeeds(userId, edge));
@@ -39,12 +39,12 @@ public class StreamService {
     return new Stream(higherSort(naiveSortTC(mergedSet)));
   }
 
-  private List<TweetCard> tcsByTagHeeds(long userId, Edge edge) {
-    List<TweetCard> tcsByTags = new ArrayList<>();
+  private List<TweetView> tcsByTagHeeds(long userId, Edge edge) {
+    List<TweetView> tcsByTags = new ArrayList<>();
     for (TagHeed hd : heed.tagHeeds(userId)) {
       Long tagId = hd.getTag().getId();
-      List<TweetCard> tagTcs = transfers.toTweetCards(tweetRead.byTag(tagId, edge));
-      for (TweetCard t : tagTcs) {
+      List<TweetView> tagTcs = transfers.toTweetViews(tweetRead.byTag(tagId, edge));
+      for (TweetView t : tagTcs) {
         t.beFromTag(tagId);
       }
       tcsByTags.addAll(tagTcs);
@@ -52,11 +52,11 @@ public class StreamService {
     return tcsByTags;
   }
 
-  private List<TweetCard> tcsByFollowListHeeds(long userId, Edge edge) {
-    List<TweetCard> tcsByFollowLists = new ArrayList<>();
+  private List<TweetView> tcsByFollowListHeeds(long userId, Edge edge) {
+    List<TweetView> tcsByFollowLists = new ArrayList<>();
     for (FollowListHeed hd : heed.followListHeeds(userId)) {
       FollowListLite followList = FollowListLite.fromEntity(hd.getList());
-      tcsByFollowLists.addAll(transfers.toTweetCards(tweetRead.byFollowListLite(followList, edge)));
+      tcsByFollowLists.addAll(transfers.toTweetViews(tweetRead.byFollowListLite(followList, edge)));
     }
     return tcsByFollowLists;
   }
@@ -77,24 +77,24 @@ public class StreamService {
     return new Stream(naiveSort(tweets));
   }
 
-  private List<TweetCard> naiveSort(Collection<Tweet> tweets) {
-    List<TweetCard> tcs = transfers.toTweetCards(tweets);
-    Collections.sort(tcs, Comparators.tweetCardOnId);
+  private List<TweetView> naiveSort(Collection<Tweet> tweets) {
+    List<TweetView> tcs = transfers.toTweetViews(tweets);
+    Collections.sort(tcs, Comparators.tweetViewOnId);
     return tcs;
   }
   
-  private List<TweetCard> naiveSortTC(Collection<TweetCard> tcs) {
-    return Colls.copySort(Comparators.tweetCardOnId, tcs);
+  private List<TweetView> naiveSortTC(Collection<TweetView> tcs) {
+    return Colls.copySort(Comparators.tweetViewOnId, tcs);
   }
 
-  private List<Item> higherSort(List<TweetCard> tcs) {
+  private List<Item> higherSort(List<TweetView> tcs) {
     // TODO Pull-near
     return combine(tcs);
   }
 
-  private List<Item> combine(List<TweetCard> tcs) {
+  private List<Item> combine(List<TweetView> tcs) {
     List<CombineGroup> groupSeq = new ArrayList<>();
-    for (TweetCard tc : tcs) {
+    for (TweetView tc : tcs) {
       if (tc.getOrigin() != null) {
         long originId = tc.getOrigin().getId();
         CombineGroup foundGroup = findInSeq(originId, groupSeq);

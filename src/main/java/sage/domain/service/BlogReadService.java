@@ -10,8 +10,7 @@ import sage.domain.commons.Edge;
 import sage.domain.repository.BlogRepository;
 import sage.domain.repository.FollowRepository;
 import sage.entity.Blog;
-import sage.entity.Follow;
-import sage.transfer.BlogData;
+import sage.transfer.BlogView;
 import sage.util.Colls;
 
 @Service
@@ -25,31 +24,31 @@ public class BlogReadService {
   /**
    * @return blogData | null
    */
-  public BlogData getBlogData(long blogId) {
+  public BlogView getBlogData(long blogId) {
     Blog blog = blogRepo.nullable(blogId);
-    return blog == null ? null : new BlogData(blog);
+    return blog == null ? null : new BlogView(blog);
   }
 
-  public List<BlogData> getAllBlogDatas() {
+  public List<BlogView> getAllBlogDatas() {
     return listBlogDatas(blogRepo.all(), true);
   }
 
-  public List<BlogData> blogStream(long userId, Edge edge) {
+  public List<BlogView> blogStream(long userId, Edge edge) {
     List<Blog> blogs = new ArrayList<>();
     // TODO also use tags
     blogs = Colls.flatMap(followRepo.followings(userId), f -> blogRepo.byAuthor(f.getTarget().getId()));
     return listBlogDatas(blogs, false);
   }
 
-  public List<BlogData> byAuthor(long authorId) {
+  public List<BlogView> byAuthor(long authorId) {
     return listBlogDatas(blogRepo.byAuthor(authorId), true);
   }
 
   /** eagerCopy aims at Hibernate */
-  private List<BlogData> listBlogDatas(List<Blog> blogs, boolean eagerCopy) {
+  private List<BlogView> listBlogDatas(List<Blog> blogs, boolean eagerCopy) {
     if (eagerCopy) {
       blogs = Colls.copy(blogs);
     }
-    return Colls.map(blogs, BlogData::new);
+    return Colls.map(blogs, BlogView::new);
   }
 }

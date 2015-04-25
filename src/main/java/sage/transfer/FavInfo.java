@@ -13,7 +13,7 @@ public class FavInfo {
 
   private Long id;
   private String link;
-  private TweetCard tweet = null;
+  private TweetView tweet = null;
   private Long ownerId;
   private Date time;
   
@@ -22,9 +22,9 @@ public class FavInfo {
   /**
    *  Constructor. Transaction required
    * @param fav the fav entity
-   * @param fetchTweet a function to get tweetCard by id. Transactional
+   * @param fetchTweet a function to get TweetView by id. Transactional
    */
-  public FavInfo(Fav fav, Function<Long, TweetCard> fetchTweet) {
+  public FavInfo(Fav fav, Function<Long, TweetView> fetchTweet) {
     id = fav.getId();
     link = fav.getLink();
     if (link.startsWith(TWEET_PR)) {
@@ -41,7 +41,7 @@ public class FavInfo {
   public String getLink() {
     return link;
   }
-  public TweetCard getTweet() {
+  public TweetView getTweet() {
     return tweet;
   }
   public Long getOwnerId() {
@@ -54,10 +54,10 @@ public class FavInfo {
   /**
    * Transform the collection of Fav to FavInfo.
    * @param favs the fav entities
-   * @param fetchTweet a function to get tweetCard by id. Transactional
+   * @param fetchTweet a function to get TweetView by id. Transactional
    * @return transformed list
    */
-  public static List<FavInfo> listOf(Collection<Fav> favs, Function<Long, TweetCard> fetchTweet) {
+  public static List<FavInfo> listOf(Collection<Fav> favs, Function<Long, TweetView> fetchTweet) {
     List<FavInfo> infos = new ArrayList<>();
     for (Fav fav : favs) {
       infos.add(new FavInfo(fav, fetchTweet));

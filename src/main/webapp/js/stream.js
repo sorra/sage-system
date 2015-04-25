@@ -81,7 +81,7 @@ function createStream(stream, url) {
   var $stream = $('.stream')
   var $slist = $('.slist').empty().warnEmpty()
   $.each(stream.items, function(idx, item){
-    if (item.type == 'TweetCard') {
+    if (item.type == 'TweetView') {
       createTweetCard(item).appendTo($slist)
     }
     else if (item.type == 'CombineGroup') {
@@ -145,7 +145,7 @@ function createStreamBefore(stream) {
 }
 
 function createStreamItem(item) {
-  if (item.type == 'TweetCard') {return createTweetCard(item)}
+  if (item.type == 'TweetView') {return createTweetCard(item)}
   else if (item.type == 'CombineGroup') {return createCombineGroup(item)}
 }
 

@@ -7,7 +7,7 @@ import sage.entity.Blog;
 import sage.entity.User;
 import sage.util.Colls;
 
-public class BlogData {
+public class BlogView {
 
   private Long id;
   private Long authorId;
@@ -20,9 +20,9 @@ public class BlogData {
   private Date modifiedTime;
   private List<TagLabel> tags;
   
-  BlogData() {}
+  BlogView() {}
 
-  public BlogData(Blog blog) {
+  public BlogView(Blog blog) {
     id = blog.getId();
     User author = blog.getAuthor();
     authorId = author.getId();

@@ -5,7 +5,7 @@ $(document).ready(function(){
 		console.log(" ");
 		console.log($(this).text());
 		var result = $.parseJSON($(this).text());
-		if (result.type == "TweetCard") {
+		if (result.type == "TweetView") {
 			createTweetCard(result).appendTo($('#result-list'));
 		}
 		else {

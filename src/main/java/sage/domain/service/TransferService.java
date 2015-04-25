@@ -11,7 +11,7 @@ import sage.domain.repository.CommentRepository;
 import sage.domain.repository.TweetRepository;
 import sage.domain.repository.UserRepository;
 import sage.entity.Tweet;
-import sage.transfer.TweetCard;
+import sage.transfer.TweetView;
 
 @Service
 @Transactional(readOnly = true)
@@ -27,29 +27,29 @@ public class TransferService {
 
   private static final int MIN_LIST_SIZE = 20;
 
-  public TweetCard toTweetCard(Tweet tweet) {
-    return new TweetCard(tweet, tweetRepo.getOrigin(tweet),
+  public TweetView toTweetView(Tweet tweet) {
+    return new TweetView(tweet, tweetRepo.getOrigin(tweet),
         forwardCount(tweet.getId()),
         commentCount(tweet.getId()));
   }
 
-  public TweetCard toTweetCardNoCount(Tweet tweet) {
-    return new TweetCard(tweet, tweetRepo.getOrigin(tweet), 0, 0);
+  public TweetView toTweetViewNoCount(Tweet tweet) {
+    return new TweetView(tweet, tweetRepo.getOrigin(tweet), 0, 0);
   }
 
-  public List<TweetCard> toTweetCards(Collection<Tweet> tweets, boolean showOrigin, boolean showCounts) {
-    List<TweetCard> tcs = new ArrayList<>(MIN_LIST_SIZE);
+  public List<TweetView> toTweetViews(Collection<Tweet> tweets, boolean showOrigin, boolean showCounts) {
+    List<TweetView> tcs = new ArrayList<>(MIN_LIST_SIZE);
     for (Tweet t : tweets) {
       Tweet origin = showOrigin ? tweetRepo.getOrigin(t) : null;
       long forwardCount = showCounts ? forwardCount(t.getId()) : 0;
       long commentCount = showCounts ? commentCount(t.getId()) : 0;
-      tcs.add(new TweetCard(t, origin, forwardCount, commentCount));
+      tcs.add(new TweetView(t, origin, forwardCount, commentCount));
     }
     return tcs;
   }
 
-  public List<TweetCard> toTweetCards(Collection<Tweet> tweets) {
-    return toTweetCards(tweets, true, true);
+  public List<TweetView> toTweetViews(Collection<Tweet> tweets) {
+    return toTweetViews(tweets, true, true);
   }
 
   public long forwardCount(long originId) {

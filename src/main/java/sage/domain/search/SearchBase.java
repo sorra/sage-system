@@ -15,8 +15,8 @@ import org.elasticsearch.common.transport.InetSocketTransportAddress;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
-import sage.transfer.BlogData;
-import sage.transfer.TweetCard;
+import sage.transfer.BlogView;
+import sage.transfer.TweetView;
 import sage.web.context.Json;
 
 import static org.elasticsearch.index.query.QueryBuilders.queryString;
@@ -31,8 +31,8 @@ public class SearchBase {
 
   private static final Map<Class<?>, String> typeMap = new HashMap<>();
   static {
-    typeMap.put(BlogData.class, BD);
-    typeMap.put(TweetCard.class, TC);
+    typeMap.put(BlogView.class, BD);
+    typeMap.put(TweetView.class, TC);
   }
 
   private TransportClient client;

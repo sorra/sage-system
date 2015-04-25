@@ -41,7 +41,6 @@ public class ComponentResourceManager {
 
     addFileType(".css", "/css/");
     addFileType(".js", "/js/");
-    addFileType(".proto.httl", "/WEB-INF/prototypes/");
     forFileType(".tmpl", "/WEB-INF/templates/", file -> templates.put(file.getName(), new JsTemplate(file)));
   }
 

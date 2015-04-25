@@ -7,5 +7,5 @@ public interface Item {
 
   List<TagLabel> getTags();
 
-  TweetCard getOrigin();
+  TweetView getOrigin();
 }

@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import sage.domain.service.TagChangeService;
 import sage.domain.service.TagService;
 import sage.web.auth.Auth;
-import sage.web.context.FrontMap;
 
 @Controller
 @RequestMapping("/tag")
@@ -22,7 +21,7 @@ public class TagRequestPageController {
   String requests(@PathVariable Long id, ModelMap model) {
     Auth.checkCuid();
     model.put("tag", tagService.getTag(id));
-    FrontMap.from(model).put("reqs", tagChangeService.getRequestsOfTag(id));
+    model.put("reqs", tagChangeService.getRequestsOfTag(id));
     return "tag-requests";
   }
 
@@ -30,7 +29,7 @@ public class TagRequestPageController {
   String scopeRequests(@PathVariable Long id, ModelMap model) {
     Auth.checkCuid();
     model.put("tag", tagService.getTag(id));
-    FrontMap.from(model).put("reqs", tagChangeService.getRequestsOfTagScope(id));
+    model.put("reqs", tagChangeService.getRequestsOfTagScope(id));
     return "tag-scope-requests";
   }
 }

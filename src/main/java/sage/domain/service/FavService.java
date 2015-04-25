@@ -28,7 +28,7 @@ public class FavService {
     List<Fav> favs = new ArrayList<>(favRepo.favs(userId));
     Collections.sort(favs, Comparators.favOnId);
 
-    return FavInfo.listOf(favs, tweetRead::getTweetCard);
+    return FavInfo.listOf(favs, tweetRead::getTweetView);
   }
   
   public void addFav(long userId, String link) {

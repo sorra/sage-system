@@ -76,9 +76,4 @@ public class StreamPageController {
     
     return "private-page";
   }
-
-  @RequestMapping("/group/{id}")
-  public String groupPage(@PathVariable long id) {
-    return "group-page";
-  }
 }

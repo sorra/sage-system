@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 #set(components = ["bootstrap", "layout", "stream", "tag", "user", "markdown"])
-#set(BlogData blog, List<TweetCard> tweets)
+#set(BlogData blog, List<TweetView> tweets)
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<title>${blog.title}</title>

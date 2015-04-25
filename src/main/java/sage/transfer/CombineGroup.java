@@ -8,13 +8,13 @@ import org.springframework.util.Assert;
 public class CombineGroup implements Item {
   private final String type = "CombineGroup";
 
-  private List<TweetCard> forwards = new ArrayList<>();
-  private TweetCard origin;
+  private List<TweetView> forwards = new ArrayList<>();
+  private TweetView origin;
   private boolean containsOrigin = false;
 
   CombineGroup() {}
   
-  public static CombineGroup newByFirst(TweetCard first) {
+  public static CombineGroup newByFirst(TweetView first) {
     CombineGroup group = new CombineGroup();
     group.origin = first.getOrigin();
     group.containsOrigin = false;
@@ -23,7 +23,7 @@ public class CombineGroup implements Item {
     return group;
   }
 
-  public static CombineGroup newByOrigin(TweetCard origin) {
+  public static CombineGroup newByOrigin(TweetView origin) {
     CombineGroup group = new CombineGroup();
     group.addOrigin(origin);
     Assert.notNull(group.origin);
@@ -35,17 +35,17 @@ public class CombineGroup implements Item {
    * 
    * @param forward
    */
-  public void addForward(TweetCard forward) {
+  public void addForward(TweetView forward) {
     forward.clearOrigin();
     forwards.add(forward);
   }
 
-  public void addOrigin(TweetCard origin) {
+  public void addOrigin(TweetView origin) {
     this.origin = origin;
     containsOrigin = true;
   }
 
-  public TweetCard singleMember() {
+  public TweetView singleMember() {
     if (containsOrigin && forwards.size() == 0) {
       return origin;
     }
@@ -56,12 +56,12 @@ public class CombineGroup implements Item {
       return null;
   }
 
-  public List<TweetCard> getForwards() {
+  public List<TweetView> getForwards() {
     return forwards;
   }
 
   @Override
-  public TweetCard getOrigin() {
+  public TweetView getOrigin() {
     return origin;
   }
 
@@ -82,7 +82,7 @@ public class CombineGroup implements Item {
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder("CombineGroup {\n");
-    for (TweetCard forward : forwards) {
+    for (TweetView forward : forwards) {
       sb.append(forward).append('\n');
     }
     sb.append("<origin>").append(origin).append("\n");

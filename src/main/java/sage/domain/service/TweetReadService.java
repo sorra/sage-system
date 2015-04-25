@@ -16,11 +16,9 @@ import sage.domain.repository.TagRepository;
 import sage.domain.repository.TweetRepository;
 import sage.entity.Comment;
 import sage.entity.Follow;
-import sage.entity.Tag;
 import sage.entity.Tweet;
-import sage.transfer.FollowInfoLite;
 import sage.transfer.FollowListLite;
-import sage.transfer.TweetCard;
+import sage.transfer.TweetView;
 import sage.util.Colls;
 
 @Service
@@ -80,9 +78,9 @@ public class TweetReadService {
     return Colls.copy(tweetRepo.byAuthor(authorId, edge));
   }
 
-  public TweetCard getTweetCard(long tweetId) {
+  public TweetView getTweetView(long tweetId) {
     Tweet tweet = tweetRepo.nullable(tweetId);
-    return tweet == null ? null : transfers.toTweetCard(tweet);
+    return tweet == null ? null : transfers.toTweetView(tweet);
   }
 
   public Collection<Tweet> getForwards(long originId) {
@@ -98,7 +96,7 @@ public class TweetReadService {
    * 
    * @return a sequential list of connected tweets
    */
-  public List<TweetCard> connectTweets(long blogId) {
-    return Colls.map(tweetRepo.connectTweets(blogId), transfers::toTweetCard);
+  public List<TweetView> connectTweets(long blogId) {
+    return Colls.map(tweetRepo.connectTweets(blogId), transfers::toTweetView);
   }
 }

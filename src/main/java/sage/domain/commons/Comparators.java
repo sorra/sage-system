@@ -4,7 +4,7 @@ import java.util.Comparator;
 
 import sage.entity.Fav;
 import sage.entity.Tweet;
-import sage.transfer.TweetCard;
+import sage.transfer.TweetView;
 
 public abstract class Comparators {
   
@@ -16,7 +16,7 @@ public abstract class Comparators {
   /**
    * Inverse order (larger on front)
    */
-  public static final Comparator<TweetCard> tweetCardOnId = (o1, o2) -> compareId(o1.getId(), o2.getId());
+  public static final Comparator<TweetView> tweetViewOnId = (o1, o2) -> compareId(o1.getId(), o2.getId());
   
   /**
    * Inverse order (larger on front)

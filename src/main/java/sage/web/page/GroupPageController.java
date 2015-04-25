@@ -48,7 +48,7 @@ public class GroupPageController {
   String topic(@PathVariable Long id, ModelMap model) {
     Auth.checkCuid();
     Transactor.get().run(() -> {
-      BlogData item = new BlogData(groupService.getTopic(id).getBlog());
+      BlogView item = new BlogView(groupService.getTopic(id).getBlog());
       UserCard author = userService.getUserCard(Auth.cuid(), item.getAuthorId());
       model.put("topic", item);
       model.put("author", author);

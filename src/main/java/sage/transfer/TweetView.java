@@ -8,8 +8,8 @@ import sage.domain.commons.IdCommons;
 import sage.entity.Tag;
 import sage.entity.Tweet;
 
-public class TweetCard implements Item {
-  private final String type = "TweetCard";
+public class TweetView implements Item {
+  private final String type = "TweetView";
 
   private Long id;
   private Long authorId;
@@ -17,7 +17,7 @@ public class TweetCard implements Item {
   private String avatar;
   private String content;
   private Date time;
-  private TweetCard origin = null;
+  private TweetView origin = null;
   private MidForwards midForwards;
   private List<TagLabel> tags = new ArrayList<>();
   
@@ -27,9 +27,9 @@ public class TweetCard implements Item {
   private Long fromTag = null;
   private Long fromGroup = null;
 
-  TweetCard() {}
+  TweetView() {}
   
-  public TweetCard(Tweet tweet, Tweet origin, long forwardCount, long commentCount) {
+  public TweetView(Tweet tweet, Tweet origin, long forwardCount, long commentCount) {
     id = tweet.getId();
     authorId = tweet.getAuthor().getId();
     authorName = tweet.getAuthor().getName();
@@ -37,7 +37,7 @@ public class TweetCard implements Item {
     content = tweet.getContent();
     time = tweet.getTime();
     if (origin != null) {
-      this.origin = new TweetCard(origin, null, 0, 0);
+      this.origin = new TweetView(origin, null, 0, 0);
     }
     midForwards = tweet.midForwards();
     for (Tag tag : tweet.getTags()) {
@@ -47,12 +47,12 @@ public class TweetCard implements Item {
     this.commentCount = commentCount;
   }
   
-  public TweetCard beFromTag(Long tagId) {
+  public TweetView beFromTag(Long tagId) {
     fromTag = tagId;
     return this;
   }
   
-  public TweetCard beFromGroup(Long groupId) {
+  public TweetView beFromGroup(Long groupId) {
     fromGroup = groupId;
     return this;
   }
@@ -89,7 +89,7 @@ public class TweetCard implements Item {
   }
 
   @Override
-  public TweetCard getOrigin() {
+  public TweetView getOrigin() {
     return origin;
   }
 
@@ -137,7 +137,7 @@ public class TweetCard implements Item {
     if (getClass() != obj.getClass())
       return false;
     
-    TweetCard other = (TweetCard) obj;
+    TweetView other = (TweetView) obj;
     return IdCommons.equal(getId(), other.getId());
   }
 

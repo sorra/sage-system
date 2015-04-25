@@ -19,7 +19,7 @@ import sage.entity.Comment;
 import sage.entity.Tweet;
 import sage.entity.User;
 import sage.transfer.MidForwards;
-import sage.transfer.TweetCard;
+import sage.transfer.TweetView;
 
 @Service
 @Transactional
@@ -55,7 +55,7 @@ public class TweetPostService {
     
     parsedContent.mentionedIds.forEach(mentioned -> notifService.mentionedByTweet(mentioned, userId, tweet.getId()));
     
-    searchBase.index(tweet.getId(), transfers.toTweetCardNoCount(tweet));
+    searchBase.index(tweet.getId(), transfers.toTweetViewNoCount(tweet));
     return tweet;
   }
 
@@ -83,7 +83,7 @@ public class TweetPostService {
     origins.forEach(origin -> notifService.forwarded(origin.getAuthor().getId(), userId, tweet.getId()));
     parsedContent.mentionedIds.forEach(mentioned -> notifService.mentionedByTweet(mentioned, userId, tweet.getId()));
     
-    searchBase.index(tweet.getId(), transfers.toTweetCardNoCount(tweet));
+    searchBase.index(tweet.getId(), transfers.toTweetViewNoCount(tweet));
     return tweet;
   }
 
@@ -122,7 +122,7 @@ public class TweetPostService {
         blog);
     tweetRepo.save(tweet);
     
-    searchBase.index(tweet.getId(), transfers.toTweetCardNoCount(tweet));
+    searchBase.index(tweet.getId(), transfers.toTweetViewNoCount(tweet));
   }
 
   public void delete(long userId, long tweetId) {
@@ -131,7 +131,7 @@ public class TweetPostService {
       throw new DomainRuntimeException("User[%d] is not the author of Tweet[%d]", userId, tweetId);
     }
     tweetRepo.delete(tweet);
-    searchBase.delete(TweetCard.class, tweetId);
+    searchBase.delete(TweetView.class, tweetId);
   }
 
   private String blogRef(Blog blog) {
