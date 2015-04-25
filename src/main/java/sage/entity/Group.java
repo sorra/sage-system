@@ -4,6 +4,7 @@ import java.util.*;
 import javax.persistence.*;
 
 @Entity
+@Table(name = "groupp")
 public class Group {
   private Long id;
   private String name;
@@ -54,7 +55,7 @@ public class Group {
     this.tags = tags;
   }
 
-  @ManyToOne
+  @ManyToOne(optional = false)
   public User getCreator() {
     return creator;
   }
@@ -69,7 +70,7 @@ public class Group {
     this.createdTime = createdTime;
   }
 
-  @ManyToMany
+  @ManyToMany @JoinTable(name = "groupp_member")
   public Set<User> getMembers() {
     return members;
   }

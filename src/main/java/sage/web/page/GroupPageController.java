@@ -35,13 +35,13 @@ public class GroupPageController {
   }
 
   @RequestMapping("/group/{id}")
-  String topics(@PathVariable Long id, ModelMap model) {
-    String area = groupService.getGroup(id).getName();
+  String group(@PathVariable Long id, ModelMap model) {
+    String name = groupService.getGroup(id).getName();
     Collection<BlogPreview> items = Colls.map(groupService.topics(id),
         topic -> new BlogPreview(topic.getBlog()));
-    model.put("area", area);
+    model.put("name", name);
     model.put("topics", items);
-    return "topics";
+    return "group";
   }
 
   @RequestMapping("/topic/{id}")
@@ -56,7 +56,7 @@ public class GroupPageController {
     return "topic";
   }
 
-  @RequestMapping(value = "group/{groupId}/topics/post", method = RequestMethod.POST)
+  @RequestMapping(value = "group/{groupId}/post", method = RequestMethod.POST)
   String topicPost(@PathVariable Long groupId, @RequestParam String title, @RequestParam String content) {
     Auth.checkCuid();
     long id = Transactor.get().apply(() -> {

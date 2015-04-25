@@ -4,7 +4,7 @@
 #set(Collection<BlogPreview> topics)
 <head>
   <meta charset="UTF-8">
-  <title>{${area}}主题列表</title>
+  <title>{${name}}小组</title>
   $!{includeCSS()}
   <style>
     .topic{

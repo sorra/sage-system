@@ -4,6 +4,8 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.Set;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import sage.domain.commons.DomainRuntimeException;
@@ -18,6 +20,7 @@ import sage.entity.GroupTopic;
 import sage.entity.Tag;
 
 @Service
+@Transactional
 public class GroupService {
   @Autowired
   private GroupRepository groupRepo;
