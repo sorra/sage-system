@@ -17,7 +17,7 @@ function buildTagSels(tags) {
 function buildTagPlus() {
 	var $tagTree = $('<div>');
 	
-	buildTagTree(createTagSel, $tagTree, window.tagTree);
+	tag_tree(window.tagTree).appendTo($tagTree)
 
 	$('.tag-plus').popover({
 			html: true,

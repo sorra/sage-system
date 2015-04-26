@@ -33,8 +33,8 @@ $.fn.setCursorPosition = function(pos) {
 };
 
 function buildNavTagTree($lnk, tagTree) {
-  var $navTagTree = $('<div>');
-  var $createTag = $('<button class="create-tag btn btn-warning">新建</button>').appendTo($navTagTree);
+  var $navTagTree = $('<div>')
+  var $createTag = $('<button class="create-tag btn btn-warning">新建</button>').appendTo($navTagTree)
 
   var $dialog = $(renderTmpl("tmpl-modal", {modalId: 'new-tag-dialog'})).appendTo($('body'))
   var $nodes = $('#tmpl-new-tag-dialog')
@@ -54,25 +54,24 @@ function buildNavTagTree($lnk, tagTree) {
     $dialog.find('#name').val('')
     $dialog.find('#parent-id').val('')
     $dialog.modal('hide')
-  });
+  })
 
   $('body').delegate('.create-tag', 'click', function(){
-    $dialog.modal('show');
-  });
+    $dialog.modal('show')
+  })
 
-  buildTagTree(function(tag){
-    return createTagLabel(tag).addClass('btn')
-      .click(function(){
-        $lnk.popover('hide');
-      });
-  }, $navTagTree, tagTree);
+  tag_tree(tagTree).appendTo($navTagTree)
+
+  $('body').delegate('.tag-tree .tag-label', 'click', function(){
+    $lnk.popover('hide')
+  })
   $lnk.popover({
     html: true,
     placement: 'bottom',
     trigger: 'manual',
     selector: '#tag-tree-popover',
     content: $navTagTree
-  });
+  })
 }
 
 function nodesCopy(selector, from, to){
