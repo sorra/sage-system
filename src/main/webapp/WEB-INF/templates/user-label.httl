@@ -1,0 +1,5 @@
+#set(UserLabel u)
+<div class="user-label" data-id="{{u.id}}">
+  <a class="avatar" uid="${u.id}" href="/private/${u.id}"><img src="{{u.avatar}}"/></a>
+  <a class="name" uid="${u.id}" href="/private/${u.id}">${name}</a>
+</div>

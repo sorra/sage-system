@@ -1,0 +1,9 @@
+#set(ResourceList rs)
+<div class="resource-list">
+#for(r : rs.list)
+  <div class="rinfo">
+    <span class="rinfo-desc">r.desc</span>
+    <a class="rinfo-link">r.link</a>
+  </div>
+#end
+</div>

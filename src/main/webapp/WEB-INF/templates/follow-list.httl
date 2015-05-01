@@ -1,0 +1,13 @@
+#set(FollowList fs)
+<div class="follow-list">
+#for(f : fs.list)
+  <div class="finfo">
+    $!{include('user-label.httl', f.user}
+    <div class="finfo-tags pull-right">
+    #for(tag : f.tags)
+      $!{include('tag-label.httl', tag)}
+    #end
+    </div>
+  </div>
+#end
+</div>

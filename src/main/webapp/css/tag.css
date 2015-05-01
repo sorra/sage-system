@@ -1,0 +1,7 @@
+.tag-input{
+  display: inline-block;
+}
+.tag-clear{
+  background-color: #ccc;
+  margin-left: 1em;
+}

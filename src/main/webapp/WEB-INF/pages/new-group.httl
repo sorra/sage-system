@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+#set(components = ["bootstrap", "layout"])
+<head>
+  <meta charset="UTF-8">
+  <title>创建</title>
+  $!{includeCSS()}
+  <style>
+    .topic{
+    background: #f0f0f0
+    }
+  </style>
+</head>
+<body>
+$!{include("navbar.httl")}
+<div id="container" class="container">
+  <form action="/group/new" method="post">
+    <input name="name" />
+    <textarea name="introduction" />
+  </form>
+</div>
+</body>
+</html>
