@@ -29,11 +29,17 @@ public class GroupPageController {
   private BlogPostService blogPostService;
 
   @RequestMapping("/group/new")
-  public String newGroup(@RequestParam String name, @RequestParam String introduction,
-                         @RequestParam("tagIds[]") Collection<Long> tagIds) {
+  String newGroup() {
+    return "new-group";
+  }
+
+  @RequestMapping("/group/create")
+  String createGroup(@RequestParam String name, @RequestParam String introduction,
+                     @RequestParam(value = "tagIds[]", defaultValue = "") Collection<Long> tagIds) {
     long id = groupService.newGroup(Auth.checkCuid(), name, introduction, tagIds).getId();
     return "redirect:/group/" + id;
   }
+
 
   @RequestMapping("/group/{id}")
   String group(@PathVariable Long id, ModelMap model) {

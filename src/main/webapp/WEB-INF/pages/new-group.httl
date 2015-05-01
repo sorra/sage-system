@@ -14,9 +14,14 @@
 <body>
 $!{include("navbar.httl")}
 <div id="container" class="container">
-  <form action="/group/new" method="post">
-    <input name="name" />
-    <textarea name="introduction" />
+  <form action="/group/create" method="post">
+    <div id="name-input">
+      小组名字: <input name="name" type="text" />
+    </div>
+    <div id="introduction-input">
+      小组介绍: <textarea name="introduction"></textarea>
+    </div>
+    <input type="submit" />
   </form>
 </div>
 </body>
