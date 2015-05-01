@@ -1,11 +1,10 @@
 .user-card{
-  min-width: 200px;
   background: #f0f0f0;
   padding: 2px;
   border: orange solid 2px;
   border-radius: 8px;
 }
-.user-card .avatar, .user-card .name-intro{
+.user-card .avatar, .user-card .info-part{
   float: left;
 }
 .user-card:after{
@@ -13,8 +12,18 @@
   content: " ";
   clear: both;
 }
+
+.user-card .info-part{
+  width: 14em;
+}
+.user-card .follow{
+  width: 60px;
+  padding: 6px 3px;
+  text-align: center;
+}
+
 #follow-dialog .modal-dialog{
-  max-width: 500px;
+  max-width: 400px;
   min-height: 100px;
   border-radius: 10px;
 }
