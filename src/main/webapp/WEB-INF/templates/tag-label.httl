@@ -1,0 +1,6 @@
+#set(TagLabel tag)
+#set(href = "/public/${tag.id}")
+<div class="tag-label" href=${href} tag-id="${tag.id}" title="${tag.chainStr}"
+     onclick="window.open(${href})">
+  ${tag.name}
+</div>

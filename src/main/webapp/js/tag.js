@@ -15,7 +15,6 @@ function createTagChain(tagCard) {
 		var item = tagCard.chainUp[i];
 
 		var $tag = $('<a></a>').addClass('tag btn').addClass('btn-info').appendTo($tch);
-		$tag.data('tagId', item.id);
 		$tag.text(item.name).attr('href', '/public/'+item.id);
 		$tag.css({display:	'block',
 				  width:	'58px',
@@ -46,13 +45,12 @@ function createTagChain(tagCard) {
 
 function createTagLabel(tagLabel) {
 	var $tl = $('.proto > .tag-label').clone();
-	$tl.data('tagId', tagLabel.id);
 	$tl.text(tagLabel.name)
 	   .attr('tag-id', tagLabel.id)
 	   .attr('href', '/public/'+tagLabel.id)
 	   .click(function(event) {
-	     event.preventDefault();
-	     gotoTag($(this).data('tagId'));
+	     event.preventDefault()
+	     window.open('/public/'+tagLabel.id)
 	   });
 	if (tagLabel.chainStr) {
 		$tl.attr('title', tagLabel.chainStr);
@@ -60,26 +58,28 @@ function createTagLabel(tagLabel) {
 	return $tl;
 }
 
-function tag_tree(tag) {
+function tag_tree(tagTree, params) {
   var $tree = $('<div class="tag-tree">')
-	tag_node($tree, tag, 0)
+	tag_node($tree, tagTree, -1, params)
 	return $tree
 }
 
-function tag_node($tree, tag, depth) {
-	var $tag = $('<a class="tag-label btn">').appendTo($tree)
-		.attr({title: tag.chainStr, 'tag-id': tag.id, href: '/public/'+tag.id})
-		.text(tag.name)
-		.css('margin-left', (20*depth) + 'px')
-	if (depth == 0) {
-		$tag.css('margin-top', '10px')
+function tag_node($tree, tag, depth, params) {
+	if (depth >= 0) {
+		var $tag = $('<a class="tag-label btn btn-default">').appendTo($tree)
+			.attr({title: tag.chainStr, 'tag-id': tag.id, 'href': '/public/'+tag.id})
+			.text(tag.name)
+			.css('margin-left', (30*depth) + 'px')
+		if (depth <= 0) {
+			$tag.css('margin-top', '10px')
+		}
+		if (params && params.asTagInput) {
+			$tag.removeClass('tag-label').addClass('tag-sel').removeAttr('href')
+		}
+		$('<br>').appendTo($tree)
 	}
-	$('<br>').appendTo($tree)
-	for (var i in tag.children) {
-		tag_node($tree, tag.children[i], depth+1)
-	}
-}
 
-function gotoTag (id) {
-	window.open('/public/'+id);
+	for (var i in tag.children) {
+		tag_node($tree, tag.children[i], depth+1, params)
+	}
 }

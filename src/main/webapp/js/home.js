@@ -15,9 +15,8 @@ $(document).ready(function(){
       $li.appendTo($friends);
   }
   $friends.appendTo($('.friends'));
-    
-	buildTagSels(window.userSelf.topTags);
-	buildTagPlus();
+
+  tag_input_init()
 
 	// prepare tweet-submit-button
 	$('form.post-tweet .btn[type="submit"]')

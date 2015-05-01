@@ -4,8 +4,7 @@
 			<textarea class="input" placeholder="写微博" style="width: 620px"></textarea>
 		</div>
 		<div>
-			<a class="tag-plus btn btn-info" title="更多">+</a>
-			<a class="tag-clear btn btn-default" title="清除" style="background-color: #ccc; margin-left: 1em">-</a>
+			$!{include("tag-input.httl")}
 			<button class="btn btn-primary pull-right" type="submit">发表</button>
 		</div>
 	</form>

@@ -1,9 +1,8 @@
-#set(Collection<TagLabel> topTags)
-#set()
+#set(UserSelf userSelf)
 <div class="tag-input">
-  #for(each : topTags)
+  #for(TagLabel each : userSelf.topTags)
     <a class="tag-sel btn btn-sm btn-default" tag-id="${each.id}"
-       title="${each.chainStr}" href="/public/${each.id}">${each.name}</a>
+       title="${each.chainStr}">${each.name}</a>
   #end
   <a class="tag-plus btn btn-info" title="更多">+</a>
   <a class="tag-clear btn btn-default" title="清除">-</a>
