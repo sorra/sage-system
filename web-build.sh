@@ -1,1 +1,1 @@
-cp -r src/main/webapp $TOMCAT_HOME/webapps/ROOT
+cp -r src/main/webapp/ $TOMCAT_HOME/webapps/ROOT/
