@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 #set(components = ["bootstrap", "layout", "stream", "tag", "user", "markdown"])
-#set(BlogData blog, List<TweetView> tweets)
+#set(BlogView blog, List<TweetView> tweets)
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<title>${blog.title}</title>
@@ -26,7 +26,8 @@ $!{include("navbar.httl")}
 		#if(uid.equals(blog.authorId))
 		<a href="/blog/$!{blog.id}/edit">编辑</a>
 		#end
-		<span>$!{blog.time}</span>
+		<span>创建于 ${blog.createdTime}</span>
+		#if(blog.modifiedTime)<span>修改于 ${blog.modifiedTime}</span>#end
 		<div class="tags">
 		#for(TagLabel tag : blog.tags)
 		  <a class="btn btn-small" href="${base}/public/${tag.id}">${tag.name}</a>

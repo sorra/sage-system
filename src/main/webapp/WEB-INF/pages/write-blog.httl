@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 #set(components = ["bootstrap", "markdown", "layout", "tag", "post-box", "write-blog"])
-#set(BlogData blog)
+#set(BlogView blog)
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <title>编写博客</title> $!{includeCSS()}
