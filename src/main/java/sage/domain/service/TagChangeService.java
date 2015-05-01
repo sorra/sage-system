@@ -29,6 +29,9 @@ public class TagChangeService {
   private UserRepository userRepo;
 
   public Long newTag(String name, long parentId, String intro) {
+    if (intro == null || intro.isEmpty()) {
+      intro = "啊，" + name + "！";
+    }
     Tag tag = new Tag(name, tagRepo.load(parentId), intro);
     if (tagRepo.byNameAndParent(name, parentId) == null) {
       tagRepo.save(tag);
