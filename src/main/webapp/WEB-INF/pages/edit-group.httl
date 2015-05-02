@@ -1,21 +1,23 @@
 <!DOCTYPE html>
 <html>
 #set(components = ["bootstrap", "layout", "tag", "edit-group"])
+#set(Group group)
 <head>
   <meta charset="UTF-8">
-  <title>创建小组</title>
+  <title>修改小组</title>
   $!{includeCSS()}
 </head>
 <body>
 $!{include("navbar.httl")}
 <div id="container" class="container">
-  <form id="form" action="/group/new" method="post">
-    <div id="name-input">
-      小组名字: <input name="name" type="text" />
+  <form id="form" action="/group/${group.id}/edit" method="post">
+    <div>
+      小组名字: <input name="name" type="text" value="${group.name}" />
     </div>
-    <div id="introduction-input">
-      小组介绍: <textarea name="introduction"></textarea>
+    <div>
+      小组介绍: <textarea name="introduction">${group.introduction}</textarea>
     </div>
+    $!{include("existing-tags.httl")}
     $!{include("tag-input.httl")}
     <div>
       <input type="submit" />

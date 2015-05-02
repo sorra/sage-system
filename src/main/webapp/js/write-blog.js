@@ -19,8 +19,6 @@ $(document).ready(function(){
       $('.tag-sel.btn-success').each(function(idx){
         var tagId = parseInt($(this).attr('tag-id'))
         selectedTagIds.push(tagId)
-        $(this).removeClass('.btn-success')
-        console.info('fff')
       })
 
       var blogId = window.frontMap.blogId;
@@ -69,15 +67,12 @@ $(document).ready(function() {
 });
 
 function postBlogDone(blogId) {
-	var $submit = $('form.blog .btn[type=submit]');
-  tipover($submit, '发表成功', 1000);
-  setTimeout(function(){window.location = '/blog/' + blogId}, 1000);
+  window.location = '/blog/' + blogId
 }
 
-function postBlogFail(resp) {
-  console.warn("Post-blog-fail: " + resp);
+function postBlogFail(err) {
   var $submit = $('form.blog .btn[type=submit]');
-  tipover($submit, '发表失败', 1000);
+  tipover($submit, '发表失败: '+err, 1000);
 }
 
 function refresh() {

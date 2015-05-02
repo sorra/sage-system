@@ -44,6 +44,13 @@ public class UserService {
         topTags(userId));
   }
 
+  public Collection<TagLabel> filterUserTags(long userId, Collection<TagLabel> existingTags) {
+    Collection<TagLabel> userTags = Colls.copy(getSelf(userId).getTopTags());
+    Collection<Long> tagIds = Colls.map(existingTags, TagLabel::getId);
+    userTags.removeIf(t -> tagIds.contains(t.getId()));
+    return userTags;
+  }
+
   @Transactional(readOnly = true)
   public UserCard getUserCard(long cuid, long userId) {
     return new UserCard(userRepo.get(userId),

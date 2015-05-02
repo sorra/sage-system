@@ -81,18 +81,11 @@ public class PageController {
     BlogView blog = blogReadService.getBlogData(blogId);
     if (blog.getAuthorId().equals(currentUid)) {
       model.put("blog", blog);
-      model.put("topTags", blogFilterUserTags(blog.getTags()));
+      model.put("topTags", userService.filterUserTags(currentUid, blog.getTags()));
       FrontMap.from(model).attr("blogId", blog.getId());
       return "write-blog";
     } else
       return "error";
-  }
-
-  private Collection<TagLabel> blogFilterUserTags(Collection<TagLabel> blogTags) {
-    Collection<TagLabel> userTags = Colls.copy(userService.getSelf(Auth.cuid()).getTopTags());
-    Collection<Long> blogTagIds = Colls.map(blogTags, TagLabel::getId);
-    userTags.removeIf(t -> blogTagIds.contains(t.getId()));
-    return userTags;
   }
 
   @RequestMapping("/manip-tag")

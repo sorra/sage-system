@@ -43,12 +43,8 @@ $!{include("navbar.httl")}
 				<div id="preview" class="col-md-9 tab-pane"></div>
 			</div>
 			<div class="row">
-        <div class="existing-tags">
-          #for(TagLabel each : blog.tags)
-          <a class="tag-sel btn-success btn btn-sm btn-default" tag-id="${each.id}"
-             title="${each.chainStr}">${each.name}</a>
-          #end
-        </div>
+        #set(existingTags = blog.tags)
+        $!{include("existing-tags.httl")}
 				$!{include("tag-input.httl")}
 				<button class="btn btn-primary pull-right" type="submit">发表</button>
 			</div>

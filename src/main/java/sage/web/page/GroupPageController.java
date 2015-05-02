@@ -5,10 +5,7 @@ import java.util.Collection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import sage.domain.service.*;
 import sage.entity.Blog;
 import sage.entity.Group;
@@ -28,19 +25,38 @@ public class GroupPageController {
   @Autowired
   private BlogPostService blogPostService;
 
-  @RequestMapping("/group/new")
+  @RequestMapping(value = "/group/new", method = RequestMethod.GET)
   String newGroup() {
     Auth.checkCuid();
     return "new-group";
   }
 
-  @RequestMapping("/group/create")
-  String createGroup(@RequestParam String name, @RequestParam String introduction,
-                     @RequestParam(value = "tagIds[]", defaultValue = "") Collection<Long> tagIds) {
+  @RequestMapping(value = "/group/new", method = RequestMethod.POST)
+  @ResponseBody
+  String groupNew(@RequestParam String name, @RequestParam String introduction,
+                  @RequestParam(value = "tagIds[]", defaultValue = "") Collection<Long> tagIds) {
     long id = groupService.newGroup(Auth.checkCuid(), name, introduction, tagIds).getId();
-    return "redirect:/group/" + id;
+    return "/group/" + id;
   }
 
+  @RequestMapping(value = "/group/{id}/edit", method = RequestMethod.GET)
+  String editGroup(@PathVariable Long id, ModelMap model) {
+    Auth.checkCuid();
+    Group group = groupService.getGroup(id);
+    model.put("group", group);
+    model.put("existingTags", userService.filterUserTags(Auth.cuid(),
+        Colls.map(group.getTags(), TagLabel::new)));
+    return "edit-group";
+  }
+
+  @RequestMapping(value = "/group/{id}/edit", method = RequestMethod.POST)
+  @ResponseBody
+  String groupEdit(@PathVariable Long id,
+                   @RequestParam String name, @RequestParam String introduction,
+                   @RequestParam(value = "tagIds[]", defaultValue = "") Collection<Long> tagIds) {
+    groupService.editGroup(Auth.checkCuid(), id, name, introduction, tagIds);
+    return "/group/" + id;
+  }
 
   @RequestMapping("/group/{id}")
   String group(@PathVariable Long id, ModelMap model) {

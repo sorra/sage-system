@@ -42,8 +42,33 @@ public class GroupService {
     if (introduction == null || introduction.isEmpty()) {
       throw new DomainRuntimeException("Must enter a group introduction!");
     }
+
     Set<Tag> tags = tagRepo.byIds(tagIds);
     return groupRepo.save(new Group(name, introduction, tags, userRepo.load(userId), new Date()));
+  }
+
+  public Group editGroup(long userId, long groupId,
+                         String name, String introduction, Collection<Long> tagIds) {
+    if (name == null || name.isEmpty()) {
+      throw new DomainRuntimeException("Must enter a group name!");
+    }
+    if (introduction == null || introduction.isEmpty()) {
+      throw new DomainRuntimeException("Must enter a group introduction!");
+    }
+    Group group = groupRepo.get(groupId);
+    if (group == null) {
+      throw new DomainRuntimeException("Group[%d] does not exist!", groupId);
+    }
+    if (!group.getCreator().getId().equals(userId)) {
+      throw new DomainRuntimeException("User[%d] is not the owner of Group[%d]", userId, groupId);
+    }
+
+    group.setName(name);
+    group.setIntroduction(introduction);
+    group.setTags(tagRepo.byIds(tagIds));
+    groupRepo.update(group);
+
+    return group;
   }
 
   public GroupTopic getTopic(long id) {
