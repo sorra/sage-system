@@ -11,9 +11,13 @@ import sage.domain.service.BlogReadService;
 import sage.domain.service.TweetReadService;
 import sage.domain.service.UserService;
 import sage.transfer.BlogView;
+import sage.transfer.TagLabel;
 import sage.transfer.TweetView;
+import sage.util.Colls;
 import sage.web.auth.Auth;
 import sage.web.context.FrontMap;
+
+import java.util.Collection;
 
 @Controller
 public class PageController {
@@ -57,7 +61,7 @@ public class PageController {
     model.addAttribute("blogs", blogReadService.getAllBlogDatas());
     return "blogs";
   }
-  
+
   @RequestMapping("/fav")
   public String fav(ModelMap model) {
     Auth.checkCuid();
@@ -76,12 +80,19 @@ public class PageController {
 
     BlogView blog = blogReadService.getBlogData(blogId);
     if (blog.getAuthorId().equals(currentUid)) {
-      model.addAttribute("blog", blog);
-      FrontMap.from(model).attr("blogId", blog.getId()).attr("existingTags", blog.getTags());
+      model.put("blog", blog);
+      model.put("topTags", blogFilterUserTags(blog.getTags()));
+      FrontMap.from(model).attr("blogId", blog.getId());
       return "write-blog";
-    }
-    else
+    } else
       return "error";
+  }
+
+  private Collection<TagLabel> blogFilterUserTags(Collection<TagLabel> blogTags) {
+    Collection<TagLabel> userTags = Colls.copy(userService.getSelf(Auth.cuid()).getTopTags());
+    Collection<Long> blogTagIds = Colls.map(blogTags, TagLabel::getId);
+    userTags.removeIf(t -> blogTagIds.contains(t.getId()));
+    return userTags;
   }
 
   @RequestMapping("/manip-tag")

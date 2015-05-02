@@ -1,6 +1,11 @@
+#set(Collection topTags)
 #set(UserSelf userSelf)
+#if(topTags == null)
+  #set(topTags = userSelf.topTags)
+#end
+
 <div class="tag-input">
-  #for(TagLabel each : userSelf.topTags)
+  #for(TagLabel each : topTags)
     <a class="tag-sel btn btn-sm btn-default" tag-id="${each.id}"
        title="${each.chainStr}">${each.name}</a>
   #end
