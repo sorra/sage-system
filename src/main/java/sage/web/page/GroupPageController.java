@@ -30,6 +30,7 @@ public class GroupPageController {
 
   @RequestMapping("/group/new")
   String newGroup() {
+    Auth.checkCuid();
     return "new-group";
   }
 

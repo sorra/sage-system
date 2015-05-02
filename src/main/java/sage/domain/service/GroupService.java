@@ -36,6 +36,12 @@ public class GroupService {
   }
 
   public Group newGroup(long userId, String name, String introduction, Collection<Long> tagIds) {
+    if (name == null || name.isEmpty()) {
+      throw new DomainRuntimeException("Must enter a group name!");
+    }
+    if (introduction == null || introduction.isEmpty()) {
+      throw new DomainRuntimeException("Must enter a group introduction!");
+    }
     Set<Tag> tags = tagRepo.byIds(tagIds);
     return groupRepo.save(new Group(name, introduction, tags, userRepo.load(userId), new Date()));
   }
