@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-#set(components = ["bootstrap", "layout", "stream", "tag", "user", "post-box", "home"])
+#set(components = ["bootstrap", "layout", "stream", "tag", "user", "home"])
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<title>贤者：首页</title>
