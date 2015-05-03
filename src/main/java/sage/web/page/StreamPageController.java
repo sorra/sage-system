@@ -1,9 +1,6 @@
 package sage.web.page;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -11,6 +8,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import sage.domain.commons.BadArgumentException;
+import sage.domain.service.GroupService;
 import sage.domain.service.TagService;
 import sage.domain.service.UserService;
 import sage.entity.Tag;
@@ -25,6 +23,8 @@ public class StreamPageController {
   private UserService userService;
   @Autowired
   private TagService tagService;
+  @Autowired
+  private GroupService groupService;
 
   @RequestMapping("/public/{id}")
   public String publicPage(@PathVariable long id, ModelMap model) {
@@ -47,6 +47,8 @@ public class StreamPageController {
     } else {
       throw new BadArgumentException("tag id " + id + " does not exist!");
     }
+
+    model.put("groups", groupService.byTags(Collections.singletonList(id)));
 
     Collection<Tag> sameNameTags = tagService.getSameNameTags(id);
 

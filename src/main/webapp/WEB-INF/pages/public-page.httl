@@ -2,12 +2,21 @@
 <html>
 #set(components = ["bootstrap", "layout", "stream", "tag", "user"])
 #set(TagCard tag)
+#set(Collection<GroupPreview> groups)
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<title>"${tag.name}"的区域</title>
   $!{includeCSS()}
   <style>
-    .side > div, #bkg-intro{padding-bottom: 100px; margin: 2px; border: solid orange 1px}
+    .side > div, #bkg-intro{
+      min-height: 50px;
+      margin: 2px;
+      padding: 5px;
+      background-color: #e5e5e5;
+    }
+    .group-label{
+      display: block;
+    }
   </style>
 </head>
 <body>
@@ -17,15 +26,21 @@ $!{include("navbar.httl")}
 	<div id="chain"></div>
 	<div class="row" style="margin-top:50px">
 		<div class="side">
-     <div>订阅</div>
-     <div>核心子标签</div>
-     <div>普通子标签</div>
-     <div>同名标签</div>
-     <div>关联标签</div>
+			<div>
+        小组
+        #for(group : groups)
+          <a class="group-label" href="/group/${group.id}">${group.name}</a>
+        #end
+      </div>
+      <div>订阅</div>
+      <div>核心子标签</div>
+      <div>普通子标签</div>
+      <div>同名标签</div>
+      <div>关联标签</div>
 		</div>
 		<div class="main">
 		  <div id="bkg-intro" class="row" style="text-align:center;padding:10px">${tag.intro == null ? "没有背景介绍" : intro}</div>
-			<div class="stream row">
+			<div class="stream">
 				<div class="slist"></div>
 			</div>
 		</div>

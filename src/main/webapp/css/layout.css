@@ -23,6 +23,8 @@ body>.container{
 .main{
   width: 660px;
   float: left;
+  margin-left: 5px;
+  margin-right: 5px;
 }
 .footer {
   clear: both;

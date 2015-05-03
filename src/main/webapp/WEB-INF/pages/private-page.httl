@@ -19,7 +19,7 @@ $!{include("navbar.httl")}
       #end
     </div>
 		<div class="main">
-			<div class="stream row">
+			<div class="stream">
 				<div class="slist"></div>
 			</div>
 		</div>
