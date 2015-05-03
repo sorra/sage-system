@@ -4,7 +4,7 @@
 #set(Collection<GroupPreview> groups)
 <head>
   <meta charset="UTF-8">
-  <title>所有小组</title>
+  <title>所有小组 - 紫月空</title>
   $!{includeCSS()}
 </head>
 <body>

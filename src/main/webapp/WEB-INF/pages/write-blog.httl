@@ -4,7 +4,7 @@
 #set(BlogView blog)
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<title>编写博客</title> $!{includeCSS()}
+<title>写博客</title> $!{includeCSS()}
 <style type="text/css">
 .blog {
 	margin: 20px;

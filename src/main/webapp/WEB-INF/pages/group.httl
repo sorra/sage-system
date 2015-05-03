@@ -5,7 +5,7 @@
 #set(Collection<BlogPreview> topics)
 <head>
   <meta charset="UTF-8">
-  <title>{${group.name}}小组</title>
+  <title>{${group.name}}小组 - 紫月空</title>
   $!{includeCSS()}
   <style>
     .topic{

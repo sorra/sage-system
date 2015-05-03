@@ -3,7 +3,7 @@
 #set(components = ["bootstrap", "layout", "stream", "tag", "user", "home"])
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-	<title>贤者：首页</title>
+	<title>首页 - 紫月空</title>
   $!{includeCSS()}
 </head>
 <body>

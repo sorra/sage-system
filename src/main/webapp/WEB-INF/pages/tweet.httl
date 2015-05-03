@@ -3,7 +3,7 @@
 #set(components = ["bootstrap","layout", "tag", "stream", "user"])
 <head>
 <meta charset="UTF-8">
-<title>贤者：微博</title>
+<title>微博 - 紫月空</title>
 $!{includeCSS()}
 </head>
 <body>
