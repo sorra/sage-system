@@ -1,7 +1,6 @@
 .user-card{
-  background: #f0f0f0;
+  background: #e5e5e5;
   padding: 2px;
-  border: orange solid 2px;
   border-radius: 8px;
 }
 .user-card .avatar, .user-card .info-part{
