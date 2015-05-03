@@ -29,8 +29,8 @@ $!{include("navbar.httl")}
 		<span>创建于 ${blog.createdTime}</span>
 		#if(blog.modifiedTime)<span>修改于 ${blog.modifiedTime}</span>#end
 		<div class="tags">
-		#for(TagLabel tag : blog.tags)
-		  <a class="btn btn-small" href="${base}/public/${tag.id}">${tag.name}</a>
+		#for(tag : blog.tags)
+		  $!{include("tag-label.httl")}
 		#end
 		</div>
 		<div class="content">$!{blog.content}</div>
