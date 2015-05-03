@@ -17,7 +17,8 @@
 $!{include("navbar.httl")}
   <div id="container" class="container">
     <div class="group">
-      <p>${group.introduction}</p>
+      <p>${group.name}</p>
+      介绍: <p>${group.introduction}</p>
       #for(tag : group.tags)
        $!{include("tag-label.httl")}
       #end
@@ -31,5 +32,7 @@ $!{include("navbar.httl")}
       </div>
     #end
   </div>
+$!{includeProto}
+$!{includeJS()}
 </body>
 </html>

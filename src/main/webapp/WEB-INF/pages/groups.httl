@@ -21,5 +21,7 @@ $!{include("navbar.httl")}
       </div>
     #end
   </div>
+$!{includeProto}
+$!{includeJS()}
 </body>
 </html>
