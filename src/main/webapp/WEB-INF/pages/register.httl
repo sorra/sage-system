@@ -13,6 +13,11 @@
     body{
       min-height: 600px;
     }
+    .heading{
+      text-align: center;
+      padding: 10px;
+      color: lightyellow;
+    }
     form{
       width: 400px;
       margin: 15% auto auto auto;
@@ -44,7 +49,7 @@
 </head>
 <body class="background-dark">
   <form action="/auth/register" method="post">
-    <h3 style="text-align: center; color: lightyellow">注册新的账户</h3>
+    <h5 class="heading">注册一个紫月空账户</h5>
     <div class="input-group">
       <label for="email">邮箱</label>
       <input id="email" name="email" type="text" placeholder="请输入您的邮箱" />

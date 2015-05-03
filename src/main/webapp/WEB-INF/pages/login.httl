@@ -13,6 +13,10 @@
     body{
       min-height: 600px;
     }
+    .heading{
+      text-align: center;
+      padding: 10px;
+    }
     form{
       width: 400px;
       margin: 15% auto auto auto;
@@ -44,6 +48,7 @@
 </head>
 <body class="background-dark">
   <form action="/auth/login" method="post">
+    <h3 class="heading">紫月空</h3>
     <div class="input-group">
       <label for="email">邮箱</label>
       <input id="email" name="email" type="text" placeholder="请输入您的邮箱" />
