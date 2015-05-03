@@ -1,7 +1,9 @@
 <script id="tmpl-tweet" type="text/html">
   <div class="tweet {{if isForward}}t-forward{{else if isOrigin}}t-origin{{else}}stream-item{{/if}}"
       tweet-id="{{id}}" author-id="{{authorId}}">
+    {{if !isOrigin}}
     <a class="avatar" {{authorId | userLinkAttrs}}><img src="{{avatar}}"/></a>
+    {{/if}}
     <div class="tweet-body">
       <a class="author-name" {{authorId | userLinkAttrs}}>{{authorName}}</a>
       <p class="tweet-content">

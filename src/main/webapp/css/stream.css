@@ -20,14 +20,15 @@
   clear: both;
 }
 .tweet-body{
-	width: 520px;
+	min-width: 500px;
   float: left;
 }
 .origin .tweet-body{
 	width: 505px;
 }
 .stream-item .t-origin{
-  margin-left: 20px;
+  margin-left: 10px;
+  padding: 5px;
 	background: #e0e0e0;
 	border: solid 1px #e5e5e5;
 	border-radius: 10px;
