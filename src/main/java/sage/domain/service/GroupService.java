@@ -18,6 +18,8 @@ import sage.entity.Blog;
 import sage.entity.Group;
 import sage.entity.GroupTopic;
 import sage.entity.Tag;
+import sage.transfer.GroupPreview;
+import sage.util.Colls;
 
 @Service
 @Transactional
@@ -82,8 +84,12 @@ public class GroupService {
     return groupTopicRepo.save(new GroupTopic(blog));
   }
 
-  public Collection<Group> byTags(Collection<Long> tagIds) {
-    return groupRepo.byTags(tagRepo.byIds(tagIds));
+  public Collection<GroupPreview> byTags(Collection<Long> tagIds) {
+    return Colls.map(groupRepo.byTags(tagRepo.byIds(tagIds)), GroupPreview::new);
+  }
+
+  public Collection<GroupPreview> all() {
+    return Colls.map(groupRepo.all(), GroupPreview::new);
   }
 
   public Collection<GroupTopic> topics(long groupId) {

@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-#set(components = ["bootstrap", "layout"])
+#set(components = ["bootstrap", "layout", "tag"])
 #set(TopicView topic)
 <head>
   <meta charset="UTF-8">

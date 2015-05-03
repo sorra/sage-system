@@ -61,12 +61,19 @@ public class GroupPageController {
   @RequestMapping("/group/{id}")
   String group(@PathVariable Long id, ModelMap model) {
     Auth.checkCuid();
-    Group group = groupService.getGroup(id);
-    Collection<BlogPreview> items = Colls.map(groupService.topics(id),
-        topic -> new BlogPreview(topic.getBlog()));
-    model.put("group", group);
-    model.put("topics", items);
+    Transactor.get().run(() -> {
+      Collection<BlogPreview> items = Colls.map(groupService.topics(id),
+          topic -> new BlogPreview(topic.getBlog()));
+      model.put("group", new GroupPreview(groupService.getGroup(id)));
+      model.put("topics", items);
+    });
     return "group";
+  }
+
+  @RequestMapping("/groups")
+  String groups(ModelMap model) {
+    model.put("groups", groupService.all());
+    return "groups";
   }
 
   @RequestMapping("/topic/{id}")

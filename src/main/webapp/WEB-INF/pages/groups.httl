@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+#set(components = ["bootstrap", "layout", "tag"])
+#set(Collection<GroupPreview> groups)
+<head>
+  <meta charset="UTF-8">
+  <title>所有小组</title>
+  $!{includeCSS()}
+</head>
+<body>
+$!{include("navbar.httl")}
+  <div id="container" class="container">
+    #for(group: groups)
+      <div class="group">
+        <a href="/group/${group.id}">${group.name}</a>
+        <p>${group.introduction}</p>
+        <div>${group.creator.name}</div>
+        #for(tag : group.tags)
+         $!{include("tag-label.httl")}
+        #end
+      </div>
+    #end
+  </div>
+</body>
+</html>

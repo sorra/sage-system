@@ -6,7 +6,7 @@
       <li id="nav-home"><a href="/">首页</a></li>
       <li id="nav-tags"><a href="javascript:;">标签</a></li>
       <li id="nav-people"><a href="/people">人们</a></li>
-      <li id="nav-blog"><a href="/topics">主题</a></li>
+      <li id="nav-blog"><a href="/groups">小组</a></li>
       <li id="nav-write-blog"><a href="/write-blog">写博客</a></li>
       <li id="nav-fav"><a href="/fav">收藏夹</a></li>
       #if(userSelf != null)
