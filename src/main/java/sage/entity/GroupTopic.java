@@ -10,12 +10,13 @@ public class GroupTopic {
   private Long id;
   private Blog blog;
   private Group group;
-  private boolean hidden = true;
+  private boolean hidden = false;
 
   GroupTopic() {}
 
-  public GroupTopic(Blog blog) {
+  public GroupTopic(Blog blog, Group group) {
     this.blog = blog;
+    this.group = group;
   }
 
   @Id @GeneratedValue
@@ -26,7 +27,7 @@ public class GroupTopic {
     this.id = id;
   }
 
-  @ManyToOne
+  @ManyToOne(optional = false)
   public Blog getBlog() {
     return blog;
   }
@@ -34,7 +35,7 @@ public class GroupTopic {
     this.blog = blog;
   }
 
-  @ManyToOne
+  @ManyToOne(optional = false)
   public Group getGroup() {
     return group;
   }

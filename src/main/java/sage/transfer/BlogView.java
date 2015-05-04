@@ -13,7 +13,7 @@ public class BlogView {
   private Long authorId;
   private String authorName;
   private String avatar;
-  private UserCard authorCard = null;
+  private UserCard author = null;
   private String title;
   private String content;
   private Date createdTime;
@@ -53,8 +53,8 @@ public class BlogView {
     return avatar;
   }
 
-  public UserCard getAuthorCard() {
-    return authorCard;
+  public UserCard getAuthor() {
+    return author;
   }
 
   public String getTitle() {

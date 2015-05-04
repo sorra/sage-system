@@ -62,11 +62,11 @@ public class PostController {
       tweetPostService.share(uid, blog);
     }
     if (groupId != null) {
-      long topicId = groupService.post(uid, blog).getId();
-      return "/group/" + topicId;
+      long topicId = groupService.post(uid, blog, groupId).getId();
+      return String.format("/group/%d/topic/%d", groupId, topicId);
     }
     logger.info("post blog {} success", blog.getId());
-    return blog.getId().toString();
+    return "/blog/" + blog.getId();
   }
 
   @RequestMapping("/edit-blog/{blogId}")
@@ -77,7 +77,7 @@ public class PostController {
       @RequestParam(value = "tagIds[]", defaultValue = "") Collection<Long> tagIds) {
     Long uid = Auth.checkCuid();
     Blog blog = blogService.edit(uid, blogId, title, content, tagIds);
-    return blog.getId().toString();
+    return "/blog/" + blog.getId();
   }
 
   @RequestMapping("/comment")

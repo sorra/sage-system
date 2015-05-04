@@ -76,15 +76,15 @@ public class GroupService {
     return groupTopicRepo.get(id);
   }
 
-  public GroupTopic post(long userId, Blog blog) {
+  public GroupTopic post(long userId, Blog blog, long groupId) {
     if (!IdCommons.equal(userId, blog.getAuthor().getId())) {
       throw new DomainRuntimeException("Cannot post topic. User[%d] is not the author of Blog[%d]", userId, blog.getId());
     }
-    return groupTopicRepo.save(new GroupTopic(blog));
+    return groupTopicRepo.save(new GroupTopic(blog, groupRepo.load(groupId)));
   }
 
-  public GroupTopic post(long userId, long blogId) {
-    return post(userId, blogRepo.get(blogId));
+  public GroupTopic post(long userId, long blogId, long groupId) {
+    return post(userId, blogRepo.get(blogId), groupId);
   }
 
   public Collection<GroupPreview> byTags(Collection<Long> tagIds) {

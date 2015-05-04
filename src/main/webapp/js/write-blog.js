@@ -23,17 +23,20 @@ $(document).ready(function(){
 
       var blogId = window.frontMap.blogId;
       var submitUrl = blogId ? '/post/edit-blog/'+blogId : '/post/blog'
-      $.post(submitUrl, {
+      var reqAttrs = {
         title: $('#title').val(),
         content: $('#content').val(),
         tagIds: selectedTagIds
-      })
+      }
+      if (window.frontMap.groupId) {
+        reqAttrs.groupId = window.frontMap.groupId
+      }
+      $.post(submitUrl, reqAttrs)
         .always(function(r_){
           $submit.prop('disabled', false)
         })
         .done(function(resp){
-          if ($.isNumeric(resp) && resp >= 0) postBlogDone(resp)
-          else postBlogFail(resp)
+          postBlogDone(resp)
         })
         .fail(function(err){
           postBlogFail(err)
@@ -66,17 +69,16 @@ $(document).ready(function() {
   refresh();
 });
 
-function postBlogDone(blogId) {
-  window.location = '/blog/' + blogId
+function postBlogDone(url) {
+  window.location = url
 }
 
 function postBlogFail(err) {
-  var $submit = $('form.blog .btn[type=submit]');
-  tipover($submit, '发表失败: '+err, 1000);
+  var $submit = $('form.blog .btn[type=submit]')
+  tipover($submit, '发表失败: '+err, 1000)
 }
 
 function refresh() {
-  console.log('refresh');
-  var input = $('#content').val();
-  $('#preview').html(markdown.toHTML(input));
+  var input = $('#content').val()
+  $('#preview').html(markdown.toHTML(input))
 }

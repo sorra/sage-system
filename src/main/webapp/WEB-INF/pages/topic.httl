@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 #set(components = ["bootstrap", "layout", "tag"])
-#set(TopicView topic)
+#set(BlogView topic)
 <head>
   <meta charset="UTF-8">
   <title>${topic.title}</title>
@@ -18,7 +18,7 @@
     <div class="topic" topic-id="${topic.id}">
       <h5>${topic.title}</h5>
       <div>${topic.content}</div>
-      <span>${topic.author.name}</span>
+      <a href="/private/${topic.authorId}">${topic.authorName}</a>
       <span>${topic.createdTime.format("yyyy-MM-dd HH:mm:ss")}</span>
       <span>${topic.modifiedTime.format("yyyy-MM-dd HH:mm:ss")}</span>
     </div>

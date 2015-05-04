@@ -2,7 +2,7 @@
 <html>
 #set(components = ["bootstrap", "layout", "tag"])
 #set(GroupPreview group)
-#set(Collection<BlogPreview> topics)
+#set(Collection<GroupTopicPreview> topics)
 <head>
   <meta charset="UTF-8">
   <title>{${group.name}}小组 - 紫月空</title>
@@ -25,11 +25,11 @@ $!{include("navbar.httl")}
     </div>
     <a class="btn btn-primary btn-sm" href="/write-blog?groupId=${group.id}">发表文章!</a>
     #for(topic : topics)
-      <div class="topic">
-        <a href="/topic/${topic.id}">${topic.title}</a>
-        <p>${topic.preview}</p>
-        <a>${topic.author.name}</a>
-        <span>${topic.createdTime.format("yyyy-MM-dd HH:mm:ss")}</span>
+      <div class="topic">˜
+        <a href="/topic/${topic.id}">${topic.blog.title}</a>
+        <p>${topic.blog.preview}</p>
+        <a>${topic.blog.author.name}</a>
+        <span>${topic.blog.createdTime.format("yyyy-MM-dd HH:mm:ss")}</span>
       </div>
     #end
   </div>

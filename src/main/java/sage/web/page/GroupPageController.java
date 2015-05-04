@@ -64,10 +64,9 @@ public class GroupPageController {
   String group(@PathVariable Long id, ModelMap model) {
     Auth.checkCuid();
     Transactor.get().run(() -> {
-      Collection<BlogPreview> items = Colls.map(groupService.topics(id),
-          topic -> new BlogPreview(topic.getBlog()));
+      Collection<GroupTopicPreview> topics = Colls.map(groupService.topics(id), GroupTopicPreview::new);
       model.put("group", new GroupPreview(groupService.getGroup(id)));
-      model.put("topics", items);
+      model.put("topics", topics);
     });
     return "group";
   }
@@ -94,7 +93,7 @@ public class GroupPageController {
   @ResponseBody
   String topicSubmit(@PathVariable Long groupId, @RequestParam Long blogId) {
     Long cuid = Auth.checkCuid();
-    long topicId = groupService. post(cuid, blogId).getId();
+    long topicId = groupService. post(cuid, blogId, groupId).getId();
     return "/topic/" + topicId;
   }
 }

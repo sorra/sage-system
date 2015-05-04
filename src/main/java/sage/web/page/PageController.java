@@ -81,6 +81,7 @@ public class PageController {
           groupService.getGroup(groupId).getTags(), TagLabel::new);
       model.put("existingTags", groupTags);
       model.put("topTags", userService.filterUserTags(cuid, groupTags));
+      FrontMap.from(model).attr("groupId", groupId);
     }
     return "write-blog";
   }
