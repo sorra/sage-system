@@ -24,6 +24,8 @@ public class GroupPageController {
   private TagService tagService;
   @Autowired
   private BlogPostService blogPostService;
+  @Autowired
+  private BlogReadService blogReadService;
 
   @RequestMapping(value = "/group/new", method = RequestMethod.GET)
   String newGroup() {
@@ -88,14 +90,11 @@ public class GroupPageController {
     return "topic";
   }
 
-  @RequestMapping(value = "group/{groupId}/post", method = RequestMethod.POST)
-  String topicPost(@PathVariable Long groupId, @RequestParam String title, @RequestParam String content) {
-    Auth.checkCuid();
-    long id = Transactor.get().apply(() -> {
-      Collection<Long> tagIds = Colls.map(groupService.getGroup(groupId).getTags(), Tag::getId);
-      Blog blog = blogPostService.post(Auth.cuid(), title, content, tagIds);
-      return groupService.post(Auth.cuid(), blog).getId();
-    });
-    return "redirect:/topic/" + id;
+  @RequestMapping(value = "group/{groupId}/submit", method = RequestMethod.POST)
+  @ResponseBody
+  String topicSubmit(@PathVariable Long groupId, @RequestParam Long blogId) {
+    Long cuid = Auth.checkCuid();
+    long topicId = groupService. post(cuid, blogId).getId();
+    return "/topic/" + topicId;
   }
 }

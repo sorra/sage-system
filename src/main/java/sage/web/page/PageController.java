@@ -1,5 +1,6 @@
 package sage.web.page;
 
+import com.sun.org.apache.xpath.internal.operations.Mod;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,7 +8,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import sage.domain.service.BlogReadService;
+import sage.domain.service.GroupService;
 import sage.domain.service.TweetReadService;
 import sage.domain.service.UserService;
 import sage.transfer.BlogView;
@@ -28,6 +31,8 @@ public class PageController {
   private BlogReadService blogReadService;
   @Autowired
   private TweetReadService tweetReadService;
+  @Autowired
+  private GroupService groupService;
 
   @RequestMapping("/people")
   String people(ModelMap model) {
@@ -69,19 +74,26 @@ public class PageController {
   }
 
   @RequestMapping("/write-blog")
-  public String writeBlog() {
-    Auth.checkCuid();
+  public String writeBlog(@RequestParam(required = false) Long groupId, ModelMap model) {
+    Long cuid = Auth.checkCuid();
+    if (groupId != null) {
+      Collection<TagLabel> groupTags = Colls.map(
+          groupService.getGroup(groupId).getTags(), TagLabel::new);
+      model.put("existingTags", groupTags);
+      model.put("topTags", userService.filterUserTags(cuid, groupTags));
+    }
     return "write-blog";
   }
 
   @RequestMapping("/blog/{blogId}/edit")
   public String blogEdit(@PathVariable Long blogId, ModelMap model) {
-    Long currentUid = Auth.checkCuid();
+    Long cuid = Auth.checkCuid();
 
     BlogView blog = blogReadService.getBlogData(blogId);
-    if (blog.getAuthorId().equals(currentUid)) {
+    if (blog.getAuthorId().equals(cuid)) {
       model.put("blog", blog);
-      model.put("topTags", userService.filterUserTags(currentUid, blog.getTags()));
+      model.put("existingTags", blog.getTags());
+      model.put("topTags", userService.filterUserTags(cuid, blog.getTags()));
       FrontMap.from(model).attr("blogId", blog.getId());
       return "write-blog";
     } else

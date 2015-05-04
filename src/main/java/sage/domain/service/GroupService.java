@@ -10,10 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import sage.domain.commons.DomainRuntimeException;
 import sage.domain.commons.IdCommons;
-import sage.domain.repository.GroupRepository;
-import sage.domain.repository.GroupTopicRepository;
-import sage.domain.repository.TagRepository;
-import sage.domain.repository.UserRepository;
+import sage.domain.repository.*;
 import sage.entity.Blog;
 import sage.entity.Group;
 import sage.entity.GroupTopic;
@@ -32,6 +29,8 @@ public class GroupService {
   private TagRepository tagRepo;
   @Autowired
   private UserRepository userRepo;
+  @Autowired
+  private BlogRepository blogRepo;
 
   public Group getGroup(long id) {
     return groupRepo.get(id);
@@ -82,6 +81,10 @@ public class GroupService {
       throw new DomainRuntimeException("Cannot post topic. User[%d] is not the author of Blog[%d]", userId, blog.getId());
     }
     return groupTopicRepo.save(new GroupTopic(blog));
+  }
+
+  public GroupTopic post(long userId, long blogId) {
+    return post(userId, blogRepo.get(blogId));
   }
 
   public Collection<GroupPreview> byTags(Collection<Long> tagIds) {

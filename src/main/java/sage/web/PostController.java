@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import sage.domain.service.BlogPostService;
+import sage.domain.service.GroupService;
 import sage.domain.service.TweetPostService;
 import sage.entity.Blog;
 import sage.entity.Tweet;
@@ -21,6 +22,8 @@ public class PostController {
   private TweetPostService tweetPostService;
   @Autowired
   private BlogPostService blogService;
+  @Autowired
+  private GroupService groupService;
 
   @RequestMapping("/tweet")
   public boolean tweet(
@@ -47,26 +50,34 @@ public class PostController {
   }
 
   @RequestMapping("/blog")
-  public Long blog(
+  public String blog(
       @RequestParam String title,
       @RequestParam String content,
-      @RequestParam(value = "tagIds[]", defaultValue = "") Collection<Long> tagIds) {
+      @RequestParam(value = "tagIds[]", defaultValue = "") Collection<Long> tagIds,
+      @RequestParam(defaultValue = "true") Boolean sharable,
+      @RequestParam(required = false) Long groupId) {
     Long uid = Auth.checkCuid();
     Blog blog = blogService.post(uid, title, content, tagIds);
-    tweetPostService.share(uid, blog);
+    if (sharable) {
+      tweetPostService.share(uid, blog);
+    }
+    if (groupId != null) {
+      long topicId = groupService.post(uid, blog).getId();
+      return "/group/" + topicId;
+    }
     logger.info("post blog {} success", blog.getId());
-    return blog.getId();
+    return blog.getId().toString();
   }
 
   @RequestMapping("/edit-blog/{blogId}")
-  public Long editBlog(
+  public String editBlog(
       @PathVariable Long blogId,
       @RequestParam String title,
       @RequestParam String content,
       @RequestParam(value = "tagIds[]", defaultValue = "") Collection<Long> tagIds) {
     Long uid = Auth.checkCuid();
     Blog blog = blogService.edit(uid, blogId, title, content, tagIds);
-    return blog.getId();
+    return blog.getId().toString();
   }
 
   @RequestMapping("/comment")
