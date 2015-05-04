@@ -7,6 +7,7 @@
 <title>写博客</title> $!{includeCSS()}
 <style type="text/css">
 .blog {
+  width: 100%;
 	margin: 20px;
 }
 
@@ -16,11 +17,14 @@
 }
 
 #title {
+  width: 67%;
 	height: 2em;
   margin-left: 120px;
+  padding: 5px;
 }
 
 #content, #preview {
+  width: 90%;
 	min-height: 30em;
 }
 </style>
@@ -28,21 +32,21 @@
 <body>
 $!{include("navbar.httl")}
 <div class="container" id="container">
-	<div class="row">
-		<form class="blog col-md-12">
-			<div class="row">
-				<textarea id="title" class="col-md-8" placeholder="这里是标题">${blog.title}</textarea>
+	<div>
+		<form class="blog">
+			<div>
+				<textarea id="title" placeholder="这里是标题">${blog.title}</textarea>
 			</div>
 			<ul id="tabs" class="nav nav-tabs">
 				<li><a href="#content" data-toggle="tab">写作</a></li>
 				<li><a href="#preview" data-toggle="tab">预览</a></li>
 			</ul>
-			<div class="tab-content row">
-				<textarea id="content" class="col-md-12 tab-pane active"
+			<div class="tab-content">
+				<textarea id="content" class="tab-pane active"
 					placeholder="这里是内容">${blog.content}</textarea>
-				<div id="preview" class="col-md-9 tab-pane"></div>
+				<div id="preview" class="tab-pane"></div>
 			</div>
-			<div class="row">
+			<div>
         #set(existingTags = blog.tags)
         $!{include("existing-tags.httl")}
 				$!{include("tag-input.httl")}
