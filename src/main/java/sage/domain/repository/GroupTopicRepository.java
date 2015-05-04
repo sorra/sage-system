@@ -15,6 +15,6 @@ public class GroupTopicRepository extends BaseRepository<GroupTopic> {
 
   @Override
   protected Class<GroupTopic> entityClass() {
-    return null;
+    return GroupTopic.class;
   }
 }
