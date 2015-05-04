@@ -23,6 +23,7 @@ $!{include("navbar.httl")}
        $!{include("tag-label.httl")}
       #end
     </div>
+    <a class="btn btn-primary btn-sm" href="/write-blog?groupId=${group.id}">发表文章!</a>
     #for(topic : topics)
       <div class="topic">
         <a href="/topic/${topic.id}">${topic.title}</a>
