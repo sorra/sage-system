@@ -1,7 +1,7 @@
 package sage.domain.service;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,31 +24,28 @@ public class BlogReadService {
   /**
    * @return blogData | null
    */
-  public BlogView getBlogData(long blogId) {
+  public BlogView getBlogView(long blogId) {
     Blog blog = blogRepo.nullable(blogId);
     return blog == null ? null : new BlogView(blog);
   }
 
-  public List<BlogView> getAllBlogDatas() {
-    return listBlogDatas(blogRepo.all(), true);
+  public List<BlogView> getAllBlogViews() {
+    return toViews(blogRepo.all());
   }
 
   public List<BlogView> blogStream(long userId, Edge edge) {
-    List<Blog> blogs = new ArrayList<>();
     // TODO also use tags
-    blogs = Colls.flatMap(followRepo.followings(userId), f -> blogRepo.byAuthor(f.getTarget().getId()));
-    return listBlogDatas(blogs, false);
+    return Colls.copy(followRepo.followings(userId)).stream()
+        .flatMap(f -> blogRepo.byAuthor(f.getTarget().getId()).stream())
+        .map(BlogView::new).collect(Collectors.toList());
   }
 
   public List<BlogView> byAuthor(long authorId) {
-    return listBlogDatas(blogRepo.byAuthor(authorId), true);
+    return toViews(blogRepo.byAuthor(authorId));
   }
 
   /** eagerCopy aims at Hibernate */
-  private List<BlogView> listBlogDatas(List<Blog> blogs, boolean eagerCopy) {
-    if (eagerCopy) {
-      blogs = Colls.copy(blogs);
-    }
-    return Colls.map(blogs, BlogView::new);
+  private List<BlogView> toViews(List<Blog> blogs) {
+    return Colls.map(Colls.copy(blogs), BlogView::new);
   }
 }

@@ -1,6 +1,5 @@
 package sage.web.page;
 
-import com.sun.org.apache.xpath.internal.operations.Mod;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +15,6 @@ import sage.domain.service.UserService;
 import sage.transfer.BlogView;
 import sage.transfer.TagLabel;
 import sage.transfer.TweetView;
-import sage.util.Colls;
 import sage.web.auth.Auth;
 import sage.web.context.FrontMap;
 
@@ -51,7 +49,7 @@ public class PageController {
 
   @RequestMapping("/blog/{id}")
   public String blogPage(@PathVariable long id, ModelMap model) {
-    BlogView blog = blogReadService.getBlogData(id);
+    BlogView blog = blogReadService.getBlogView(id);
     if (blog == null) {
       logger.info("blog {} is null!", id);
       return "redirect:/";
@@ -63,7 +61,7 @@ public class PageController {
 
   @RequestMapping("/blogs")
   public String blogs(ModelMap model) {
-    model.addAttribute("blogs", blogReadService.getAllBlogDatas());
+    model.addAttribute("blogs", blogReadService.getAllBlogViews());
     return "blogs";
   }
 
@@ -89,7 +87,7 @@ public class PageController {
   public String blogEdit(@PathVariable Long blogId, ModelMap model) {
     Long cuid = Auth.checkCuid();
 
-    BlogView blog = blogReadService.getBlogData(blogId);
+    BlogView blog = blogReadService.getBlogView(blogId);
     if (blog.getAuthorId().equals(cuid)) {
       model.put("blog", blog);
       model.put("existingTags", blog.getTags());
