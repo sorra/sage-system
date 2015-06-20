@@ -32,11 +32,11 @@ public class GroupService {
   @Autowired
   private BlogRepository blogRepo;
 
-  public Group getGroup(long id) {
-    return groupRepo.get(id);
+  public GroupPreview getGroupPreview(long id) {
+    return new GroupPreview(groupRepo.get(id));
   }
 
-  public Group newGroup(long userId, String name, String introduction, Collection<Long> tagIds) {
+  public GroupPreview newGroup(long userId, String name, String introduction, Collection<Long> tagIds) {
     if (name == null || name.isEmpty()) {
       throw new DomainRuntimeException("Must enter a group name!");
     }
@@ -45,7 +45,8 @@ public class GroupService {
     }
 
     Set<Tag> tags = tagRepo.byIds(tagIds);
-    return groupRepo.save(new Group(name, introduction, tags, userRepo.load(userId), new Date()));
+    Group group = groupRepo.save(new Group(name, introduction, tags, userRepo.load(userId), new Date()));
+    return new GroupPreview(group);
   }
 
   public Group editGroup(long userId, long groupId,

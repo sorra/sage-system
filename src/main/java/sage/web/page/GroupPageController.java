@@ -36,17 +36,16 @@ public class GroupPageController {
   @ResponseBody
   String groupNew(@RequestParam String name, @RequestParam String introduction,
                   @RequestParam(value = "tagIds[]", defaultValue = "") Collection<Long> tagIds) {
-    long id = groupService.newGroup(Auth.checkCuid(), name, introduction, tagIds).getId();
+    long id = groupService.newGroup(Auth.checkCuid(), name, introduction, tagIds).id;
     return "/group/" + id;
   }
 
   @RequestMapping(value = "/group/{id}/edit", method = RequestMethod.GET)
   String editGroup(@PathVariable Long id, ModelMap model) {
     Auth.checkCuid();
-    Group group = groupService.getGroup(id);
-    model.put("group", group);
-    model.put("existingTags", userService.filterUserTags(Auth.cuid(),
-        Colls.map(group.getTags(), TagLabel::new)));
+    GroupPreview gp = groupService.getGroupPreview(id);
+    model.put("group", gp);
+    model.put("existingTags", userService.filterUserTags(Auth.cuid(), gp.tags));
     return "edit-group";
   }
 
@@ -64,7 +63,7 @@ public class GroupPageController {
     Auth.checkCuid();
     Tx.apply(() -> {
       Collection<GroupTopicPreview> topics = Colls.map(groupService.topics(id), GroupTopicPreview::new);
-      model.put("group", new GroupPreview(groupService.getGroup(id)));
+      model.put("group", groupService.getGroupPreview(id));
       model.put("topics", topics);
     });
     return "group";
@@ -80,9 +79,9 @@ public class GroupPageController {
   String topic(@PathVariable Long id, ModelMap model) {
     Auth.checkCuid();
     Tx.apply(() -> {
-      BlogView item = new BlogView(groupService.getTopic(id).getBlog());
-      UserCard author = userService.getUserCard(Auth.cuid(), item.getAuthorId());
-      model.put("topic", item);
+      BlogView bv = new BlogView(groupService.getTopic(id).getBlog());
+      UserCard author = userService.getUserCard(Auth.cuid(), bv.getAuthorId());
+      model.put("topic", bv);
       model.put("author", author);
     });
     return "topic";
@@ -92,7 +91,7 @@ public class GroupPageController {
   @ResponseBody
   String topicSubmit(@PathVariable Long groupId, @RequestParam Long blogId) {
     Long cuid = Auth.checkCuid();
-    long topicId = groupService. post(cuid, blogId, groupId).getId();
+    long topicId = groupService.post(cuid, blogId, groupId).getId();
     return "/topic/" + topicId;
   }
 }

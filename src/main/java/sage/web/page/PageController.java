@@ -77,8 +77,7 @@ public class PageController {
   public String writeBlog(@RequestParam(required = false) Long groupId, ModelMap model) {
     Long cuid = Auth.checkCuid();
     if (groupId != null) {
-      Collection<TagLabel> groupTags = Colls.map(
-          groupService.getGroup(groupId).getTags(), TagLabel::new);
+      Collection<TagLabel> groupTags = groupService.getGroupPreview(groupId).tags;
       model.put("existingTags", groupTags);
       model.put("topTags", userService.filterUserTags(cuid, groupTags));
       FrontMap.from(model).attr("groupId", groupId);
