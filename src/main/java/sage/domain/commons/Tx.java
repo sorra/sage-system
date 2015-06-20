@@ -1,9 +1,9 @@
-package sage.domain.service;
+package sage.domain.commons;
 
 import java.util.function.Supplier;
 import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
@@ -11,24 +11,36 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Component
 @Transactional
-public class Transactor {
-  public static Transactor get() {
-    return instance;
+public class Tx {
+
+  public static <R> R apply(Supplier<R> f) {
+    return instance.doApply(f);
   }
 
-  public <R> R apply(Supplier<R> f) {
+  public static void apply(Runnable f) {
+    instance.doApply(f);
+  }
+
+  <R> R doApply(Supplier<R> f) {
     return f.get();
   }
 
-  public void run(Runnable f) {
+  void doApply(Runnable f) {
     f.run();
   }
 
   @Autowired
   private ApplicationContext applicationContext;
+
   @PostConstruct
   void setup() {
-    instance = applicationContext.getBean(Transactor.class);
+    instance = applicationContext.getBean(Tx.class);
   }
-  private static Transactor instance;
+
+  @PreDestroy
+  void shutdown() {
+    instance = null;
+  }
+
+  private static Tx instance;
 }

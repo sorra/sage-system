@@ -6,10 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
+import sage.domain.commons.Tx;
 import sage.domain.service.*;
-import sage.entity.Blog;
 import sage.entity.Group;
-import sage.entity.Tag;
 import sage.transfer.*;
 import sage.util.Colls;
 import sage.web.auth.Auth;
@@ -63,7 +62,7 @@ public class GroupPageController {
   @RequestMapping("/group/{id}")
   String group(@PathVariable Long id, ModelMap model) {
     Auth.checkCuid();
-    Transactor.get().run(() -> {
+    Tx.apply(() -> {
       Collection<GroupTopicPreview> topics = Colls.map(groupService.topics(id), GroupTopicPreview::new);
       model.put("group", new GroupPreview(groupService.getGroup(id)));
       model.put("topics", topics);
@@ -80,7 +79,7 @@ public class GroupPageController {
   @RequestMapping("/topic/{id}")
   String topic(@PathVariable Long id, ModelMap model) {
     Auth.checkCuid();
-    Transactor.get().run(() -> {
+    Tx.apply(() -> {
       BlogView item = new BlogView(groupService.getTopic(id).getBlog());
       UserCard author = userService.getUserCard(Auth.cuid(), item.getAuthorId());
       model.put("topic", item);

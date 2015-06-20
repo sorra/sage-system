@@ -25,17 +25,6 @@ public class Strings {
     }
   }
 
-  public static String join(Collection<String> strings, String sep) {
-    StringBuilder buf = new StringBuilder();
-    for (String value : strings) {
-      if (buf.length() > 0) {
-        buf.append(sep);
-      }
-      buf.append(value);
-    }
-    return buf.toString();
-  }
-
   /**
    * Replace all occurences of a substring within a string with
    * another string.
@@ -73,7 +62,7 @@ public class Strings {
    * @param str the String to check (may be <code>null</code>)
    * @return <code>true</code> if the String is not null and has length
    */
-  public static boolean hasLength(CharSequence str) {
+  static boolean hasLength(CharSequence str) {
     return (str != null && str.length() > 0);
   }
 }
