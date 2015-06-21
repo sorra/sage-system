@@ -12,6 +12,7 @@ public class Tweet {
   private String content;
   private User author;
   private Date time;
+  private Long timeMillis;
 
   private Long originId = -1L;
 
@@ -26,6 +27,7 @@ public class Tweet {
     this.content = content;
     this.author = author;
     this.time = time;
+    this.timeMillis = time.getTime();
     this.tags.addAll(tags);
   }
 
@@ -80,6 +82,13 @@ public class Tweet {
   }
   public void setTime(Date time) {
     this.time = time;
+  }
+
+  public Long getTimeMillis() {
+    return timeMillis;
+  }
+  public void setTimeMillis(Long timeMillis) {
+    this.timeMillis = timeMillis;
   }
 
   @Column(nullable = false)

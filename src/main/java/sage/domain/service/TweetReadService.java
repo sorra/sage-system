@@ -43,7 +43,7 @@ public class TweetReadService {
     // Find and merge tweets from followings
     List<Follow> followings = new ArrayList<>(followRepo.followings(userId));
     followings.forEach(f -> tweets.addAll(byFollow(f, edge)));
-    Collections.sort(tweets, Comparators.tweetOnId);
+    Collections.sort(tweets, Comparators.tweetNewerFirst);
 
     // Select the top items, for later's higher sort
     List<Tweet> tops = (FETCH_SIZE < tweets.size())

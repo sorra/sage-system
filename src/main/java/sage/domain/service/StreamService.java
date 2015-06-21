@@ -79,12 +79,12 @@ public class StreamService {
 
   private List<TweetView> naiveSort(Collection<Tweet> tweets) {
     List<TweetView> tcs = transfers.toTweetViews(tweets);
-    Collections.sort(tcs, Comparators.tweetViewOnId);
+    Collections.sort(tcs, Comparators.tweetViewNewerFirst);
     return tcs;
   }
   
   private List<TweetView> naiveSortTC(Collection<TweetView> tcs) {
-    return Colls.copySort(Comparators.tweetViewOnId, tcs);
+    return Colls.copySort(Comparators.tweetViewNewerFirst, tcs);
   }
 
   private List<Item> higherSort(List<TweetView> tcs) {

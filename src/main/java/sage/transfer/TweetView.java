@@ -17,6 +17,7 @@ public class TweetView implements Item {
   private String avatar;
   private String content;
   private Date time;
+  private Long timeMillis;
   private TweetView origin = null;
   private MidForwards midForwards;
   private List<TagLabel> tags = new ArrayList<>();
@@ -36,6 +37,7 @@ public class TweetView implements Item {
     avatar = tweet.getAuthor().getAvatar();
     content = tweet.getContent();
     time = tweet.getTime();
+    timeMillis = tweet.getTimeMillis();
     if (origin != null) {
       this.origin = new TweetView(origin, null, 0, 0);
     }
@@ -86,6 +88,10 @@ public class TweetView implements Item {
 
   public Date getTime() {
     return time;
+  }
+
+  public Long getTimeMillis() {
+    return timeMillis;
   }
 
   @Override

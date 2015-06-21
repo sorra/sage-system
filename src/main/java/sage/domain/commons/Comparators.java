@@ -7,17 +7,13 @@ import sage.entity.Tweet;
 import sage.transfer.TweetView;
 
 public abstract class Comparators {
-  
-  /**
-   * Inverse order (larger on front)
-   */
-  public static final Comparator<Tweet> tweetOnId = (o1, o2) -> compareId(o1.getId(), o2.getId());
-  
-  /**
-   * Inverse order (larger on front)
-   */
-  public static final Comparator<TweetView> tweetViewOnId = (o1, o2) -> compareId(o1.getId(), o2.getId());
-  
+
+  public static final Comparator<Tweet> tweetNewerFirst =
+      (o1, o2) -> -(o1.getTimeMillis().compareTo(o2.getTimeMillis()));
+
+  public static final Comparator<TweetView> tweetViewNewerFirst =
+      (o1, o2) -> -(o1.getTimeMillis().compareTo(o2.getTimeMillis()));
+
   /**
    * Inverse order (larger on front)
    */
