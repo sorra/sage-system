@@ -8,7 +8,6 @@
     $!{includeCSS()}
 	<style type="text/css">
 	#container{
-		margin-top: 50px;
 		background-color: #F0F0F0;
 	}
 	.title, .content, .tweets{

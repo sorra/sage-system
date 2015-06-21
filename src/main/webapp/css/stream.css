@@ -20,7 +20,7 @@
   clear: both;
 }
 .tweet-body{
-	min-width: 500px;
+	width: 530px;
   float: left;
 }
 .origin .tweet-body{
