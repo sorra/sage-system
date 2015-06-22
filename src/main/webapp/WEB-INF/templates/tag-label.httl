@@ -1,6 +1,6 @@
-#set(TagLabel tag)
-#set(href = "/public/" + tag.id.toString)
-<a class="tag-label btn btn-default btn-sm" href="javascript:;" tag-id="${tag.id}" title="${tag.chainStr}"
+#set(TagLabel each)
+#set(href = "/public/" + each.id.toString)
+<a class="tag-label btn btn-default btn-sm" href="javascript:;" tag-id="${each.id}" title="${each.chainStr}"
      onclick="window.open('${href}')">
-  ${tag.name}
+  ${each.name}
 </a>

@@ -14,6 +14,7 @@ import sage.domain.service.UserService;
 import sage.entity.Tag;
 import sage.transfer.TagCard;
 import sage.transfer.TagLabel;
+import sage.util.Colls;
 import sage.web.auth.Auth;
 import sage.web.context.FrontMap;
 
@@ -50,11 +51,11 @@ public class StreamPageController {
 
     model.put("groups", groupService.byTags(Collections.singletonList(id)));
 
-    Collection<Tag> sameNameTags = tagService.getSameNameTags(id);
+    Collection<TagLabel> sameNameTags = Colls.map(tagService.getSameNameTags(id), TagLabel::new);
 
     fm.put("coreTags", coreTags);
     fm.put("nonCoreTags", nonCoreTags);
-    fm.put("sameNameTags", sameNameTags);
+    model.put("sameNameTags", sameNameTags);
     fm.put("relatedTags", null);
     
     return "public-page";

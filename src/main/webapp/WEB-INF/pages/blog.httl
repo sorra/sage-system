@@ -28,7 +28,7 @@ $!{include("navbar.httl")}
 		<span>创建于 ${blog.createdTime}</span>
 		#if(blog.modifiedTime)<span>修改于 ${blog.modifiedTime}</span>#end
 		<div class="tags">
-		#for(tag : blog.tags)
+		#for(each : blog.tags)
 		  $!{include("tag-label.httl")}
 		#end
 		</div>

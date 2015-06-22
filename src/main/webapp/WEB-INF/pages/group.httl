@@ -19,7 +19,7 @@ $!{include("navbar.httl")}
     <div class="group">
       <p>${group.name}</p>
       介绍: <p>${group.introduction}</p>
-      #for(tag : group.tags)
+      #for(each : group.tags)
        $!{include("tag-label.httl")}
       #end
     </div>

@@ -21,7 +21,7 @@ $!{include("navbar.httl")}
         <a href="/group/${group.id}">${group.name}</a>
         <p>${group.introduction}</p>
         <div>${group.creator.name}</div>
-        #for(tag : group.tags)
+        #for(each : group.tags)
          $!{include("tag-label.httl")}
         #end
       </div>

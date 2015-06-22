@@ -26,16 +26,23 @@ $!{include("navbar.httl")}
 	<div id="chain"></div>
 	<div class="row" style="margin-top:50px">
 		<div class="side">
-			<div>
-        小组
-        #for(group : groups)
+			<div>小组
+        <div>
+          #for(group : groups)
           <a class="group-label" href="/group/${group.id}">${group.name}</a>
-        #end
+          #end
+        </div>
       </div>
       <div>订阅</div>
       <div>核心子标签</div>
       <div>普通子标签</div>
-      <div>同名标签</div>
+      <div>同名标签
+        <div>
+          #for(each : sameNameTags)
+          $!{include("tag-label.httl")}
+          #end
+        </div>
+      </div>
       <div>关联标签</div>
 		</div>
 		<div class="main">
@@ -53,8 +60,8 @@ $!{includeJS()}
 $(document).ready(function(){
   $('#nav-tags').addClass('active');
   
-	var tagId = window.frontMap.id;
-	getStream('/read/tag/' + tagId).done(function(){addDeleteButtons($('.slist .tweet'));});
+	var tagId = window.frontMap.id
+	getStream('/read/tag/' + tagId)
 	getTagChain(tagId, $('#chain'));
 });
 </script>
