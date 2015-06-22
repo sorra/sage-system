@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.servlet.ModelAndView;
 import sage.domain.commons.BadArgumentException;
 
 @ControllerAdvice
@@ -24,34 +25,40 @@ public class ControllerExceptionReporter {
   private final Logger log = LoggerFactory.getLogger(getClass());
 
   @ExceptionHandler(TypeMismatchException.class)
-  @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR, reason = "Parameter type mismatch 参数类型不对")
-  public void typeMismatch(TypeMismatchException e) {
+  public ModelAndView typeMismatch(TypeMismatchException e) {
     log.error(e.toString());
+    return errorPage(HttpStatus.INTERNAL_SERVER_ERROR, "Parameter type mismatch 参数类型不对");
   }
 
   @ExceptionHandler(BadArgumentException.class)
-  public void badArgument(BadArgumentException e, HttpServletResponse response) throws IOException {
+  public ModelAndView badArgument(BadArgumentException e, HttpServletResponse response) throws IOException {
     log.error(e.toString());
-    response.sendError(HttpStatus.INTERNAL_SERVER_ERROR.value(), e.getMessage());
+    return errorPage(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
   }
 
   @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
-  public void httpMethodNotSupported(HttpRequestMethodNotSupportedException e,
+  public ModelAndView httpMethodNotSupported(HttpRequestMethodNotSupportedException e,
                                      HttpServletRequest request, HttpServletResponse response) throws IOException {
     log.error("URI: " + request.getRequestURI(), e);
-    response.sendError(HttpStatus.INTERNAL_SERVER_ERROR.value(), e.getMessage());
+    return errorPage(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
   }
 
   @ExceptionHandler(HibernateJdbcException.class)
-  @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR, reason = "Database error: HibernateJdbcException")
-  public void hibernateJDBCException(HibernateJdbcException e) {
+  public ModelAndView hibernateJDBCException(HibernateJdbcException e) {
     // Sometimes there is no sql
     log.error("SQL: " + e.getSql() + "\n", e);
+    return errorPage(HttpStatus.INTERNAL_SERVER_ERROR, "Database error");
   }
 
   @ExceptionHandler
-  public void any(Throwable e, HttpServletRequest request, HttpServletResponse response) throws IOException {
+  public ModelAndView any(Throwable e, HttpServletRequest request, HttpServletResponse response) throws IOException {
     log.error("URI: " + request.getRequestURI() + "\nController error: ", e);
-    response.sendError(HttpStatus.INTERNAL_SERVER_ERROR.value(), e.getMessage());
+    return errorPage(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
+  }
+
+  private ModelAndView errorPage(HttpStatus status, String reason) {
+    ModelAndView mv = new ModelAndView("error");
+    mv.getModelMap().addAttribute("errorCode", status.value()).addAttribute("reason", reason);
+    return mv;
   }
 }
