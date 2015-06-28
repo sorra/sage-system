@@ -63,7 +63,7 @@ public class PostController {
     }
     if (groupId != null) {
       long topicId = groupService.post(uid, blog, groupId).getId();
-      return String.format("/group/%d/topic/%d", groupId, topicId);
+      return String.format("/topic/%d", topicId);
     }
     logger.info("post blog {} success", blog.getId());
     return "/blog/" + blog.getId();
