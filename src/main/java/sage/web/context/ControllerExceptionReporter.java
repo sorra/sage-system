@@ -27,20 +27,20 @@ public class ControllerExceptionReporter {
   @ExceptionHandler(TypeMismatchException.class)
   public ModelAndView typeMismatch(TypeMismatchException e) {
     log.error(e.toString());
-    return errorPage(HttpStatus.INTERNAL_SERVER_ERROR, "Parameter type mismatch 参数类型不对");
+    return errorPage(HttpStatus.BAD_REQUEST, "Parameter type mismatch 参数类型不对");
   }
 
   @ExceptionHandler(BadArgumentException.class)
   public ModelAndView badArgument(BadArgumentException e, HttpServletResponse response) throws IOException {
     log.error(e.toString());
-    return errorPage(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
+    return errorPage(HttpStatus.BAD_REQUEST, e.getMessage());
   }
 
   @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
   public ModelAndView httpMethodNotSupported(HttpRequestMethodNotSupportedException e,
                                      HttpServletRequest request, HttpServletResponse response) throws IOException {
     log.error("URI: " + request.getRequestURI(), e);
-    return errorPage(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
+    return errorPage(HttpStatus.METHOD_NOT_ALLOWED, e.getMessage());
   }
 
   @ExceptionHandler(HibernateJdbcException.class)
