@@ -19,7 +19,7 @@ public class GroupRepository extends BaseRepository<Group> {
     if (tags.isEmpty()) {
       return new LinkedList<>();
     }
-    return session().createQuery("select g from Group g join g.tags tgs where tgs in :qtags")
+    return session().createQuery("select distinct g from Group g join g.tags tgs where tgs in :qtags")
         .setParameterList("qtags", TagRepository.getQueryTags(tags))
         .list();
   }
