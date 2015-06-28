@@ -79,7 +79,7 @@ public class GroupService {
     User user = userRepo.load(userId);
     Group group = groupRepo.get(groupId);
     if (group.getMembers().add(user)) {
-      groupRepo.save(group);
+      groupRepo.update(group);
     }
   }
 
@@ -87,7 +87,7 @@ public class GroupService {
     User user = userRepo.load(userId);
     Group group = groupRepo.get(groupId);
     if (group.getMembers().remove(user)) {
-      groupRepo.save(group);
+      groupRepo.update(group);
     }
   }
 
