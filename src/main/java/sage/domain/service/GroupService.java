@@ -11,10 +11,7 @@ import org.springframework.stereotype.Service;
 import sage.domain.commons.DomainRuntimeException;
 import sage.domain.commons.IdCommons;
 import sage.domain.repository.*;
-import sage.entity.Blog;
-import sage.entity.Group;
-import sage.entity.GroupTopic;
-import sage.entity.Tag;
+import sage.entity.*;
 import sage.transfer.GroupPreview;
 import sage.transfer.UserLabel;
 import sage.util.Colls;
@@ -41,7 +38,7 @@ public class GroupService {
     return UserLabel.listOf(groupRepo.get(groupId).getMembers());
   }
 
-  public GroupPreview newGroup(long userId, String name, String introduction, Collection<Long> tagIds) {
+  public GroupPreview create(long userId, String name, String introduction, Collection<Long> tagIds) {
     if (name == null || name.isEmpty()) {
       throw new DomainRuntimeException("Must enter a group name!");
     }
@@ -54,8 +51,8 @@ public class GroupService {
     return new GroupPreview(group);
   }
 
-  public Group editGroup(long userId, long groupId,
-                         String name, String introduction, Collection<Long> tagIds) {
+  public Group edit(long userId, long groupId,
+                    String name, String introduction, Collection<Long> tagIds) {
     if (name == null || name.isEmpty()) {
       throw new DomainRuntimeException("Must enter a group name!");
     }
@@ -76,6 +73,22 @@ public class GroupService {
     groupRepo.update(group);
 
     return group;
+  }
+
+  public void join(long userId, long groupId) {
+    User user = userRepo.load(userId);
+    Group group = groupRepo.get(groupId);
+    if (group.getMembers().add(user)) {
+      groupRepo.save(group);
+    }
+  }
+
+  public void leave(long userId, long groupId) {
+    User user = userRepo.load(userId);
+    Group group = groupRepo.get(groupId);
+    if (group.getMembers().remove(user)) {
+      groupRepo.save(group);
+    }
   }
 
   public GroupTopic getTopic(long id) {

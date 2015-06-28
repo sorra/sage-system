@@ -8,7 +8,6 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import sage.domain.commons.Tx;
 import sage.domain.service.*;
-import sage.entity.Group;
 import sage.transfer.*;
 import sage.util.Colls;
 import sage.web.auth.Auth;
@@ -27,21 +26,21 @@ public class GroupPageController {
   private BlogReadService blogReadService;
 
   @RequestMapping(value = "/group/new", method = RequestMethod.GET)
-  String newGroup() {
+  String pageCreate() {
     Auth.checkCuid();
     return "new-group";
   }
 
   @RequestMapping(value = "/group/new", method = RequestMethod.POST)
   @ResponseBody
-  String groupNew(@RequestParam String name, @RequestParam String introduction,
-                  @RequestParam(value = "tagIds[]", defaultValue = "") Collection<Long> tagIds) {
-    long id = groupService.newGroup(Auth.checkCuid(), name, introduction, tagIds).id;
+  String create(@RequestParam String name, @RequestParam String introduction,
+                @RequestParam(value = "tagIds[]", defaultValue = "") Collection<Long> tagIds) {
+    long id = groupService.create(Auth.checkCuid(), name, introduction, tagIds).id;
     return "/group/" + id;
   }
 
   @RequestMapping(value = "/group/{id}/edit", method = RequestMethod.GET)
-  String editGroup(@PathVariable Long id, ModelMap model) {
+  String pageEdit(@PathVariable Long id, ModelMap model) {
     Auth.checkCuid();
     GroupPreview gp = groupService.getGroupPreview(id);
     model.put("group", gp);
@@ -51,10 +50,10 @@ public class GroupPageController {
 
   @RequestMapping(value = "/group/{id}/edit", method = RequestMethod.POST)
   @ResponseBody
-  String groupEdit(@PathVariable Long id,
-                   @RequestParam String name, @RequestParam String introduction,
-                   @RequestParam(value = "tagIds[]", defaultValue = "") Collection<Long> tagIds) {
-    groupService.editGroup(Auth.checkCuid(), id, name, introduction, tagIds);
+  String edit(@PathVariable Long id,
+              @RequestParam String name, @RequestParam String introduction,
+              @RequestParam(value = "tagIds[]", defaultValue = "") Collection<Long> tagIds) {
+    groupService.edit(Auth.checkCuid(), id, name, introduction, tagIds);
     return "/group/" + id;
   }
 
@@ -93,5 +92,17 @@ public class GroupPageController {
     Long cuid = Auth.checkCuid();
     long topicId = groupService.post(cuid, blogId, groupId).getId();
     return "/topic/" + topicId;
+  }
+
+  @RequestMapping(value = "group/{groupId}/join", method = RequestMethod.POST)
+  @ResponseBody
+  void join(@PathVariable Long groupId) {
+    groupService.join(Auth.checkCuid(), groupId);
+  }
+
+  @RequestMapping(value = "group/{groupId}/leave", method = RequestMethod.POST)
+  @ResponseBody
+  void leave(@PathVariable Long groupId) {
+    groupService.leave(Auth.checkCuid(), groupId);
   }
 }
