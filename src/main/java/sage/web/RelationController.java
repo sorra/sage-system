@@ -44,6 +44,6 @@ public class RelationController {
   }
 
   private boolean boolValue(Boolean o) {
-    return o == null ? false : o.booleanValue();
+    return o != null ? o : false;
   }
 }
