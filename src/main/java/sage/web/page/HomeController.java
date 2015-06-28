@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
 import sage.domain.service.RelationService;
 import sage.domain.service.TagService;
 import sage.domain.service.UserService;
@@ -42,5 +43,12 @@ public class HomeController {
   @RequestMapping("/register")
   public String register() {
     return "register";
+  }
+
+  @RequestMapping("/not-found")
+  public ModelAndView notFound() {
+    ModelAndView mv = new ModelAndView("error");
+    mv.getModelMap().addAttribute("errorCode", 404).addAttribute("reason", "找不到页面");
+    return mv;
   }
 }

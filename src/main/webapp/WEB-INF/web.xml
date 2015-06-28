@@ -44,4 +44,9 @@
     <session-config>
         <session-timeout>60</session-timeout>
     </session-config>
+
+    <error-page>
+        <error-code>404</error-code>
+        <location>/not-found</location>
+    </error-page>
 </web-app>
