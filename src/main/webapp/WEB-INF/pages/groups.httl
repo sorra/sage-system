@@ -20,7 +20,8 @@ $!{include("navbar.httl")}
       <div class="group">
         <a href="/group/${group.id}">${group.name}</a>
         <p>${group.introduction}</p>
-        <div>${group.creator.name}</div>
+        创建者: <div>${group.creator.name}</div>
+        成员数: <div>${group.membersCount}</div>
         #for(each : group.tags)
          $!{include("tag-label.httl")}
         #end

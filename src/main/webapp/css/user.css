@@ -1,3 +1,7 @@
+.user-label .name, .user-card .name{
+  color: black;
+}
+
 .user-card{
   background: #e5e5e5;
   padding: 2px;

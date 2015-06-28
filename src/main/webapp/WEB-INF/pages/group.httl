@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-#set(components = ["bootstrap", "layout", "tag"])
+#set(components = ["bootstrap", "layout", "tag", "user"])
 #set(GroupPreview group)
 #set(Collection<GroupTopicPreview> topics)
 <head>
@@ -19,6 +19,8 @@ $!{include("navbar.httl")}
     <div class="group">
       <p>${group.name}</p>
       介绍: <p>${group.introduction}</p>
+      创建者: $!{include("user-label.httl", ["u": group.creator])}
+      成员数: <div>${group.membersCount}</div>
       #for(each : group.tags)
        $!{include("tag-label.httl")}
       #end

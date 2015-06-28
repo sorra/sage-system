@@ -16,6 +16,7 @@ import sage.entity.Group;
 import sage.entity.GroupTopic;
 import sage.entity.Tag;
 import sage.transfer.GroupPreview;
+import sage.transfer.UserLabel;
 import sage.util.Colls;
 
 @Service
@@ -34,6 +35,10 @@ public class GroupService {
 
   public GroupPreview getGroupPreview(long id) {
     return new GroupPreview(groupRepo.get(id));
+  }
+
+  public Collection<UserLabel> members(long groupId) {
+    return UserLabel.listOf(groupRepo.get(groupId).getMembers());
   }
 
   public GroupPreview newGroup(long userId, String name, String introduction, Collection<Long> tagIds) {
