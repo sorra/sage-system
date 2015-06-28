@@ -14,31 +14,40 @@ public class TagChangeRequest {
   private Status status = Status.PENDING;
   private Type type;
   private Long parentId;
+  private String name;
   private String intro;
 
   public static TagChangeRequest forMove(Tag tag, User submitter, Long parentId) {
-    return new TagChangeRequest(tag, submitter, Type.MOVE, parentId, null);
+    TagChangeRequest request = new TagChangeRequest(tag, submitter, Type.MOVE);
+    request.setParentId(parentId);
+    return request;
+  }
+
+  public static TagChangeRequest forRename(Tag tag, User submitter, String name) {
+    TagChangeRequest request = new TagChangeRequest(tag, submitter, Type.RENAME);
+    request.setName(name);
+    return request;
   }
 
   public static TagChangeRequest forSetIntro(Tag tag, User submitter, String intro) {
-    return new TagChangeRequest(tag, submitter, Type.SET_INTRO, null, intro);
+    TagChangeRequest request = new TagChangeRequest(tag, submitter, Type.SET_INTRO);
+    request.setIntro(intro);
+    return request;
   }
 
   TagChangeRequest() {}
 
-  public TagChangeRequest(Tag tag, User submitter, Type type, Long parentId, String intro) {
+  public TagChangeRequest(Tag tag, User submitter, Type type) {
     this.tag = tag;
     this.submitter = submitter;
     this.type = type;
-    this.parentId = parentId;
-    this.intro = intro;
   }
 
-  public static enum Status {
+  public enum Status {
     PENDING, CANCELED, ACCEPTED, REJECTED
   }
-  public static enum Type {
-    MOVE, SET_INTRO
+  public enum Type {
+    MOVE, RENAME, SET_INTRO
   }
 
   @Id @GeneratedValue
@@ -92,6 +101,13 @@ public class TagChangeRequest {
   }
   void setParentId(Long parentId) {
     this.parentId = parentId;
+  }
+
+  public String getName() {
+    return name;
+  }
+  public void setName(String name) {
+    this.name = name;
   }
 
   public String getIntro() {

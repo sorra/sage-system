@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import sage.domain.commons.DomainRuntimeException;
 import sage.domain.commons.IdCommons;
+import sage.domain.concept.Authority;
 import sage.domain.repository.*;
 import sage.entity.Blog;
 import sage.entity.Tag;
@@ -90,6 +91,12 @@ public class UserService {
   public void changeAvatar(long userId, String avatar) {
     User user = userRepo.get(userId);
     user.setAvatar(avatar);
+    userRepo.update(user);
+  }
+
+  public void grantAuthority(long userId, Authority authority) {
+    User user = userRepo.get(userId);
+    user.setAuthority(authority);
     userRepo.update(user);
   }
 

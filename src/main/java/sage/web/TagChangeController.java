@@ -9,18 +9,23 @@ import sage.domain.service.TagChangeService;
 import sage.web.auth.Auth;
 
 @RestController
-@RequestMapping("/tag-admin")
-public class TagAdminController {
+@RequestMapping(value = "/tag-change", method = RequestMethod.POST)
+public class TagChangeController {
   @Autowired
   private TagChangeService tagChangeService;
 
-  @RequestMapping(value = "/accept", method = RequestMethod.POST)
+  @RequestMapping("/accept")
   public void acceptRequest(@RequestParam Long requestId) {
     tagChangeService.acceptRequest(Auth.checkCuid(), requestId);
   }
 
-  @RequestMapping(value = "/reject", method = RequestMethod.POST)
+  @RequestMapping("/reject")
   public void rejectRequest(@RequestParam Long requestId) {
     tagChangeService.rejectRequest(Auth.checkCuid(), requestId);
+  }
+
+  @RequestMapping("/cancel")
+  public void cancelRequest(@RequestParam Long requestId) {
+    tagChangeService.cancelRequest(Auth.checkCuid(), requestId);
   }
 }

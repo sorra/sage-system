@@ -33,7 +33,7 @@ public class TagController {
   }
 
   @RequestMapping("/new")
-  public long newTag(@RequestParam String name, @RequestParam Long parentId, @RequestParam(required = false) String intro) {
+  public long create(@RequestParam String name, @RequestParam Long parentId, @RequestParam(required = false) String intro) {
     Auth.checkCuid();
     return tagChangeService.newTag(name, parentId, intro);
   }
@@ -41,6 +41,11 @@ public class TagController {
   @RequestMapping("/{id}/move")
   public void move(@PathVariable Long id, @RequestParam Long parentId) {
     tagChangeService.requestMove(Auth.checkCuid(), id, parentId);
+  }
+
+  @RequestMapping("/{id}/rename")
+  public void rename(@PathVariable Long id, @RequestParam String name) {
+    tagChangeService.requestRename(Auth.checkCuid(), id, name);
   }
 
   @RequestMapping("/{id}/setIntro")

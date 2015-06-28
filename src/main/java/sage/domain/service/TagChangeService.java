@@ -1,6 +1,7 @@
 package sage.domain.service;
 
 import java.util.Collection;
+import java.util.function.Consumer;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,6 +15,8 @@ import sage.domain.repository.TagRepository;
 import sage.domain.repository.UserRepository;
 import sage.entity.Tag;
 import sage.entity.TagChangeRequest;
+import sage.entity.TagChangeRequest.Status;
+import sage.entity.TagChangeRequest.Type;
 import sage.entity.User;
 import sage.transfer.TagChangeRequestCard;
 import sage.util.Colls;
@@ -45,6 +48,10 @@ public class TagChangeService {
     return saveRequest(TagChangeRequest.forMove(tagRepo.load(tagId), userRepo.load(userId), parentId));
   }
 
+  public TagChangeRequest requestRename(Long userId, Long tagId, String name) {
+    return saveRequest(TagChangeRequest.forRename(tagRepo.load(tagId), userRepo.load(userId), name));
+  }
+
   public TagChangeRequest requestSetIntro(Long userId, Long tagId, String intro) {
     return saveRequest(TagChangeRequest.forSetIntro(tagRepo.load(tagId), userRepo.load(userId), intro));
   }
@@ -72,18 +79,18 @@ public class TagChangeService {
     if (!IdCommons.equal(request.getSubmitter().getId(), userId)) {
       throw new DomainRuntimeException("User[%d] is not the owner of TagChangeRequest[%d]", userId, reqId);
     }
-    request.setStatus(TagChangeRequest.Status.CANCELED);
+    request.setStatus(Status.CANCELED);
   }
 
   public void acceptRequest(Long userId, Long reqId) {
-    transactRequest(userId, reqId, TagChangeRequest.Status.ACCEPTED);
+    transactRequest(userId, reqId, Status.ACCEPTED);
   }
 
   public void rejectRequest(Long userId, Long reqId) {
-    transactRequest(userId, reqId, TagChangeRequest.Status.REJECTED);
+    transactRequest(userId, reqId, Status.REJECTED);
   }
 
-  private void transactRequest(Long userId, Long reqId, TagChangeRequest.Status status) {
+  private void transactRequest(Long userId, Long reqId, Status status) {
     User user = userRepo.get(userId);
     if (!Authority.isTagAdminOrHigher(user.getAuthority())) {
       throw new AuthorityException("Require TagAdmin or higher.");
@@ -92,22 +99,22 @@ public class TagChangeService {
     req.setStatus(status);
     req.setTransactor(user);
 
-    if (status == TagChangeRequest.Status.ACCEPTED) {
+    if (status == Status.ACCEPTED) {
       Long tagId = req.getTag().getId();
-      if (req.getType() == TagChangeRequest.Type.MOVE) {
-        doMove(tagId, req.getParentId());
-      } else if (req.getType() == TagChangeRequest.Type.SET_INTRO) {
-        doSetIntro(tagId, req.getIntro());
+      if (req.getType() == Type.MOVE) {
+        doTransact(tagId, tag -> tag.setParent(tagRepo.load(req.getParentId())));
+      } else if (req.getType() == Type.RENAME) {
+        doTransact(tagId, tag -> tag.setName(req.getName()));
+      } else if (req.getType() == Type.SET_INTRO) {
+        doTransact(tagId, tag -> tag.setIntro(req.getIntro()));
       }
     }
   }
 
-  public void doMove(long tagId, long parentId) {
-    tagRepo.get(tagId).setParent(tagRepo.load(parentId));
-  }
-
-  public void doSetIntro(long tagId, String intro) {
-    tagRepo.get(tagId).setIntro(intro);
+  private void doTransact(long tagId, Consumer<Tag> action) {
+    Tag tag = tagRepo.get(tagId);
+    action.accept(tag);
+    tagRepo.update(tag);
   }
 
 }

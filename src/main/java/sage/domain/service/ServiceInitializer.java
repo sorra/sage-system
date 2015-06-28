@@ -5,6 +5,7 @@ import java.util.Collections;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import sage.domain.concept.Authority;
 import sage.entity.Blog;
 import sage.entity.Tag;
 import sage.entity.User;
@@ -53,7 +54,7 @@ public class ServiceInitializer {
     economy = createTag("经济", root);
     tech = createTag("科技", root);
 
-    view = createTag("观察", society);
+    view = createTag("时事", society);
     art = createTag("艺术", culture);
     painting = createTag("绘画", art);
     music = createTag("音乐", art);
@@ -69,6 +70,7 @@ public class ServiceInitializer {
   private void user() {
     admin = userService.register(
         new User("admin@a.com", "123", "Admin", "伟大的Admin", "/rs/img/1.jpg"));
+    userService.grantAuthority(admin, Authority.SITE_ADMIN);
     bethia = userService.register(
         new User("bethia@b.com", "123", "Bethia", "Elegant user", "/rs/img/2.jpg"));
     centos = userService.register(
