@@ -1,11 +1,11 @@
 package sage.entity;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
 @Entity
 public class FileItem {
-  @Id
   private Long id;
   private String name;
   private String webPath;
@@ -21,6 +21,7 @@ public class FileItem {
     this.ownerId = ownerId;
   }
 
+  @Id @GeneratedValue
   public Long getId() {
     return id;
   }
