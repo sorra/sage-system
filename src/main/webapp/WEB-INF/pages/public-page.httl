@@ -34,8 +34,20 @@ $!{include("navbar.httl")}
         </div>
       </div>
       <div>订阅</div>
-      <div>核心子标签</div>
-      <div>普通子标签</div>
+      <div>核心子标签
+        <div>
+          #for(each : coreTags)
+          $!{include("tag-label.httl")}
+          #end
+        </div>
+      </div>
+      <div>普通子标签
+        <div>
+          #for(each : nonCoreTags)
+          $!{include("tag-label.httl")}
+          #end
+        </div>
+      </div>
       <div>同名标签
         <div>
           #for(each : sameNameTags)

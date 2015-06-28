@@ -53,10 +53,10 @@ public class StreamPageController {
 
     Collection<TagLabel> sameNameTags = Colls.map(tagService.getSameNameTags(id), TagLabel::new);
 
-    fm.put("coreTags", coreTags);
-    fm.put("nonCoreTags", nonCoreTags);
+    model.put("coreTags", coreTags);
+    model.put("nonCoreTags", nonCoreTags);
     model.put("sameNameTags", sameNameTags);
-    fm.put("relatedTags", null);
+    model.put("relatedTags", null);
     
     return "public-page";
   }
