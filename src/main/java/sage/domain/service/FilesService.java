@@ -11,8 +11,12 @@ import java.util.concurrent.atomic.AtomicLong;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import sage.domain.commons.DomainRuntimeException;
+import sage.domain.repository.FileItemRepository;
+import sage.entity.FileItem;
 
 @Service
 public class FilesService {
@@ -41,37 +45,52 @@ public class FilesService {
     return fileManagers.get(Folder.AVATAR).DIR;
   }
 
-  public String upload(MultipartFile file, FilesService.Folder folder) throws IOException {
+  @Autowired
+  private FileItemRepository fileRepo;
+
+  public String upload(long userId, MultipartFile file, FilesService.Folder folder) throws IOException {
     FileManager fm = fileManagers.get(folder);
     Objects.requireNonNull(fm);
-    return saveFile(fm, folder, file);
+    return saveFile(userId, fm, folder, file);
   }
 
-  public Collection<String> multiUpload(MultipartFile[] files, FilesService.Folder folder) throws IOException {
+  public Collection<String> multiUpload(long userId, MultipartFile[] files, FilesService.Folder folder) throws IOException {
     FileManager fm = fileManagers.get(folder);
     Objects.requireNonNull(fm);
 
     Collection<String> destinations = new ArrayList<>();
     for (MultipartFile file : files) {
-      String name = saveFile(fm, folder, file);
+      String name = saveFile(userId, fm, folder, file);
       destinations.add(name);
     }
     return destinations;
   }
 
-  private String saveFile(FileManager fm, Folder folder, MultipartFile file) throws IOException {
+  public void delete(long userId, long fileId) {
+    FileItem fileItem = fileRepo.get(fileId);
+    if (userId != fileItem.getOwnerId()) {
+      throw new DomainRuntimeException("User[%s] is not the owner of FileItem[%s]", userId, fileId);
+    }
+    // Soft delete file content?
+    fileRepo.delete(fileItem);
+  }
+
+  private String saveFile(long userId, FileManager fm, Folder folder, MultipartFile file) throws IOException {
     if (!isPictureFileSizeAllowed(file.getSize())) {
       throw new IllegalArgumentException("图片文件太大了!");
     }
     byte[] bytes = file.getBytes();
     // 后缀必须限定为图片格式，以防脚本注入攻击
-    String filename = fm.maxNumber.incrementAndGet() + SUFFIX;
-    Path path = Paths.get(fm.DIR + "/" + filename);
+    String filename = fm.nextNumber() + SUFFIX;
+    Path storePath = Paths.get(fm.DIR + "/" + filename);
+    Files.write(storePath, bytes, StandardOpenOption.CREATE_NEW);
 
-    Files.write(path, bytes, StandardOpenOption.CREATE_NEW);
+    String webPath = folder.name().toLowerCase() + "/" + filename;
 
-    log.info("File saved: " + path);
-    return folder.name().toLowerCase() + "/" + filename;
+    fileRepo.save(new FileItem(filename, webPath, storePath.toString(), userId));
+
+    log.info("File saved: " + storePath);
+    return webPath;
   }
 
   private boolean isPictureFileSizeAllowed(long size) {
@@ -81,6 +100,9 @@ public class FilesService {
   private static class FileManager {
     private String DIR;
     private AtomicLong maxNumber = new AtomicLong();
+
+    long nextNumber() {return maxNumber.incrementAndGet();}
+
     FileManager(String subdir) {
       File dir = null;
       String root = ENV_SAGE_FILES_HOME != null ? ENV_SAGE_FILES_HOME : USER_HOME;
