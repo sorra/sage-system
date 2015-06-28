@@ -2,6 +2,7 @@
 JDK 8
 Maven 3
 Tomcat 7/8
+MySQL 5
   ElasticSearch (可选)
 
 环境变量:
@@ -10,6 +11,10 @@ M2_HOME
 TOMCAT_HOME
 PATH加上M2_HOME/bin:$JAVA_HOME/bin
   ENV_SAGE_FILES_HOME (可选, 默认值为用户目录)
+
+数据库:
+建一个数据库, 名字sage, 字符集utf8_general_ci
+建一个用户, 名字sage, 密码1234, 给予所有权限
 
 脚本(Linux/Mac为.sh, Windows为.bat):
 ./build.sh 构建+部署
