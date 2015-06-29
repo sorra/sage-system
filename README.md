@@ -20,6 +20,7 @@ PATH加上M2_HOME/bin:$JAVA_HOME/bin
 ./build.sh 构建+部署
 ./web-build.sh 前端构建+部署(无需重启server)
 ./run.sh 启动server(Ctrl+C关闭)
+首次启动后打开 localhost:8080/z-init 完成数据初始化
 
 开发过程:
 后端 - 写了代码, 关闭server, 执行build, 启动server (./build.sh && ./run.sh)
