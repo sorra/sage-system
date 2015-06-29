@@ -34,7 +34,7 @@ public class StreamPageController {
     
     List<TagLabel> coreTags = new ArrayList<>();
     List<TagLabel> nonCoreTags = new ArrayList<>();
-    Optional<Tag> tagOpt = tagService.getTag(id);
+    Optional<Tag> tagOpt = tagService.optTag(id);
     if (tagOpt.isPresent()) {
       TagCard tagCard = new TagCard(tagOpt.get());
       model.put("tag", tagCard);

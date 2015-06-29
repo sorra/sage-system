@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+#set(components = ["bootstrap", "layout", "tag", "user"])
+#set(TagCard tag, Collection<TagChangeRequestCard> reqs)
+<head>
+  <meta charset="UTF-8">
+  <title>${tag.name} - 直属的修改请求</title>
+  $!{includeCSS()}
+</head>
+<body>
+$!{include("navbar.httl")}
+  <div id="container" class="container">
+    #for(each : reqs)
+      <div class="tag-change-request">
+        编号: ${each.id}
+        发起者: $!{include("user-label.httl", ["u": each.submitter])}
+        处理者: $!{include("user-label.httl", ["u": each.transactor])}
+        状态: ${each.status}
+        描述: ${each.desc}
+      </div>
+    #end
+  </div>
+$!{includeJS()}
+</body>
+</html>

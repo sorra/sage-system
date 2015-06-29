@@ -9,8 +9,7 @@ public class TagChangeRequestCard {
   private UserLabel transactor;
   private String status;
   private String type;
-  private Long newParentId;
-  private String newIntro;
+  private String desc;
 
   TagChangeRequestCard() {}
 
@@ -23,8 +22,17 @@ public class TagChangeRequestCard {
     }
     status = req.getStatus().name();
     type = req.getStatus().name();
-    newParentId = req.getParentId();
-    newIntro = req.getIntro();
+    switch (req.getType()) {
+      case MOVE:
+        desc = "移动到:标签编号"+req.getParentId()+"下";
+        break;
+      case RENAME:
+        desc = "改名为\""+req.getName()+'"';
+        break;
+      case SET_INTRO:
+        desc = "修改介绍\""+req.getIntro()+'"';
+        break;
+    }
   }
 
   public Long getId() {
@@ -51,11 +59,7 @@ public class TagChangeRequestCard {
     return type;
   }
 
-  public Long getNewParentId() {
-    return newParentId;
-  }
-
-  public String getNewIntro() {
-    return newIntro;
+  public String getDesc() {
+    return desc;
   }
 }

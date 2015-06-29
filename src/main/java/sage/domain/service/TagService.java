@@ -19,15 +19,15 @@ public class TagService {
   @Autowired
   private TagRepository tagRepo;
 
-  public Optional<TagCard> getTagCard(long tagId) {
+  public Optional<TagCard> optTagCard(long tagId) {
     return tagRepo.optional(tagId).map(TagCard::new);
   }
 
-  public Optional<Tag> getTag(long tagId) {
+  public Optional<Tag> optTag(long tagId) {
     return tagRepo.optional(tagId);
   }
 
-  public Optional<TagLabel> getTagLabel(long tagId) {
+  public Optional<TagLabel> optTagLabel(long tagId) {
     return tagRepo.optional(tagId).map(TagLabel::new);
   }
 

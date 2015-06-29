@@ -20,6 +20,7 @@ public class TagCard {
   public TagCard(Tag tag) {
     id = tag.getId();
     name = tag.getName();
+    intro = tag.getIntro();
     isCore = tag.isCore();
     
     for (Tag node : tag.chainUp()) {

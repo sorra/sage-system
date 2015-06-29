@@ -10,25 +10,25 @@ import sage.domain.service.TagService;
 import sage.web.auth.Auth;
 
 @Controller
-@RequestMapping("/tag")
+@RequestMapping("/pages/tag")
 public class TagRequestPageController {
   @Autowired
   private TagService tagService;
   @Autowired
   private TagChangeService tagChangeService;
 
-  @RequestMapping("/{id}/page/requests")
+  @RequestMapping("/{id}/requests")
   String requests(@PathVariable Long id, ModelMap model) {
     Auth.checkCuid();
-    model.put("tag", tagService.getTag(id));
+    model.put("tag", tagService.optTagCard(id).get());
     model.put("reqs", tagChangeService.getRequestsOfTag(id));
     return "tag-requests";
   }
 
-  @RequestMapping("/{id}/page/scope-requests")
+  @RequestMapping("/{id}/scope-requests")
   String scopeRequests(@PathVariable Long id, ModelMap model) {
     Auth.checkCuid();
-    model.put("tag", tagService.getTag(id));
+    model.put("tag", tagService.optTag(id));
     model.put("reqs", tagChangeService.getRequestsOfTagScope(id));
     return "tag-scope-requests";
   }
