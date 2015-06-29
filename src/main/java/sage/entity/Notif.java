@@ -1,5 +1,6 @@
 package sage.entity;
 
+import java.util.Date;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -12,6 +13,7 @@ public class Notif {
   private Long senderId;
   private Type type;
   private Long sourceId;
+  private Date time;
   
   Notif() {}
   
@@ -20,6 +22,7 @@ public class Notif {
     this.senderId = senderId;
     this.type = type;
     this.sourceId = sourceId;
+    this.time = new Date();
   }
 
   @Id @GeneratedValue
@@ -58,7 +61,14 @@ public class Notif {
     this.sourceId = sourceId;
   }
 
-  public static enum Type {
+  public Date getTime() {
+    return time;
+  }
+  public void setTime(Date time) {
+    this.time = time;
+  }
+
+  public enum Type {
     FORWARDED, COMMENTED, REPLIED, MENTIONED_TWEET, MENTIONED_COMMENT, FOLLOWED
   }
 }

@@ -7,8 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import sage.domain.repository.NotifRepository;
+import sage.domain.repository.UserNotifStatusRepository;
 import sage.entity.Notif;
 import sage.entity.Notif.Type;
+import sage.entity.UserNotifStatus;
 
 @Service
 @Transactional
@@ -16,10 +18,33 @@ public class NotifService {
 
   @Autowired
   private NotifRepository notifRepo;
+  @Autowired
+  private UserNotifStatusRepository userNotifStatusRepo;
 
   @Transactional(readOnly=true)
-  public Collection<Notif> getNotifs(Long userId) {
+  public Collection<Notif> all(long userId) {
     return notifRepo.byOwner(userId);
+  }
+
+  @Transactional(readOnly = true)
+  public Collection<Notif> unread(long userId) {
+    Long readToId = userNotifStatusRepo.get(userId).getReadToId();
+    if (readToId == null) {
+      return all(userId);
+    } else {
+      return notifRepo.byOwnerAndAfterId(userId, readToId);
+    }
+  }
+
+  public void setReadTo(long userId, long notifId) {
+    UserNotifStatus status = userNotifStatusRepo.get(userId);
+    if (status == null) {
+      status = new UserNotifStatus(userId, notifId);
+      userNotifStatusRepo.save(status);
+    } else {
+      status.setReadToId(notifId);
+      userNotifStatusRepo.update(status);
+    }
   }
   
   //TODO filter & black-list

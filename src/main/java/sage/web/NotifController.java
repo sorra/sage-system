@@ -10,15 +10,19 @@ import sage.entity.Notif;
 import sage.web.auth.Auth;
 
 @RestController
-@RequestMapping("/notifs")
+@RequestMapping("/notif")
 public class NotifController {
 
   @Autowired
   private NotifService notifSvc;
-  
-  @RequestMapping("/get")
-  public Collection<Notif> notifs() {
-    Long uid = Auth.checkCuid();
-    return notifSvc.getNotifs(uid);
+
+  @RequestMapping("/unread")
+  public Collection<Notif> unread() {
+    return notifSvc.unread(Auth.checkCuid());
+  }
+
+  @RequestMapping("/all")
+  public Collection<Notif> all() {
+    return notifSvc.all(Auth.checkCuid());
   }
 }
