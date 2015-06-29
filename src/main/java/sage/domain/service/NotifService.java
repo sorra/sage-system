@@ -36,7 +36,7 @@ public class NotifService {
     }
   }
 
-  public void setReadTo(long userId, long notifId) {
+  public void readTo(long userId, long notifId) {
     UserNotifStatus status = userNotifStatusRepo.get(userId);
     if (status == null) {
       status = new UserNotifStatus(userId, notifId);

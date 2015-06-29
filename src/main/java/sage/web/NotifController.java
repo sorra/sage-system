@@ -4,6 +4,7 @@ import java.util.Collection;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import sage.domain.service.NotifService;
 import sage.entity.Notif;
@@ -24,5 +25,10 @@ public class NotifController {
   @RequestMapping("/all")
   public Collection<Notif> all() {
     return notifSvc.all(Auth.checkCuid());
+  }
+
+  @RequestMapping("/read-to")
+  public void readTo(@RequestParam Long id) {
+    notifSvc.readTo(Auth.checkCuid(), id);
   }
 }
