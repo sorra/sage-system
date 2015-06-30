@@ -2,10 +2,26 @@
   color: black;
 }
 
+.avatar{
+  width: 60px;
+}
+.avatar img{
+  width: 50px;
+  height: 50px;
+}
+.user-label .avatar img{
+  width: 25px;
+  height: 25px;
+}
+
 .user-card{
   background: #e5e5e5;
   padding: 2px;
   border-radius: 8px;
+}
+.user-card .name{
+  font-weight: bold;
+  color: black;
 }
 .user-card .avatar, .user-card .info-part{
   float: left;
