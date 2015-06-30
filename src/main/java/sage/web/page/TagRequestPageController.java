@@ -19,17 +19,21 @@ public class TagRequestPageController {
 
   @RequestMapping("/{id}/requests")
   String requests(@PathVariable Long id, ModelMap model) {
-    Auth.checkCuid();
+    long cuid = Auth.checkCuid();
     model.put("tag", tagService.optTagCard(id).get());
     model.put("reqs", tagChangeService.getRequestsOfTag(id));
+    model.put("userCanTransact", tagChangeService.userCanTransact(cuid));
+    model.put("currentUserId", cuid);
     return "tag-requests";
   }
 
   @RequestMapping("/{id}/scope-requests")
   String scopeRequests(@PathVariable Long id, ModelMap model) {
-    Auth.checkCuid();
+    long cuid = Auth.checkCuid();
     model.put("tag", tagService.optTag(id));
     model.put("reqs", tagChangeService.getRequestsOfTagScope(id));
+    model.put("userCanTransact", tagChangeService.userCanTransact(cuid));
+    model.put("currentUserId", cuid);
     return "tag-scope-requests";
   }
 }

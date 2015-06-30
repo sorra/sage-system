@@ -10,6 +10,20 @@
     .user-label{
       display: inline-block;
     }
+    .tag-change-request{
+      border: 1px solid white;
+      border-radius: 5px;
+      margin-top: 10px;
+      padding: 5px;
+    }
+    .action-success{
+      color: green;
+      background: white;
+    }
+    .action-failure{
+      color: red;
+      background: white;
+    }
   </style>
 </head>
 <body>
@@ -17,15 +31,53 @@ $!{include("navbar.httl")}
   <div id="container" class="container">
     <h3>${tag.name} - 直属的修改申请</h3>
     #for(each : reqs)
-      <div class="tag-change-request">
+      <div class="tag-change-request" data-id="${each.id}">
         <div>编号: ${each.id}</div>
         <div>发起者: $!{include("user-label.httl", ["u": each.submitter])}</div>
         <div>处理者: $!{include("user-label.httl", ["u": each.transactor])}</div>
-        <div>状态: ${each.status}</div>
+        <div>状态: <span class="status">${each.status}</span></div>
         <div>描述: ${each.desc}</div>
+        #if(each.statusKey == "PENDING")
+          #if(userCanTransact == true)
+          <button class="accept-btn btn btn-default">同意</button>
+          <button class="reject-btn btn btn-default">拒绝</button>
+          #end
+          #if(currentUserId == each.submitter.id)
+          <button class="cancel-btn btn btn-default btn-warning">取消</button>
+          #end
+        #end
       </div>
     #end
   </div>
+$!{includeProto}
 $!{includeJS()}
+<script>
+  function actionSucceed(msg, $req){
+    var $box = $('<h5 class="action-success">'+msg+'</h5>').hide().insertAfter($req).fadeIn()
+    window.setTimeout(function(){$box.fadeOut().remove()}, 1000)
+    $req.find('.status').text(msg)
+    $req.find('.btn').fadeOut()
+  }
+  function actionFail($req){
+    var $box = $('<h5 class="action-failure">操作失败</h5>').hide().insertAfter($req).fadeIn()
+    window.setTimeout(function(){$box.fadeOut().remove()}, 1000)
+  }
+  $(document).delegate('.accept-btn', 'click', function(){
+    var $req = $(this).parent('.tag-change-request')
+    var id = $req.data('id')
+    $.post('/tag-change/accept?requestId='+id).done(function(){actionSucceed('已接受', $req)}).fail(function(){actionFail($req)})
+  })
+      .delegate('.reject-btn', 'click', function(){
+    var $req = $(this).parent('.tag-change-request')
+    var id = $req.data('id')
+    $.post('/tag-change/reject?requestId='+id).done(function(){actionSucceed('已拒绝', $req)}).fail(function(){actionFail($req)})
+  })
+      .delegate('.cancel-btn', 'click', function(){
+    var $req = $(this).parent('.tag-change-request')
+    var id = $req.data('id')
+    $.post('/tag-change/cancel?requestId='+id).done(function(){actionSucceed('已取消', $req)}).fail(function(){actionFail($req)})
+  })
+
+</script>
 </body>
 </html>

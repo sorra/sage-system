@@ -7,6 +7,7 @@ public class TagChangeRequestCard {
   private TagLabel tag;
   private UserLabel submitter;
   private UserLabel transactor;
+  private String statusKey;
   private String status;
   private String type;
   private String desc;
@@ -20,8 +21,9 @@ public class TagChangeRequestCard {
     if (req.getTransactor() != null) {
       transactor = new UserLabel(req.getTransactor());
     }
+    statusKey = req.getStatus().name();
     status = req.getStatus().desc;
-    type = req.getStatus().desc;
+    type = req.getType().desc;
     switch (req.getType()) {
       case MOVE:
         desc = "移动到标签编号"+req.getParentId()+"下";
@@ -49,6 +51,10 @@ public class TagChangeRequestCard {
 
   public UserLabel getTransactor() {
     return transactor;
+  }
+
+  public String getStatusKey() {
+    return statusKey;
   }
 
   public String getStatus() {

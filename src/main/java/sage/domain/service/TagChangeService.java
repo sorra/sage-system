@@ -90,12 +90,19 @@ public class TagChangeService {
     transactRequest(userId, reqId, Status.REJECTED);
   }
 
+  public boolean userCanTransact(long userId) {
+    return Authority.isTagAdminOrHigher(userRepo.get(userId).getAuthority());
+  }
+
   private void transactRequest(Long userId, Long reqId, Status status) {
     User user = userRepo.get(userId);
     if (!Authority.isTagAdminOrHigher(user.getAuthority())) {
       throw new AuthorityException("Require TagAdmin or higher.");
     }
     TagChangeRequest req = reqRepo.get(reqId);
+    if (req.getStatus() != Status.PENDING) {
+      throw new DomainRuntimeException("Don't repeat TagChangeService.transactRequest on obsolete request.");
+    }
     req.setStatus(status);
     req.setTransactor(user);
 
