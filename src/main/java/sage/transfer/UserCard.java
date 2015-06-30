@@ -41,7 +41,7 @@ public class UserCard {
     isFollower = followToCurrentUser != null;
 
     tags.addAll(_tags);
-    if (isFollowing) {
+    if (followFromCurrentUser != null) {
       for (Tag tag : followFromCurrentUser.getTags()) {
         followedTagIds.add(tag.getId());
       }

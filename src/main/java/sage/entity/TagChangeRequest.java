@@ -44,10 +44,14 @@ public class TagChangeRequest {
   }
 
   public enum Status {
-    PENDING, CANCELED, ACCEPTED, REJECTED
+    PENDING("待定"), CANCELED("已取消"), ACCEPTED("已接受"), REJECTED("已拒绝");
+    public final String desc;
+    Status(String desc) {this.desc = desc;}
   }
   public enum Type {
-    MOVE, RENAME, SET_INTRO
+    MOVE("移动"), RENAME("改名"), SET_INTRO("修改简介");
+    public final String desc;
+    Type(String desc) {this.desc = desc;}
   }
 
   @Id @GeneratedValue

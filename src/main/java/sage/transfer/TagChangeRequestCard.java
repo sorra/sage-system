@@ -20,17 +20,17 @@ public class TagChangeRequestCard {
     if (req.getTransactor() != null) {
       transactor = new UserLabel(req.getTransactor());
     }
-    status = req.getStatus().name();
-    type = req.getStatus().name();
+    status = req.getStatus().desc;
+    type = req.getStatus().desc;
     switch (req.getType()) {
       case MOVE:
-        desc = "移动到:标签编号"+req.getParentId()+"下";
+        desc = "移动到标签编号"+req.getParentId()+"下";
         break;
       case RENAME:
-        desc = "改名为\""+req.getName()+'"';
+        desc = "改名\""+req.getName()+'"';
         break;
       case SET_INTRO:
-        desc = "修改介绍\""+req.getIntro()+'"';
+        desc = "修改简介\""+req.getIntro()+'"';
         break;
     }
   }

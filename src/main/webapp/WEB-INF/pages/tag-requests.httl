@@ -4,19 +4,25 @@
 #set(TagCard tag, Collection<TagChangeRequestCard> reqs)
 <head>
   <meta charset="UTF-8">
-  <title>${tag.name} - 直属的修改请求</title>
+  <title>${tag.name} - 直属的修改申请</title>
   $!{includeCSS()}
+  <style>
+    .user-label{
+      display: inline-block;
+    }
+  </style>
 </head>
 <body>
 $!{include("navbar.httl")}
   <div id="container" class="container">
+    <h3>${tag.name} - 直属的修改申请</h3>
     #for(each : reqs)
       <div class="tag-change-request">
-        编号: ${each.id}
-        发起者: $!{include("user-label.httl", ["u": each.submitter])}
-        处理者: $!{include("user-label.httl", ["u": each.transactor])}
-        状态: ${each.status}
-        描述: ${each.desc}
+        <div>编号: ${each.id}</div>
+        <div>发起者: $!{include("user-label.httl", ["u": each.submitter])}</div>
+        <div>处理者: $!{include("user-label.httl", ["u": each.transactor])}</div>
+        <div>状态: ${each.status}</div>
+        <div>描述: ${each.desc}</div>
       </div>
     #end
   </div>
