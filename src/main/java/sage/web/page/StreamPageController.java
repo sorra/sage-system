@@ -9,9 +9,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import sage.domain.commons.BadArgumentException;
 import sage.domain.service.GroupService;
+import sage.domain.service.TagChangeService;
 import sage.domain.service.TagService;
 import sage.domain.service.UserService;
-import sage.entity.Tag;
 import sage.transfer.TagCard;
 import sage.transfer.TagLabel;
 import sage.util.Colls;
@@ -25,6 +25,8 @@ public class StreamPageController {
   @Autowired
   private TagService tagService;
   @Autowired
+  private TagChangeService tagChangeService;
+  @Autowired
   private GroupService groupService;
 
   @RequestMapping("/public/{id}")
@@ -34,9 +36,9 @@ public class StreamPageController {
     
     List<TagLabel> coreTags = new ArrayList<>();
     List<TagLabel> nonCoreTags = new ArrayList<>();
-    Optional<Tag> tagOpt = tagService.optTag(id);
+    Optional<TagCard> tagOpt = tagService.optTagCard(id);
     if (tagOpt.isPresent()) {
-      TagCard tagCard = new TagCard(tagOpt.get());
+      TagCard tagCard = tagOpt.get();
       model.put("tag", tagCard);
       for (TagLabel child : tagCard.getChildren()) {
         if (child.getIsCore()) {
@@ -50,6 +52,9 @@ public class StreamPageController {
     }
 
     model.put("groups", groupService.byTags(Collections.singletonList(id)));
+
+    model.put("countPendingRequestsOfTagScope", tagChangeService.countPendingRequestsOfTagScope(id));
+    model.put("countPendingRequestsOfTag", tagChangeService.countPendingRequestsOfTag(id));
 
     Collection<TagLabel> sameNameTags = Colls.map(tagService.getSameNameTags(id), TagLabel::new);
 

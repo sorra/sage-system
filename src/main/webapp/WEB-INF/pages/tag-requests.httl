@@ -4,7 +4,7 @@
 #set(TagCard tag, Collection<TagChangeRequestCard> reqs)
 <head>
   <meta charset="UTF-8">
-  <title>${tag.name} - 直属的修改申请</title>
+  <title>${tag.name} - 的修改申请</title>
   $!{includeCSS()}
   <style>
     .user-label{
@@ -29,7 +29,7 @@
 <body>
 $!{include("navbar.httl")}
   <div id="container" class="container">
-    <h3>${tag.name} - 直属的修改申请</h3>
+    <h3>${tag.name} - 的修改申请</h3>
     #for(each : reqs)
       <div class="tag-change-request" data-id="${each.id}">
         <div>编号: ${each.id}</div>

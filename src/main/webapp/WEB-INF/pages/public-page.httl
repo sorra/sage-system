@@ -3,6 +3,7 @@
 #set(components = ["bootstrap", "layout", "stream", "tag", "user"])
 #set(TagCard tag)
 #set(Collection<GroupPreview> groups)
+#set(Integer countPendingRequestsOfTag, Integer countPendingRequestsOfTagScope)
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<title>${tag.name} - 紫月空</title>
@@ -26,6 +27,16 @@ $!{include("navbar.httl")}
 	<div id="chain"></div>
 	<div class="row" style="margin-top:50px">
 		<div class="side">
+      <div class="parallel-links">
+        <div>
+          <a href="/pages/tag/${tag.id}/scope-requests">修改申请(旗下标签)</a>
+          #if(countPendingRequestsOfTag > 0)[${countPendingRequestsOfTag}]#end
+        </div>
+        <div>
+          <a href="/pages/tag/${tag.id}/requests">修改申请(仅本标签)</a>
+          #if(countPendingRequestsOfTagScope > 0)[${countPendingRequestsOfTagScope}]#end
+        </div>
+      </div>
 			<div>小组
         <div>
           #for(group : groups)
@@ -58,7 +69,7 @@ $!{include("navbar.httl")}
       <div>关联标签</div>
 		</div>
 		<div class="main">
-		  <div id="bkg-intro" class="row" style="text-align:center;padding:10px">${tag.intro == null ? "没有背景介绍" : intro}</div>
+		  <div id="bkg-intro" class="row" style="text-align:center;padding:10px">${tag.intro == null ? "没有背景介绍" : tag.intro}</div>
 			<div class="stream">
 				<div class="slist"></div>
 			</div>

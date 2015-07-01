@@ -3,6 +3,10 @@ package sage.domain.service;
 import java.util.Collection;
 import java.util.function.Consumer;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,6 +28,7 @@ import sage.util.Colls;
 @Service
 @Transactional
 public class TagChangeService {
+  private static final Logger log = LoggerFactory.getLogger(TagChangeService.class);
   @Autowired
   private TagRepository tagRepo;
   @Autowired
@@ -70,8 +75,16 @@ public class TagChangeService {
     return Colls.map(reqRepo.byTag(tagId), TagChangeRequestCard::new);
   }
 
+  public int countPendingRequestsOfTag(long tagId) {
+    return reqRepo.byTagAndStatus(tagId, Status.PENDING).size();
+  }
+
   public Collection<TagChangeRequestCard> getRequestsOfTagScope(long tagId) {
     return Colls.map(reqRepo.byTagScope(tagRepo.get(tagId)), TagChangeRequestCard::new);
+  }
+
+  public int countPendingRequestsOfTagScope(long tagId) {
+    return reqRepo.byTagScopeAndStatus(tagRepo.get(tagId), Status.PENDING).size();
   }
 
   public void cancelRequest(Long userId, Long reqId) {
@@ -115,6 +128,7 @@ public class TagChangeService {
       } else if (req.getType() == Type.SET_INTRO) {
         doTransact(tagId, tag -> tag.setIntro(req.getIntro()));
       }
+      log.info("transactRequest done: " + ToStringBuilder.reflectionToString(req, ToStringStyle.SHORT_PREFIX_STYLE));
     }
   }
 
