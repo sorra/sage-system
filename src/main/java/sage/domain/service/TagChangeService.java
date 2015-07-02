@@ -3,6 +3,7 @@ package sage.domain.service;
 import java.util.Collection;
 import java.util.function.Consumer;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.slf4j.Logger;
@@ -37,7 +38,13 @@ public class TagChangeService {
   private UserRepository userRepo;
 
   public Long newTag(String name, long parentId, String intro) {
-    if (intro == null || intro.isEmpty()) {
+    if (StringUtils.isBlank(name)) {
+      throw new IllegalArgumentException("name is empty!");
+    }
+    if (tagRepo.nullable(parentId) == null) {
+      throw new IllegalArgumentException("parentId "+parentId+" is wrong!");
+    }
+    if (StringUtils.isBlank(intro)) {
       intro = "啊，" + name + "！";
     }
     Tag tag = new Tag(name, tagRepo.load(parentId), intro);
@@ -50,14 +57,23 @@ public class TagChangeService {
   }
 
   public TagChangeRequest requestMove(Long userId, Long tagId, Long parentId) {
+    if (tagRepo.nullable(parentId) == null) {
+      throw new IllegalArgumentException("parentId "+parentId+" is wrong!");
+    }
     return saveRequest(TagChangeRequest.forMove(tagRepo.load(tagId), userRepo.load(userId), parentId));
   }
 
   public TagChangeRequest requestRename(Long userId, Long tagId, String name) {
+    if (StringUtils.isBlank(name)) {
+      throw new IllegalArgumentException("name is empty!");
+    }
     return saveRequest(TagChangeRequest.forRename(tagRepo.load(tagId), userRepo.load(userId), name));
   }
 
   public TagChangeRequest requestSetIntro(Long userId, Long tagId, String intro) {
+    if (StringUtils.isBlank(intro)) {
+      throw new IllegalArgumentException("intro is empty!");
+    }
     return saveRequest(TagChangeRequest.forSetIntro(tagRepo.load(tagId), userRepo.load(userId), intro));
   }
 
