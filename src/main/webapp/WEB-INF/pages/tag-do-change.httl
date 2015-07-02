@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+#set(components = ["bootstrap", "layout"])
+#set(TagCard tag)
+<head>
+  <meta charset="UTF-8">
+  <title>修改标签</title>
+</head>
+<body>
+  <div>
+    <form id="form-setintro" action="/tag/${tag.id}/setIntro" method="post">
+      旧简介：${tag.intro}
+      新简介：<textarea name="intro"></textarea>
+      <button type="submit">提交</button>
+    </form>
+    <form id="form-rename" action="/tag/${tag.id}/rename" method="post">
+      旧名字：${tag.name}
+      新名字：<input name="name" />
+      <button type="submit">提交</button>
+    </form>
+    <form id="form-move" action="/tag/${tag.id}/move" method="post">
+      旧层级：${tag.chainUp.toString}
+      新母标签：<input name="parentId"/>
+      <button type="submit">提交</button>
+    </form>
+  </div>
+</body>
+</html>

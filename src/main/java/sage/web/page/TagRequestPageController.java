@@ -36,4 +36,11 @@ public class TagRequestPageController {
     model.put("currentUserId", cuid);
     return "tag-scope-requests";
   }
+
+  @RequestMapping("{id}/do-change")
+  String doChange(@PathVariable Long id, ModelMap model) {
+    Auth.checkCuid();
+    model.put("tag", tagService.optTagCard(id).get());
+    return "tag-do-change";
+  }
 }
