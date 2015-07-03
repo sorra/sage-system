@@ -35,16 +35,17 @@ public class TagChangeService {
   @Autowired
   private UserRepository userRepo;
 
-  public Long newTag(String name, long parentId, String intro) {
+  public Long newTag(String name, Long parentId, String intro) {
     if (StringUtils.isBlank(name)) {
       throw new IllegalArgumentException("name is empty!");
     }
-    if (tagRepo.nullable(parentId) == null) {
+    if (parentId != null && tagRepo.nullable(parentId) == null) {
       throw new IllegalArgumentException("parentId "+parentId+" is wrong!");
     }
     if (StringUtils.isBlank(intro)) {
       intro = "啊，" + name + "！";
     }
+    if (parentId == null) parentId = Tag.ROOT_ID;
     Tag tag = new Tag(name, tagRepo.load(parentId), intro);
     if (tagRepo.byNameAndParent(name, parentId) == null) {
       tagRepo.save(tag);

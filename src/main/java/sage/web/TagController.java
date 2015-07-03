@@ -33,7 +33,9 @@ public class TagController {
   }
 
   @RequestMapping("/new")
-  public long create(@RequestParam String name, @RequestParam Long parentId, @RequestParam(required = false) String intro) {
+  public long create(@RequestParam String name,
+                     @RequestParam(required = false) Long parentId,
+                     @RequestParam(required = false) String intro) {
     Auth.checkCuid();
     return tagChangeService.newTag(name, parentId, intro);
   }
