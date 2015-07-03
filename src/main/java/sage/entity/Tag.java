@@ -3,6 +3,7 @@ package sage.entity;
 import java.util.*;
 import javax.persistence.*;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
 import sage.domain.commons.IdCommons;
 
 /**
@@ -139,7 +140,7 @@ public class Tag {
 
   @Override
   public String toString() {
-    return name;
+    return ToStringBuilder.reflectionToString(this);
   }
 
   @Override

@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import sage.entity.Tag;
+import sage.util.Colls;
 
 public class TagLabel {
   private long id;
@@ -18,20 +20,14 @@ public class TagLabel {
     id = tag.getId();
     name = tag.getName();
     isCore = tag.isCore();
+    chainStr = topDownChainStr(Colls.map(tag.chainUp(), Tag::getName));
+  }
 
-    List<Tag> chainUp = tag.chainUp();
-    if (chainUp.isEmpty()) {
-      chainStr = "";
-    }
-    else {
-      StringBuilder sb = new StringBuilder();
-      for (int i = chainUp.size() - 1; i >= 0; i--) {
-        sb.append(chainUp.get(i));
-        if (i > 0)
-          sb.append("->");
-      }
-      chainStr = sb.toString();
-    }
+  public TagLabel(TagCard tagCard) {
+    id = tagCard.getId();
+    name = tagCard.getName();
+    isCore = tagCard.isCore();
+    chainStr = topDownChainStr(Colls.map(tagCard.getChainUp(), TagLabel::getName));
   }
 
   public long getId() {
@@ -61,5 +57,16 @@ public class TagLabel {
       labels.add(new TagLabel(tag));
     }
     return labels;
+  }
+
+  public static String topDownChainStr(List<String> namesBottomUp) {
+    if (namesBottomUp.isEmpty()) return "";
+    StringBuilder sb = new StringBuilder();
+    for (int i = namesBottomUp.size() - 1; i >= 0; i--) {
+      sb.append(namesBottomUp.get(i));
+      if (i > 0)
+        sb.append("->");
+    }
+    return sb.toString();
   }
 }

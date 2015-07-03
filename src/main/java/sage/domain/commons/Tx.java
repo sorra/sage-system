@@ -6,10 +6,11 @@ import javax.annotation.PreDestroy;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
-import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-@Component
+/**
+ * Declared in spring starting config
+ */
 @Transactional
 public class Tx {
 

@@ -6,12 +6,10 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
 	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd
 	http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd">
-	<!-- <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" 
-		destroy-method="close" p:driverClassName="${jdbc.driveClassName}" p:url="${jdbc.url}" 
-		p:username="${jdbc.username}" p:password="$jdbc.password}"></bean> <bean 
-		id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean" 
-		p:configLocation="classpath:hibernate.cfg.xml" p:dataSource-ref="dataSource"></bean> -->
-	<context:component-scan base-package="sage.domain.*"></context:component-scan>
+
+	<bean id="applicationSetup" class="sage.domain.commons.ApplicationSetup"/>
+	<bean id="sage.domain.commons.Tx" class="sage.domain.commons.Tx"/>
+	<context:component-scan base-package="sage.domain.*"/>
 
 	<bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
 		<property name="packagesToScan" value="sage.entity"/>

@@ -4,8 +4,6 @@ import java.util.Collection;
 import java.util.function.Consumer;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -144,7 +142,7 @@ public class TagChangeService {
       } else if (req.getType() == Type.SET_INTRO) {
         doTransact(tagId, tag -> tag.setIntro(req.getIntro()));
       }
-      log.info("transactRequest done: " + ToStringBuilder.reflectionToString(req, ToStringStyle.SHORT_PREFIX_STYLE));
+      log.info("transactRequest done: {}", req);
     }
   }
 

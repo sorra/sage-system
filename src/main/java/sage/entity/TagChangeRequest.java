@@ -5,6 +5,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+
 @Entity
 public class TagChangeRequest {
   private Long id;
@@ -119,5 +121,10 @@ public class TagChangeRequest {
   }
   public void setIntro(String intro) {
     this.intro = intro;
+  }
+
+  @Override
+  public String toString() {
+    return ToStringBuilder.reflectionToString(this);
   }
 }

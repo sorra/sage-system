@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
 import sage.entity.Tag;
 
 public class TagCard {
@@ -61,17 +62,6 @@ public class TagCard {
 
   @Override
   public String toString() {
-    if (chainUp.isEmpty()) {
-      return name;
-    }
-    else {
-      StringBuilder sb = new StringBuilder();
-      for (int i = chainUp.size() - 1; i >= 0; i--) {
-        sb.append(chainUp.get(i));
-        if (i > 0)
-          sb.append("->");
-      }
-      return sb.toString();
-    }
+    return ToStringBuilder.reflectionToString(this);
   }
 }
