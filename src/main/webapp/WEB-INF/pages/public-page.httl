@@ -30,11 +30,11 @@ $!{include("navbar.httl")}
       <div class="parallel-links">
         <div>
           <a href="/pages/tag/${tag.id}/scope-requests">修改申请(旗下标签)</a>
-          #if(countPendingRequestsOfTag > 0)[${countPendingRequestsOfTag}]#end
+          #if(countPendingRequestsOfTagScope > 0)[${countPendingRequestsOfTagScope}]#end
         </div>
         <div>
           <a href="/pages/tag/${tag.id}/requests">修改申请(仅本标签)</a>
-          #if(countPendingRequestsOfTagScope > 0)[${countPendingRequestsOfTagScope}]#end
+          #if(countPendingRequestsOfTag > 0)[${countPendingRequestsOfTag}]#end
         </div>
       </div>
 			<div>小组

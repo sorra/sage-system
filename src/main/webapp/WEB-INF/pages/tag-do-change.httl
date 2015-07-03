@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-#set(components = ["bootstrap", "layout"])
+#set(components = ["bootstrap", "layout", "tag"])
 #set(TagCard tag)
 <head>
   <meta charset="UTF-8">
@@ -27,12 +27,13 @@ $!{include("navbar.httl")}
         <button type="submit">提交</button>
       </form>
       <form id="form-move" class="tab-pane" action="/tag/${tag.id}/move" method="post">
-        <div>旧层级：${tag.chainUp.toString}</div>
+        <div>旧层级：${new TagLabel(tag).chainStr}</div>
         <div>新母标签：<input name="parentId"/></div>
         <button type="submit">提交</button>
       </form>
     </div>
   </div>
+$!{includeProto}
 $!{includeJS()}
 </body>
 </html>
