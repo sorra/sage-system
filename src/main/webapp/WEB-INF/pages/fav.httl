@@ -5,6 +5,11 @@
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
   <title>收藏夹</title>
   $!{includeCSS()}
+  <style>
+    .the-link{
+      color: black;
+    }
+  </style>
 </head>
 <body>
 $!{include("navbar.httl")}
