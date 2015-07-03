@@ -29,7 +29,7 @@ $!{include("navbar.httl")}
 		<div class="side">
       <div class="parallel-links">
         <div>
-          <a href="/pages/tag/${tag.id}/scope-requests">修改申请(旗下标签)</a>
+          <a href="/pages/tag/${tag.id}/scope-requests">修改申请(范围内)</a>
           #if(countPendingRequestsOfTagScope > 0)[${countPendingRequestsOfTagScope}]#end
         </div>
         <div>

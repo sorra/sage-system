@@ -36,9 +36,8 @@ public class StreamPageController {
     
     List<TagLabel> coreTags = new ArrayList<>();
     List<TagLabel> nonCoreTags = new ArrayList<>();
-    Optional<TagCard> tagOpt = tagService.optTagCard(id);
-    if (tagOpt.isPresent()) {
-      TagCard tagCard = tagOpt.get();
+    TagCard tagCard = tagService.getTagCard(id);
+    if (tagCard != null) {
       model.put("tag", tagCard);
       for (TagLabel child : tagCard.getChildren()) {
         if (child.getIsCore()) {

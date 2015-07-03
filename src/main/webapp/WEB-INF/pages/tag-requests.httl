@@ -1,30 +1,11 @@
 <!DOCTYPE html>
 <html>
-#set(components = ["bootstrap", "layout", "tag", "user"])
+#set(components = ["bootstrap", "layout", "tag", "user", "tag-requests"])
 #set(TagCard tag, Collection<TagChangeRequestCard> reqs)
 <head>
   <meta charset="UTF-8">
   <title>${tag.name} - 的修改申请</title>
   $!{includeCSS()}
-  <style>
-    .user-label{
-      display: inline-block;
-    }
-    .tag-change-request{
-      border: 1px solid white;
-      border-radius: 5px;
-      margin-top: 10px;
-      padding: 5px;
-    }
-    .action-success{
-      color: green;
-      background: white;
-    }
-    .action-failure{
-      color: red;
-      background: white;
-    }
-  </style>
 </head>
 <body>
 $!{include("navbar.httl")}

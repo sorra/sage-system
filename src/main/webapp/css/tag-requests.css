@@ -1,0 +1,17 @@
+.user-label{
+  display: inline-block;
+}
+.tag-change-request{
+  border: 1px solid white;
+  border-radius: 5px;
+  margin-top: 10px;
+  padding: 5px;
+}
+.action-success{
+  color: green;
+  background: white;
+}
+.action-failure{
+  color: red;
+  background: white;
+}

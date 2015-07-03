@@ -5,11 +5,9 @@ import java.util.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.Assert;
 import sage.domain.repository.TagRepository;
 import sage.entity.Tag;
 import sage.transfer.TagCard;
-import sage.transfer.TagLabel;
 import sage.transfer.TagNode;
 import sage.web.context.Json;
 
@@ -19,16 +17,12 @@ public class TagService {
   @Autowired
   private TagRepository tagRepo;
 
-  public Optional<TagCard> optTagCard(long tagId) {
-    return tagRepo.optional(tagId).map(TagCard::new);
+  public TagCard getTagCard(long tagId) {
+    return new TagCard(tagRepo.get(tagId));
   }
 
-  public Optional<Tag> optTag(long tagId) {
-    return tagRepo.optional(tagId);
-  }
-
-  public Optional<TagLabel> optTagLabel(long tagId) {
-    return tagRepo.optional(tagId).map(TagLabel::new);
+  public Tag getTag(long tagId) {
+    return tagRepo.get(tagId);
   }
 
   public TagNode getTagTree() {

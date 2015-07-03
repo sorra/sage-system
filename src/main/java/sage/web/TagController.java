@@ -24,7 +24,7 @@ public class TagController {
 
   @RequestMapping("/card/{id}")
   public TagCard tagCard(@PathVariable Long id) {
-    return tagService.optTagCard(id).orElse(null);
+    return tagService.getTagCard(id);
   }
 
   @RequestMapping("/tree")
