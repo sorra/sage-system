@@ -18,15 +18,15 @@ public class TagService {
   private TagRepository tagRepo;
 
   public TagCard getTagCard(long tagId) {
-    return new TagCard(tagRepo.get(tagId));
+    return new TagCard(tagRepo.nonNull(tagId));
   }
 
   public Tag getTag(long tagId) {
-    return tagRepo.get(tagId);
+    return tagRepo.nonNull(tagId);
   }
 
   public TagNode getTagTree() {
-    return new TagNode(tagRepo.get(Tag.ROOT_ID));
+    return new TagNode(tagRepo.nonNull(Tag.ROOT_ID));
   }
 
   // TODO Cache it
@@ -44,7 +44,7 @@ public class TagService {
   }
   
   public Collection<Tag> getSameNameTags(long tagId) {
-    Tag tag = tagRepo.get(tagId);
+    Tag tag = tagRepo.nonNull(tagId);
     Collection<Tag> tagsByName = getTagsByName(tag.getName());
     tagsByName.remove(tag);
     return tagsByName;

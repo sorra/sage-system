@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+#set(components = ["bootstrap", "layout", "tag", "user"])
+#set(Collection<NotifView> notifs)
+<head>
+  <meta charset="UTF-8">
+  <title>${category}通知</title>
+  $!{includeCSS()}
+</head>
+<body>
+$!{include("navbar.httl")}
+  <div id="container" class="container">
+    #for(each : notifs)
+    <div class="notif" data-id="${each.id}">
+      $!{include("user-label.httl", ["u": each.sender])}
+      ${each.desc}
+      <a href="${each.source}">${each.source}</a>
+    </div>
+    #end
+  </div>
+$!{includeProto}
+$!{includeJS()}
+<script>
+  // set readTo after 1 second
+  window.setTimeout(function () {
+    var max = 0;
+    $('.notif').each(function(){
+      var id = parseInt($(this).data('id'))
+      if (id > max) max = id
+    })
+    if (max > 0) $.get("/notif/read-to", {id: max})
+  }, 1000);
+</script>
+</body>
+</html>

@@ -67,7 +67,7 @@ public class FilesService {
   }
 
   public void delete(long userId, long fileId) {
-    FileItem fileItem = fileRepo.get(fileId);
+    FileItem fileItem = fileRepo.nonNull(fileId);
     if (userId != fileItem.getOwnerId()) {
       throw new DomainRuntimeException("User[%s] is not the owner of FileItem[%s]", userId, fileId);
     }

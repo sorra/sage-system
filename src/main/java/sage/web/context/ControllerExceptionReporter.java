@@ -25,18 +25,21 @@ public class ControllerExceptionReporter {
   private final Logger log = LoggerFactory.getLogger(getClass());
 
   @ExceptionHandler(TypeMismatchException.class)
+  @ResponseStatus(HttpStatus.BAD_REQUEST)
   public ModelAndView typeMismatch(TypeMismatchException e) {
     log.error(e.toString());
     return errorPage(HttpStatus.BAD_REQUEST, "Parameter type mismatch 参数类型不对");
   }
 
   @ExceptionHandler(BadArgumentException.class)
+  @ResponseStatus(HttpStatus.BAD_REQUEST)
   public ModelAndView badArgument(BadArgumentException e, HttpServletResponse response) throws IOException {
     log.error(e.toString());
     return errorPage(HttpStatus.BAD_REQUEST, e.getMessage());
   }
 
   @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
+  @ResponseStatus(HttpStatus.METHOD_NOT_ALLOWED)
   public ModelAndView httpMethodNotSupported(HttpRequestMethodNotSupportedException e,
                                      HttpServletRequest request, HttpServletResponse response) throws IOException {
     log.error("URI: " + request.getRequestURI(), e);
@@ -44,6 +47,7 @@ public class ControllerExceptionReporter {
   }
 
   @ExceptionHandler(HibernateJdbcException.class)
+  @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
   public ModelAndView hibernateJDBCException(HibernateJdbcException e) {
     // Sometimes there is no sql
     log.error("SQL: " + e.getSql() + "\n", e);
@@ -51,6 +55,7 @@ public class ControllerExceptionReporter {
   }
 
   @ExceptionHandler
+  @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
   public ModelAndView any(Throwable e, HttpServletRequest request, HttpServletResponse response) throws IOException {
     log.error("URI: " + request.getRequestURI() + "\nController error: ", e);
     return errorPage(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());

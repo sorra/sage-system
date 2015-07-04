@@ -22,7 +22,7 @@ public abstract class BaseRepository<T> {
     return (T) session().load(entityClass(), id);
   }
 
-  public T get(long id) {
+  public T nonNull(long id) {
     Object o = session().get(entityClass(), id);
     if (o == null) {
       throw new DomainRuntimeException("%s[id: %d] does not exist!", entityClass().getSimpleName(), id);
@@ -30,12 +30,12 @@ public abstract class BaseRepository<T> {
     return (T) o;
   }
 
-  public T nullable(long id) {
+  public T get(long id) {
     return (T) session().get(entityClass(), id);
   }
 
   public Optional<T> optional(long id) {
-    return Optional.ofNullable(nullable(id));
+    return Optional.ofNullable(get(id));
   }
 
   public T save(T entity) {

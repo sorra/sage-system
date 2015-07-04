@@ -31,11 +31,11 @@ public class GroupService {
   private BlogRepository blogRepo;
 
   public GroupPreview getGroupPreview(long id) {
-    return new GroupPreview(groupRepo.get(id));
+    return new GroupPreview(groupRepo.nonNull(id));
   }
 
   public Collection<UserLabel> members(long groupId) {
-    return UserLabel.listOf(groupRepo.get(groupId).getMembers());
+    return UserLabel.listOf(groupRepo.nonNull(groupId).getMembers());
   }
 
   public GroupPreview create(long userId, String name, String introduction, Collection<Long> tagIds) {
@@ -59,7 +59,7 @@ public class GroupService {
     if (introduction == null || introduction.isEmpty()) {
       throw new DomainRuntimeException("Must enter a group introduction!");
     }
-    Group group = groupRepo.get(groupId);
+    Group group = groupRepo.nonNull(groupId);
     if (group == null) {
       throw new DomainRuntimeException("Group[%d] does not exist!", groupId);
     }
@@ -77,7 +77,7 @@ public class GroupService {
 
   public void join(long userId, long groupId) {
     User user = userRepo.load(userId);
-    Group group = groupRepo.get(groupId);
+    Group group = groupRepo.nonNull(groupId);
     if (group.getMembers().add(user)) {
       groupRepo.update(group);
     }
@@ -85,14 +85,14 @@ public class GroupService {
 
   public void leave(long userId, long groupId) {
     User user = userRepo.load(userId);
-    Group group = groupRepo.get(groupId);
+    Group group = groupRepo.nonNull(groupId);
     if (group.getMembers().remove(user)) {
       groupRepo.update(group);
     }
   }
 
   public GroupTopic getTopic(long id) {
-    return groupTopicRepo.get(id);
+    return groupTopicRepo.nonNull(id);
   }
 
   public GroupTopic post(long userId, Blog blog, long groupId) {
@@ -103,7 +103,7 @@ public class GroupService {
   }
 
   public GroupTopic post(long userId, long blogId, long groupId) {
-    return post(userId, blogRepo.get(blogId), groupId);
+    return post(userId, blogRepo.nonNull(blogId), groupId);
   }
 
   public Collection<GroupPreview> byTags(Collection<Long> tagIds) {

@@ -10,7 +10,7 @@ import sage.entity.Tag;
 @Repository
 public class TagRepository extends BaseRepository<Tag> {
   public Tag byNameAndParent(String name, long parentId) {
-    for (Tag child : get(parentId).getChildren()) {
+    for (Tag child : nonNull(parentId).getChildren()) {
       if (child.getName().equals(name)) {
         return child;
       }
@@ -27,7 +27,7 @@ public class TagRepository extends BaseRepository<Tag> {
   public Set<Tag> byIds(Collection<Long> ids) {
     Set<Tag> tags = new HashSet<>();
     for (long id : ids) {
-      tags.add(get(id));
+      tags.add(nonNull(id));
     }
     return tags;
   }

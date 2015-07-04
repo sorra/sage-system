@@ -37,7 +37,7 @@ public class FavService {
   }
   
   public void deleteFav(long userId, long favId) {
-    Fav fav = favRepo.get(favId);
+    Fav fav = favRepo.nonNull(favId);
     if (!IdCommons.equal(fav.getOwner().getId(), userId)) {
       throw new DomainRuntimeException("User[%d] is not the owner of Fav[%d]", userId, favId);
     }

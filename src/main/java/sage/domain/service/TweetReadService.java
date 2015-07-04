@@ -79,7 +79,7 @@ public class TweetReadService {
   }
 
   public TweetView getTweetView(long tweetId) {
-    Tweet tweet = tweetRepo.nullable(tweetId);
+    Tweet tweet = tweetRepo.get(tweetId);
     return tweet == null ? null : transfers.toTweetView(tweet);
   }
 

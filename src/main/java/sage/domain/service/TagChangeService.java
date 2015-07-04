@@ -39,7 +39,7 @@ public class TagChangeService {
     if (StringUtils.isBlank(name)) {
       throw new IllegalArgumentException("name is empty!");
     }
-    if (parentId != null && tagRepo.nullable(parentId) == null) {
+    if (parentId != null && tagRepo.get(parentId) == null) {
       throw new IllegalArgumentException("parentId "+parentId+" is wrong!");
     }
     if (StringUtils.isBlank(intro)) {
@@ -56,7 +56,7 @@ public class TagChangeService {
   }
 
   public TagChangeRequest requestMove(Long userId, Long tagId, Long parentId) {
-    if (tagRepo.nullable(parentId) == null) {
+    if (tagRepo.get(parentId) == null) {
       throw new IllegalArgumentException("parentId "+parentId+" is wrong!");
     }
     return saveRequest(TagChangeRequest.forMove(tagRepo.load(tagId), userRepo.load(userId), parentId));
@@ -95,15 +95,15 @@ public class TagChangeService {
   }
 
   public Collection<TagChangeRequestCard> getRequestsOfTagScope(long tagId) {
-    return Colls.map(reqRepo.byTagScope(tagRepo.get(tagId)), TagChangeRequestCard::new);
+    return Colls.map(reqRepo.byTagScope(tagRepo.nonNull(tagId)), TagChangeRequestCard::new);
   }
 
   public int countPendingRequestsOfTagScope(long tagId) {
-    return reqRepo.byTagScopeAndStatus(tagRepo.get(tagId), Status.PENDING).size();
+    return reqRepo.byTagScopeAndStatus(tagRepo.nonNull(tagId), Status.PENDING).size();
   }
 
   public void cancelRequest(Long userId, Long reqId) {
-    TagChangeRequest request = reqRepo.get(reqId);
+    TagChangeRequest request = reqRepo.nonNull(reqId);
     if (!IdCommons.equal(request.getSubmitter().getId(), userId)) {
       throw new DomainRuntimeException("User[%d] is not the owner of TagChangeRequest[%d]", userId, reqId);
     }
@@ -119,15 +119,15 @@ public class TagChangeService {
   }
 
   public boolean userCanTransact(long userId) {
-    return Authority.isTagAdminOrHigher(userRepo.get(userId).getAuthority());
+    return Authority.isTagAdminOrHigher(userRepo.nonNull(userId).getAuthority());
   }
 
   private void transactRequest(Long userId, Long reqId, Status status) {
-    User user = userRepo.get(userId);
+    User user = userRepo.nonNull(userId);
     if (!Authority.isTagAdminOrHigher(user.getAuthority())) {
       throw new AuthorityException("Require TagAdmin or higher.");
     }
-    TagChangeRequest req = reqRepo.get(reqId);
+    TagChangeRequest req = reqRepo.nonNull(reqId);
     if (req.getStatus() != Status.PENDING) {
       throw new DomainRuntimeException("Don't repeat TagChangeService.transactRequest on obsolete request.");
     }
@@ -148,7 +148,7 @@ public class TagChangeService {
   }
 
   private void doTransact(long tagId, Consumer<Tag> action) {
-    Tag tag = tagRepo.get(tagId);
+    Tag tag = tagRepo.nonNull(tagId);
     action.accept(tag);
     tagRepo.update(tag);
   }

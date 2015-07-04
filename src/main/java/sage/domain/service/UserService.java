@@ -37,7 +37,7 @@ public class UserService {
 
   @Transactional(readOnly = true)
   public UserSelf getSelf(long userId) {
-    return new UserSelf(userRepo.get(userId),
+    return new UserSelf(userRepo.nonNull(userId),
         followRepo.followingCount(userId),
         followRepo.followerCount(userId),
         blogRepo.countByAuthor(userId),
@@ -54,7 +54,7 @@ public class UserService {
 
   @Transactional(readOnly = true)
   public UserCard getUserCard(long cuid, long userId) {
-    return new UserCard(userRepo.get(userId),
+    return new UserCard(userRepo.nonNull(userId),
         followRepo.followerCount(userId),
         blogRepo.countByAuthor(userId),
         tweetRepo.countByAuthor(userId),
@@ -66,11 +66,11 @@ public class UserService {
 
   @Transactional(readOnly = true)
   public UserLabel getUserLabel(long userId) {
-    return new UserLabel(userRepo.get(userId));
+    return new UserLabel(userRepo.nonNull(userId));
   }
 
   public void changeInfo(long userId, String name, String intro, String avatar) {
-    User user = userRepo.get(userId);
+    User user = userRepo.nonNull(userId);
     if (Objects.equals(name, user.getName()) && Objects.equals(intro, user.getIntro()) && avatar == null) {
       return;
     }
@@ -83,19 +83,19 @@ public class UserService {
   }
 
   public void changeIntro(long userId, String intro) {
-    User user = userRepo.get(userId);
+    User user = userRepo.nonNull(userId);
     user.setIntro(intro);
     userRepo.update(user);
   }
 
   public void changeAvatar(long userId, String avatar) {
-    User user = userRepo.get(userId);
+    User user = userRepo.nonNull(userId);
     user.setAvatar(avatar);
     userRepo.update(user);
   }
 
   public void grantAuthority(long userId, Authority authority) {
-    User user = userRepo.get(userId);
+    User user = userRepo.nonNull(userId);
     user.setAuthority(authority);
     userRepo.update(user);
   }
@@ -150,7 +150,7 @@ public class UserService {
     List<PersonValue> list = new ArrayList<>();
     List<TagLabel> selfTags = topTags(userId);
     for (long i = 1;; i++) {
-      User person = userRepo.nullable(i);
+      User person = userRepo.get(i);
       if (person == null) {
         break;
       }

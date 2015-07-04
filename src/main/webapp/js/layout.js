@@ -89,7 +89,7 @@ function tipover($node, text, duration) {
     }
     $node.data('bs.tooltip').options.title = text;
     $node.tooltip('show');
-    window.setTimeout(function(){$node.tooltip('hide');}, duration);   
+    window.setTimeout(function(){$node.tooltip('hide');}, duration);
 }
 
 function commonConfirmPopover($node, action, message, placement) {
@@ -156,7 +156,37 @@ $(document).ready(function(){
         });
       buildNavTagTree($lnk, window.tagTree);
   }
+
+  $.get("/notif/unread-counts").done(function(data){
+    var notifCountLines = []
+    parseNotifCount('FORWARDED', data, notifCountLines)
+    parseNotifCount('COMMENTED', data, notifCountLines)
+    parseNotifCount('REPLIED', data, notifCountLines)
+    parseNotifCount('MENTIONED_TWEET', data, notifCountLines)
+    parseNotifCount('MENTIONED_COMMENT', data, notifCountLines)
+    parseNotifCount('FOLLOWED', data, notifCountLines)
+    var notifCountHtml = ''
+    for (var i in notifCountLines) {
+      notifCountHtml += '<a href="/pages/notif/unread" style="display: block">'+notifCountLines[i]+'</a>'
+    }
+    if (notifCountHtml.length > 0) {
+      $('.navbar .search').popover({
+        html: true,
+        placement: 'bottom',
+        trigger: 'manual',
+        selector: '#notif-count-popover',
+        content: notifCountHtml
+      }).popover('show')
+    }
+  })
 });
+
+function parseNotifCount(type, data, lines) {
+  var entry = data[type]
+  if (entry) {
+    lines.push(entry.count + '个' + entry.desc)
+  }
+}
 
 function escapeHtml(str) {
   return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');

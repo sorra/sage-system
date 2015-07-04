@@ -243,6 +243,7 @@ function createCommentList(tweetId, retach) {
      $.post('/post/comment', {
        content: $input.val(), sourceId: tweetId
      }).success(function(){
+       console.info('Post comment success, retach the list.')
        retach(createCommentList(tweetId, retach))
      })
      $input.val('')

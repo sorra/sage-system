@@ -5,7 +5,6 @@ import java.util.*;
 import org.hibernate.Query;
 import org.springframework.stereotype.Repository;
 import sage.domain.commons.Edge;
-import sage.domain.commons.IdCommons;
 import sage.entity.Tag;
 import sage.entity.Tweet;
 
@@ -92,7 +91,7 @@ public class TweetRepository extends BaseRepository<Tweet> {
 
   public Tweet getOrigin(Tweet tweet) {
     if (tweet.hasOrigin()) {
-      return get(tweet.getOriginId());
+      return nonNull(tweet.getOriginId());
     } else {
       return null;
     }

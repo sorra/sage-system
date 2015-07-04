@@ -14,7 +14,7 @@ public class NotifRepository extends BaseRepository<Notif> {
   }
 
   public Collection<Notif> byOwnerAndAfterId(long ownerId, long notifId) {
-    return session().createQuery("from Notif n where n.ownerId = :ownerId and id > notifId")
+    return session().createQuery("from Notif n where n.ownerId = :ownerId and id > :notifId")
         .setLong("ownerId", ownerId).setLong("notifId", notifId).list();
   }
   

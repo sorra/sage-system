@@ -27,7 +27,7 @@ public class ListService {
   private TagRepository tagRepo;
   
   public ResourceList getResourceList(Long id) {
-    return ResourceList.fromEntity(resourceListRepo.get(id));
+    return ResourceList.fromEntity(resourceListRepo.nonNull(id));
   }
   
   public Long addResourceList(ResourceList rc, Long userId) {
@@ -38,7 +38,7 @@ public class ListService {
   }
   
   public void updateResourceList(ResourceList rc, Long userId) {
-    ResourceListEntity entity = resourceListRepo.get(rc.getId());
+    ResourceListEntity entity = resourceListRepo.nonNull(rc.getId());
     Assert.isTrue(entity.getOwnerId().equals(userId));
 
     ResourceListEntity neo = escaped(rc).toEntity();
@@ -48,8 +48,8 @@ public class ListService {
   }
   
   public FollowList getFollowList(Long id) {
-    return FollowListLite.fromEntity(followListRepo.get(id))
-        .toFull($ -> new UserLabel(userRepo.get($)), $ -> new TagLabel(tagRepo.get($)));
+    return FollowListLite.fromEntity(followListRepo.nonNull(id))
+        .toFull($ -> new UserLabel(userRepo.nonNull($)), $ -> new TagLabel(tagRepo.nonNull($)));
   }
   
   public Long addFollowList(FollowListLite fcLite, Long ownerId) {
@@ -60,7 +60,7 @@ public class ListService {
   }
   
   public void updateFollowList(FollowListLite fcLite, Long userId) {
-    FollowListEntity entity = followListRepo.get(fcLite.getId());
+    FollowListEntity entity = followListRepo.nonNull(fcLite.getId());
     Assert.isTrue(entity.getOwnerId().equals(userId));
 
     FollowListEntity neo = fcLite.toEntity();

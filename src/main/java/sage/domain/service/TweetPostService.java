@@ -126,7 +126,7 @@ public class TweetPostService {
   }
 
   public void delete(long userId, long tweetId) {
-    Tweet tweet = tweetRepo.get(tweetId);
+    Tweet tweet = tweetRepo.nonNull(tweetId);
     if (!IdCommons.equal(userId, tweet.getAuthor().getId())) {
       throw new DomainRuntimeException("User[%d] is not the author of Tweet[%d]", userId, tweetId);
     }

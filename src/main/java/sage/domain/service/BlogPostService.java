@@ -45,7 +45,7 @@ public class BlogPostService {
 
   public Blog edit(long userId, long blogId, String title, String content, Collection<Long> tagIds) {
     checkLength(title, content);
-    Blog blog = blogRepo.get(blogId);
+    Blog blog = blogRepo.nonNull(blogId);
     if (!IdCommons.equal(blog.getAuthor().getId(), userId)) {
       throw new DomainRuntimeException("User[%d] is not the author of Blog[%d]", userId, blogId);
     }
@@ -61,7 +61,7 @@ public class BlogPostService {
   }
 
   public void delete(long userId, long blogId) {
-    Blog blog = blogRepo.get(blogId);
+    Blog blog = blogRepo.nonNull(blogId);
     if (!IdCommons.equal(blog.getAuthor().getId(), userId)) {
       throw new DomainRuntimeException("User[%d] is not the author of Blog[%d]", userId, blogId);
     }
