@@ -65,7 +65,7 @@ public class NotifService {
         source = "/tweet/"+tweetId+"?comment="+notif.getSourceId();
         break;
       case USER:
-        source = "/private/"+notif.getSenderId();
+        source = "";
         break;
       default:
         throw new IllegalArgumentException("Wrong sourceType: " + notif.getType().sourceType);

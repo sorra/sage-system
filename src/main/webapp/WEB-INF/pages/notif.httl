@@ -6,6 +6,14 @@
   <meta charset="UTF-8">
   <title>${category}通知</title>
   $!{includeCSS()}
+  <style>
+    .user-label{
+      display: inline-block;
+    }
+    .notif{
+      margin-top: 10px;
+    }
+  </style>
 </head>
 <body>
 $!{include("navbar.httl")}
@@ -14,7 +22,8 @@ $!{include("navbar.httl")}
     <div class="notif" data-id="${each.id}">
       $!{include("user-label.httl", ["u": each.sender])}
       ${each.desc}
-      <a href="${each.source}">${each.source}</a>
+      #if(each.source.length > 0)<a href="${each.source}">${each.source}</a>#end
+      <div>${each.time}</div>
     </div>
     #end
   </div>
