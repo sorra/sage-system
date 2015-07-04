@@ -69,17 +69,19 @@ public class Notif {
   }
 
   public enum Type {
-    FORWARDED(SourceType.TWEET, "转发了你的微博"),
-    COMMENTED(SourceType.COMMENT, "评论了你的微博"),
-    REPLIED(SourceType.COMMENT, "回复了你"),
-    MENTIONED_TWEET(SourceType.TWEET, "在微博中提到了你"),
-    MENTIONED_COMMENT(SourceType.COMMENT, "在评论中提到了你"),
-    FOLLOWED(SourceType.USER, "关注了你");
+    FORWARDED(SourceType.TWEET, "转发了你的微博", "转发"),
+    COMMENTED(SourceType.COMMENT, "评论了你的微博", "评论"),
+    REPLIED(SourceType.COMMENT, "回复了你", "回复"),
+    MENTIONED_TWEET(SourceType.TWEET, "在微博中提到了你", "微博@"),
+    MENTIONED_COMMENT(SourceType.COMMENT, "在评论中提到了你", "评论@"),
+    FOLLOWED(SourceType.USER, "关注了你", "新粉丝");
     public final SourceType sourceType;
     public final String desc;
-    Type(SourceType sourceType, String desc) {
+    public final String shortDesc;
+    Type(SourceType sourceType, String desc, String shortDesc) {
       this.sourceType = sourceType;
       this.desc = desc;
+      this.shortDesc = shortDesc;
     }
   }
 
