@@ -5,7 +5,6 @@ import java.util.Collection;
 import java.util.List;
 
 import sage.entity.Follow;
-import sage.entity.Tag;
 import sage.entity.User;
 
 public class UserCard {
@@ -22,7 +21,7 @@ public class UserCard {
   private boolean isFollower;
 
   private List<TagLabel> tags = new ArrayList<>();
-  private List<Long> followedTagIds = new ArrayList<>();
+  private UserCardFollow follow;
 
   UserCard() {}
   
@@ -42,9 +41,7 @@ public class UserCard {
 
     tags.addAll(_tags);
     if (followFromCurrentUser != null) {
-      for (Tag tag : followFromCurrentUser.getTags()) {
-        followedTagIds.add(tag.getId());
-      }
+      follow = new UserCardFollow(followFromCurrentUser);
     }
   }
 
@@ -88,7 +85,7 @@ public class UserCard {
     return tags;
   }
 
-  public List<Long> getFollowedTagIds() {
-    return followedTagIds;
+  public UserCardFollow getFollow() {
+    return follow;
   }
 }
