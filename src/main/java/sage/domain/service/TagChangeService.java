@@ -79,9 +79,11 @@ public class TagChangeService {
   private TagChangeRequest saveRequest(TagChangeRequest req) {
     reqRepo.save(req);
     User submitter = req.getSubmitter();
-    if (Authority.isTagAdminOrHigher(submitter.getAuthority())) {
+    if (Authority.isTagAdminOrHigher(submitter.getAuthority())) { // Admin权限者自动接受自己的修改
       acceptRequest(submitter.getId(), req.getId());
       reqRepo.update(req);
+    } else { //TODO 暂时以全站Admin身份自动接受所有修改
+      acceptRequest(1L, req.getId());
     }
     return req;
   }
