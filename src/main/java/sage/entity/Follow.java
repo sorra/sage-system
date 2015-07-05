@@ -97,11 +97,6 @@ public class Follow {
   }
 
   @Override
-  public String toString() {
-    return source + "->" + target + tags;
-  }
-
-  @Override
   public int hashCode() {
     return IdCommons.hashCode(getId());
   }
@@ -117,5 +112,17 @@ public class Follow {
     
     Follow other = (Follow) obj;
     return IdCommons.equal(getId(), other.getId());
+  }
+
+  @Override
+  public String toString() {
+    return source + "->" + target + tags;
+  }
+
+  public static Follow copy(Follow former) {
+    Follow neo = new Follow(former.getSource(), former.getTarget(), former.getReason(), former.getTags(),
+        former.isIncludeNew(), former.isIncludeAll(), former.getUserTagOffset());
+    neo.setId(former.getId());
+    return neo;
   }
 }

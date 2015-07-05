@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
-import sage.domain.commons.Tx;
 import sage.domain.service.*;
 import sage.transfer.*;
 import sage.util.Colls;
@@ -60,11 +59,9 @@ public class GroupPageController {
   @RequestMapping("/group/{id}")
   String group(@PathVariable Long id, ModelMap model) {
     Auth.checkCuid();
-    Tx.apply(() -> {
-      Collection<GroupTopicPreview> topics = Colls.map(groupService.topics(id), GroupTopicPreview::new);
-      model.put("group", groupService.getGroupPreview(id));
-      model.put("topics", topics);
-    });
+    Collection<GroupTopicPreview> topics = Colls.map(groupService.topics(id), GroupTopicPreview::new);
+    model.put("group", groupService.getGroupPreview(id));
+    model.put("topics", topics);
     return "group";
   }
 
@@ -77,12 +74,10 @@ public class GroupPageController {
   @RequestMapping("/topic/{id}")
   String topic(@PathVariable Long id, ModelMap model) {
     Auth.checkCuid();
-    Tx.apply(() -> {
-      BlogView bv = new BlogView(groupService.getTopic(id).getBlog());
-      UserCard author = userService.getUserCard(Auth.cuid(), bv.getAuthorId());
-      model.put("topic", bv);
-      model.put("author", author);
-    });
+    BlogView bv = new BlogView(groupService.getTopic(id).getBlog());
+    UserCard author = userService.getUserCard(Auth.cuid(), bv.getAuthorId());
+    model.put("topic", bv);
+    model.put("author", author);
     return "topic";
   }
 

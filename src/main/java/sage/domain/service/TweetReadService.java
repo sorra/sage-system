@@ -1,16 +1,18 @@
 package sage.domain.service;
 
 import java.util.*;
-import java.util.stream.Collectors;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.support.TransactionTemplate;
 import sage.domain.commons.Comparators;
 import sage.domain.commons.Edge;
-import sage.domain.commons.Tx;
 import sage.domain.repository.*;
 import sage.entity.*;
 import sage.transfer.FollowListLite;
@@ -20,11 +22,12 @@ import sage.util.Colls;
 import static java.util.stream.Collectors.toSet;
 
 @Service
-@Transactional(readOnly = true)
+@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
 public class TweetReadService {
   private static final int FETCH_SIZE = 20;
 
   private static final Logger log = LoggerFactory.getLogger(TweetReadService.class);
+
   @Autowired
   private TransferService transfers;
   @Autowired
@@ -37,6 +40,10 @@ public class TweetReadService {
   private CommentRepository commentRepo;
   @Autowired
   private UserTagRepository userTagRepo;
+  @Autowired
+  private TransactionTemplate transactionTemplate;
+
+  private ExecutorService asyncTaskPool = Executors.newFixedThreadPool(4);
 
   public List<Tweet> byFollowings(long userId, Edge edge) {
     List<Tweet> tweets = Colls.copy(tweetRepo.byAuthor(userId, edge));
@@ -68,25 +75,34 @@ public class TweetReadService {
   }
 
   private void updateOffsetIfNeeded(Follow follow) {
-    long newOffset = userTagRepo.latestIdByUser(follow.getTarget().getId());
-    Long oldOffset = follow.getUserTagOffset();
-    if (oldOffset == null || oldOffset < newOffset) {
-      Set<Tag> coveredTags = TagRepository.getQueryTags(follow.getTags());
-      Set<Tag> newTags = tagRepo.byIds(Colls.map(
-          userTagRepo.byUserAndAfterId(follow.getTarget().getId(), oldOffset), UserTag::getTagId));
+    try {
+      long newOffset = userTagRepo.latestIdByUser(follow.getTarget().getId());
+      Long oldOffset = follow.getUserTagOffset();
+      if (oldOffset == null || oldOffset < newOffset) {
+        Set<Tag> coveredTags = TagRepository.getQueryTags(follow.getTags());
+        Set<Tag> newTags = tagRepo.byIds(Colls.map(
+            userTagRepo.byUserAndAfterId(follow.getTarget().getId(), oldOffset), UserTag::getTagId));
 
-      Set<Tag> pureNewTags = newTags.stream().filter(t -> !coveredTags.contains(t)).collect(toSet());
-      if (pureNewTags.size() > 0) {
-        try {
-          Tx.applyNew(() -> {
-            follow.getTags().addAll(pureNewTags);
-            follow.setUserTagOffset(newOffset);
-            followRepo.update(follow);
+        Set<Tag> pureNewTags = newTags.stream().filter(t -> !coveredTags.contains(t)).collect(toSet());
+        if (pureNewTags.size() > 0) {
+          follow.getTags().addAll(pureNewTags);
+          follow.setUserTagOffset(newOffset);
+          Follow entityCopy = Follow.copy(follow);
+          asyncTaskPool.submit(() -> {
+            try {
+//              Tx.apply(() -> followRepo.update(follow));
+              transactionTemplate.execute(status -> {
+                followRepo.update(entityCopy);
+                return null;
+              });
+            } catch (Exception e) {
+              log.error("updateOffsetIfNeeded tx fails!", e);
+            }
           });
-        } catch (Exception e) {
-          log.error("updateOffsetIfNeeded fails!", e);
         }
       }
+    } catch (Exception e) {
+      log.error("updateOffsetIfNeeded encounters error, but we skip.", e);
     }
   }
 

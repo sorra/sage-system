@@ -5,6 +5,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import sage.domain.commons.Edge;
 import sage.domain.repository.BlogRepository;
@@ -14,7 +15,7 @@ import sage.transfer.BlogView;
 import sage.util.Colls;
 
 @Service
-@Transactional(readOnly = true)
+@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
 public class BlogReadService {
   @Autowired
   private BlogRepository blogRepo;
