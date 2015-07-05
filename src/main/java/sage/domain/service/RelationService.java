@@ -14,6 +14,7 @@ import sage.domain.commons.IdCommons;
 import sage.domain.repository.FollowRepository;
 import sage.domain.repository.TagRepository;
 import sage.domain.repository.UserRepository;
+import sage.domain.repository.UserTagRepository;
 import sage.entity.Follow;
 import sage.entity.Tag;
 import sage.entity.User;
@@ -25,15 +26,17 @@ import sage.util.Colls;
 public class RelationService {
   private Logger logger = LoggerFactory.getLogger(getClass());
   @Autowired
+  private UserService userService;
+  @Autowired
+  private NotifService notifService;
+  @Autowired
   private UserRepository userRepo;
   @Autowired
   private FollowRepository followRepo;
   @Autowired
   private TagRepository tagRepo;
   @Autowired
-  private UserService userService;
-  @Autowired
-  private NotifService notifService;
+  private UserTagRepository userTagRepo;
 
   /**
    * Act as 'follow' or 'editFollow'
@@ -43,9 +46,10 @@ public class RelationService {
    * @param tagIds The tags to follow
    * @param includeNew If auto-include new tags
    * @param includeAll If include all tags, ignoring selected tags
+   * @param userTagOffset The offset for includeNew. Fetch from DB if null
    */
   public void follow(long userId, long targetId, String reason, Collection<Long> tagIds,
-                     boolean includeNew, boolean includeAll) {
+                     boolean includeNew, boolean includeAll, Long userTagOffset) {
     if (IdCommons.equal(userId, targetId)) {
       logger.warn("user {} should not follow himself!", userId);
       return;
@@ -53,8 +57,13 @@ public class RelationService {
     Follow follow = followRepo.find(userId, targetId);
     Set<Tag> followedTags = tagRepo.byIds(tagIds);
 
+    if (userTagOffset == null) {
+      userTagOffset = userTagRepo.latestIdByUser(targetId);
+    }
+
     if (follow == null) {
-      follow = new Follow(userRepo.load(userId), userRepo.load(targetId), reason, followedTags, includeNew, includeAll);
+      follow = new Follow(userRepo.load(userId), userRepo.load(targetId),
+          reason, followedTags, includeNew, includeAll, userTagOffset);
       followRepo.save(follow);
       notifService.followed(targetId, userId);
     } else {
@@ -62,12 +71,13 @@ public class RelationService {
       follow.setReason(reason);
       follow.setIncludeNew(includeNew);
       follow.setIncludeAll(includeAll);
+      follow.setUserTagOffset(userTagOffset);
       followRepo.update(follow);
     }
   }
 
   public void follow(long userId, long targetId, Collection<Long> tagIds) {
-    follow(userId, targetId, null, tagIds, true, false);
+    follow(userId, targetId, null, tagIds, true, false, 0L);
   }
 
   public void unfollow(long userId, long targetId) {
@@ -100,8 +110,7 @@ public class RelationService {
     final List<User> followerUsers = Colls.map(followers(userId), Follow::getSource);
 
     followingUsers.retainAll(followerUsers);
-    final List<User> friends = followingUsers;
 
-    return UserLabel.listOf(friends);
+    return UserLabel.listOf(followingUsers);
   }
 }

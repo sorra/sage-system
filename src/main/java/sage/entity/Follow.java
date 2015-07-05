@@ -17,10 +17,12 @@ public class Follow {
   private boolean includeNew;
   /** If include all tags, ignoring selected tags */
   private boolean includeAll;
+  /** Used by includeNew */
+  private Long userTagOffset;
 
   Follow() {}
 
-  public Follow(User source, User target, String reason, Set<Tag> tags, boolean includeNew, boolean includeAll) {
+  public Follow(User source, User target, String reason, Set<Tag> tags, boolean includeNew, boolean includeAll, Long userTagOffset) {
     if (IdCommons.equal(source.getId(), target.getId())) {
       throw new IllegalArgumentException("source should not equal to target!");
     }
@@ -30,6 +32,7 @@ public class Follow {
     this.tags.addAll(tags);
     this.includeNew = includeNew;
     this.includeAll = includeAll;
+    this.userTagOffset = userTagOffset;
   }
 
   @Id
@@ -84,6 +87,13 @@ public class Follow {
   }
   public void setIncludeAll(boolean includeAll) {
     this.includeAll = includeAll;
+  }
+
+  public Long getUserTagOffset() {
+    return userTagOffset;
+  }
+  public void setUserTagOffset(Long userTagOffset) {
+    this.userTagOffset = userTagOffset;
   }
 
   @Override

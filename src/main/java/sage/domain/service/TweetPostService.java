@@ -14,21 +14,21 @@ import sage.domain.repository.TagRepository;
 import sage.domain.repository.TweetRepository;
 import sage.domain.repository.UserRepository;
 import sage.domain.search.SearchBase;
-import sage.entity.Blog;
-import sage.entity.Comment;
-import sage.entity.Tweet;
-import sage.entity.User;
+import sage.entity.*;
 import sage.transfer.MidForwards;
 import sage.transfer.TweetView;
+import sage.util.Colls;
 
 @Service
 @Transactional
 public class TweetPostService {
-  private static final int TWEET__MAX_LEN = 2000, COMMENT_MAX_LEN = 200;
+  private static final int TWEET_MAX_LEN = 2000, COMMENT_MAX_LEN = 200;
   private static final BadArgumentException BAD_INPUT_LENGTH = new BadArgumentException("输入长度不正确(1~200字)");
 
   @Autowired
   private SearchBase searchBase;
+  @Autowired
+  private UserService userService;
   @Autowired
   private TransferService transfers;
   @Autowired
@@ -43,7 +43,7 @@ public class TweetPostService {
   private CommentRepository commentRepo;
 
   public Tweet post(long userId, String content, Collection<Long> tagIds) {
-    if (content.isEmpty() || content.length() > TWEET__MAX_LEN) {
+    if (content.isEmpty() || content.length() > TWEET_MAX_LEN) {
       throw BAD_INPUT_LENGTH;
     }
     ParsedContent parsedContent = processContent(content);
@@ -52,6 +52,8 @@ public class TweetPostService {
     Tweet tweet = new Tweet(content, userRepo.load(userId), new Date(),
         tagRepo.byIds(tagIds));
     tweetRepo.save(tweet);
+
+    userService.updateUserTag(userId, tagIds);
     
     parsedContent.mentionedIds.forEach(mentioned -> notifService.mentionedByTweet(mentioned, userId, tweet.getId()));
     
@@ -60,7 +62,7 @@ public class TweetPostService {
   }
 
   public Tweet forward(long userId, String content, long originId, Collection<Long> removedForwardIds) {
-    if (content.length() > TWEET__MAX_LEN) {
+    if (content.length() > TWEET_MAX_LEN) {
       throw BAD_INPUT_LENGTH;
     }
     ParsedContent parsedContent = processContent(content);
@@ -72,13 +74,14 @@ public class TweetPostService {
     Tweet tweet;
     if (initialOrigin == directOrigin) {
       tweet = new Tweet(content, userRepo.load(userId), new Date(), initialOrigin);
-    }
-    else {
+    } else {
       MidForwards midForwards = new MidForwards(directOrigin);
       removedForwardIds.forEach(midForwards::removeById);
       tweet = new Tweet(content, userRepo.load(userId), new Date(), initialOrigin, midForwards);
     }
     tweetRepo.save(tweet);
+
+    userService.updateUserTag(userId, Colls.map(tweet.getTags(), Tag::getId));
     
     origins.forEach(origin -> notifService.forwarded(origin.getAuthor().getId(), userId, tweet.getId()));
     parsedContent.mentionedIds.forEach(mentioned -> notifService.mentionedByTweet(mentioned, userId, tweet.getId()));
@@ -184,8 +187,7 @@ public class TweetPostService {
         sb.append(content.substring(startIndex, indexOfAt)).append('@').append(name)
             .append('#').append(user.getId());
         return replaceMention(content, indexOfSpace, sb, mentionedIds);
-      }
-      else {
+      } else {
         if (startIndex == 0) {
           return content;
         }

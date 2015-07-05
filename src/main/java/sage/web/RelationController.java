@@ -25,13 +25,14 @@ public class RelationController {
       @RequestParam(required = false) String reason,
       @RequestParam(value = "tagIds[]", required = false) Collection<Long> tagIds,
       @RequestParam(required = false) Boolean includeNew,
-      @RequestParam(required = false) Boolean includeAll) {
+      @RequestParam(required = false) Boolean includeAll,
+      @RequestParam(required = false) Long userTagOffset) {
     Long cuid = Auth.checkCuid();
 
     if (tagIds == null) {
       tagIds = Collections.emptyList();
     }
-    relationService.follow(cuid, targetId, reason, tagIds, boolValue(includeNew), boolValue(includeAll));
+    relationService.follow(cuid, targetId, reason, tagIds, boolValue(includeNew), boolValue(includeAll), userTagOffset);
     // Send "followed" notification
     notifService.followed(targetId, cuid);
   }

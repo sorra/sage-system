@@ -1,31 +1,30 @@
 package sage.domain.service;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import sage.domain.commons.Comparators;
 import sage.domain.commons.Edge;
-import sage.domain.repository.CommentRepository;
-import sage.domain.repository.FollowRepository;
-import sage.domain.repository.TagRepository;
-import sage.domain.repository.TweetRepository;
-import sage.entity.Comment;
-import sage.entity.Follow;
-import sage.entity.Tweet;
+import sage.domain.commons.Tx;
+import sage.domain.repository.*;
+import sage.entity.*;
 import sage.transfer.FollowListLite;
 import sage.transfer.TweetView;
 import sage.util.Colls;
+
+import static java.util.stream.Collectors.toSet;
 
 @Service
 @Transactional(readOnly = true)
 public class TweetReadService {
   private static final int FETCH_SIZE = 20;
 
+  private static final Logger log = LoggerFactory.getLogger(TweetReadService.class);
   @Autowired
   private TransferService transfers;
   @Autowired
@@ -36,6 +35,8 @@ public class TweetReadService {
   private FollowRepository followRepo;
   @Autowired
   private CommentRepository commentRepo;
+  @Autowired
+  private UserTagRepository userTagRepo;
 
   public List<Tweet> byFollowings(long userId, Edge edge) {
     List<Tweet> tweets = Colls.copy(tweetRepo.byAuthor(userId, edge));
@@ -58,11 +59,35 @@ public class TweetReadService {
     if (follow.isIncludeAll()) {
       result = tweetRepo.byAuthor(authorId, edge);
     } else if (follow.isIncludeNew()) {
+      updateOffsetIfNeeded(follow);
       result = tweetRepo.byAuthorAndTags(authorId, follow.getTags(), edge);
     } else {
       result = tweetRepo.byAuthorAndTags(authorId, follow.getTags(), edge);
     }
     return result;
+  }
+
+  private void updateOffsetIfNeeded(Follow follow) {
+    long newOffset = userTagRepo.latestIdByUser(follow.getTarget().getId());
+    Long oldOffset = follow.getUserTagOffset();
+    if (oldOffset == null || oldOffset < newOffset) {
+      Set<Tag> coveredTags = TagRepository.getQueryTags(follow.getTags());
+      Set<Tag> newTags = tagRepo.byIds(Colls.map(
+          userTagRepo.byUserAndAfterId(follow.getTarget().getId(), oldOffset), UserTag::getTagId));
+
+      Set<Tag> pureNewTags = newTags.stream().filter(t -> !coveredTags.contains(t)).collect(toSet());
+      if (pureNewTags.size() > 0) {
+        try {
+          Tx.applyNew(() -> {
+            follow.getTags().addAll(pureNewTags);
+            follow.setUserTagOffset(newOffset);
+            followRepo.update(follow);
+          });
+        } catch (Exception e) {
+          log.error("updateOffsetIfNeeded fails!", e);
+        }
+      }
+    }
   }
 
   public List<Tweet> byFollowListLite(FollowListLite list, Edge edge) {

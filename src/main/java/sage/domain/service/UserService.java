@@ -11,15 +11,14 @@ import sage.domain.commons.DomainRuntimeException;
 import sage.domain.commons.IdCommons;
 import sage.domain.concept.Authority;
 import sage.domain.repository.*;
-import sage.entity.Blog;
-import sage.entity.Tag;
-import sage.entity.Tweet;
-import sage.entity.User;
+import sage.entity.*;
 import sage.transfer.TagLabel;
 import sage.transfer.UserCard;
 import sage.transfer.UserLabel;
 import sage.transfer.UserSelf;
 import sage.util.Colls;
+
+import static java.util.stream.Collectors.toSet;
 
 @Service
 @Transactional
@@ -34,6 +33,8 @@ public class UserService {
   private TweetRepository tweetRepo;
   @Autowired
   private BlogRepository blogRepo;
+  @Autowired
+  private UserTagRepository userTagRepo;
 
   @Transactional(readOnly = true)
   public UserSelf getSelf(long userId) {
@@ -118,7 +119,7 @@ public class UserService {
     }
     user.setPassword(encryptPassword(user.getPassword()));
     userRepo.save(user);
-    user.setName("u"+user.getId());
+    user.setName("u" + user.getId());
     userRepo.update(user);
     return user.getId();
   }
@@ -133,6 +134,16 @@ public class UserService {
 
   private String encryptPassword(String plainPassword) {
     return new StrongPasswordEncryptor().encryptPassword(plainPassword);
+  }
+
+  public void updateUserTag(long userId, Collection<Long> tagIds) {
+    Set<Long> newTagIds = new HashSet<>(tagIds);
+    Set<Long> usedTagIds = userTagRepo.byUser(userId)
+        .stream().map(UserTag::getTagId).collect(toSet());
+    newTagIds.removeAll(usedTagIds);
+    for (Long tagId : newTagIds) {
+      userTagRepo.save(new UserTag(userId, tagId));
+    }
   }
 
   @Transactional(readOnly = true)
