@@ -90,11 +90,7 @@ public class TweetRepository extends BaseRepository<Tweet> {
   }
 
   public Tweet getOrigin(Tweet tweet) {
-    if (tweet.hasOrigin()) {
-      return nonNull(tweet.getOriginId());
-    } else {
-      return null;
-    }
+    return tweet.hasOrigin() ? get(tweet.getOriginId()) : null;
   }
 
   public long forwardCount(long originId) {
