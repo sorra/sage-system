@@ -10,7 +10,7 @@
 <body>
 $!{include("navbar.httl")}
   <div id="container" class="container">
-    <a href="/pages/tag/${tag.id}/do-change">我要修改</a>
+    <a class="do-change" href="/pages/tag/${tag.id}/do-change">我要修改</a>
     <h3>${tag.name} - 的修改申请</h3>
     #for(each : reqs)
       <div class="tag-change-request" data-id="${each.id}">
