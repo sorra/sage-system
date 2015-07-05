@@ -3,7 +3,6 @@ package sage.entity;
 import java.util.*;
 import javax.persistence.*;
 
-import org.apache.commons.lang3.builder.ToStringBuilder;
 import sage.domain.commons.IdCommons;
 
 /**
@@ -139,11 +138,6 @@ public class Tag {
   }
 
   @Override
-  public String toString() {
-    return ToStringBuilder.reflectionToString(this);
-  }
-
-  @Override
   public int hashCode() {
     return IdCommons.hashCode(getId());
   }
@@ -159,5 +153,11 @@ public class Tag {
     
     Tag other = (Tag) obj;
     return IdCommons.equal(getId(), other.getId());
+  }
+
+  @Override
+  public String toString() {
+    return String.format("Tag[id=%s, name=%s, core=%s, intro=%s, parent=%s]",
+        id, name, core, intro, parent.getId());
   }
 }
