@@ -61,8 +61,7 @@ public class UserService {
         tweetRepo.countByAuthor(userId),
         followRepo.find(cuid, userId),
         followRepo.find(userId, cuid),
-        // TBD
-        topTags(userId));
+        userTags(userId));
   }
 
   @Transactional(readOnly = true)
@@ -189,7 +188,7 @@ public class UserService {
     return list;
   }
 
-  private List<TagLabel> topTags(long userId) {
+  private List<TagLabel> userTags(long userId) {
     List<TagCounter> topping = new ArrayList<>();
     for (Tweet tweet : tweetRepo.byAuthor(userId)) {
       countTags(tweet.getTags(), topping);
@@ -198,13 +197,17 @@ public class UserService {
       countTags(blog.getTags(), topping);
     }
     Collections.sort(topping);
-    topping = topping.size() > 5 ? topping.subList(0, 5) : topping;
 
     List<TagLabel> topTags = new ArrayList<>();
     for (TagCounter topOne : topping) {
       topTags.add(new TagLabel(topOne.tag));
     }
     return topTags;
+  }
+
+  private List<TagLabel> topTags(long userId) {
+    List<TagLabel> tags = userTags(userId);
+    return tags.size() > 5 ? tags.subList(0, 5) : tags;
   }
 
   private void countTags(Collection<Tag> tags, List<TagCounter> topping) {
