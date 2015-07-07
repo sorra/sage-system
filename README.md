@@ -10,7 +10,7 @@ JAVA_HOME
 M2_HOME
 TOMCAT_HOME
 PATH加上M2_HOME/bin:$JAVA_HOME/bin
-  ENV_SAGE_FILES_HOME (可选, 默认值为用户目录)
+  SAGE_FILES_HOME (可选, 默认值为用户目录)
 
 数据库:
 建一个数据库, 名字sage, 字符集utf8_general_ci
