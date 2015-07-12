@@ -183,16 +183,18 @@ function setupFollowDialog(){
         .click(function(){
           $(this).toggleClass('btn-success');
         });
-      console.info('followed tag ids: '+uc.follow.tagIds);
-      if ($.inArray(item.id, uc.follow.tagIds) >= 0) {
-        $tagBtn.addClass('btn-success');
+      if (uc.follow) {
+        console.info('followed tag ids: '+uc.follow.tagIds);
+        if ($.inArray(item.id, uc.follow.tagIds) >= 0) {
+          $tagBtn.addClass('btn-success');
+        }
       }
     })
     var $inew = $('<div><input name="includeNew" type="checkbox"/>自动订阅新标签</div>')
-    if (uc.follow.includeNew) $inew.find('input').prop('checked', true)
+    if (uc.follow && uc.follow.includeNew) $inew.find('input').prop('checked', true)
     $inew.appendTo($body)
     var $iall = $('<div><input name="includeAll" type="checkbox"/>全订阅，不过滤</div>')
-    if (uc.follow.includeAll) $iall.find('input').prop('checked', true)
+    if (uc.follow && uc.follow.includeAll) $iall.find('input').prop('checked', true)
     $iall.appendTo($body)
   })
 }
