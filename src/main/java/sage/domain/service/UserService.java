@@ -147,7 +147,9 @@ public class UserService {
 
   @Transactional(readOnly = true)
   public Collection<UserCard> people(long selfId) {
-    return Colls.map(userRepo.all(), user -> getUserCard(selfId, user.getId()));
+    Collection<User> all = userRepo.all();
+    all.removeIf(u -> u.getId() == selfId);
+    return Colls.map(all, user -> getUserCard(selfId, user.getId()));
   }
 
   @Transactional(readOnly = true)
