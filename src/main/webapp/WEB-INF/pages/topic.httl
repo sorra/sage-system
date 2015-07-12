@@ -18,9 +18,9 @@
     <div class="topic" topic-id="${topic.id}">
       <h5>${topic.title}</h5>
       <div>${topic.content}</div>
-      <a href="/private/${topic.authorId}">${topic.authorName}</a>
-      <span>${topic.createdTime.format("yyyy-MM-dd HH:mm:ss")}</span>
-      <span>${topic.modifiedTime.format("yyyy-MM-dd HH:mm:ss")}</span>
+      $!{include("user-label.httl", ["u": topic.author])}
+      <span>${topic.createdTime.format("yyyy-MM-dd HH:mm")}</span>
+      <span>${topic.modifiedTime.format("yyyy-MM-dd HH:mm")}</span>
     </div>
   </div>
 </body>

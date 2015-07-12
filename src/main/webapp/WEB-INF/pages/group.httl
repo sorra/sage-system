@@ -27,11 +27,11 @@ $!{include("navbar.httl")}
     </div>
     <a class="btn btn-primary btn-sm" href="/write-blog?groupId=${group.id}">发表文章!</a>
     #for(topic : topics)
-      <div class="topic">˜
+      <div class="topic">
         <a href="/topic/${topic.id}">${topic.blog.title}</a>
         <p>${topic.blog.preview}</p>
-        <a>${topic.blog.author.name}</a>
-        <span>${topic.blog.createdTime.format("yyyy-MM-dd HH:mm:ss")}</span>
+        $!{include("user-label.httl", ["u": topic.blog.author])}
+        <span>${topic.blog.createdTime.format("yyyy-MM-dd HH:mm")}</span>
       </div>
     #end
   </div>

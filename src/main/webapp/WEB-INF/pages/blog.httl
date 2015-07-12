@@ -25,8 +25,8 @@ $!{include("navbar.httl")}
 		#if(uid.equals(blog.authorId))
 		<a href="/blog/$!{blog.id}/edit">编辑</a>
 		#end
-		<span>创建于 ${blog.createdTime}</span>
-		#if(blog.modifiedTime)<span>修改于 ${blog.modifiedTime}</span>#end
+		<span>创建于 ${blog.createdTime.format("yyyy-MM-dd HH:mm")}</span>
+		#if(blog.modifiedTime)<span>修改于 ${blog.modifiedTime.format("yyyy-MM-dd HH:mm")}</span>#end
 		<div class="tags">
 		#for(each : blog.tags)
 		  $!{include("tag-label.httl")}
