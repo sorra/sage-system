@@ -23,7 +23,7 @@ $!{include("navbar.httl")}
       $!{include("user-label.httl", ["u": each.sender])}
       ${each.desc}
       #if(each.source.length > 0)<a href="${each.source}">${each.source}</a>#end
-      <div>${each.time}</div>
+      <div>${humanTime(each.time)}</div>
     </div>
     #end
   </div>

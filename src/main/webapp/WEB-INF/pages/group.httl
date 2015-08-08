@@ -31,7 +31,7 @@ $!{include("navbar.httl")}
         <a href="/topic/${topic.id}">${topic.blog.title}</a>
         <p>${topic.blog.preview}</p>
         $!{include("user-label.httl", ["u": topic.blog.author])}
-        <span>${topic.blog.createdTime.format("yyyy-MM-dd HH:mm")}</span>
+        <span>${humanTime(topic.blog.createdTime)}</span>
       </div>
     #end
   </div>

@@ -19,8 +19,8 @@
       <h5>${topic.title}</h5>
       <div>${topic.content}</div>
       $!{include("user-label.httl", ["u": topic.author])}
-      <span>${topic.createdTime.format("yyyy-MM-dd HH:mm")}</span>
-      <span>${topic.modifiedTime.format("yyyy-MM-dd HH:mm")}</span>
+      <span>${humanTime(topic.createdTime)}</span>
+      <span>${humanTime(topic.modifiedTime)}</span>
     </div>
   </div>
 </body>
