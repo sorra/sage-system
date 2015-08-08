@@ -14,16 +14,10 @@ public class MessageController {
   @Autowired
   private MessageService ms;
 
-  @RequestMapping(value = "/", method = RequestMethod.GET)
-  public Collection<Message> messages() {
-    Long uid = Auth.checkCuid();
-    return ms.all(uid);
-  }
-
-  @RequestMapping(value = "/with/{withUser}", method = RequestMethod.GET)
-  public Collection<Message> messagesWith(@PathVariable Long withUser) {
-    Long uid = Auth.checkCuid();
-    return ms.withSomeone(uid, withUser);
+  @RequestMapping
+  public Collection<Message> messages(@RequestParam Long withUser) {
+    Long cuid = Auth.checkCuid();
+    return withUser != null ? ms.withSomeone(cuid, withUser) : ms.all(cuid);
   }
 
   @RequestMapping(value = "/send", method = RequestMethod.POST)

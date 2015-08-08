@@ -35,4 +35,10 @@ public abstract class Colls {
     Collections.sort(list, comparator);
     return list;
   }
+
+  public static <K, V> Map<K, V> mapOfValues(Collection<V> values, Function<V, K> keyExtractor) {
+    Map<K, V> map = new HashMap<>();
+    values.forEach(v -> map.put(keyExtractor.apply(v), v));
+    return map;
+  }
 }

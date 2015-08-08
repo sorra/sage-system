@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+#set(components = ["bootstrap", "layout", "user"])
+#set(UserSelf userSelf)
+#set(MessageList messageList)
+#set(Map<Long, UserLabel> users)
+<head>
+  <meta charset="UTF-8">
+  <title></title>
+  $!{includeCSS()}
+  <style>
+    .msg{
+      width: 200px;
+      margin-top: 10px;
+    }
+    .from-other{
+      margin-right: 150px;
+    }
+    .from-self{
+      margin-left: 150px;
+    }
+
+    .msg-body{
+      padding: 5px;
+      border-radius: 5px;
+    }
+    .from-other .msg-body{
+      background: lightblue;
+    }
+    .from-self .msg-body{
+      background: #A7E8A7;
+    }
+
+    .msg-from{
+      padding: 2px;
+    }
+    .from-other .msg-from{
+      float: left;
+      margin-right: 5px;
+    }
+    .from-self .msg-from{
+      float: right;
+      margin-left: 5px;
+    }
+    .msg-time{
+      color: gray;
+    }
+  </style>
+</head>
+<body>
+$!{include("navbar.httl")}
+<div id="container" class="container">
+  <div class="conversation">
+  #for(Message msg : messageList.msgs)
+    #if(msg.fromUser == userSelf.id)
+      #set(msgClass = 'from-self')
+    #else
+      #set(msgClass = 'from-other')
+    #end
+    <div class="msg ${msgClass}">
+      <div class="msg-from">
+        $!{include("user-label.httl", ["u": users[msg.fromUser]])}
+      </div>
+      <div class="msg-body">
+        <span class="msg-time">${humanTime(msg.time)}</span>
+        <div class="msg-content">${msg.content}</div>
+      </div>
+    </div>
+  #end
+  </div>
+</div>
+$!{includeProto}
+$!{includeJS()}
+</body>
+</html>

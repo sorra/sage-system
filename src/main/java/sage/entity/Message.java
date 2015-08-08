@@ -57,4 +57,9 @@ public class Message {
   public void setTime(Date time) {
     this.time = time;
   }
+
+  public String toString() {
+    return String.format("Message[id=%s, fromUser=%s, toUser=%s, time=%s, contentLength=%s]",
+        id, fromUser, toUser, time, content.length());
+  }
 }

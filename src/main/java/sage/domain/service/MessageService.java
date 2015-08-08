@@ -2,6 +2,7 @@ package sage.domain.service;
 
 import java.util.Collection;
 import java.util.Comparator;
+import java.util.List;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,11 +21,11 @@ public class MessageService {
     messageRepo.save(new Message(content, userId, toUser));
   }
 
-  public Collection<Message> all(Long userId) {
-    return Colls.copySort(byTime, messageRepo.byTo(userId));
+  public List<Message> all(Long userId) {
+    return Colls.copy(messageRepo.byTo(userId), messageRepo.byFrom(userId));
   }
 
-  public Collection<Message> withSomeone(Long userId, Long someone) {
+  public List<Message> withSomeone(Long userId, Long someone) {
     return Colls.copySort(byTime, messageRepo.byFromTo(userId, someone), messageRepo.byFromTo(someone, userId));
   }
 
