@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import sage.domain.repository.TagRepository;
 import sage.entity.Tag;
 import sage.transfer.TagCard;
+import sage.transfer.TagLabel;
 import sage.transfer.TagNode;
 import sage.web.context.Json;
 
@@ -19,6 +20,10 @@ public class TagService {
 
   public TagCard getTagCard(long tagId) {
     return new TagCard(tagRepo.nonNull(tagId));
+  }
+
+  public TagLabel getTagLabel(long tagId) {
+    return new TagLabel(tagRepo.nonNull(tagId));
   }
 
   public Tag getTag(long tagId) {

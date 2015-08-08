@@ -32,8 +32,8 @@ public class RelationController {
     if (tagIds == null) {
       tagIds = Collections.emptyList();
     }
-    relationService.follow(cuid, targetId, reason, tagIds, boolValue(includeNew), boolValue(includeAll), userTagOffset);
-    // Send "followed" notification
+    relationService.follow(cuid, targetId, reason, tagIds,
+        boolValue(includeNew), boolValue(includeAll), userTagOffset);
     notifService.followed(targetId, cuid);
   }
 
