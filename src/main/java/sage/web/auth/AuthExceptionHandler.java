@@ -10,10 +10,10 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 @Order(0)
 public class AuthExceptionHandler {
   @ExceptionHandler(RequireLoginException.class)
-  public String redirectLogin(HttpServletRequest request) {
+  public String redirectToLogin(HttpServletRequest request) {
     String uri = request.getRequestURI();
     if (request.getQueryString() != null) {
-      uri += request.getQueryString();
+      uri += ("?" + request.getQueryString());
     }
     return "redirect:/login?" + Auth.getRedirectGoto(uri);
   }
