@@ -66,23 +66,24 @@ public class MessagePageController {
 
     flatMessagesSupplier.get().stream()
         .collect(groupingBy(msg -> {
+          // 以对方id作grouping
           if (cuid.equals(msg.getFromUser())) {
-            return msg.getFromUser();
-          } else if (cuid.equals(msg.getToUser())) {
             return msg.getToUser();
+          } else if (cuid.equals(msg.getToUser())) {
+            return msg.getFromUser();
           } else {
             log.error("Message from or to is neither cuid! msg = {}", msg);
             return 0L;
           }
         }))
-        .forEach((userId, list) -> {
-          if (userId == 0L) {
+        .forEach((withUserId, list) -> {
+          if (withUserId == 0L || list.isEmpty()) {
             return;
           }
           list.sort(byTime);
-          UserLabel userLabel = userService.getUserLabel(userId);
-          messageLists.add(new MessageList(list, self, userLabel));
-          users.put(userId, userLabel);
+          UserLabel withUserLabel = userService.getUserLabel(withUserId);
+          messageLists.add(new MessageList(list, self, withUserLabel));
+          users.put(withUserId, withUserLabel);
         });
     model.put("messageLists", messageLists);
     model.put("users", users);
