@@ -93,19 +93,33 @@ $!{include("navbar.httl")}
 $!{includeProto}
 $!{includeJS()}
 <script>
+  window.msgIds = {}
+  $('.msg').each(function(){
+    var id = parseInt($(this).data('id'))
+    if (id) window.msgIds[id] = true
+  })
+
   $('#input-box *[type=submit]').click(function(){
+    var $this = $(this)
+    var value = $('#input-box .input').val()
+    if (value.length == 0) {
+      tipover($this, '请输入内容', 1000)
+      return
+    }
+    $this.prop('disabled', true)
+    setTimeout(function(){$this.prop('disabled', false)}, 1000)
     $.post($('#input-box').data('post'), {
-      content: $('#input-box .input').val()
+      content: value
     })
         .done(function(){
           $('#input-box .input').val('')
         })
         .fail(function(){
-          tipover($(this), '发送遇到问题', 1000)
+          tipover($this, '发送遇到问题', 1000)
         })
         .always(loadMoreMsgs)
   })
-  setInterval(loadMoreMsgs, 1000)
+  setInterval(loadMoreMsgs, 2000)
 
   function maxMsgId() {
     var max = 0;
@@ -123,9 +137,13 @@ $!{includeJS()}
         .done(function(resp){
           var $subdoc = $('<div>').html(resp)
           var $msgs = $subdoc.find('.msg')
-          if ($msgs.length > 0) {
-            $msgs.appendTo($('#conversation'))
-          }
+          $msgs.each(function(){
+            var id = parseInt($(this).data('id'))
+            if (!window.msgIds[id]) {
+              window.msgIds[id] = true
+              $(this).appendTo($('#conversation'))
+            }
+          })
         })
   }
 </script>
