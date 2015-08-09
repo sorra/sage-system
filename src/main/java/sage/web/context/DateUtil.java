@@ -15,7 +15,10 @@ public class DateUtil {
     LocalDateTime thatTime = LocalDateTime.ofInstant(instant, ZoneId.systemDefault());
     LocalDate thatDay = thatTime.toLocalDate();
 
-    if (minutes >= 0 && minutes < 60) {
+    if (minutes == 0) {
+      return "刚才";
+    }
+    if (minutes > 0 && minutes < 60) {
       return minutes + "分钟前";
     }
     if (LocalDate.now().isEqual(thatDay)) { // 当天

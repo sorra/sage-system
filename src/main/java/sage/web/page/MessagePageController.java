@@ -1,6 +1,8 @@
 package sage.web.page;
 
 import java.util.*;
+import java.util.function.Function;
+import java.util.function.Supplier;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,45 +33,59 @@ public class MessagePageController {
   @RequestMapping
   public String messages(@RequestParam(required = false) Long withUser, ModelMap model) {
     Long cuid = Auth.checkCuid();
-    UserLabel self = userService.getUserLabel(cuid);
     if (withUser != null) {
-      UserLabel withUserLabel = userService.getUserLabel(withUser);
-      MessageList messageList = new MessageList(
-          messageService.withSomeone(cuid, withUser), self, withUserLabel);
-
-      model.put("messageList", messageList);
-      model.put("users", Colls.mapOfValues(
-          Arrays.asList(userService.getUserLabel(cuid), withUserLabel), UserLabel::getId));
+      loadConversation(model, cuid, withUser,
+          () -> messageService.withSomeone(cuid, withUser));
       return "msgs-with";
     } else {
-      List<MessageList> messageLists = new ArrayList<>();
-      Map<Long, UserLabel> users = new HashMap<>();
-      users.put(self.getId(), self);
-
-      messageService.all(cuid).stream()
-          .collect(groupingBy(msg -> {
-            if (cuid.equals(msg.getFromUser())) {
-              return msg.getFromUser();
-            } else if (cuid.equals(msg.getToUser())) {
-              return msg.getToUser();
-            } else {
-              log.error("Message from or to is neither cuid! msg = {}", msg);
-              return 0L;
-            }
-          }))
-          .forEach((userId, list) -> {
-            if (userId == 0L) {
-              return;
-            }
-            list.sort(byTime);
-            UserLabel userLabel = userService.getUserLabel(userId);
-            messageLists.add(new MessageList(list, self, userLabel));
-            users.put(userId, userLabel);
-          });
-      model.put("messageLists", messageLists);
-      model.put("users", users);
+      loadMessageLists(model, cuid, () -> messageService.all(cuid));
       return "msgs-all";
     }
+  }
+
+  @RequestMapping("/more")
+  public String more(@RequestParam Long withUser, @RequestParam Long afterId, ModelMap model) {
+    Long cuid = Auth.checkCuid();
+    loadConversation(model, cuid, withUser,
+        () -> messageService.withSomeoneAfterThat(cuid, withUser, afterId));
+    return "msgs-more";
+  }
+
+  private void loadConversation(ModelMap model, Long cuid, Long withUser, Supplier<List<Message>> messagesSupplier) {
+    UserLabel self = userService.getUserLabel(cuid);
+    UserLabel withUserLabel = userService.getUserLabel(withUser);
+    model.put("messageList", new MessageList(messagesSupplier.get(), self, withUserLabel));
+    model.put("users", Colls.mapOfValues(Arrays.asList(self, withUserLabel), UserLabel::getId));
+  }
+
+  private void loadMessageLists(ModelMap model, Long cuid, Supplier<List<Message>> flatMessagesSupplier) {
+    List<MessageList> messageLists = new ArrayList<>();
+    Map<Long, UserLabel> users = new HashMap<>();
+    UserLabel self = userService.getUserLabel(cuid);
+    users.put(self.getId(), self);
+
+    flatMessagesSupplier.get().stream()
+        .collect(groupingBy(msg -> {
+          if (cuid.equals(msg.getFromUser())) {
+            return msg.getFromUser();
+          } else if (cuid.equals(msg.getToUser())) {
+            return msg.getToUser();
+          } else {
+            log.error("Message from or to is neither cuid! msg = {}", msg);
+            return 0L;
+          }
+        }))
+        .forEach((userId, list) -> {
+          if (userId == 0L) {
+            return;
+          }
+          list.sort(byTime);
+          UserLabel userLabel = userService.getUserLabel(userId);
+          messageLists.add(new MessageList(list, self, userLabel));
+          users.put(userId, userLabel);
+        });
+    model.put("messageLists", messageLists);
+    model.put("users", users);
   }
 
   private static Comparator<Message> byTime = Comparator.comparing(Message::getTime);

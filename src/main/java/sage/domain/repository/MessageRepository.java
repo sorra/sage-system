@@ -23,6 +23,11 @@ public class MessageRepository extends BaseRepository<Message> {
         .setLong("fromUser", fromUser).setLong("toUser", toUser).list();
   }
 
+  public List<Message> byFromToAfter(Long fromUser, Long toUser, Long afterId) {
+    return session().createQuery("from Message m where m.fromUser=:fromUser and m.toUser=:toUser and id > :afterId")
+        .setLong("fromUser", fromUser).setLong("toUser", toUser).setLong("afterId", afterId).list();
+  }
+
   @Override
   protected Class<Message> entityClass() {
     return Message.class;

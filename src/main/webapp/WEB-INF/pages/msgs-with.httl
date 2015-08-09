@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html>
-#set(components = ["bootstrap", "layout", "user"])
+#set(components = ["bootstrap", "layout", "tag", "user"])
 #set(UserSelf userSelf)
 #set(MessageList messageList)
 #set(Map<Long, UserLabel> users)
+#set(withUserId = messageList.withUser.id)
 <head>
   <meta charset="UTF-8">
   <title></title>
@@ -42,22 +43,38 @@
       float: right;
       margin-left: 5px;
     }
+
     .msg-time{
       color: gray;
+    }
+
+    #input-box{
+      margin: 20px;
+    }
+    .input{
+      width: 20em;
+      border-radius: 5px;
+      border: 0;
+      resize: none;
+      outline: none;
+      padding: 5px;
+    }
+    .input:focus{
+      border: 1px solid #fa7d3c;
     }
   </style>
 </head>
 <body>
 $!{include("navbar.httl")}
 <div id="container" class="container">
-  <div class="conversation">
+  <div id="conversation">
   #for(Message msg : messageList.msgs)
     #if(msg.fromUser == userSelf.id)
       #set(msgClass = 'from-self')
     #else
       #set(msgClass = 'from-other')
     #end
-    <div class="msg ${msgClass}">
+    <div class="msg ${msgClass}" data-id="${msg.id}">
       <div class="msg-from">
         $!{include("user-label.httl", ["u": users[msg.fromUser]])}
       </div>
@@ -68,8 +85,49 @@ $!{include("navbar.httl")}
     </div>
   #end
   </div>
+  <div id="input-box" data-post="/message/send?to=${withUserId}" data-loadmore="/pages/message/more?withUser=${withUserId}">
+    <textarea class="input" placeholder="输入"></textarea>
+    <button class="btn btn-sm" type="submit">发送</button>
+  </div>
 </div>
 $!{includeProto}
 $!{includeJS()}
+<script>
+  $('#input-box *[type=submit]').click(function(){
+    $.post($('#input-box').data('post'), {
+      content: $('#input-box .input').val()
+    })
+        .done(function(){
+          $('#input-box .input').val('')
+        })
+        .fail(function(){
+          tipover($(this), '发送遇到问题', 1000)
+        })
+        .always(loadMoreMsgs)
+  })
+  setInterval(loadMoreMsgs, 1000)
+
+  function maxMsgId() {
+    var max = 0;
+    $('.msg').each(function(){
+      var id = parseInt($(this).data('id'))
+      if (id && id > max) {
+        max = id;
+      }
+    })
+    return max;
+  }
+
+  function loadMoreMsgs() {
+    $.get($('#input-box').data('loadmore'), {afterId: maxMsgId()})
+        .done(function(resp){
+          var $subdoc = $('<div>').html(resp)
+          var $msgs = $subdoc.find('.msg')
+          if ($msgs.length > 0) {
+            $msgs.appendTo($('#conversation'))
+          }
+        })
+  }
+</script>
 </body>
 </html>

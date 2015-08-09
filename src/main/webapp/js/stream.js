@@ -94,7 +94,7 @@ function createStream(stream, url) {
       var largest = null
       $('.slist .tweet').each(function(){
         var id = parseInt($(this).attr('tweet-id'))
-        if (id && (id > largest || largest == null)) {
+        if (id && (largest == null || id > largest)) {
           largest = id
         }
       })
@@ -111,7 +111,7 @@ function createStream(stream, url) {
       var smallest = null
       $('.slist .tweet').each(function(){
         var id = parseInt($(this).attr('tweet-id'))
-        if (id && (id < smallest || smallest == null)) {
+        if (id && (smallest == null || id < smallest)) {
           smallest = id
         }
       })

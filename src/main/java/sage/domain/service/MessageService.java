@@ -29,5 +29,10 @@ public class MessageService {
     return Colls.copySort(byTime, messageRepo.byFromTo(userId, someone), messageRepo.byFromTo(someone, userId));
   }
 
+  public List<Message> withSomeoneAfterThat(Long userId, Long someone, Long afterId) {
+    return Colls.copySort(byTime, messageRepo.byFromToAfter(userId, someone, afterId),
+        messageRepo.byFromToAfter(someone, userId, afterId));
+  }
+
   private static Comparator<Message> byTime = (m1, m2) -> (int) (m1.getTime().getTime() - m2.getTime().getTime());
 }

@@ -1,0 +1,22 @@
+#set(UserSelf userSelf)
+#set(MessageList messageList)
+#set(Map<Long, UserLabel> users)
+#set(withUserId = messageList.withUser.id)
+<div class="result">
+  #for(Message msg : messageList.msgs)
+    #if(msg.fromUser == userSelf.id)
+    #set(msgClass = 'from-self')
+    #else
+    #set(msgClass = 'from-other')
+    #end
+    <div class="msg ${msgClass}" data-id="${msg.id}">
+      <div class="msg-from">
+        $!{include("user-label.httl", ["u": users[msg.fromUser]])}
+      </div>
+      <div class="msg-body">
+        <span class="msg-time">${humanTime(msg.time)}</span>
+        <div class="msg-content">${msg.content}</div>
+      </div>
+    </div>
+  #end
+</div>
