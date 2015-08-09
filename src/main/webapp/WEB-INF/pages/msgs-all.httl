@@ -1,10 +1,36 @@
 <!DOCTYPE html>
 <html>
+#set(components = ["bootstrap", "layout", "tag", "user"])
+#set(UserSelf userSelf)
+#set(Collection<MessageList> messageLists)
+#set(Map<Long, UserLabel> users)
 <head>
   <meta charset="UTF-8">
-  <title></title>
+  <title>私信列表</title>
+  $!{includeCSS()}
 </head>
 <body>
-
+$!{include("navbar.httl")}
+<div id="container" class="container">
+  <div id="conversation-list">
+    #for(messageList : messageLists)
+      #if(messageList.msgs.size() > 0)
+        <div class="conversation-preview">
+          $!{include("user-label.httl", ["u": messageList.withUser])}
+          #set(Message msg = messageList.msgs.get(messageList.msgs.size()-1))
+          #if(msg.fromUser == messageList.self.id)
+            我：
+          #end
+          <div class="msg-body">
+            <span class="msg-time">${humanTime(msg.time)}</span>
+            <div class="msg-content">${msg.content}</div>
+          </div>
+        </div>
+      #end
+    #end
+  </div>
+</div>
+$!{includeProto}
+$!{includeJS()}
 </body>
 </html>
