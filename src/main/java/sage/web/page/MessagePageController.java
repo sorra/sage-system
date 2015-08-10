@@ -1,7 +1,6 @@
 package sage.web.page;
 
 import java.util.*;
-import java.util.function.Function;
 import java.util.function.Supplier;
 
 import org.slf4j.Logger;
@@ -14,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import sage.domain.service.MessageService;
 import sage.domain.service.UserService;
 import sage.entity.Message;
+import sage.transfer.ConversationPreview;
 import sage.transfer.MessageList;
 import sage.transfer.UserLabel;
 import sage.util.Colls;
@@ -38,7 +38,7 @@ public class MessagePageController {
           () -> messageService.withSomeone(cuid, withUser));
       return "msgs-with";
     } else {
-      loadMessageLists(model, cuid, () -> messageService.all(cuid));
+      loadConversationPreviews(model, cuid, () -> messageService.all(cuid));
       return "msgs-all";
     }
   }
@@ -58,11 +58,9 @@ public class MessagePageController {
     model.put("users", Colls.mapOfValues(Arrays.asList(self, withUserLabel), UserLabel::getId));
   }
 
-  private void loadMessageLists(ModelMap model, Long cuid, Supplier<List<Message>> flatMessagesSupplier) {
-    List<MessageList> messageLists = new ArrayList<>();
-    Map<Long, UserLabel> users = new HashMap<>();
+  private void loadConversationPreviews(ModelMap model, Long cuid, Supplier<List<Message>> flatMessagesSupplier) {
+    List<ConversationPreview> conversations = new ArrayList<>();
     UserLabel self = userService.getUserLabel(cuid);
-    users.put(self.getId(), self);
 
     flatMessagesSupplier.get().stream()
         .collect(groupingBy(msg -> {
@@ -80,14 +78,12 @@ public class MessagePageController {
           if (withUserId == 0L || list.isEmpty()) {
             return;
           }
-          list.sort(byTime);
+          list.sort(byTimeDesc);
           UserLabel withUserLabel = userService.getUserLabel(withUserId);
-          messageLists.add(new MessageList(list, self, withUserLabel));
-          users.put(withUserId, withUserLabel);
+          conversations.add(new ConversationPreview(self, withUserLabel, list.get(0)));
         });
-    model.put("messageLists", messageLists);
-    model.put("users", users);
+    model.put("conversations", conversations);
   }
 
-  private static Comparator<Message> byTime = Comparator.comparing(Message::getTime);
+  private static Comparator<Message> byTimeDesc = Comparator.comparing(Message::getTime, Comparator.reverseOrder());
 }

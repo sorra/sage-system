@@ -2,31 +2,38 @@
 <html>
 #set(components = ["bootstrap", "layout", "tag", "user"])
 #set(UserSelf userSelf)
-#set(Collection<MessageList> messageLists)
-#set(Map<Long, UserLabel> users)
+#set(Collection<ConversationPreview> conversations)
 <head>
   <meta charset="UTF-8">
   <title>私信列表</title>
   $!{includeCSS()}
+  <style>
+    .conversation-header, .msg-body{
+      float: left;
+      margin-left: 10px;
+    }
+    .conversation-preview:after{
+      clear: both;
+    }
+  </style>
 </head>
 <body>
 $!{include("navbar.httl")}
 <div id="container" class="container">
   <div id="conversation-list">
-    #for(messageList : messageLists)
-      #if(messageList.msgs.size() > 0)
-        <div class="conversation-preview">
-          $!{include("user-label.httl", ["u": messageList.withUser])}
-          #set(Message msg = messageList.msgs.get(messageList.msgs.size()-1))
-          #if(msg.fromUser == messageList.self.id)
+    #for(conv : conversations)
+      <div class="conversation-preview">
+        <div class="conversation-header">
+          $!{include("user-label.httl", ["u": conv.withUser])}
+          #if(conv.lastMsg.fromUser == conv.self.id)
             我：
           #end
-          <div class="msg-body">
-            <span class="msg-time">${humanTime(msg.time)}</span>
-            <div class="msg-content">${msg.content}</div>
-          </div>
         </div>
-      #end
+        <div class="msg-body">
+          <span class="msg-time">${humanTime(conv.lastMsg.time)}</span>
+          <div class="msg-content">${conv.lastMsg.content}</div>
+        </div>
+      </div>
     #end
   </div>
 </div>
