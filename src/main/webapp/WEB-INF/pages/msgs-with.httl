@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-#set(components = ["bootstrap", "layout", "tag", "user"])
+#set(components = ["bootstrap", "layout", "tag", "user", "msg"])
 #set(UserSelf userSelf)
 #set(MessageList messageList)
 #set(Map<Long, UserLabel> users)
@@ -10,44 +10,6 @@
   <title></title>
   $!{includeCSS()}
   <style>
-    .msg{
-      width: 200px;
-      margin-top: 10px;
-    }
-    .from-other{
-      margin-right: 150px;
-    }
-    .from-self{
-      margin-left: 150px;
-    }
-
-    .msg-body{
-      padding: 5px;
-      border-radius: 5px;
-    }
-    .from-other .msg-body{
-      background: lightblue;
-    }
-    .from-self .msg-body{
-      background: #A7E8A7;
-    }
-
-    .msg-from{
-      padding: 2px;
-    }
-    .from-other .msg-from{
-      float: left;
-      margin-right: 5px;
-    }
-    .from-self .msg-from{
-      float: right;
-      margin-left: 5px;
-    }
-
-    .msg-time{
-      color: gray;
-    }
-
     #input-box{
       margin: 20px;
     }

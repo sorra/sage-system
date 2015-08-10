@@ -46,3 +46,7 @@ body, .background-dark{
   min-height: 100px;
   border-radius: 10px;
 }
+
+.rich-bg{
+  background: #e9eaed;
+}

@@ -9,6 +9,7 @@
       <li id="nav-blog"><a href="/groups">小组</a></li>
       <li id="nav-write-blog"><a href="/write-blog">写博客</a></li>
       <li id="nav-fav"><a href="/fav">收藏夹</a></li>
+      <li id="nav-msg"><a href="/pages/message">私信</a></li>
       #if(userSelf != null)
       <li id="nav-private"><a href="/private">${userSelf.name}</a></li>
       <li id="nav-logout"><a href="/logout">退出</a></li>

@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-#set(components = ["bootstrap", "layout", "tag", "user"])
+#set(components = ["bootstrap", "layout", "tag", "user", "msg"])
 #set(UserSelf userSelf)
 #set(Collection<ConversationPreview> conversations)
 <head>
@@ -8,12 +8,18 @@
   <title>私信列表</title>
   $!{includeCSS()}
   <style>
-    .conversation-header, .msg-body{
+    .conversation-header, .last-msg{
       float: left;
       margin-left: 10px;
     }
-    .conversation-preview:after{
-      clear: both;
+    .conversation-preview{
+      width: 600px;
+      border-radius: 5px;
+      margin-top: 10px;
+      padding: 5px;
+    }
+    .msg-content{
+      color: black;
     }
   </style>
 </head>
@@ -22,17 +28,19 @@ $!{include("navbar.httl")}
 <div id="container" class="container">
   <div id="conversation-list">
     #for(conv : conversations)
-      <div class="conversation-preview">
+      <div class="conversation-preview rich-bg clearfix">
         <div class="conversation-header">
           $!{include("user-label.httl", ["u": conv.withUser])}
-          #if(conv.lastMsg.fromUser == conv.self.id)
-            我：
-          #end
         </div>
-        <div class="msg-body">
+        <a class="last-msg" href="/pages/message?withUser=${conv.withUser.id}">
           <span class="msg-time">${humanTime(conv.lastMsg.time)}</span>
-          <div class="msg-content">${conv.lastMsg.content}</div>
-        </div>
+          <div>
+            #if(conv.lastMsg.fromUser == conv.self.id)
+            <span style="color: darkcyan;">我：</span>
+            #end
+            <span class="msg-content">${conv.lastMsg.content}</span>
+          </div>
+        </a>
       </div>
     #end
   </div>
