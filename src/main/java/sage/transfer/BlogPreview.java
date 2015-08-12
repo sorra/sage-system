@@ -11,7 +11,7 @@ public class BlogPreview {
   public long id;
   public String title;
   public UserLabel author;
-  public String preview;
+  public String summary;
   public Date createdTime;
   public Date modifiedTime;
   public List<TagLabel> tags;
@@ -22,7 +22,7 @@ public class BlogPreview {
     id = blog.getId();
     title = blog.getTitle();
     author = new UserLabel(blog.getAuthor());
-    preview = Strings.cut(blog.getContent(), 0, 100);
+    summary = Strings.cut(blog.getContent(), 0, 100);
     createdTime = blog.getCreatedTime();
     modifiedTime = blog.getModifiedTime();
     tags = Colls.map(blog.getTags(), TagLabel::new);

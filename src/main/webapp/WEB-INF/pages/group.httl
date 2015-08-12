@@ -8,8 +8,24 @@
   <title>{${group.name}}小组 - 紫月空</title>
   $!{includeCSS()}
   <style>
+    .group{
+      margin-top: 15px;
+      padding: 5px;
+      background: #e0e0e0;
+    }
+    .btn-write-post{
+      margin: 10px;
+    }
     .topic{
-      background: #f0f0f0
+      /*margin-top: 10px;*/
+      padding: 5px;
+      background: #e0e0e0;
+      border-bottom: 1px solid #aaa;
+    }
+    .topic .title{
+      font-weight: bold;
+      font-size: 1.1em;
+      color: #256DAB;
     }
   </style>
 </head>
@@ -18,18 +34,19 @@ $!{include("navbar.httl")}
   <div id="container" class="container">
     <div class="group">
       <p>${group.name}</p>
-      介绍: <p>${group.introduction}</p>
-      创建者: $!{include("user-label.httl", ["u": group.creator])}
-      成员数: <div>${group.membersCount}</div>
+      <p>介绍: ${group.introduction}</p>
+      <div>创建者: $!{include("user-label.httl", ["u": group.creator])}</div>
+      <div>成员数: ${group.membersCount}</div>
+      标签：
       #for(each : group.tags)
        $!{include("tag-label.httl")}
       #end
     </div>
-    <a class="btn btn-primary btn-sm" href="/write-blog?groupId=${group.id}">发表文章!</a>
+    <a class="btn-write-post btn btn-primary btn-sm" href="/write-blog?groupId=${group.id}">发表文章!</a>
     #for(topic : topics)
       <div class="topic">
-        <a href="/topic/${topic.id}">${topic.blog.title}</a>
-        <p>${topic.blog.preview}</p>
+        <a class="title" href="/topic/${topic.id}">${topic.blog.title}</a>
+        <p class="summary">${topic.blog.summary}</p>
         $!{include("user-label.httl", ["u": topic.blog.author])}
         <span>${humanTime(topic.blog.createdTime)}</span>
       </div>
