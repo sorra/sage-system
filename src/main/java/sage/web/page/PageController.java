@@ -13,6 +13,7 @@ import sage.domain.service.GroupService;
 import sage.domain.service.TweetReadService;
 import sage.domain.service.UserService;
 import sage.transfer.BlogView;
+import sage.transfer.GroupPreview;
 import sage.transfer.TagLabel;
 import sage.transfer.TweetView;
 import sage.web.auth.Auth;
@@ -75,9 +76,11 @@ public class PageController {
   public String writeBlog(@RequestParam(required = false) Long groupId, ModelMap model) {
     Long cuid = Auth.checkCuid();
     if (groupId != null) {
-      Collection<TagLabel> groupTags = groupService.getGroupPreview(groupId).tags;
+      GroupPreview gp = groupService.getGroupPreview(groupId);
+      Collection<TagLabel> groupTags = gp.tags;
       model.put("existingTags", groupTags);
       model.put("topTags", userService.filterUserTags(cuid, groupTags));
+      model.put("groupToPost", gp.name);
       FrontMap.from(model).attr("groupId", groupId);
     }
     return "write-blog";

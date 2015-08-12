@@ -33,6 +33,7 @@
 $!{include("navbar.httl")}
 <div class="container" id="container">
 	<div>
+		#if(groupToPost)<span>同步发布到小组[${groupToPost}]</span>#end
 		<form class="blog">
 			<div>
 				<textarea id="title" placeholder="这里是标题">${blog.title}</textarea>
