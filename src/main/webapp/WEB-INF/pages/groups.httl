@@ -1,28 +1,32 @@
 <!DOCTYPE html>
 <html>
-#set(components = ["bootstrap", "layout", "tag"])
+#set(components = ["bootstrap", "layout", "tag", "user"])
 #set(Collection<GroupPreview> groups)
 <head>
   <meta charset="UTF-8">
   <title>所有小组 - 紫月空</title>
   $!{includeCSS()}
   <style>
+    .btn-create-group{
+      margin-top: 10px;
+    }
     .group {
       margin-top: 10px;
       padding: 5px;
-      background: #f4f4f4;
+      background: #e0e0e0;
     }
   </style>
 </head>
 <body>
 $!{include("navbar.httl")}
   <div id="container" class="container">
+    <a class="btn-create-group btn btn-primary btn-sm" href="/group/new">建一个</a>
     #for(group: groups)
       <div class="group">
         <a href="/group/${group.id}">${group.name}</a>
         <p>${group.introduction}</p>
-        创建者: <div>${group.creator.name}</div>
-        成员数: <div>${group.membersCount}</div>
+        <div>创建者: $!{include("user-label.httl", ["u": group.creator])}</div>
+        <div>成员数: ${group.membersCount}</div>
         #for(each : group.tags)
          $!{include("tag-label.httl")}
         #end
