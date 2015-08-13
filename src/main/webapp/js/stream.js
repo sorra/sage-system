@@ -37,8 +37,8 @@ var tweetCache = {
 setupForwardDialog()
 
 $(document).ready(function() {
-  $(document).on('click', '#forward-dialog *[mf-id]', function() {
-    $(this).addClass('mf-removed')
+  $(document).on('click', '#forward-dialog .mf-x', function() {
+    $(this).parents('*[mf-id]').addClass('mf-removed')
   })
 })
 

@@ -65,13 +65,13 @@
       <span>转发</span>
       {{if t.isForward}}
         <span mf-id="{{t.id}}">
-          ||{{toFw(t) | reduceMention}} <a>&times;</a>
+          ||{{toFw(t) | reduceMention}} <a class="mf-x">&times;</a>
         </span>
       {{/if}}
       {{if mfs}}
         {{each mfs.ids as id i}}
           <span mf-id="{{id}}">
-            ||{{mfs.msgs[i] | reduceMention}} <a>&times;</a>
+            ||{{mfs.msgs[i] | reduceMention}} <a class="mf-x>&times;</a>
           </span>
         {{/each}}
       {{/if}}
