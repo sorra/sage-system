@@ -1,6 +1,8 @@
 package sage.web.context;
 
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.ModelAndView;
 import sage.domain.commons.BadArgumentException;
+import sage.domain.commons.DomainRuntimeException;
 
 @ControllerAdvice
 @Order(Ordered.LOWEST_PRECEDENCE)
@@ -44,6 +47,23 @@ public class ControllerExceptionReporter {
                                      HttpServletRequest request, HttpServletResponse response) throws IOException {
     log.error("URI: " + request.getRequestURI(), e);
     return errorPage(HttpStatus.METHOD_NOT_ALLOWED, e.getMessage());
+  }
+
+  @ExceptionHandler(DomainRuntimeException.class)
+  @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+  public ModelAndView domainRuntimeException(DomainRuntimeException e) {
+    StringBuilder msgBuilder = new StringBuilder(e.toString());
+    StackTraceElement[] stacks = e.getStackTrace();
+    if (stacks.length > 0) msgBuilder.append("\n\tat ").append(stacks[0]);
+
+    if (e.getCause() != null) {
+      StringWriter stringWriter = new StringWriter();
+      e.getCause().printStackTrace(new PrintWriter(stringWriter));
+      msgBuilder.append("\n\tCaused by: ").append(stringWriter);
+    }
+
+    log.error(msgBuilder.toString());
+    return errorPage(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
   }
 
   @ExceptionHandler(HibernateJdbcException.class)
