@@ -34,6 +34,6 @@ public class DateUtil {
   }
 
   public static String spanHumanTime(Date time) {
-    return String.format("<span class=\"human-time\">%s</>", humanTime(time));
+    return String.format("<span class=\"human-time\">%s</span>", humanTime(time));
   }
 }

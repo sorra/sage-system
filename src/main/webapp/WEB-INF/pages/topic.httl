@@ -62,13 +62,19 @@
 
   <div id="reply_box" style="display: none">
     <textarea class="reply_input"></textarea>
+    <br/>
     <button class="reply_submit" data-url="/topic/${topicPost.id}/reply">发表</button>
   </div>
 $!{includeProto}
 $!{includeJS()}
 <script>
   $(document).on('click', '.btn_reply', function(){
-    $('#reply_box').insertAfter($(this)).show()
+    var $rb = $('#reply_box')
+    if ($(this).next('#reply_box').length == 0 || $rb.css('display') == 'none') {
+      $rb.insertAfter($(this)).show()
+    } else{
+      $rb.hide()
+    }
   })
   $('#reply_box .reply_submit').click(function(){
     var $this = $(this)
@@ -80,7 +86,7 @@ $!{includeJS()}
     $.post($this.data('url'), {
       content: $input.val()
     }).done(function(resp){
-      tipover($('#reply_box').hide().prev(), '发表回复成功', 1000)
+      tipover($('#reply_box').hide().prev('.btn_reply'), '发表回复成功', 1000)
     }).fail(function(resp){
       tipover($this, '发表回复遇到问题', 1000)
     })
