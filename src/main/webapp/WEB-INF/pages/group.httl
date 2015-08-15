@@ -2,7 +2,7 @@
 <html>
 #set(components = ["bootstrap", "layout", "tag", "user"])
 #set(GroupPreview group)
-#set(Collection<GroupTopicPreview> topics)
+#set(Collection<TopicPreview> topics)
 <head>
   <meta charset="UTF-8">
   <title>{${group.name}}小组 - 紫月空</title>

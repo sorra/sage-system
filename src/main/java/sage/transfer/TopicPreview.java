@@ -1,15 +1,15 @@
 package sage.transfer;
 
-import sage.entity.GroupTopic;
+import sage.entity.TopicPost;
 
-public class GroupTopicPreview {
+public class TopicPreview {
   public long id;
   public long groupId;
   public BlogPreview blog;
 
-  GroupTopicPreview() {}
+  TopicPreview() {}
 
-  public GroupTopicPreview(GroupTopic topic) {
+  public TopicPreview(TopicPost topic) {
     id = topic.getId();
     groupId = topic.getGroup().getId();
     blog = new BlogPreview(topic.getBlog());

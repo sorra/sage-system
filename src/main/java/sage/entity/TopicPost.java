@@ -6,15 +6,15 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
 @Entity
-public class GroupTopic {
+public class TopicPost {
   private Long id;
   private Blog blog;
   private Group group;
   private boolean hidden = false;
 
-  GroupTopic() {}
+  TopicPost() {}
 
-  public GroupTopic(Blog blog, Group group) {
+  public TopicPost(Blog blog, Group group) {
     this.blog = blog;
     this.group = group;
   }
@@ -35,7 +35,7 @@ public class GroupTopic {
     this.blog = blog;
   }
 
-  @ManyToOne(optional = false)
+  @ManyToOne
   public Group getGroup() {
     return group;
   }

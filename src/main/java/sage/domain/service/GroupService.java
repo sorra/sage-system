@@ -22,7 +22,7 @@ public class GroupService {
   @Autowired
   private GroupRepository groupRepo;
   @Autowired
-  private GroupTopicRepository groupTopicRepo;
+  private TopicPostRepository topicPostRepo;
   @Autowired
   private TagRepository tagRepo;
   @Autowired
@@ -91,18 +91,18 @@ public class GroupService {
     }
   }
 
-  public GroupTopic getTopic(long id) {
-    return groupTopicRepo.nonNull(id);
+  public TopicPost getTopic(long id) {
+    return topicPostRepo.nonNull(id);
   }
 
-  public GroupTopic post(long userId, Blog blog, long groupId) {
+  public TopicPost post(long userId, Blog blog, long groupId) {
     if (!IdCommons.equal(userId, blog.getAuthor().getId())) {
       throw new DomainRuntimeException("Cannot post topic. User[%d] is not the author of Blog[%d]", userId, blog.getId());
     }
-    return groupTopicRepo.save(new GroupTopic(blog, groupRepo.load(groupId)));
+    return topicPostRepo.save(new TopicPost(blog, groupRepo.load(groupId)));
   }
 
-  public GroupTopic post(long userId, long blogId, long groupId) {
+  public TopicPost post(long userId, long blogId, long groupId) {
     return post(userId, blogRepo.nonNull(blogId), groupId);
   }
 
@@ -114,7 +114,7 @@ public class GroupService {
     return Colls.map(groupRepo.all(), GroupPreview::new);
   }
 
-  public Collection<GroupTopic> topics(long groupId) {
-    return groupTopicRepo.byGroup(groupId);
+  public Collection<TopicPost> topics(long groupId) {
+    return topicPostRepo.byGroup(groupId);
   }
 }

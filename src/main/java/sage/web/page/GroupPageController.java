@@ -59,7 +59,7 @@ public class GroupPageController {
   @RequestMapping("/group/{id}")
   String group(@PathVariable Long id, ModelMap model) {
     Auth.checkCuid();
-    Collection<GroupTopicPreview> topics = Colls.map(groupService.topics(id), GroupTopicPreview::new);
+    Collection<TopicPreview> topics = Colls.map(groupService.topics(id), TopicPreview::new);
     model.put("group", groupService.getGroupPreview(id));
     model.put("topics", topics);
     return "group";
