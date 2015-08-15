@@ -91,30 +91,11 @@ public class GroupService {
     }
   }
 
-  public TopicPost getTopic(long id) {
-    return topicPostRepo.nonNull(id);
-  }
-
-  public TopicPost post(long userId, Blog blog, long groupId) {
-    if (!IdCommons.equal(userId, blog.getAuthor().getId())) {
-      throw new DomainRuntimeException("Cannot post topic. User[%d] is not the author of Blog[%d]", userId, blog.getId());
-    }
-    return topicPostRepo.save(new TopicPost(blog, groupRepo.load(groupId)));
-  }
-
-  public TopicPost post(long userId, long blogId, long groupId) {
-    return post(userId, blogRepo.nonNull(blogId), groupId);
-  }
-
   public Collection<GroupPreview> byTags(Collection<Long> tagIds) {
     return Colls.map(groupRepo.byTags(tagRepo.byIds(tagIds)), GroupPreview::new);
   }
 
   public Collection<GroupPreview> all() {
     return Colls.map(groupRepo.all(), GroupPreview::new);
-  }
-
-  public Collection<TopicPost> topics(long groupId) {
-    return topicPostRepo.byGroup(groupId);
   }
 }

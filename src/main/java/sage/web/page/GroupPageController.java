@@ -16,6 +16,8 @@ public class GroupPageController {
   @Autowired
   private GroupService groupService;
   @Autowired
+  private TopicService topicService;
+  @Autowired
   private UserService userService;
   @Autowired
   private TagService tagService;
@@ -59,7 +61,7 @@ public class GroupPageController {
   @RequestMapping("/group/{id}")
   String group(@PathVariable Long id, ModelMap model) {
     Auth.checkCuid();
-    Collection<TopicPreview> topics = Colls.map(groupService.topics(id), TopicPreview::new);
+    Collection<TopicPreview> topics = Colls.map(topicService.groupTopics(id), TopicPreview::new);
     model.put("group", groupService.getGroupPreview(id));
     model.put("topics", topics);
     return "group";
@@ -74,7 +76,7 @@ public class GroupPageController {
   @RequestMapping("/topic/{id}")
   String topic(@PathVariable Long id, ModelMap model) {
     Auth.checkCuid();
-    BlogView bv = new BlogView(groupService.getTopic(id).getBlog());
+    BlogView bv = new BlogView(topicService.getTopic(id).getBlog());
     UserCard author = userService.getUserCard(Auth.cuid(), bv.getAuthorId());
     model.put("topic", bv);
     model.put("author", author);
@@ -85,7 +87,7 @@ public class GroupPageController {
   @ResponseBody
   String topicSubmit(@PathVariable Long groupId, @RequestParam Long blogId) {
     Long cuid = Auth.checkCuid();
-    long topicId = groupService.post(cuid, blogId, groupId).getId();
+    long topicId = topicService.post(cuid, blogId, groupId).getId();
     return "/topic/" + topicId;
   }
 

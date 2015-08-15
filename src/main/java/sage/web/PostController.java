@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import sage.domain.service.BlogPostService;
 import sage.domain.service.GroupService;
+import sage.domain.service.TopicService;
 import sage.domain.service.TweetPostService;
 import sage.entity.Blog;
 import sage.entity.Tweet;
@@ -22,6 +23,8 @@ public class PostController {
   private TweetPostService tweetPostService;
   @Autowired
   private BlogPostService blogService;
+  @Autowired
+  private TopicService topicService;
   @Autowired
   private GroupService groupService;
 
@@ -62,7 +65,7 @@ public class PostController {
       tweetPostService.share(uid, blog);
     }
     if (groupId != null) {
-      long topicId = groupService.post(uid, blog, groupId).getId();
+      long topicId = topicService.post(uid, blog, groupId).getId();
       return String.format("/topic/%d", topicId);
     }
     logger.info("post blog {} success", blog.getId());
