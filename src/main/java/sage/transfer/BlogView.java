@@ -10,10 +10,7 @@ import sage.util.Colls;
 public class BlogView {
 
   private Long id;
-  private Long authorId;
-  private String authorName;
-  private String avatar;
-  private UserCard author = null;
+  private UserLabel author;
   private String title;
   private String content;
   private Date createdTime;
@@ -24,10 +21,7 @@ public class BlogView {
 
   public BlogView(Blog blog) {
     id = blog.getId();
-    User author = blog.getAuthor();
-    authorId = author.getId();
-    authorName = author.getName();
-    avatar = author.getAvatar();
+    author = new UserLabel(blog.getAuthor());
 
     title = blog.getTitle();
     content = blog.getContent();
@@ -41,19 +35,7 @@ public class BlogView {
     return id;
   }
 
-  public Long getAuthorId() {
-    return authorId;
-  }
-
-  public String getAuthorName() {
-    return authorName;
-  }
-
-  public String getAvatar() {
-    return avatar;
-  }
-
-  public UserCard getAuthor() {
+  public UserLabel getAuthor() {
     return author;
   }
 

@@ -1,14 +1,17 @@
 package sage.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import java.util.Date;
+import javax.persistence.*;
+
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
 
 @Entity
 public class TopicPost {
   private Long id;
   private Blog blog;
+  private User author;
+  private Date time;
   private Group group;
   private boolean hidden = false;
 
@@ -36,6 +39,23 @@ public class TopicPost {
   }
 
   @ManyToOne
+  public User getAuthor() {
+    return author;
+  }
+  public void setAuthor(User author) {
+    this.author = author;
+  }
+
+  public Date getTime() {
+    return time;
+  }
+  public void setTime(Date time) {
+    this.time = time;
+  }
+
+  @ManyToOne
+  @NotFound(action = NotFoundAction.IGNORE)
+  @JoinColumn(foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
   public Group getGroup() {
     return group;
   }

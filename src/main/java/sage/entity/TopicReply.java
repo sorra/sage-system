@@ -1,23 +1,23 @@
 package sage.entity;
 
 import java.util.Date;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
+
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
 
 @Entity
 public class TopicReply {
   private Long id;
   private String content;
-  private TopicPost topic;
+  private TopicPost topicPost;
   private User author;
   private Date time;
 
   TopicReply() {}
 
-  public TopicReply(TopicPost topic, User author, Date time, String content) {
-    this.topic = topic;
+  public TopicReply(TopicPost topicPost, User author, Date time, String content) {
+    this.topicPost = topicPost;
     this.author = author;
     this.time = time;
     this.content = content;
@@ -38,12 +38,14 @@ public class TopicReply {
     this.content = content;
   }
 
-  @ManyToOne(optional = false)
-  public TopicPost getTopic() {
-    return topic;
+  @ManyToOne
+  @NotFound(action = NotFoundAction.IGNORE)
+  @JoinColumn(foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
+  public TopicPost getTopicPost() {
+    return topicPost;
   }
-  public void setTopic(TopicPost topic) {
-    this.topic = topic;
+  public void setTopicPost(TopicPost topicPost) {
+    this.topicPost = topicPost;
   }
 
   @ManyToOne(optional = false)

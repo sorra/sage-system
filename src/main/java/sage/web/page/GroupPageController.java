@@ -1,12 +1,15 @@
 package sage.web.page;
 
 import java.util.Collection;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import sage.domain.service.*;
+import sage.entity.TopicPost;
+import sage.entity.TopicReply;
 import sage.transfer.*;
 import sage.util.Colls;
 import sage.web.auth.Auth;
@@ -76,10 +79,14 @@ public class GroupPageController {
   @RequestMapping("/topic/{id}")
   String topic(@PathVariable Long id, ModelMap model) {
     Auth.checkCuid();
-    BlogView bv = new BlogView(topicService.getTopic(id).getBlog());
-    UserCard author = userService.getUserCard(Auth.cuid(), bv.getAuthorId());
+    TopicPost topicPost = topicService.getTopicPost(id);
+    BlogView bv = new BlogView(topicPost.getBlog());
+    UserCard author = userService.getUserCard(Auth.cuid(), bv.getAuthor().getId());
+    List<TopicReply> replies = topicService.getTopicReplies(id);
+    model.put("topicPost", topicPost);
     model.put("topic", bv);
     model.put("author", author);
+    model.put("replies", replies);
     return "topic";
   }
 
@@ -89,6 +96,13 @@ public class GroupPageController {
     Long cuid = Auth.checkCuid();
     long topicId = topicService.post(cuid, blogId, groupId).getId();
     return "/topic/" + topicId;
+  }
+
+  @RequestMapping(value = "/topic/{topicId}/reply", method = RequestMethod.POST)
+  @ResponseBody
+  void replyTopic(@PathVariable Long topicId, @RequestParam String content) {
+    Long cuid = Auth.checkCuid();
+    topicService.reply(cuid, content, topicId);
   }
 
   @RequestMapping(value = "group/{groupId}/join", method = RequestMethod.POST)

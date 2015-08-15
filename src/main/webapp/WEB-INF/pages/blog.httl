@@ -22,7 +22,7 @@ $!{include("navbar.httl")}
 	<div class="blog">
 		<span id="id" style="display:none">$!{blog.id}</span>
 		<h3 class="title">$!{blog.title}</h3>
-		#if(uid.equals(blog.authorId))
+		#if(uid.equals(blog.author.id))
 		<a href="/blog/$!{blog.id}/edit">编辑</a>
 		#end
 		<span>创建于 ${humanTime(blog.createdTime)}</span>

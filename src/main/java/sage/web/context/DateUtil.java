@@ -10,6 +10,9 @@ import java.util.Date;
 
 public class DateUtil {
   public static String humanTime(Date time) {
+    if (time == null) {
+      return null;
+    }
     Instant instant = Instant.ofEpochMilli(time.getTime());
     long minutes = instant.until(Instant.now(), ChronoUnit.MINUTES);
     LocalDateTime thatTime = LocalDateTime.ofInstant(instant, ZoneId.systemDefault());
@@ -28,5 +31,9 @@ public class DateUtil {
       return DateTimeFormatter.ofPattern("MM-dd HH:mm").format(thatTime);
     }
     return DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm").format(thatTime);
+  }
+
+  public static String spanHumanTime(Date time) {
+    return String.format("<span class=\"human-time\">%s</>", humanTime(time));
   }
 }

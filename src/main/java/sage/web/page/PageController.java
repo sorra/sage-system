@@ -91,7 +91,7 @@ public class PageController {
     Long cuid = Auth.checkCuid();
 
     BlogView blog = blogReadService.getBlogView(blogId);
-    if (blog.getAuthorId().equals(cuid)) {
+    if (cuid.equals(blog.getAuthor().getId())) {
       model.put("blog", blog);
       model.put("existingTags", blog.getTags());
       model.put("topTags", userService.filterUserTags(cuid, blog.getTags()));

@@ -1,14 +1,38 @@
 <!DOCTYPE html>
 <html>
-#set(components = ["bootstrap", "layout", "tag"])
+#set(components = ["bootstrap", "layout", "tag", "user"])
+#set(TopicPost topicPost)
 #set(BlogView topic)
+#set(List<TopicReply> replies)
 <head>
   <meta charset="UTF-8">
   <title>${topic.title}</title>
   $!{includeCSS()}
   <style>
+    #container{
+      background: #e0e0e0;
+    }
     .topic{
-      background: #f0f0f0
+      padding: 5px;
+      background: #e0e0e0;
+      border-bottom: 1px solid #aaa;
+      margin-bottom: 1em;
+    }
+    .replies{
+      margin-top: 1em;
+      background: #e0e0e0;
+    }
+    .reply{
+      padding: 5px;
+      border-bottom: 1px solid #aaa;
+    }
+    .reply_input{
+      width: 20em;
+      border-radius: 5px;
+      border: 0;
+      resize: none;
+      outline: none;
+      padding: 5px;
     }
   </style>
 </head>
@@ -19,9 +43,48 @@
       <h5>${topic.title}</h5>
       <div>${topic.content}</div>
       $!{include("user-label.httl", ["u": topic.author])}
-      <span>${humanTime(topic.createdTime)}</span>
-      <span>${humanTime(topic.modifiedTime)}</span>
+      $!{spanHumanTime(topic.createdTime)}
+      #if(topic.modifiedTime)$!{spanHumanTime(topic.modifiedTime)}#end
+      <a class="btn_reply" href="javascript:;">回复</a>
+    </div>
+    <strong>回帖:</strong>
+    <div class="replies">
+      #for(reply : replies)
+        <div class="reply">
+          <div>${reply.content}</div>
+          $!{include("user-label.httl", ["u": topic.author])}
+          $!{spanHumanTime(reply.time)}
+          <a class="btn_reply" href="javascript:;">回复</a>
+        </div>
+      #end
     </div>
   </div>
+
+  <div id="reply_box" style="display: none">
+    <textarea class="reply_input"></textarea>
+    <button class="reply_submit" data-url="/topic/${topicPost.id}/reply">发表</button>
+  </div>
+$!{includeProto}
+$!{includeJS()}
+<script>
+  $(document).on('click', '.btn_reply', function(){
+    $('#reply_box').insertAfter($(this)).show()
+  })
+  $('#reply_box .reply_submit').click(function(){
+    var $this = $(this)
+    var $input = $('#reply_box .reply_input')
+    if ($input.val().length == 0) {
+      tipover($this, '请输入内容', 1000)
+      return
+    }
+    $.post($this.data('url'), {
+      content: $input.val()
+    }).done(function(resp){
+      tipover($('#reply_box').hide().prev(), '发表回复成功', 1000)
+    }).fail(function(resp){
+      tipover($this, '发表回复遇到问题', 1000)
+    })
+  })
+</script>
 </body>
 </html>

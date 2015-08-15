@@ -14,7 +14,7 @@
         $!{include("user-label.httl", ["u": users[msg.fromUser]])}
       </div>
       <div class="msg-body">
-        <span class="msg-time">${humanTime(msg.time)}</span>
+        $!{spanHumanTime(msg.time)}
         <div class="msg-content">${msg.content}</div>
       </div>
     </div>

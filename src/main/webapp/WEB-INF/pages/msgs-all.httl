@@ -33,7 +33,7 @@ $!{include("navbar.httl")}
           $!{include("user-label.httl", ["u": conv.withUser])}
         </div>
         <a class="last-msg" href="/pages/message?withUser=${conv.withUser.id}">
-          <span class="msg-time">${humanTime(conv.lastMsg.time)}</span>
+          $!{spanHumanTime(conv.lastMsg.time)}
           <div>
             #if(conv.lastMsg.fromUser == conv.self.id)
             <span style="color: darkcyan;">我：</span>
