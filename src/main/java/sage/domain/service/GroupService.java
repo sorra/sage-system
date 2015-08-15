@@ -83,7 +83,7 @@ public class GroupService {
     }
   }
 
-  public void leave(long userId, long groupId) {
+  public void exit(long userId, long groupId) {
     User user = userRepo.load(userId);
     Group group = groupRepo.nonNull(groupId);
     if (group.getMembers().remove(user)) {

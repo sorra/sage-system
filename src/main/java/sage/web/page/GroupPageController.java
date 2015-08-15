@@ -95,9 +95,9 @@ public class GroupPageController {
     groupService.join(Auth.checkCuid(), groupId);
   }
 
-  @RequestMapping(value = "group/{groupId}/leave", method = RequestMethod.POST)
+  @RequestMapping(value = "group/{groupId}/exit", method = RequestMethod.POST)
   @ResponseBody
-  void leave(@PathVariable Long groupId) {
-    groupService.leave(Auth.checkCuid(), groupId);
+  void exit(@PathVariable Long groupId) {
+    groupService.exit(Auth.checkCuid(), groupId);
   }
 }
