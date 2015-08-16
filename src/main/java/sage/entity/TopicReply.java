@@ -13,6 +13,8 @@ public class TopicReply {
   private TopicPost topicPost;
   private User author;
   private Date time;
+  private Long toUserId;
+  private Long toReplyId;
 
   TopicReply() {}
 
@@ -21,6 +23,7 @@ public class TopicReply {
     this.author = author;
     this.time = time;
     this.content = content;
+    this.toReplyId = toReplyId;
   }
 
   @Id @GeneratedValue
@@ -61,5 +64,25 @@ public class TopicReply {
   }
   public void setTime(Date time) {
     this.time = time;
+  }
+
+  public Long getToUserId() {
+    return toUserId;
+  }
+  public void setToUserId(Long toUserId) {
+    this.toUserId = toUserId;
+  }
+
+  public Long getToReplyId() {
+    return toReplyId;
+  }
+  public void setToReplyId(Long toReplyId) {
+    this.toReplyId = toReplyId;
+  }
+
+  public TopicReply setToInfo(Long toUserId, Long toReplyId) {
+    this.toUserId = toUserId;
+    this.toReplyId = toReplyId;
+    return this;
   }
 }

@@ -2,6 +2,7 @@ package sage.web.page;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -82,7 +83,9 @@ public class GroupPageController {
     TopicPost topicPost = topicService.getTopicPost(id);
     BlogView bv = new BlogView(topicPost.getBlog());
     UserCard author = userService.getUserCard(Auth.cuid(), bv.getAuthor().getId());
-    List<TopicReply> replies = topicService.getTopicReplies(id);
+    List<TopicReplyView> replies = Colls.map(topicService.getTopicReplies(id),
+        treply -> new TopicReplyView(treply,
+            Optional.ofNullable(treply.getToUserId()).map(userService::getUserLabel).orElse(null)));
     model.put("topicPost", topicPost);
     model.put("topic", bv);
     model.put("author", author);
@@ -100,9 +103,10 @@ public class GroupPageController {
 
   @RequestMapping(value = "/topic/{topicId}/reply", method = RequestMethod.POST)
   @ResponseBody
-  void replyTopic(@PathVariable Long topicId, @RequestParam String content) {
+  void replyTopic(@PathVariable Long topicId, @RequestParam String content,
+                  @RequestParam(required = false) Long toReplyId) {
     Long cuid = Auth.checkCuid();
-    topicService.reply(cuid, content, topicId);
+    topicService.reply(cuid, content, topicId, toReplyId);
   }
 
   @RequestMapping(value = "group/{groupId}/join", method = RequestMethod.POST)

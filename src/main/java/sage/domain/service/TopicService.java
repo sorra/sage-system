@@ -3,6 +3,7 @@ package sage.domain.service;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,8 +40,12 @@ public class TopicService {
     return post(userId, blogRepo.nonNull(blogId), groupId);
   }
 
-  public TopicReply reply(long userId, String content, long topicPostId) {
-    return topicReplyRepo.save(new TopicReply(topicPostRepo.load(topicPostId), userRepo.load(userId), new Date(), content));
+  public TopicReply reply(long userId, String content, long topicPostId, Long toReplyId) {
+    Long toUserId = Optional.ofNullable(toReplyId)
+        .map(id -> topicReplyRepo.get(id).getAuthor().getId()).orElse(null);
+    return topicReplyRepo.save(
+        new TopicReply(topicPostRepo.load(topicPostId), userRepo.load(userId), new Date(), content)
+            .setToInfo(toUserId, toReplyId));
   }
 
   public void setHiddenOfTopicPost(long id, boolean hidden) {

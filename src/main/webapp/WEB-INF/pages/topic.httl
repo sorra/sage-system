@@ -3,7 +3,7 @@
 #set(components = ["bootstrap", "layout", "tag", "user"])
 #set(TopicPost topicPost)
 #set(BlogView topic)
-#set(List<TopicReply> replies)
+#set(List<TopicReplyView> replies)
 <head>
   <meta charset="UTF-8">
   <title>${topic.title}</title>
@@ -17,6 +17,11 @@
       background: #e0e0e0;
       border-bottom: 1px solid #aaa;
       margin-bottom: 1em;
+    }
+    .huitie{
+      font-weight: bold;
+      padding: 5px;
+      border-bottom: 1px solid #aaa;
     }
     .replies{
       margin-top: 1em;
@@ -47,12 +52,15 @@
       #if(topic.modifiedTime)$!{spanHumanTime(topic.modifiedTime)}#end
       <a class="btn_reply" href="javascript:;">回复</a>
     </div>
-    <strong>回帖:</strong>
+    <div class="huitie">回帖:</div>
     <div class="replies">
       #for(reply : replies)
-        <div class="reply">
+        <div class="reply" data-id="${reply.id}">
+          #if(reply.toUser)
+            <span style="color: gray">回复 ${reply.toUser.name}:</span>
+          #end
           <div>${reply.content}</div>
-          $!{include("user-label.httl", ["u": topic.author])}
+          $!{include("user-label.httl", ["u": reply.author])}
           $!{spanHumanTime(reply.time)}
           <a class="btn_reply" href="javascript:;">回复</a>
         </div>
@@ -83,8 +91,12 @@ $!{includeJS()}
       tipover($this, '请输入内容', 1000)
       return
     }
+    var toReplyId = $this.parent('.reply').data('id')
+    if (!toReplyId || toReplyId.length == 0)
+      toReplyId = null
     $.post($this.data('url'), {
-      content: $input.val()
+      content: $input.val(),
+      toReplyId: toReplyId
     }).done(function(resp){
       tipover($('#reply_box').hide().prev('.btn_reply'), '发表回复成功', 1000)
     }).fail(function(resp){
