@@ -10,7 +10,6 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import sage.domain.service.*;
 import sage.entity.TopicPost;
-import sage.entity.TopicReply;
 import sage.transfer.*;
 import sage.util.Colls;
 import sage.web.auth.Auth;
@@ -65,9 +64,8 @@ public class GroupPageController {
   @RequestMapping("/group/{id}")
   String group(@PathVariable Long id, ModelMap model) {
     Auth.checkCuid();
-    Collection<TopicPreview> topics = Colls.map(topicService.groupTopics(id), TopicPreview::new);
     model.put("group", groupService.getGroupPreview(id));
-    model.put("topics", topics);
+    model.put("topics", topicService.groupTopicPreviews(id));
     return "group";
   }
 

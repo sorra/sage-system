@@ -48,6 +48,7 @@ $!{include("navbar.httl")}
         <p class="summary">${topic.blog.summary}</p>
         $!{include("user-label.httl", ["u": topic.blog.author])}
         $!{spanHumanTime(topic.blog.createdTime)}
+        #if(topic.replyCount > 0) <span>${topic.replyCount}回复</span>#end
       </div>
     #end
   </div>

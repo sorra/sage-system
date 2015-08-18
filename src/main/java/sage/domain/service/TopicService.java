@@ -14,6 +14,8 @@ import sage.domain.repository.*;
 import sage.entity.Blog;
 import sage.entity.TopicPost;
 import sage.entity.TopicReply;
+import sage.transfer.TopicPreview;
+import sage.util.Colls;
 
 @Service
 @Transactional
@@ -65,7 +67,8 @@ public class TopicService {
     return topicReplyRepo.byTopicPost(topicPostId);
   }
 
-  public Collection<TopicPost> groupTopics(long groupId) {
-    return topicPostRepo.byGroup(groupId);
+  public Collection<TopicPreview> groupTopicPreviews(long groupId) {
+    return Colls.map(topicPostRepo.byGroup(groupId),
+        topicPost -> new TopicPreview(topicPost, getTopicReplies(topicPost.getId()).size()));
   }
 }
