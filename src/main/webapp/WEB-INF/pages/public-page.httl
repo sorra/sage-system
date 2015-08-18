@@ -6,7 +6,7 @@
 #set(Integer countPendingRequestsOfTag, Integer countPendingRequestsOfTagScope)
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-	<title>${tag.name} - 紫月空</title>
+	<title>${tag.name} - 轻境界</title>
   $!{includeCSS()}
   <style>
     .side > div, #bkg-intro{

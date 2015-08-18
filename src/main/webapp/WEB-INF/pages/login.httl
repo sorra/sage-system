@@ -3,7 +3,7 @@
 #set(components = ["login"])
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-	<title>登录 - 紫月空</title>
+	<title>登录 - 轻境界</title>
   <link href="rs/css/bootstrap.css" rel="stylesheet">
   <link href="rs/css/layout.css" rel="stylesheet">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -48,7 +48,7 @@
 </head>
 <body class="background-dark">
   <form action="/auth/login" method="post">
-    <h3 class="heading">紫月空</h3>
+    <h3 class="heading">轻境界</h3>
     <div class="input-group">
       <label for="email">邮箱</label>
       <input id="email" name="email" type="text" placeholder="请输入您的邮箱" />

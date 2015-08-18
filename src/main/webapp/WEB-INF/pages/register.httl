@@ -3,7 +3,7 @@
 #set(components = ["register"])
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-  <title>注册 - 紫月空</title>
+  <title>注册 - 轻境界</title>
   <link href="rs/css/bootstrap.css" rel="stylesheet">
   <link href="rs/css/layout.css" rel="stylesheet">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -49,7 +49,7 @@
 </head>
 <body class="background-dark">
   <form action="/auth/register" method="post">
-    <h5 class="heading">注册一个紫月空账户</h5>
+    <h5 class="heading">注册一个轻境界账户</h5>
     <div class="input-group">
       <label for="email">邮箱</label>
       <input id="email" name="email" type="text" placeholder="请输入您的邮箱" />

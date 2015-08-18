@@ -4,7 +4,7 @@
 #set(Collection<GroupPreview> groups)
 <head>
   <meta charset="UTF-8">
-  <title>所有小组 - 紫月空</title>
+  <title>所有小组 - 轻境界</title>
   $!{includeCSS()}
   <style>
     .btn-create-group{
