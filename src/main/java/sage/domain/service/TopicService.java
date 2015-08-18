@@ -1,11 +1,10 @@
 package sage.domain.service;
 
-import java.util.Collection;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 import javax.transaction.Transactional;
 
+import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import sage.domain.commons.DomainRuntimeException;
@@ -67,8 +66,19 @@ public class TopicService {
     return topicReplyRepo.byTopicPost(topicPostId);
   }
 
+  // 按帖子最后活动时间排序, 新的在前
   public Collection<TopicPreview> groupTopicPreviews(long groupId) {
-    return Colls.map(topicPostRepo.byGroup(groupId),
+    List<TopicPost> topicPosts = topicPostRepo.byGroup(groupId).stream()
+        .map(topicPost -> {
+          Date time = topicReplyRepo.theLastByTopicPost(topicPost.getId())
+              .map(TopicReply::getTime).orElse(topicPost.getTime());
+          if (time == null) time = new Date(0);
+          return Pair.of(topicPost, time);
+        })
+        .sorted(Comparator.comparing(Pair::getRight, Comparator.<Date>reverseOrder()))
+        .map(Pair::getLeft).collect(Collectors.toList());
+    return Colls.map(topicPosts,
         topicPost -> new TopicPreview(topicPost, getTopicReplies(topicPost.getId()).size()));
+
   }
 }
