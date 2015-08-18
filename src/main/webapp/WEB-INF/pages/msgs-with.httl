@@ -11,7 +11,7 @@
   $!{includeCSS()}
   <style>
     #input-box{
-      margin: 20px;
+      margin-top: 20px;
     }
     .input{
       width: 20em;
@@ -49,7 +49,7 @@ $!{include("navbar.httl")}
   </div>
   <div id="input-box" data-post="/message/send?to=${withUserId}" data-loadmore="/pages/message/more?withUser=${withUserId}">
     <textarea class="input" placeholder="输入"></textarea>
-    <button class="btn btn-sm" type="submit">发送</button>
+    <button class="btn btn-sm" type="submit" style="margin-left: 10px">发送</button>
   </div>
 </div>
 $!{includeProto}
