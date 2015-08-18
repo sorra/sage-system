@@ -45,17 +45,17 @@ $!{includeJS()}
     window.setTimeout(function(){$box.fadeOut().remove()}, 1000)
   }
   $(document).delegate('.accept-btn', 'click', function(){
-    var $req = $(this).parent('.tag-change-request')
+    var $req = $(this).parents('.tag-change-request')
     var id = $req.data('id')
     $.post('/tag-change/accept?requestId='+id).done(function(){actionSucceed('已接受', $req)}).fail(function(){actionFail($req)})
   })
       .delegate('.reject-btn', 'click', function(){
-    var $req = $(this).parent('.tag-change-request')
+    var $req = $(this).parents('.tag-change-request')
     var id = $req.data('id')
     $.post('/tag-change/reject?requestId='+id).done(function(){actionSucceed('已拒绝', $req)}).fail(function(){actionFail($req)})
   })
       .delegate('.cancel-btn', 'click', function(){
-    var $req = $(this).parent('.tag-change-request')
+    var $req = $(this).parents('.tag-change-request')
     var id = $req.data('id')
     $.post('/tag-change/cancel?requestId='+id).done(function(){actionSucceed('已取消', $req)}).fail(function(){actionFail($req)})
   })

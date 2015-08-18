@@ -91,9 +91,10 @@ $!{includeJS()}
       tipover($this, '请输入内容', 1000)
       return
     }
-    var toReplyId = $this.parent('.reply').data('id')
-    if (!toReplyId || toReplyId.length == 0)
-      toReplyId = null
+    var toReplyId = $this.parents('.reply').data('id')
+    if (!toReplyId || toReplyId.length == 0) toReplyId = null
+    else toReplyId = parseInt(toReplyId)
+
     $.post($this.data('url'), {
       content: $input.val(),
       toReplyId: toReplyId
