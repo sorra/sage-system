@@ -9,9 +9,6 @@
   <title>${topic.title}</title>
   $!{includeCSS()}
   <style>
-    #container{
-      background: #e0e0e0;
-    }
     .topic{
       padding: 5px;
       background: #e0e0e0;
@@ -50,9 +47,8 @@
       $!{include("user-label.httl", ["u": topic.author])}
       $!{spanHumanTime(topic.createdTime)}
       #if(topic.modifiedTime)$!{spanHumanTime(topic.modifiedTime)}#end
-      <a class="btn_reply" href="javascript:;">回复</a>
+      <a class="btn_reply" href="javascript:;">评论</a>
     </div>
-    <div class="huitie">回帖:</div>
     <div class="replies">
       #for(reply : replies)
         <div class="reply" data-id="${reply.id}">

@@ -4,11 +4,13 @@ import java.util.*;
 import java.util.stream.Collectors;
 import javax.transaction.Transactional;
 
+import httl.util.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import sage.domain.commons.DomainRuntimeException;
 import sage.domain.commons.IdCommons;
+import sage.domain.commons.ReplaceMention;
 import sage.domain.repository.*;
 import sage.entity.Blog;
 import sage.entity.TopicPost;
@@ -19,6 +21,8 @@ import sage.util.Colls;
 @Service
 @Transactional
 public class TopicService {
+  @Autowired
+  private NotifService notifService;
   @Autowired
   private UserRepository userRepo;
   @Autowired
@@ -42,11 +46,22 @@ public class TopicService {
   }
 
   public TopicReply reply(long userId, String content, long topicPostId, Long toReplyId) {
+    content = StringUtils.escapeXml(content);
+    Set<Long> mentionedIds = new HashSet<>();
+    content = ReplaceMention.with(userRepo).apply(content, mentionedIds);
+
     Long toUserId = Optional.ofNullable(toReplyId)
         .map(id -> topicReplyRepo.get(id).getAuthor().getId()).orElse(null);
-    return topicReplyRepo.save(
+    TopicReply reply = topicReplyRepo.save(
         new TopicReply(topicPostRepo.load(topicPostId), userRepo.load(userId), new Date(), content)
             .setToInfo(toUserId, toReplyId));
+
+    //TODO sourceId要支持帖子
+    mentionedIds.forEach(atId -> notifService.mentionedByComment(atId, userId, reply.getId()));
+    if (reply.getToUserId() != null) {
+      notifService.replied(toUserId, userId, reply.getId());
+    }
+    return reply;
   }
 
   public void setHiddenOfTopicPost(long id, boolean hidden) {

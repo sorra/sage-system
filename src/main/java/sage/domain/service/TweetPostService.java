@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import sage.domain.commons.BadArgumentException;
 import sage.domain.commons.DomainRuntimeException;
 import sage.domain.commons.IdCommons;
+import sage.domain.commons.ReplaceMention;
 import sage.domain.repository.CommentRepository;
 import sage.domain.repository.TagRepository;
 import sage.domain.repository.TweetRepository;
@@ -161,46 +162,9 @@ public class TweetPostService {
   private ParsedContent processContent(String content) {
     content = StringUtils.escapeXml(content);
     Set<Long> mentionedIds = new HashSet<>();
-    content = replaceMention(content, 0, new StringBuilder(), mentionedIds);
+    content = ReplaceMention.with(userRepo).apply(content, mentionedIds);
     
     return new ParsedContent(content, mentionedIds);
-  }
-
-  /*
-   * Replace "@xxx" mentions recursively
-   */
-  public String replaceMention(String content, int startIndex, StringBuilder sb, Set<Long> mentionedIds) {
-    int indexOfAt = content.indexOf('@', startIndex);
-    int indexOfSpace = content.indexOf(' ', indexOfAt);
-    int indexOfInnerAt = content.lastIndexOf('@', indexOfSpace - 1);
-
-    if (indexOfAt >= 0 && indexOfSpace >= 0) {
-      if (indexOfInnerAt > indexOfAt && indexOfInnerAt < indexOfSpace) {
-        indexOfAt = indexOfInnerAt;
-      }
-      String name = content.substring(indexOfAt + 1, indexOfSpace);
-      User user = userRepo.findByName(name);
-      
-      if (user != null) {
-        // A valid mention
-        mentionedIds.add(user.getId());
-        sb.append(content.substring(startIndex, indexOfAt)).append('@').append(name)
-            .append('#').append(user.getId());
-        return replaceMention(content, indexOfSpace, sb, mentionedIds);
-      } else {
-        if (startIndex == 0) {
-          return content;
-        }
-        sb.append(content.substring(indexOfAt, indexOfSpace));
-        return replaceMention(content, indexOfSpace, sb, mentionedIds);
-      }
-    }
-
-    // Exit
-    if (startIndex == 0) {
-      return content;
-    }
-    return sb.append(content.substring(startIndex)).toString();
   }
   
   private static class ParsedContent {

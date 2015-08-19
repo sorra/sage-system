@@ -23,7 +23,6 @@ public class TopicReply {
     this.author = author;
     this.time = time;
     this.content = content;
-    this.toReplyId = toReplyId;
   }
 
   @Id @GeneratedValue
