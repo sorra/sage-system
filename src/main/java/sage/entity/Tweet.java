@@ -96,7 +96,7 @@ public class Tweet {
 
   @Column(nullable = false)
   public Long getOriginId() {
-    if (isDeleted()) return -1L;
+    if (isDeleted()) return -2L;
     return originId;
   }
   public void setOriginId(Long originId) {

@@ -125,10 +125,18 @@ public class TweetReadService {
   }
 
   public Collection<Tweet> getForwards(long originId) {
+    Tweet tweet = tweetRepo.get(originId);
+    if (tweet == null || tweet.isDeleted()) {
+      return Collections.emptyList();
+    }
     return Colls.copy(tweetRepo.byOrigin(originId));
   }
 
   public Collection<Comment> getComments(long sourceId) {
+    Tweet tweet = tweetRepo.get(sourceId);
+    if (tweet == null || tweet.isDeleted()) {
+      return Collections.emptyList();
+    }
     return Colls.copy(commentRepo.bySource(sourceId));
   }
 
