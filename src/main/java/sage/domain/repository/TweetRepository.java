@@ -16,7 +16,7 @@ public class TweetRepository extends BaseRepository<Tweet> {
     if (tags.isEmpty()) {
       return new LinkedList<>();
     }
-    String q = "select t from Tweet t join t.tags tgs where tgs in :qtags";
+    String q = q("select t from Tweet t join t.tags tgs where tgs in :qtags");
     return enhanceQuery(q, edge)
         .setParameterList("qtags", TagRepository.getQueryTags(tags))
         .setMaxResults(MAX_RESULTS)
@@ -28,7 +28,7 @@ public class TweetRepository extends BaseRepository<Tweet> {
   }
 
   public List<Tweet> byAuthor(long authorId, Edge edge) {
-    String q = "from Tweet t where t.author.id = :authorId";
+    String q = q("from Tweet t where t.author.id = :authorId");
     return enhanceQuery(q, edge)
         .setLong("authorId", authorId)
         .list();
@@ -36,7 +36,7 @@ public class TweetRepository extends BaseRepository<Tweet> {
 
   public int countByAuthor(long authorId) {
     return (int) (long) session().createQuery(
-        "select count(*) from Tweet t where t.author.id = :authorId")
+        q("select count(*) from Tweet t where t.author.id = :authorId"))
         .setLong("authorId", authorId)
         .uniqueResult();
   }
@@ -53,7 +53,7 @@ public class TweetRepository extends BaseRepository<Tweet> {
       return byAuthor(authorId);
     }
     tags = TagRepository.getQueryTags(tags);
-    String q = "select t from Tweet t join t.tags ta where t.author.id=:authorId and ta in :tags";
+    String q = q("select t from Tweet t join t.tags ta where t.author.id=:authorId and ta in :tags");
     return enhanceQuery(q, edge)
         .setLong("authorId", authorId)
         .setParameterList("tags", tags)
@@ -62,7 +62,7 @@ public class TweetRepository extends BaseRepository<Tweet> {
 
   public List<Tweet> connectTweets(long blogId) {
     Query queryShares = session().createQuery(
-        "from Tweet t where t.blogId = :bid")
+        q("from Tweet t where t.blogId = :bid"))
         .setLong("bid", blogId);
     List<Tweet> shares = queryShares.list();
 
@@ -74,7 +74,7 @@ public class TweetRepository extends BaseRepository<Tweet> {
         originIds.add(origin.getId());
       }
       Query queryReshares = session().createQuery(
-          "from Tweet t where t.originId in :ids")
+          q("from Tweet t where t.originId in :ids"))
           .setParameterList("ids", originIds);
       connected.addAll(queryReshares.list());
     }
@@ -84,7 +84,7 @@ public class TweetRepository extends BaseRepository<Tweet> {
 
   public List<Tweet> byOrigin(long originId) {
     return session().createQuery(
-        "from Tweet t where t.originId = :originId")
+        q("from Tweet t where t.originId = :originId"))
         .setLong("originId", originId)
         .list();
   }
@@ -95,9 +95,13 @@ public class TweetRepository extends BaseRepository<Tweet> {
 
   public long forwardCount(long originId) {
     Query query = session().createQuery(
-        "select count(*) from Tweet t  where t.originId = :originId")
+        q("select count(*) from Tweet t  where t.originId = :originId"))
         .setLong("originId", originId);
     return (long) query.uniqueResult();
+  }
+
+  private String q(String q) {
+    return q + " and deleted = false";
   }
 
   private Query enhanceQuery(String q, Edge edge) {

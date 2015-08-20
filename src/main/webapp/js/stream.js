@@ -2,6 +2,10 @@
 
 template.helper('replaceMention', replaceMention)
 template.helper('reduceMention', reduceMention)
+template.helper('knowDeleted', function(content){
+  if (!content || content.length == 0) return '[已删除]'
+  else return content
+})
 template.helper('showCount', function(count){
   return count>0 ? '('+count+')' : ''
 })
@@ -305,6 +309,7 @@ function setupForwardDialog() {
 }
 
 function replaceMention(content) {
+    if (!content) return content
     var indexOfAt = content.indexOf('@');
     var indexOfSpace = content.indexOf(' ', indexOfAt);
     
@@ -331,6 +336,7 @@ function replaceMention(content) {
 }
 
 function reduceMention(text) {
+  if (!text) return text
   var indexOfAt = text.indexOf('@')
   var indexOfSpace = text.indexOf(' ', indexOfAt)
   var indexOfSharp = text.indexOf('#', indexOfAt)

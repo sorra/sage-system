@@ -56,7 +56,7 @@ public class TweetPostService {
 
     userService.updateUserTag(userId, tagIds);
     
-    parsedContent.mentionedIds.forEach(mentioned -> notifService.mentionedByTweet(mentioned, userId, tweet.getId()));
+    parsedContent.mentionedIds.forEach(atId -> notifService.mentionedByTweet(atId, userId, tweet.getId()));
     
     searchBase.index(tweet.getId(), transfers.toTweetViewNoCount(tweet));
     return tweet;
@@ -85,7 +85,7 @@ public class TweetPostService {
     userService.updateUserTag(userId, Colls.map(tweet.getTags(), Tag::getId));
     
     origins.forEach(origin -> notifService.forwarded(origin.getAuthor().getId(), userId, tweet.getId()));
-    parsedContent.mentionedIds.forEach(mentioned -> notifService.mentionedByTweet(mentioned, userId, tweet.getId()));
+    parsedContent.mentionedIds.forEach(atId -> notifService.mentionedByTweet(atId, userId, tweet.getId()));
     
     searchBase.index(tweet.getId(), transfers.toTweetViewNoCount(tweet));
     return tweet;
@@ -107,7 +107,7 @@ public class TweetPostService {
     if (replyUserId != null) {
       notifService.replied(replyUserId, userId, comment.getId());
     }
-    parsedContent.mentionedIds.forEach(mentioned -> notifService.mentionedByComment(mentioned, userId, comment.getId()));
+    parsedContent.mentionedIds.forEach(atId -> notifService.mentionedByComment(atId, userId, comment.getId()));
     return comment;
   }
 
@@ -134,7 +134,8 @@ public class TweetPostService {
     if (!IdCommons.equal(userId, tweet.getAuthor().getId())) {
       throw new DomainRuntimeException("User[%d] is not the author of Tweet[%d]", userId, tweetId);
     }
-    tweetRepo.delete(tweet);
+    tweet.setDeleted(true);
+    tweetRepo.update(tweet);
     searchBase.delete(TweetView.class, tweetId);
   }
 

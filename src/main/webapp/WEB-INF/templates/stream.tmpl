@@ -7,7 +7,7 @@
     <div class="tweet-body">
       <a class="author-name" {{authorId | userLinkAttrs}}>{{authorName}}</a>
       <p class="tweet-content">
-        {{#content | replaceMention}}
+        {{#content | replaceMention | knowDeleted}}
         {{if midForwards}}
           {{each midForwards.msgs as msg i}}
           ||{{#msg | replaceMention}}
@@ -71,7 +71,7 @@
       {{if mfs}}
         {{each mfs.ids as id i}}
           <span mf-id="{{id}}">
-            ||{{mfs.msgs[i] | reduceMention}} <a class="mf-x>&times;</a>
+            ||{{mfs.msgs[i] | reduceMention}} <a class="mf-x">&times;</a>
           </span>
         {{/each}}
       {{/if}}

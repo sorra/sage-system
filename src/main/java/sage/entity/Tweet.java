@@ -21,6 +21,8 @@ public class Tweet {
   private Set<Tag> tags = new HashSet<>();
   private Collection<Comment> comments = new ArrayList<>();
 
+  private boolean deleted;
+
   Tweet() {}
 
   public Tweet(String content, User author, Date time, Set<Tag> tags) {
@@ -63,6 +65,7 @@ public class Tweet {
   @Column(columnDefinition = "TEXT")
   @Lob
   public String getContent() {
+    if (isDeleted()) return "";
     return content;
   }
   public void setContent(String content) {
@@ -93,6 +96,7 @@ public class Tweet {
 
   @Column(nullable = false)
   public Long getOriginId() {
+    if (isDeleted()) return -1L;
     return originId;
   }
   public void setOriginId(Long originId) {
@@ -103,6 +107,7 @@ public class Tweet {
   }
 
   public String getMidForwardsJson() {
+    if (isDeleted()) return null;
     return midForwardsJson;
   }
   public void setMidForwardsJson(String midForwardsJson) {
@@ -133,6 +138,12 @@ public class Tweet {
     this.comments = comments;
   }
 
+  public boolean isDeleted() {
+    return deleted;
+  }
+  public void setDeleted(boolean deleted) {
+    this.deleted = deleted;
+  }
 
   public boolean hasBlog() {
     return blogId >= 0;
