@@ -4,8 +4,7 @@
 	<!-- 控制台输出 -->
 	<appender name="stdout" class="ch.qos.logback.core.ConsoleAppender">
 		<encoder>
-			<!-- <pattern>%date [%thread] %-5level %logger{80} - %msg%n</pattern> -->
-			<pattern>%date %-5level %logger{80} - %msg%n</pattern>
+			<pattern>%date [%thread] %-5level %logger{80} - %msg%n</pattern>
 		</encoder>
 	</appender>
 
@@ -16,7 +15,7 @@
 			<level>INFO</level>
 		</filter>
 		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-			<FileNamePattern>logs/server.%d{yyyy-MM-dd}.log
+			<FileNamePattern>logs/sage/info.%d{yyyy-MM-dd}.log
 			</FileNamePattern>
 			<MaxHistory>30</MaxHistory>
 		</rollingPolicy>
@@ -34,7 +33,7 @@
 			<onMismatch>DENY</onMismatch>
 		</filter>
 		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-			<FileNamePattern>logs/error.%d{yyyy-MM-dd}.log
+			<FileNamePattern>logs/sage/error.%d{yyyy-MM-dd}.log
 			</FileNamePattern>
 			<MaxHistory>30</MaxHistory>
 		</rollingPolicy>
@@ -44,19 +43,19 @@
 	</appender>
 
 	<logger name="org.springframework">
-		<level value="INFO" />
+		<level value="INFO"/>
 	</logger>
 	<logger name="org.hibernate">
-		<level value="INFO" />
+		<level value="INFO"/>
 	</logger>
 	<logger name="httl">
-		<level value="INFO"></level>
+		<level value="INFO"/>
 	</logger>
 	<logger name="com.mchange">
-		<level value="INFO"></level>
+		<level value="INFO"/>
 	</logger>
 	<logger name="org.elasticsearch">
-		<level value="INFO"></level>
+		<level value="INFO"/>
 	</logger>
 
 	<root level="DEBUG">
