@@ -1,5 +1,10 @@
 #set(FollowList fs)
-<div class="follow-list">
+#set(Boolean isSelf)
+<div class="follow-list" data-id="${fs.id}">
+  <div>
+    <span>${fs.name}</span>
+    #if(!isSelf)<a class="heed_follow_list" href="javascript:;">订阅</a>#end
+  </div>
   #for(FollowInfo f : fs.list)
   <div class="finfo">
     $!{include('user-label.httl', ['u': f.user])}

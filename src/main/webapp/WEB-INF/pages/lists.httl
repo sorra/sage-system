@@ -4,12 +4,17 @@
 #set(components = ["bootstrap", "layout", "tag", "user"])
 #set(UserSelf self, UserLabel owner)
 #set(Collection<FollowList> followLists, Collection<ResourceList> resourceLists)
+#set(isSelf = (self.id == owner.id))
 -->
 <head>
   <meta charset="UTF-8">
   <title>${owner.name}的所有列表</title>
   $!{includeCSS()}
   <style>
+    .follow-list{
+      background: #e0e0e0;
+      padding: 5px;
+    }
     .finfo{
       margin-top: 10px;
     }
@@ -22,34 +27,58 @@
 <body>
 $!{include("navbar.httl")}
 <div id="container" class="container">
-  #if(self.id == owner.id)
+  #if(isSelf)
   <button id="btn_expose_all" class="btn btn-sm">展示我的所有关注</button>
   #end
 
   #if(followLists)
-  <p>关注列表:</p>
-  #for(fs : followLists)
+    <p>关注列表:</p>
+    #for(fs : followLists)
     $!{include("follow-list.httl")}
-  #end
+    #end
   #end
 
   #if(resourceLists)
-  <p>资源列表:</p>
-  #for(rs : resourceLists)
+    <p>资源列表:</p>
+    #for(rs : resourceLists)
     $!{include("resource-list.httl")}
-  #end
+    #end
   #end
 </div>
 $!{includeProto}
 $!{includeJS()}
 <script>
+  $(document).on('click', '.heed_follow_list', function(){
+    var $this = $(this)
+    var id = $this.parents('.follow-list').data('id')
+    if ($this.text() == '订阅') {
+      $.post('/heed/follow-list/' + id)
+          .done(function () {
+            $this.text('已订阅').css('color', 'gray')
+          })
+          .fail(function () {
+            tipover($this, '操作遇到问题', 1000)
+          })
+    } else {
+      $.post('/unheed/follow-list/' + id)
+          .done(function () {
+            $this.text('订阅').css('color', '')
+          })
+          .fail(function () {
+            tipover($this, '操作遇到问题', 1000)
+          })
+    }
+  })
+
   $('#btn_expose_all').click(function(){
     var $this = $(this)
     $.post('/list/follow/expose-all')
-  }).done(function(resp){
-    tipover($this, '操作成功(id: '+resp+')', 1000)
-  }).fail(function(resp){
-    tipover($this, '操作遇到问题', 1000)
+        .done(function(){
+          window.location = window.location
+        })
+        .fail(function(resp){
+          tipover($this, '操作遇到问题', 1000)
+        })
   })
 </script>
 </body>

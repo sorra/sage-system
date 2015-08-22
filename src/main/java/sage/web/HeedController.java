@@ -37,13 +37,13 @@ public class HeedController {
   }
 
   @RequestMapping("/heed/follow-list/{id}")
-  public void heedFollowList(@RequestParam long id) {
+  public void heedFollowList(@PathVariable long id) {
     Long cuid = Auth.checkCuid();
     heedService.heedFollowList(cuid, id);
   }
 
   @RequestMapping("/unheed/follow-list/{id}")
-  public void unheedFollowList(@RequestParam long id) {
+  public void unheedFollowList(@PathVariable long id) {
     Long cuid = Auth.checkCuid();
     heedService.unheedFollowList(cuid, id);
   }
