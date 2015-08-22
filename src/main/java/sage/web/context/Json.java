@@ -3,12 +3,14 @@ package sage.web.context;
 import java.io.IOException;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 
 public abstract class Json {
-  private static final ObjectMapper om = new ObjectMapper();
+  private static final ObjectMapper om = new ObjectMapper()
+      .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
   public static String json(Object object) {
     try {

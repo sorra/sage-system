@@ -66,7 +66,7 @@ public class ListController {
     Long uid = Auth.checkCuid();
 
     FollowListLite fcLite = Json.object(listLite, FollowListLite.class);
-    Assert.isTrue(fcLite.getOwnerId().equals(uid));
+    fcLite.setOwnerId(uid);
     return listService.addFollowList(fcLite, uid);
   }
 }
