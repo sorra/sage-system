@@ -15,7 +15,12 @@ public class FollowInfoLite {
     tagIds = new ArrayList<>();
     followInfo.getTags().forEach(tag -> tagIds.add(tag.getId()));
   }
-  
+
+  public FollowInfoLite(Long userId, Collection<Long> tagIds) {
+    this.userId = userId;
+    this.tagIds = tagIds;
+  }
+
   public Long getUserId() {
     return userId;
   }

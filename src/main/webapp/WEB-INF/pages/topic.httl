@@ -1,9 +1,11 @@
 <!DOCTYPE html>
 <html>
+<!--
 #set(components = ["bootstrap", "layout", "tag", "user"])
 #set(TopicPost topicPost)
 #set(BlogView topic)
 #set(List<TopicReplyView> replies)
+-->
 <head>
   <meta charset="UTF-8">
   <title>${topic.title}</title>

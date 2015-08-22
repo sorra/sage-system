@@ -1,13 +1,17 @@
 package sage.web;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
 import sage.domain.service.ListService;
 import sage.domain.service.RelationService;
-import sage.transfer.FollowList;
-import sage.transfer.FollowListLite;
-import sage.transfer.ResourceList;
+import sage.domain.service.TagService;
+import sage.domain.service.UserService;
+import sage.entity.Tag;
+import sage.transfer.*;
+import sage.util.Colls;
 import sage.web.auth.Auth;
 import sage.web.context.Json;
 
@@ -17,7 +21,11 @@ public class ListController {
   @Autowired
   private ListService listService;
   @Autowired
-  RelationService rs;
+  private RelationService relationService;
+  @Autowired
+  private UserService userService;
+  @Autowired
+  private TagService tagService;
   
   @RequestMapping(value = "/resource/{id}", method = RequestMethod.GET)
   public ResourceList getResourceList(@PathVariable Long id) {
@@ -51,7 +59,7 @@ public class ListController {
   }
   
   @RequestMapping(value = "/follow/{id}", method = RequestMethod.POST)
-  public Boolean updateFollowList(@PathVariable String id, @RequestParam String listLite) {
+  public Boolean updateFollowList(@PathVariable Long id, @RequestParam String listLite) {
     Long uid = Auth.checkCuid();
     
     FollowListLite fcLite = Json.object(listLite, FollowListLite.class);
@@ -68,5 +76,15 @@ public class ListController {
     FollowListLite fcLite = Json.object(listLite, FollowListLite.class);
     fcLite.setOwnerId(uid);
     return listService.addFollowList(fcLite, uid);
+  }
+
+  @RequestMapping(value = "/follow/expose-all", method = RequestMethod.POST)
+  public Long exposeAllOfFollow() {
+    Long cuid = Auth.checkCuid();
+
+    List<FollowInfoLite> follows = Colls.map(relationService.followings(cuid), f ->
+        new FollowInfoLite(f.getTarget().getId(), Colls.map(f.getTags(), Tag::getId)));
+    FollowListLite list = new FollowListLite(null, cuid, "所有关注", follows);
+    return listService.addFollowList(list, cuid);
   }
 }

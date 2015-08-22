@@ -1,6 +1,7 @@
 package sage.domain.service;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import httl.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,7 @@ import sage.domain.repository.*;
 import sage.entity.FollowListEntity;
 import sage.entity.ResourceListEntity;
 import sage.transfer.*;
+import sage.util.Colls;
 
 @Service
 @Transactional
@@ -74,5 +76,16 @@ public class ListService {
     rc.getList().forEach(info -> neo.getList().add(
         new ResourceInfo(StringUtils.escapeXml(info.getLink()), StringUtils.escapeXml(info.getDesc()))));
     return neo;
+  }
+
+  public List<FollowList> followListsOfOwner(long ownerId) {
+    return Colls.map(followListRepo.byOwner(ownerId),
+        l -> FollowListLite.fromEntity(l)
+            .toFull($ -> new UserLabel(userRepo.nonNull($)), $ -> new TagLabel(tagRepo.nonNull($))));
+  }
+
+  public List<ResourceList> resourceListsOfOwner(long ownerId) {
+    return Colls.map(resourceListRepo.byOwner(ownerId),
+        l -> ResourceList.fromEntity(l));
   }
 }
