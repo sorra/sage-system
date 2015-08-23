@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>需要登录</title>
+  <style>
+    #main{
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+<div id="main">
+  <a href="${location}">正在前往登录页...</a>
+</div>
+<script>
+'<!--'
+  window.location = '$!{location}'
+'-->'
+</script>
+</body>
+</html>
