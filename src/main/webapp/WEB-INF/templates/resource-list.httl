@@ -2,8 +2,8 @@
 <div class="resource-list">
   #for(ResourceInfo r : rs.list)
   <div class="rinfo">
-    <span class="rinfo-desc">r.desc</span>
-    <a class="rinfo-link">r.link</a>
+    <span class="rinfo-desc">${r.desc}</span>
+    <a class="rinfo-link" href="${r.link}">${r.link}</a>
   </div>
   #end
 </div>

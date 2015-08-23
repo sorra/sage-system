@@ -24,15 +24,4 @@
 			<button class="follow"></button>
 		</div>
 	</div>
-	
-	<div class="user-label">
-	   <a class="avatar"><img /></a>
-	   <a class="name"></a>
-	</div>
-
-	<a class="tag-label" title="">name</a>
-
-	<div class="tag-card"></div>
-
-	<div class="tag-chain"></div>
 </div>

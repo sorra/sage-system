@@ -10,7 +10,7 @@ function getTagChain(id, $parent) {
 }
 
 function createTagChain(tagCard) {
-	var $tch = $('.proto > .tag-chain').clone().css({position: 'relative'});
+	var $tch = $('<div class="tag-chain"></div>').css({position: 'relative'});
 	for (var i = tagCard.chainUp.length-1, inc = 0; i >= 0; i--, inc++) {
 		var item = tagCard.chainUp[i];
 
@@ -44,7 +44,7 @@ function createTagChain(tagCard) {
 }
 
 function createTagLabel(tagLabel) {
-	var $tl = $('.proto > .tag-label').clone();
+	var $tl = $('<a class="tag-label" title=""></a>');
 	$tl.text(tagLabel.name)
 	   .attr('tag-id', tagLabel.id)
 	   .attr('href', '/public/'+tagLabel.id)
