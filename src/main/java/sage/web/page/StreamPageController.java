@@ -14,6 +14,7 @@ import sage.domain.service.TagService;
 import sage.domain.service.UserService;
 import sage.transfer.TagCard;
 import sage.transfer.TagLabel;
+import sage.transfer.UserCard;
 import sage.util.Colls;
 import sage.web.auth.Auth;
 import sage.web.context.FrontMap;
@@ -79,8 +80,10 @@ public class StreamPageController {
     if (uid.equals(id)) {
       fm.put("isSelfPage", true);
     }
-    fm.put("thisUser", userService.getUserCard(uid, id));
-    
+    UserCard thisUser = userService.getUserCard(uid, id);
+    fm.put("thisUser", thisUser);
+    model.put("thisUser", thisUser);
+
     return "private-page";
   }
 }
