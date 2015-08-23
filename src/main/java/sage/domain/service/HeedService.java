@@ -43,6 +43,10 @@ public class HeedService {
     return Colls.copy(followListHeedRepo.byUser(userId));
   }
 
+  public boolean followListHeedStatus(long userId, long followListId) {
+    return followListHeedRepo.byUserAndList(userId, followListId) != null;
+  }
+
   public void heedFollowList(long userId, long followListId) {
     if (followListHeedRepo.byUserAndList(userId, followListId) == null) {
       followListHeedRepo.save(new FollowListHeed(userId, followListRepo.load(followListId)));

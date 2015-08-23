@@ -4,6 +4,7 @@
 #set(components = ["bootstrap", "layout", "tag", "user"])
 #set(UserSelf self, UserLabel owner)
 #set(Collection<FollowList> followLists, Collection<ResourceList> resourceLists)
+#set(Map<Long, Boolean> followListHeedStatuses)
 #set(isSelf = (self.id == owner.id))
 -->
 <head>
@@ -34,7 +35,7 @@ $!{include("navbar.httl")}
   #if(followLists)
     <p>关注列表:</p>
     #for(fs : followLists)
-    $!{include("follow-list.httl")}
+    $!{include("follow-list.httl", ["isHeed": followListHeedStatuses[fs.id]])}
     #end
   #end
 
