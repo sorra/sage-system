@@ -54,9 +54,9 @@ public class ListService {
         .toFull($ -> new UserLabel(userRepo.nonNull($)), $ -> new TagLabel(tagRepo.nonNull($)));
   }
   
-  public Long addFollowList(FollowListLite fcLite, Long ownerId) {
+  public Long addFollowList(FollowListLite fcLite, Long userId) {
     FollowListEntity entity = fcLite.toEntity();
-    entity.setOwnerId(ownerId);
+    entity.setOwnerId(userId);
     followListRepo.save(entity);
     return entity.getId();
   }

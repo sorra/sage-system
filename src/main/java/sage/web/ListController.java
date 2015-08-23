@@ -82,9 +82,18 @@ public class ListController {
   public Long exposeAllOfFollow() {
     Long cuid = Auth.checkCuid();
 
+    Long existingIdOrNull = listService.followListsOfOwner(cuid).stream()
+        .filter(l -> l.getName().equals("所有关注"))
+        .findFirst().map(FollowList::getId).orElse(null);
+
     List<FollowInfoLite> follows = Colls.map(relationService.followings(cuid), f ->
         new FollowInfoLite(f.getTarget().getId(), Colls.map(f.getTags(), Tag::getId)));
-    FollowListLite list = new FollowListLite(null, cuid, "所有关注", follows);
-    return listService.addFollowList(list, cuid);
+    FollowListLite list = new FollowListLite(existingIdOrNull, cuid, "所有关注", follows);
+    if (existingIdOrNull == null) {
+      return listService.addFollowList(list, cuid);
+    } else {
+      listService.updateFollowList(list, cuid);
+      return existingIdOrNull;
+    }
   }
 }
