@@ -60,7 +60,7 @@
     </div>
     <div class="input-group">
       <label for="repeat-password">再次输入密码</label>
-      <input id="repeat-password" name="password" type="password" placeholder="请再次输入密码" />
+      <input id="repeat-password" name="repeat-password" type="password" placeholder="请再次输入密码" />
     </div>
     <div class="input-group" id="register-action">
       <button type="submit" class="btn btn-block btn-lg btn-danger">

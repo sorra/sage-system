@@ -94,6 +94,9 @@ public class AuthController {
       throw PASSWORD_TOO_SHORT;
     }
     if (password.length() > 20) {
+      if (password.contains(",")) {
+        log.warn("密码含有逗号, 是不是表单的name=password重复了?");
+      }
       throw PASSWORD_TOO_LONG;
     }
     if (repeatPassword != null && !repeatPassword.equals(password)) {
