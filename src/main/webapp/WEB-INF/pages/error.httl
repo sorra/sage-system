@@ -13,10 +13,10 @@
   <div id="main">
     <p>HTTP错误${errorCode}</p>
     <p>${reason}</p>
-    <a href="/">回到首页</a> (3秒后自动前往)
+    <a href="/">回到首页</a> (5秒后自动前往, 如无变化请点击)
   </div>
   <script>
-    window.setTimeout('window.location="/"', 3000)
+    window.setTimeout('window.location="/"', 5000)
   </script>
 </body>
 </html>
