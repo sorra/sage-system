@@ -13,6 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.support.TransactionTemplate;
 import org.springframework.web.multipart.MultipartFile;
 import sage.domain.commons.DomainRuntimeException;
 import sage.domain.repository.FileItemRepository;
@@ -47,6 +48,8 @@ public class FilesService {
 
   @Autowired
   private FileItemRepository fileRepo;
+  @Autowired
+  private TransactionTemplate txTemplate;
 
   public String upload(long userId, MultipartFile file, FilesService.Folder folder) throws IOException {
     FileManager fm = fileManagers.get(folder);
@@ -67,12 +70,15 @@ public class FilesService {
   }
 
   public void delete(long userId, long fileId) {
-    FileItem fileItem = fileRepo.nonNull(fileId);
-    if (userId != fileItem.getOwnerId()) {
-      throw new DomainRuntimeException("User[%s] is not the owner of FileItem[%s]", userId, fileId);
-    }
-    // Soft delete file content?
-    fileRepo.delete(fileItem);
+    txTemplate.execute(status -> {
+      FileItem fileItem = fileRepo.nonNull(fileId);
+      if (userId != fileItem.getOwnerId()) {
+        throw new DomainRuntimeException("User[%s] is not the owner of FileItem[%s]", userId, fileId);
+      }
+      // Soft delete file content?
+      fileRepo.delete(fileItem);
+      return null;
+    });
   }
 
   private String saveFile(long userId, FileManager fm, Folder folder, MultipartFile file) throws IOException {
@@ -87,7 +93,7 @@ public class FilesService {
 
     String webPath = folder.name().toLowerCase() + "/" + filename;
 
-    fileRepo.save(new FileItem(filename, webPath, storePath.toString(), userId));
+    txTemplate.execute(status -> fileRepo.save(new FileItem(filename, webPath, storePath.toString(), userId)));
 
     log.info("File saved: " + storePath);
     return webPath;

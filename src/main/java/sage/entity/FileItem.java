@@ -4,6 +4,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
+import sage.domain.commons.IdCommons;
+
 @Entity
 public class FileItem {
   private Long id;
@@ -56,5 +58,20 @@ public class FileItem {
 
   public void setOwnerId(Long ownerId) {
     this.ownerId = ownerId;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+
+    FileItem fileItem = (FileItem) o;
+    return IdCommons.equal(getId(), fileItem.getId());
+
+  }
+
+  @Override
+  public int hashCode() {
+    return getId() != null ? getId().hashCode() : 0;
   }
 }
