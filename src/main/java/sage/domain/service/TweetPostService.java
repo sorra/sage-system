@@ -68,6 +68,7 @@ public class TweetPostService {
     }
     ParsedContent parsedContent = processContent(content);
     content = parsedContent.content;
+    if (content.isEmpty()) content = " ";
     
     Tweet directOrigin = tweetRepo.load(originId);
     Deque<Tweet> origins = fromDirectToInitialOrigin(directOrigin);
