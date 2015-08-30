@@ -3,6 +3,7 @@ window.ucOpener;
 window.ucCloser;
 
 setupFollowDialog()
+setupListeners()
 
 
 function launchUcOpener() {
@@ -107,35 +108,11 @@ function setAsFollowed($follow, uc) {
     var $dialog = $('#follow-dialog')
     $dialog.data('usercard', uc)
 
-    $('<button>').text('修改').addClass('btn btn-primary')
-      .appendTo($dialog.find('.modal-footer').empty())
-      .click(function(){
-        var selectedTagIds = [];
-        $dialog.find('.modal-body')
-          .find('.btn-success').each(function(){
-            var tagId = parseInt($(this).attr('tag-id'));
-            selectedTagIds.push(tagId);
-          });
-        var includeNew = $dialog.find('input[name=includeNew]').is(':checked')
-        var includeAll = $dialog.find('input[name=includeAll]').is(':checked')
+    $('<button>').text('修改').addClass('btn_editfollow btn btn-primary')
+        .appendTo($dialog.find('.modal-footer').empty())
 
-        console.log("tagIds: " + selectedTagIds);
-        $.post('/follow/'+uc.id, {tagIds: selectedTagIds, includeNew: includeNew, includeAll: includeAll})
-          .fail(function(){
-            alert('操作失败');
-          });
-        $dialog.modal('hide')
-      });
-
-    $('<button>').text('取消关注').addClass('btn btn-inverse')
-      .appendTo($dialog.find('.modal-footer'))
-      .click(function(){
-        $.post('/unfollow/'+uc.id)
-          .fail(function(){
-            alert('操作失败');
-          });
-        $dialog.modal('hide')
-      });
+    $('<button>').text('取消关注').addClass('btn_unfollow btn btn-inverse')
+        .appendTo($dialog.find('.modal-footer'))
 
     $dialog.modal();
   });
@@ -146,25 +123,8 @@ function setAsNotFollowed($follow, uc) {
     var $dialog = $('#follow-dialog')
     $dialog.data('usercard', uc)
 
-    $('<button>').text('+关注').addClass('btn btn-primary')
-      .appendTo($dialog.find('.modal-footer').empty())
-      .click(function(){
-        var selectedTagIds = [];
-        $dialog.find('.modal-body')
-          .find('.btn-success').each(function(){
-            var tagId = parseInt($(this).attr('tag-id'));
-            selectedTagIds.push(tagId);
-          });
-        var includeNew = $dialog.find('input[name=includeNew]').is(':checked')
-        var includeAll = $dialog.find('input[name=includeAll]').is(':checked')
-
-        console.log("tagIds: " + selectedTagIds);
-        $.post('/follow/'+uc.id, {tagIds: selectedTagIds, includeNew: includeNew, includeAll: includeAll})
-          .fail(function(){
-            alert('操作失败');
-          });
-        $dialog.modal('hide')
-      });
+    $('<button>').text('+关注').addClass('btn_follow btn btn-primary')
+        .appendTo($dialog.find('.modal-footer').empty())
 
     $dialog.modal();
   });
@@ -196,5 +156,53 @@ function setupFollowDialog(){
     var $iall = $('<div><input name="includeAll" type="checkbox"/>全订阅，不过滤</div>')
     if (uc.follow && uc.follow.includeAll) $iall.find('input').prop('checked', true)
     $iall.appendTo($body)
+  })
+}
+
+function setupListeners() {
+  var $body = $('body')
+
+  $body.delegate('#follow-dialog .btn_follow', 'click', function(){
+    var $dialog = $('#follow-dialog')
+    var uc = $dialog.data('usercard')
+    var selectedTagIds = []
+    $dialog.find('.modal-body')
+        .find('.btn-success').each(function(){
+          var tagId = parseInt($(this).attr('tag-id'))
+          selectedTagIds.push(tagId)
+        })
+    var includeNew = $dialog.find('input[name=includeNew]').is(':checked')
+    var includeAll = $dialog.find('input[name=includeAll]').is(':checked')
+
+    console.log("tagIds: " + selectedTagIds)
+    $.post('/follow/'+uc.id, {tagIds: selectedTagIds, includeNew: includeNew, includeAll: includeAll})
+      .fail(function(){alert('操作遇到问题')})
+    $dialog.modal('hide')
+  })
+
+  $body.delegate('#follow-dialog .btn_editfollow', 'click', function(){
+    var $dialog = $('#follow-dialog')
+    var uc = $dialog.data('usercard')
+    var selectedTagIds = []
+    $dialog.find('.modal-body')
+        .find('.btn-success').each(function(){
+          var tagId = parseInt($(this).attr('tag-id'));
+          selectedTagIds.push(tagId)
+        })
+    var includeNew = $dialog.find('input[name=includeNew]').is(':checked')
+    var includeAll = $dialog.find('input[name=includeAll]').is(':checked')
+
+    console.log("tagIds: " + selectedTagIds)
+    $.post('/follow/'+uc.id, {tagIds: selectedTagIds, includeNew: includeNew, includeAll: includeAll})
+        .fail(function(){alert('操作遇到问题')})
+    $dialog.modal('hide')
+  })
+
+  $body.delegate('#follow-dialog .btn_unfollow', "click", function(){
+    var $dialog = $('#follow-dialog')
+    var uc = $dialog.data('usercard')
+    $.post('/unfollow/'+uc.id)
+        .fail(function(){alert('操作失败')})
+    $dialog.modal('hide')
   })
 }
