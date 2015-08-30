@@ -2,6 +2,8 @@ package sage.domain.service;
 
 import java.util.Collection;
 import java.util.Objects;
+import java.util.Optional;
+import java.util.stream.Stream;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,7 +34,7 @@ public class NotifService {
 
   @Transactional(readOnly=true)
   public Collection<NotifView> all(long userId) {
-    return notifRepo.byOwner(userId).stream().map(this::toView).collect(toList());
+    return notifRepo.byOwner(userId).stream().flatMap(this::toView).collect(toList());
   }
 
   @Transactional(readOnly = true)
@@ -41,7 +43,7 @@ public class NotifService {
     if (readToId == null) {
       return all(userId);
     } else {
-      return notifRepo.byOwnerAndAfterId(userId, readToId).stream().map(this::toView).collect(toList());
+      return notifRepo.byOwnerAndAfterId(userId, readToId).stream().flatMap(this::toView).collect(toList());
     }
   }
 
@@ -56,30 +58,36 @@ public class NotifService {
     }
   }
 
-  public NotifView toView(Notif notif) {
+  public Stream<NotifView> toView(Notif notif) {
+    final Long sourceId = notif.getSourceId();
+    if (sourceId == null) return Stream.empty();
     String source;
     switch (notif.getType().sourceType) {
       case USER:
-        source = "/private/"+notif.getSourceId();
+        source = "/private/"+sourceId;
         break;
       case TWEET:
-        source = "/tweet/"+notif.getSourceId();
+        source = "/tweet/"+sourceId;
         break;
       case COMMENT:
-        long tweetId = commentRepo.nonNull(notif.getSourceId()).getSource().getId();
-        source = "/tweet/"+tweetId+"?comment="+notif.getSourceId();
+        Long tweetId = commentRepo.optional(sourceId).map(c -> c.getSource().getId()).orElse(null);
+        if (tweetId != null) {
+          source = "/tweet/"+tweetId+"?comment="+sourceId;
+        } else return Stream.empty();
         break;
       case TOPIC_POST:
-        source = "/topic/"+notif.getSourceId();
+        source = "/topic/"+sourceId;
         break;
       case TOPIC_REPLY:
-        long topicPostId = topicReplyRepo.nonNull(notif.getSourceId()).getTopicPost().getId();
-        source = "/topic/" + topicPostId + "?reply="+notif.getSourceId();
+        Long topicPostId = topicReplyRepo.optional(sourceId).map(r -> r.getTopicPost().getId()).orElse(null);
+        if (topicPostId != null) {
+          source = "/topic/" + topicPostId + "?reply="+sourceId;
+        } else return Stream.empty();
         break;
       default:
         throw new IllegalArgumentException("Wrong sourceType: " + notif.getType().sourceType);
     }
-    return new NotifView(notif, userService.getUserLabel(notif.getSenderId()), source);
+    return Stream.of(new NotifView(notif, userService.getUserLabel(notif.getSenderId()), source));
   }
   
   //TODO filter & black-list
