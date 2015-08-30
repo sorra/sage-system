@@ -56,10 +56,9 @@ public class TopicService {
         new TopicReply(topicPostRepo.load(topicPostId), userRepo.load(userId), new Date(), content)
             .setToInfo(toUserId, toReplyId));
 
-    //TODO sourceId要支持帖子
-    mentionedIds.forEach(atId -> notifService.mentionedByComment(atId, userId, reply.getId()));
+    mentionedIds.forEach(atId -> notifService.mentionedByTopicReply(atId, userId, reply.getId()));
     if (reply.getToUserId() != null) {
-      notifService.replied(toUserId, userId, reply.getId());
+      notifService.repliedInTopic(toUserId, userId, reply.getId());
     }
     return reply;
   }

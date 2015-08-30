@@ -10,7 +10,8 @@ import static sage.entity.Notif.Type.*;
 public class NotifTypeTest {
   @Test
   public void type() {
-    assertArrayEquals(
-        new Type[]{FORWARDED, COMMENTED, REPLIED, MENTIONED_TWEET, MENTIONED_COMMENT, FOLLOWED}, values());
+    assertArrayEquals(new Type[]{
+        FOLLOWED, FORWARDED, COMMENTED, REPLIED, MENTIONED_TWEET, MENTIONED_COMMENT,
+        MENTIONED_TOPIC_POST, MENTIONED_TOPIC_REPLY, REPIED_IN_TOPIC}, values());
   }
 }

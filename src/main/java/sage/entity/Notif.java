@@ -14,7 +14,7 @@ public class Notif {
   private Type type;
   private Long sourceId;
   private Date time;
-  
+
   Notif() {}
   
   public Notif(Long ownerId, Long senderId, Type type, Long sourceId) {
@@ -69,12 +69,15 @@ public class Notif {
   }
 
   public enum Type {
+    FOLLOWED(SourceType.USER, "关注了你", "新粉丝"),
     FORWARDED(SourceType.TWEET, "转发了你的微博", "转发"),
     COMMENTED(SourceType.COMMENT, "评论了你的微博", "评论"),
     REPLIED(SourceType.COMMENT, "回复了你", "回复"),
     MENTIONED_TWEET(SourceType.TWEET, "在微博中提到了你", "微博@"),
     MENTIONED_COMMENT(SourceType.COMMENT, "在评论中提到了你", "评论@"),
-    FOLLOWED(SourceType.USER, "关注了你", "新粉丝");
+    MENTIONED_TOPIC_POST(SourceType.TOPIC_POST, "在帖子中提到了你", "帖子@"),
+    MENTIONED_TOPIC_REPLY(SourceType.TOPIC_REPLY, "在帖子中提到了你", "帖子@"),
+    REPIED_IN_TOPIC(SourceType.TOPIC_REPLY, "在帖子中回复了你", "帖子回复");
     public final SourceType sourceType;
     public final String desc;
     public final String shortDesc;
@@ -86,6 +89,6 @@ public class Notif {
   }
 
   public enum SourceType {
-    TWEET, COMMENT, USER
+    USER, TWEET, COMMENT, TOPIC_POST, TOPIC_REPLY
   }
 }
