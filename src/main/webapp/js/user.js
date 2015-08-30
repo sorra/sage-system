@@ -146,7 +146,7 @@ function setAsNotFollowed($follow, uc) {
     var $dialog = $('#follow-dialog')
     $dialog.data('usercard', uc)
 
-    $('<button>').text('关注').addClass('btn btn-primary')
+    $('<button>').text('+关注').addClass('btn btn-primary')
       .appendTo($dialog.find('.modal-footer').empty())
       .click(function(){
         var selectedTagIds = [];
