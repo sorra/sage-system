@@ -41,12 +41,7 @@ $!{includeJS()}
     $thisUser.find('.follow').remove();
     $thisUser.appendTo($('.side'));
 
-    var deferred = getStream('/read/u/' + window.frontMap.id);
-    if (window.frontMap.isSelfPage) {
-      deferred.done(function() {
-        addDeleteButtons($('.slist .tweet'));
-      });
-    }
+    getStream('/read/u/' + window.frontMap.id);
   });
 </script>
 </body>
