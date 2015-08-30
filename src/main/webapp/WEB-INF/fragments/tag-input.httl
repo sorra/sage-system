@@ -9,6 +9,6 @@
     <a class="tag-sel btn btn-sm btn-default" tag-id="${each.id}"
        title="${each.chainStr}">${each.name}</a>
   #end
-  <a class="tag-plus btn btn-info" title="更多">+</a>
-  <a class="tag-clear btn btn-default" title="清除">-</a>
+  <a class="tag-plus btn btn-info">+更多</a>
+  <a class="tag-clear btn btn-default">-不选</a>
 </div>
