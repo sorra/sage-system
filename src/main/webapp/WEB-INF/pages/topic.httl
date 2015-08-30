@@ -57,7 +57,7 @@
           #if(reply.toUser)
             <span style="color: gray">回复 ${reply.toUser.name}:</span>
           #end
-          <div>${reply.content}</div>
+          <div>$!{reply.content}</div>
           $!{include("user-label.httl", ["u": reply.author])}
           $!{spanHumanTime(reply.time)}
           <a class="btn_reply" href="javascript:;">回复</a>

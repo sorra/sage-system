@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
+import sage.domain.commons.ReformMention;
 import sage.domain.service.*;
 import sage.entity.TopicPost;
 import sage.transfer.*;
@@ -82,8 +83,11 @@ public class GroupPageController {
     BlogView bv = new BlogView(topicPost.getBlog());
     UserCard author = userService.getUserCard(Auth.cuid(), bv.getAuthor().getId());
     List<TopicReplyView> replies = Colls.map(topicService.getTopicReplies(id),
-        treply -> new TopicReplyView(treply,
-            Optional.ofNullable(treply.getToUserId()).map(userService::getUserLabel).orElse(null)));
+        treply -> {
+          treply.setContent(ReformMention.apply(treply.getContent()));
+          return new TopicReplyView(treply,
+              Optional.ofNullable(treply.getToUserId()).map(userService::getUserLabel).orElse(null));
+        });
     model.put("topicPost", topicPost);
     model.put("topic", bv);
     model.put("author", author);

@@ -15,6 +15,7 @@ public class ReplaceMention {
   }
 
   public String apply(String content, Set<Long> mentionedIds) {
+    if (content == null || content.isEmpty()) return content;
     return recur(content, 0, new StringBuilder(), mentionedIds);
   }
 
@@ -24,12 +25,12 @@ public class ReplaceMention {
   private String recur(String content, int startIndex, StringBuilder sb, Set<Long> mentionedIds) {
     int indexOfAt = content.indexOf('@', startIndex);
     int indexOfSpace = content.indexOf(' ', indexOfAt);
-    int indexOfInnerAt = content.lastIndexOf('@', indexOfSpace - 1);
+    if (indexOfSpace < 0) {
+      indexOfSpace = content.length();
+    }
+    indexOfAt = content.lastIndexOf('@', indexOfSpace - 1);
 
-    if (indexOfAt >= 0 && indexOfSpace >= 0) {
-      if (indexOfInnerAt > indexOfAt && indexOfInnerAt < indexOfSpace) {
-        indexOfAt = indexOfInnerAt;
-      }
+    if (indexOfAt >= startIndex && indexOfSpace >= startIndex) {
       String name = content.substring(indexOfAt + 1, indexOfSpace);
       User user = userRepo.findByName(name);
 
@@ -43,7 +44,7 @@ public class ReplaceMention {
         if (startIndex == 0) {
           return content;
         }
-        sb.append(content.substring(indexOfAt, indexOfSpace));
+        sb.append(content.substring(startIndex, indexOfSpace));
         return recur(content, indexOfSpace, sb, mentionedIds);
       }
     }
