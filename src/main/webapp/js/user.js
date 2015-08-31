@@ -80,12 +80,7 @@ function createPopupUserCard(target, card) {
 
 function createUserCard(ucard) {
   var $uc = $(renderTmpl('tmpl-user-card', ucard))
-  var $follow = $uc.find('.follow')
-  if (ucard.isFollowing) {
-    setAsFollowed($follow, ucard)
-  } else {
-    setAsNotFollowed($follow, ucard)
-  }
+  $uc.data('usercard', ucard)
   return $uc
 }
 
@@ -101,33 +96,6 @@ function cancelUcCloser() {
     window.clearTimeout(window.ucCloser.timer);
     window.ucCloser = null;
   }
-}
-
-function setAsFollowed($follow, uc) {
-  $follow.text('已关注').addClass('btn btn-success span pull-right').click(function(){
-    var $dialog = $('#follow-dialog')
-    $dialog.data('usercard', uc)
-
-    $('<button>').text('修改').addClass('btn_editfollow btn btn-primary')
-        .appendTo($dialog.find('.modal-footer').empty())
-
-    $('<button>').text('取消关注').addClass('btn_unfollow btn btn-inverse')
-        .appendTo($dialog.find('.modal-footer'))
-
-    $dialog.modal();
-  });
-}
-
-function setAsNotFollowed($follow, uc) {
-  $follow.text('关注').addClass('btn btn-success span pull-right').click(function(){
-    var $dialog = $('#follow-dialog')
-    $dialog.data('usercard', uc)
-
-    $('<button>').text('+关注').addClass('btn_follow btn btn-primary')
-        .appendTo($dialog.find('.modal-footer').empty())
-
-    $dialog.modal();
-  });
 }
 
 function setupFollowDialog(){
@@ -198,11 +166,31 @@ function setupListeners() {
     $dialog.modal('hide')
   })
 
-  $body.delegate('#follow-dialog .btn_unfollow', "click", function(){
+  $body.delegate('#follow-dialog .btn_unfollow', 'click', function(){
     var $dialog = $('#follow-dialog')
     var uc = $dialog.data('usercard')
     $.post('/unfollow/'+uc.id)
         .fail(function(){alert('操作失败')})
     $dialog.modal('hide')
+  })
+
+  $body.delegate('.user-card .follow', 'click', function(){
+    var isFollowing = $(this).text() == '已关注'
+    var $dialog = $('#follow-dialog').data('usercard', $(this).parents('.user-card').data('usercard'))
+    if (isFollowing){
+      $('<button>').text('修改').addClass('btn_editfollow btn btn-primary')
+          .appendTo($dialog.find('.modal-footer').empty())
+      $('<button>').text('取消关注').addClass('btn_unfollow btn btn-inverse')
+          .appendTo($dialog.find('.modal-footer'))
+      $dialog.modal()
+    } else {
+      $('<button>').text('关注').addClass('btn_follow btn btn-primary')
+        .appendTo($dialog.find('.modal-footer').empty())
+      $dialog.modal()
+    }
+  })
+
+  $body.delegate('.user-card .btn_message', 'click', function(){
+    window.open($(this).data('url'))
   })
 }

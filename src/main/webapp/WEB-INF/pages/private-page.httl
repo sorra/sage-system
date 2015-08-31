@@ -5,7 +5,7 @@
 #set(Map frontMap)
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-	<title>私人主页</title>
+	<title>用户主页</title>
 	$!{includeCSS()}
 </head>
 <body>
@@ -38,7 +38,6 @@ $!{includeJS()}
     }
     
     var $thisUser = createUserCard(window.frontMap.thisUser).css('border', '').css('border-radius', '');
-    $thisUser.find('.follow').remove();
     $thisUser.appendTo($('.side'));
 
     getStream('/read/u/' + window.frontMap.id);

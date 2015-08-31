@@ -13,7 +13,8 @@
         微博: {{tweetCount}}
       </div>
     </div>
-    <button class="follow"></button>
+    <button class="follow btn btn-success span pull-right">{{if isFollowing}}已关注{{else}}+关注{{/if}}</button>
+    <button class="btn_message" data-url="/pages/message?withUser={{id}}">私信</button>
   </div>
 </script>
 <script id="tmpl-user-label" type="text/html">
