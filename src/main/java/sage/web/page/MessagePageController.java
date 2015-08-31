@@ -11,6 +11,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import sage.domain.service.MessageService;
+import sage.domain.service.RelationService;
 import sage.domain.service.UserService;
 import sage.entity.Message;
 import sage.transfer.ConversationPreview;
@@ -29,6 +30,8 @@ public class MessagePageController {
   private MessageService messageService;
   @Autowired
   private UserService userService;
+  @Autowired
+  private RelationService relationService;
 
   @RequestMapping
   public String messages(@RequestParam(required = false) Long withUser, ModelMap model) {
@@ -39,6 +42,7 @@ public class MessagePageController {
       return "msgs-with";
     } else {
       loadConversationPreviews(model, cuid, () -> messageService.all(cuid));
+      model.put("friends", relationService.friends(cuid));
       return "msgs-all";
     }
   }

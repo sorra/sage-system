@@ -1,13 +1,19 @@
 <!DOCTYPE html>
 <html>
+<!--
 #set(components = ["bootstrap", "layout", "tag", "user", "msg"])
 #set(UserSelf userSelf)
 #set(Collection<ConversationPreview> conversations)
+#set(Collection<UserLabel> friends)
+-->
 <head>
   <meta charset="UTF-8">
   <title>私信列表</title>
   $!{includeCSS()}
   <style>
+    #friends{
+      margin-left: 20px;
+    }
     .conversation-header, .last-msg{
       float: left;
       margin-left: 10px;
@@ -26,7 +32,7 @@
 <body>
 $!{include("navbar.httl")}
 <div id="container" class="container">
-  <div id="conversation-list">
+  <div id="conversation-list" class="pull-left">
     #for(conv : conversations)
       <div class="conversation-preview rich-bg clearfix">
         <div class="conversation-header">
@@ -42,6 +48,15 @@ $!{include("navbar.httl")}
           </div>
         </a>
       </div>
+    #end
+  </div>
+  <div id="friends" class="pull-left">
+    好友
+    #for(u : friends)
+      <span class="user-label" data-id="${u.id}" style="display: block">
+        <a class="avatar" uid="${u.id}" href="/pages/message?withUser=${u.id}"><img src="${u.avatar}"/></a>
+        <a class="name" uid="${u.id}" href="/pages/message?withUser=${u.id}">${u.name}</a>
+      </span>
     #end
   </div>
 </div>
