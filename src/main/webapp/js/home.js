@@ -72,7 +72,7 @@ $(document).ready(function(){
 
 	setInterval(funcLookNewer('/read/istream', function(stream){
 		if (stream.items.length > 0) {
-			tipover($('.stream .newfeed').warnEmpty(), '加载了新的'+stream.items.length+'条')
+			tipover($('.stream .newfeed').warnEmpty(), '又出现了'+stream.items.length+'组新信息')
 		}
 	}), 5000)
 });

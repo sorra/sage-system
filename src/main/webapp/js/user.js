@@ -3,7 +3,7 @@ window.ucOpener;
 window.ucCloser;
 
 setupFollowDialog()
-setupListeners()
+user_setupListeners()
 
 
 function launchUcOpener() {
@@ -127,10 +127,10 @@ function setupFollowDialog(){
   })
 }
 
-function setupListeners() {
-  var $body = $('body')
+function user_setupListeners() {
+  var $docu = $(document)
 
-  $body.delegate('#follow-dialog .btn_follow', 'click', function(){
+  $docu.delegate('#follow-dialog .btn_follow', 'click', function(){
     var $dialog = $('#follow-dialog')
     var uc = $dialog.data('usercard')
     var selectedTagIds = []
@@ -148,7 +148,7 @@ function setupListeners() {
     $dialog.modal('hide')
   })
 
-  $body.delegate('#follow-dialog .btn_editfollow', 'click', function(){
+  $docu.delegate('#follow-dialog .btn_editfollow', 'click', function(){
     var $dialog = $('#follow-dialog')
     var uc = $dialog.data('usercard')
     var selectedTagIds = []
@@ -166,7 +166,7 @@ function setupListeners() {
     $dialog.modal('hide')
   })
 
-  $body.delegate('#follow-dialog .btn_unfollow', 'click', function(){
+  $docu.delegate('#follow-dialog .btn_unfollow', 'click', function(){
     var $dialog = $('#follow-dialog')
     var uc = $dialog.data('usercard')
     $.post('/unfollow/'+uc.id)
@@ -174,7 +174,7 @@ function setupListeners() {
     $dialog.modal('hide')
   })
 
-  $body.delegate('.user-card .follow', 'click', function(){
+  $docu.delegate('.user-card .follow', 'click', function(){
     var isFollowing = $(this).text() == '已关注'
     var $dialog = $('#follow-dialog').data('usercard', $(this).parents('.user-card').data('usercard'))
     if (isFollowing){
@@ -190,7 +190,7 @@ function setupListeners() {
     }
   })
 
-  $body.delegate('.user-card .btn_message', 'click', function(){
+  $docu.delegate('.user-card .btn_message', 'click', function(){
     window.open($(this).data('url'))
   })
 }

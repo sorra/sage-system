@@ -39,6 +39,7 @@ var tweetCache = {
 }
 
 setupForwardDialog()
+stream_setupListeners()
 
 $(document).ready(function() {
   $(document).on('click', '#forward-dialog .mf-x', function() {
@@ -190,7 +191,6 @@ function createCombineGroup(group) {
 function enchantTweets($elem) {
   $elem.find('a[uid]').mouseenter(launchUcOpener).mouseleave(launchUcCloser)
   $elem.find('.tweet-ops .delete').each(deleteDialogEach)
-  $elem.find('.tweet-ops .forward').each(forwardDialogEach)
   $elem.find('.tweet-ops .comment').click(commentDialog)
 }
 
@@ -210,27 +210,6 @@ function deleteDialogEach() {
       .fail(function(resp){console.error("Tweet "+id+" delete failed. Error: "+resp)})
   }
   commonConfirmPopover($(this), function(){doDelete(tweetId)}, '确认要删除吗？', 'left')
-}
-
-function forwardDialogEach() {
-  var tweetId = $(this).parents('.tweet').warnEmpty().attr('tweet-id')
-  if (!tweetId) {console.warn('tweet-id attr is not present on tweet!')}
-
-  var submit = function() {
-    var $dialog = $('#forward-dialog')
-    $.post('/post/forward', {
-      content: $dialog.find('.input').val(),
-      originId: tweetId,
-      removedIds: $dialog.find('.mf-removed').map(function () {
-        return $(this).attr('mf-id')
-      }).get()
-    })
-    $dialog.modal('hide')
-  }
-
-  $(this).click(function () {
-    $('#forward-dialog').data('tweetId', tweetId).modal('show').find('.btn-primary').click(submit)
-  })
 }
 
 function commentDialog(){
@@ -365,4 +344,23 @@ function reduceMention(text) {
     return text.slice(0, indexOfSharp) + reduceMention(text.slice(indexOfSpace, text.length))
   }
   return text
+}
+
+function stream_setupListeners() {
+  $(document).delegate('.tweet-ops .forward', 'click', function () {
+    var tweetId = $(this).parents('.tweet').warnEmpty().attr('tweet-id')
+    $('#forward-dialog').data('tweetId', tweetId).modal('show')
+  })
+
+  $(document).delegate('#forward-dialog .btn-primary', 'click', function() {
+    var $dialog = $('#forward-dialog')
+    $.post('/post/forward', {
+      content: $dialog.find('.input').val(),
+      originId: $dialog.data('tweetId'),
+      removedIds: $dialog.find('.mf-removed').map(function() {
+        return $(this).attr('mf-id')
+      }).get()
+    }).done(funcLookNewer('/read/istream'))
+    $dialog.modal('hide')
+  })
 }
