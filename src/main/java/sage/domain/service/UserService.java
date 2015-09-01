@@ -127,6 +127,17 @@ public class UserService {
     return userRepo.findByEmail(user.getEmail()) != null;
   }
 
+  public boolean updatePassword(long userId, String oldPassword, String newPassword) {
+    User user = userRepo.nonNull(userId);
+    if (checkPassword(oldPassword, user.getPassword())) {
+      user.setPassword(encryptPassword(newPassword));
+      userRepo.update(user);
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   private boolean checkPassword(String plainPassword, String encryptedPassword) {
     return new StrongPasswordEncryptor().checkPassword(plainPassword, encryptedPassword);
   }
