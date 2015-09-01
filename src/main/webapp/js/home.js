@@ -69,12 +69,19 @@ $(document).ready(function(){
 
 	// load istream
 	getStream('/read/istream')
+
+	setInterval(funcLookNewer('/read/istream', function(stream){
+		if (stream.items.length > 0) {
+			tipover($('.stream .newfeed').warnEmpty(), '加载了新的'+stream.items.length+'条')
+		}
+	}), 5000)
 });
 
 function postTweetDone() {
 	var $submit = $('form.post-tweet .btn[type="submit"]');
 	$('form.post-tweet .input').val('');
 	tipover($submit, '发表成功', 1000);
+	funcLookNewer('/read/istream')()
 }
 
 function postTweetFail() {

@@ -53,32 +53,66 @@ function getStream(url) {
             else createStream(resp, url);
         })
         .fail(function(resp){
-            window.alert('stream Oops! ' + resp);
+            tipover($('.slist'), 'stream Oops! ' + resp);
         });
 }
 
-function getStreamAfter(url, afterId) {
+function getStreamAfter(url, afterId, callback) {
     if (afterId == undefined) throw new Error;
     return $.get(url, {after: afterId})
         .done(function(resp){
-            if (resp == null) alert('stream is null');
-            else createStreamAfter(resp, url);
+            if (resp == null) console.error('stream is null');
+            else {
+              createStreamAfter(resp, url);
+              if (callback) callback(resp)
+            }
         })
         .fail(function(resp){
-            window.alert('stream Oops! ' + resp);
+            console.error('getStreamAfter Oops! ' + resp);
         });
 }
 
-function getStreamBefore(url, beforeId) {
+function getStreamBefore(url, beforeId, callback) {
     if (beforeId == undefined) throw new Error;
     return $.get(url, {before: beforeId})
         .done(function(resp){
-            if (resp == null) alert('stream is null');
-            else createStreamBefore(resp, url);
+            if (resp == null) console.error('stream is null');
+            else {
+              createStreamBefore(resp, url);
+              if (callback) callback(resp)
+            }
         })
         .fail(function(resp){
-            window.alert('stream Oops! ' + resp);
+            console.error('getStreamBefore Oops! ' + resp);
         });
+}
+
+function funcLookNewer(url, callback) {
+  return function() {
+    var largest = null
+    $('.slist .tweet').each(function () {
+      var id = parseInt($(this).attr('tweet-id'))
+      if (id && (largest == null || id > largest)) {
+        largest = id
+      }
+    })
+    console.info("largest " + largest)
+    getStreamAfter(url, largest, callback)
+  }
+}
+
+function funcLookEarlier(url, callback) {
+  return function() {
+    var smallest = null
+    $('.slist .tweet').each(function () {
+      var id = parseInt($(this).attr('tweet-id'))
+      if (id && (smallest == null || id < smallest)) {
+        smallest = id
+      }
+    })
+    console.info("smallest " + smallest)
+    getStreamBefore(url, smallest, callback)
+  }
 }
 
 function createStream(stream, url) {
@@ -93,45 +127,30 @@ function createStream(stream, url) {
     }
   })
 
-  $('<a class="newfeed btn">').text('看看新的').prependTo($stream)
-    .click(function() {
-      var largest = null
-      $('.slist .tweet').each(function(){
-        var id = parseInt($(this).attr('tweet-id'))
-        if (id && (largest == null || id > largest)) {
-          largest = id
-        }
-      })
-      console.log("largest "+largest)
-      if(largest == null) {
-        getStream(url)
-      } else {
-        getStreamAfter(url, largest)
-      }
-    })
+  $('<a class="newfeed btn">').text('看看新的').prependTo($stream).click(funcLookNewer(url, function(stream){
+    if (stream.items.length == 0) {
+      tipover($('.stream .newfeed').warnEmpty(), '还没有新的')
+    }
+  }))
 
-  $('<a class="oldfeed btn">').text('看看更早的').appendTo($stream)
-    .click(function() {
-      var smallest = null
-      $('.slist .tweet').each(function(){
-        var id = parseInt($(this).attr('tweet-id'))
-        if (id && (smallest == null || id < smallest)) {
-          smallest = id
-        }
-      })
-      console.log("smallest "+smallest)
-      if (smallest == null) {
-        getStream(url)
-      } else {
-        getStreamBefore(url, smallest)
-      }
-    })
+  var lookEarlier = funcLookEarlier(url, function(stream){
+    if (stream.items.length ==0) {
+      tipover($('.stream .oldfeed').warnEmpty(), '没有更早的了')
+    }
+  })
+  $('<a class="oldfeed btn">').text('看看更早的').appendTo($stream).click(lookEarlier)
+  $(window).scroll(function(){
+    var scrollTop = $(window).scrollTop()
+    var winHeight = $(window).height()
+    var docuHeight = $(document).height()
+    if (scrollTop + winHeight >= docuHeight) {
+      lookEarlier()
+      console.info(scrollTop + ' ' + winHeight + ' ' +docuHeight)
+    }
+  })
 }
 
 function createStreamAfter(stream) {
-  if (stream.items.length == 0) {
-    tipover($('.stream .newfeed').warnEmpty(), '还没有新的')
-  }
   var $slist = $('.slist');
   $.each(stream.items.reverse(), function(idx, item){
     createStreamItem(item).prependTo($slist)
@@ -139,9 +158,6 @@ function createStreamAfter(stream) {
 }
 
 function createStreamBefore(stream) {
-  if (stream.items.length ==0) {
-    tipover($('.stream .oldfeed').warnEmpty(), '没有更早的了')
-  }
   var $slist = $('.slist')
   $.each(stream.items, function(idx, item){
     createStreamItem(item).appendTo($slist)
