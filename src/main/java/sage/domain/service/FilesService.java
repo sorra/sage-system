@@ -96,7 +96,7 @@ public class FilesService {
     txTemplate.execute(status -> fileRepo.save(new FileItem(filename, webPath, storePath.toString(), userId)));
 
     log.info("File saved: " + storePath);
-    return webPath;
+    return "/files/" + webPath;
   }
 
   private boolean isPictureFileSizeAllowed(long size) {

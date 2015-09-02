@@ -26,6 +26,11 @@
 .t-origin .tweet-body{
 	width: 500px;
 }
+.tweet-content img{
+	display: block;
+	max-width: 200px;
+	max-height: 200px;
+}
 .stream-item .t-origin{
   margin-left: 10px;
   padding: 5px;

@@ -1,17 +1,18 @@
 package sage.web;
 
+import java.io.IOException;
 import java.util.Collection;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import sage.domain.service.BlogPostService;
-import sage.domain.service.GroupService;
-import sage.domain.service.TopicService;
-import sage.domain.service.TweetPostService;
+import org.springframework.web.multipart.MultipartFile;
+import sage.domain.commons.DomainRuntimeException;
+import sage.domain.service.*;
 import sage.entity.Blog;
 import sage.entity.Tweet;
+import sage.util.Colls;
 import sage.web.auth.Auth;
 
 @RestController
@@ -31,11 +32,12 @@ public class PostController {
   @RequestMapping("/tweet")
   public boolean tweet(
       @RequestParam String content,
-      @RequestParam(value = "pictureRefs[]", defaultValue = "") Collection<String> pictureRefs,
+      @RequestParam(value = "pictureRef[]", defaultValue = "") Collection<String> pictureRefs,
       @RequestParam(value = "tagIds[]", defaultValue = "") Collection<Long> tagIds) {
     Long uid = Auth.checkCuid();
-    //TODO Process pictures
     logger.info("Got picture: " + pictureRefs);
+    String tail = String.join(" ", Colls.map(pictureRefs, ref -> "img://" + ref));
+    content = content+" "+tail;
     Tweet tweet = tweetPostService.post(uid, content, tagIds);
     logger.info("post tweet {} success", tweet.getId());
     return true;

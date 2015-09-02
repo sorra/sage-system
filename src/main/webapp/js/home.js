@@ -18,8 +18,25 @@ $(document).ready(function(){
 
   tag_input_init()
 
+	var $postBox = $($('.post-box')[0]).attr('id', 'the-post-box')
+	$postBox.find('.file-upload').ajaxfileupload({
+		action: '/pic-upload',
+		onComplete: function(resp){
+			var $postBox = $('#the-post-box')
+			$postBox.find('input[name=pictureRef]').val(resp)
+			$postBox.find('.pic-preview').show().find('img').attr('src', resp)
+		},
+		onStart: function(){
+			console.info('~~~')
+		}
+	})
+	$postBox.find('.pic-preview').click(function(){
+		$(this).find('img').toggle()
+	})
+
+
 	// prepare tweet-submit-button
-	$('form.post-tweet .btn[type="submit"]')
+	$postBox.find('.btn[type="submit"]')
 		.tooltip({
 			placement: 'top',
 			trigger: 'manual'
@@ -48,9 +65,9 @@ $(document).ready(function(){
 				tagIds: selectedTagIds
 			}
 
-			var picturePath = $('.upload-box .upload-picture').attr('data-result')
+			var picturePath = $('#the-post-box').find('input[name=pictureRef]').val()
 			if (picturePath) {
-				data['pictureRefs'] = [picturePath]
+				data['pictureRef'] = [picturePath]
 			}
 
 			$.post('/post/tweet', data)

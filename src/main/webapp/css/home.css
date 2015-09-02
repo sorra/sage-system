@@ -9,6 +9,10 @@
 	height: 100px;
 	resize: none;
 }
+.post-box .pic-preview img{
+	max-width: 200px;
+	max-height: 200px;
+}
 
 .friends .name{
 	color: black;

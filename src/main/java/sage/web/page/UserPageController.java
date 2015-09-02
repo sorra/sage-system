@@ -39,7 +39,7 @@ public class UserPageController {
     if (avatar == null || avatar.isEmpty()) {
       path = null;
     } else {
-      path = "/files/" + filesService.upload(cuid, avatar, FilesService.Folder.AVATAR);
+      path = filesService.upload(cuid, avatar, FilesService.Folder.AVATAR);
     }
     userService.changeInfo(cuid, name, intro, path);
     return "redirect:/user-info";
