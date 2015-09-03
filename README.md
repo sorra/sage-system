@@ -23,9 +23,8 @@ PATH加上M2_HOME/bin:$JAVA_HOME/bin
 首次启动后打开 localhost:8080/z-init 完成数据初始化
 
 开发过程:
-后端(大步) - 写了代码, 关闭server, 执行build并启动server (./build.sh && ./run.sh)
-后端(小步) - 写了代码, 执行build, server可保持开启
-前端 - 写了代码, 执行web-build, server可保持开启
+后端 - 写了代码, shutdown, build+run (./build.sh && ./run.sh)
+前端 - 写了代码(css, js, httl), 执行web-build, server可保持开启
 
 
 ```
