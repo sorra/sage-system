@@ -159,7 +159,7 @@ public class TweetView implements Item {
     String body = text.substring(0, idxFirst);
     String[] links = text.substring(idxFirst).split(" ");
     for (int i = 0; i < links.length; i++) {
-      String neo = "<img src=\"" + links[i].replace("img://", "") + "\"/>";
+      String neo = "<img class=\"view-img\" src=\"" + links[i].replace("img://", "") + "\"/>";
       links[i] = neo;
     }
     return body + String.join(" ", links);

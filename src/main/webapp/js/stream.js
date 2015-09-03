@@ -363,4 +363,8 @@ function stream_setupListeners() {
     }).done(funcLookNewer('/read/istream'))
     $dialog.modal('hide')
   })
+
+  $(document).delegate('.tweet-content .view-img', 'click', function(){
+    $(this).toggleClass('view-large')
+  })
 }

@@ -26,10 +26,14 @@
 .t-origin .tweet-body{
 	width: 500px;
 }
-.tweet-content img{
+.tweet-content .view-img{
 	display: block;
 	max-width: 200px;
 	max-height: 200px;
+}
+.tweet-content .view-large{
+	max-width: 500px;
+	max-height: 500px;
 }
 .stream-item .t-origin{
   margin-left: 10px;
