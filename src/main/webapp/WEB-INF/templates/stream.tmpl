@@ -37,7 +37,7 @@
   </div>
 </script>
 <script id="tmpl-combine" type="text/html">
-  <div class="combine stream-item">
+  <div class="combine stream-item" data-contains-origin="{{containsOrigin}}">
   {{each forwards as forward i}}
     {{include 'tmpl-tweet' asForward(forward)}}
   {{/each}}

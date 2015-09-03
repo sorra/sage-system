@@ -10,6 +10,7 @@ public class CombineGroup implements Item {
 
   private List<TweetView> forwards = new ArrayList<>();
   private TweetView origin;
+  /** origin是否被信息流直接收听到了 */
   private boolean containsOrigin = false;
 
   CombineGroup() {}

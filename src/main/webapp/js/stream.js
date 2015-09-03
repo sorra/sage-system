@@ -204,7 +204,17 @@ function deleteDialogEach() {
     }
     $.post('/tweet/'+id+'/delete')
       .done(function(resp){
-        if(resp == true) {$tweet.remove()}
+        if(resp == true) {
+          if ($tweet.hasClass('t-forward')) {
+            var $combine = $tweet.parents('.combine')
+            $tweet.remove()
+            if (!$combine.data('containsOrigin') && $combine.find('.t-forward').length == 0) {
+              $combine.remove()
+            }
+          } else {
+            $tweet.remove()
+          }
+        }
         else {console.error("Tweet "+id+" delete failed.")}
       })
       .fail(function(resp){console.error("Tweet "+id+" delete failed. Error: "+resp)})

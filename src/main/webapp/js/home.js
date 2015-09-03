@@ -5,6 +5,8 @@ $(document).ready(function(){
   
   var $selfCard = createUserCard(window.userSelf).css('border', '0').css('border-radius', '0');
   $selfCard.find('.follow').remove();
+	$selfCard.find('.avatar').attr('href', '/user-info')
+	$selfCard.find('.btn_message').remove()
   $selfCard.appendTo($('.self-card'));
   
   var friends = window.frontMap.friends;
