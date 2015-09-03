@@ -26,3 +26,13 @@ PATH加上M2_HOME/bin:$JAVA_HOME/bin
 后端(大步) - 写了代码, 关闭server, 执行build并启动server (./build.sh && ./run.sh)
 后端(小步) - 写了代码, 执行build, server可保持开启
 前端 - 写了代码, 执行web-build, server可保持开启
+
+
+```
+brew install maven
+brew install tomcat
+
+export JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk1.8.0_60.jdk/Contents/Home
+export TOMCAT_HOME=/Library/Tomcat
+
+```
