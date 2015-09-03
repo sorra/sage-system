@@ -3,8 +3,6 @@
 $(document).ready(function(){
   $('#nav-write-blog').addClass('active')
 
-  tag_input_init()
-
 	$('form.blog .btn[type=submit]')
     .tooltip({
       placement: 'top',

@@ -1,5 +1,3 @@
-tag_input_init()
-
 $('#form input[type=submit]').click(function(e){
   e.preventDefault()
   var $submit = $(this)

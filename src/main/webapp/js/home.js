@@ -16,8 +16,6 @@ $(document).ready(function(){
   }
   $friends.appendTo($('.friends'));
 
-  tag_input_init()
-
 	var $postBox = $($('.post-box')[0]).attr('id', 'the-post-box')
 	$postBox.find('.file-upload').ajaxfileupload({
 		action: '/pic-upload',
@@ -97,6 +95,7 @@ $(document).ready(function(){
 function postTweetDone() {
 	var $submit = $('form.post-tweet .btn[type="submit"]');
 	$('form.post-tweet .input').val('');
+	hideTagTreeInput($('.tag-plus'))
 	tipover($submit, '发表成功', 1000);
 	funcLookNewer('/read/istream')()
 }

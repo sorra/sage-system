@@ -38,8 +38,8 @@ var tweetCache = {
   }
 }
 
-setupForwardDialog()
-stream_setupListeners()
+$(setupForwardDialog)
+$(stream_setupListeners)
 
 $(document).ready(function() {
   $(document).on('click', '#forward-dialog .mf-x', function() {
