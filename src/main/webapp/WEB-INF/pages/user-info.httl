@@ -9,7 +9,7 @@
 </head>
 <body>
 $!{include("navbar.httl")}
-<div id="container" class="container">
+<div id="container" class="container background-silver">
   <form id="user-info" action="user-info" method="post" enctype="multipart/form-data">
     <span>昵称：</span>
     <input name="name" type="text" value="${user.name}" />
@@ -22,6 +22,7 @@ $!{include("navbar.httl")}
     <input name="avatar" type="file" />
     <input type="submit" />
   </form>
+  <a href="/change-password">修改密码</a>
 </div>
 $!{includeProto}
 $!{includeJS()}

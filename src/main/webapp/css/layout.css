@@ -1,7 +1,7 @@
 .data-holder, .tmpl{
 	display:none;
 }
-body{
+.background-silver{
     background: #e5e5e5;
 }
 body>.container{
