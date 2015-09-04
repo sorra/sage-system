@@ -2,6 +2,7 @@ package sage.web.page;
 
 import java.io.IOException;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,16 +25,22 @@ public class UserPageController {
   private FilesService filesService;
 
   @RequestMapping(value = "/user-info", method = RequestMethod.GET)
-  String info(ModelMap model) {
+  String info(@RequestParam(required = false) String next, ModelMap model) {
     Long cuid = Auth.checkCuid();
     model.put("user", userService.getUserLabel(cuid));
+    String action = "user-info";
+    if (StringUtils.isNotBlank(next)) {
+      action += ("?next="+next);
+    }
+    model.put("action", action);
     return "user-info";
   }
 
   @RequestMapping(value = "/user-info", method = RequestMethod.POST)
   String changeInfo(@RequestParam(required = false) String name,
                     @RequestParam(required = false) String intro,
-                    @RequestParam(required = false) MultipartFile avatar) throws IOException {
+                    @RequestParam(required = false) MultipartFile avatar,
+                    @RequestParam(required = false) String next) throws IOException {
     Long cuid = Auth.checkCuid();
     String path;
     if (avatar == null || avatar.isEmpty()) {
@@ -42,6 +49,9 @@ public class UserPageController {
       path = filesService.upload(cuid, avatar, FilesService.Folder.AVATAR);
     }
     userService.changeInfo(cuid, name, intro, path);
+    if (StringUtils.isNotBlank(next)) {
+      return "redirect:" + Auth.decodeLink(next);
+    }
     return "redirect:/user-info";
   }
 

@@ -95,7 +95,7 @@ public class AuthController {
     }
     if (password.length() > 20) {
       if (password.contains(",")) {
-        log.warn("密码含有逗号, 是不是表单的name=password重复了?");
+        log.error("密码含有逗号, 是不是表单的name=password重复了?");
       }
       throw PASSWORD_TOO_LONG;
     }
@@ -105,7 +105,7 @@ public class AuthController {
     
     userService.register(new User(email, password));
     login(request, email, password);
-    return "redirect:/people";
+    return "redirect:/user-info?next=/people";
   }
   
   private static final BadArgumentException

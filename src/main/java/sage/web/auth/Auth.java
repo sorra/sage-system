@@ -39,15 +39,19 @@ public class Auth {
   }
 
   static String getRedirectGoto(String requestLink) {
+    return "goto=" + encodeLink(requestLink);
+  }
+
+  public static String encodeLink(String link) {
     try {
-      return "goto=" + UriUtils.encodeQueryParam(requestLink, "ISO-8859-1");
+      return UriUtils.encodeQueryParam(link, "ISO-8859-1");
     }
     catch (UnsupportedEncodingException e) {
       throw new RuntimeException(e);
     }
   }
 
-  static String decodeLink(String link) {
+  public static String decodeLink(String link) {
     try {
       return UriUtils.decode(link, "ISO-8859-1");
     }
