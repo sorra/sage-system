@@ -24,18 +24,27 @@ public class HomeController {
   @Autowired
   TopicService topicService;
 
-  @RequestMapping({ "/", "/home" })
+  @RequestMapping("/")
+  public String index(ModelMap model) {
+    Long cuid = Auth.cuid();
+    if (cuid == null) {
+      return landing(model);
+    }
+    return home(model);
+  }
+
+  @RequestMapping("/home")
   public String home(ModelMap model) {
-    Long uid = Auth.checkCuid();
+    Long cuid = Auth.checkCuid();
     FrontMap fm = FrontMap.from(model);
-    
-    fm.put("friends", relationService.friends(uid));
+    fm.put("friends", relationService.friends(cuid));
     return "home";
   }
 
   @RequestMapping("/landing")
-  public ModelAndView landing() {
-    return new ModelAndView("landing").addObject("hotTopics", topicService.hotTopics());
+  public String landing(ModelMap model) {
+    model.put("hotTopics", topicService.hotTopics());
+    return "landing";
   }
 
   @RequestMapping("/login")
