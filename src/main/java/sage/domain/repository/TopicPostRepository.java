@@ -9,8 +9,12 @@ import sage.entity.TopicPost;
 public class TopicPostRepository extends BaseRepository<TopicPost> {
 
   public List<TopicPost> byGroup(long groupId) {
-    return session().createQuery("from TopicPost gt where gt.group.id = :groupId and gt.hidden = false")
+    return session().createQuery("from TopicPost tp where tp.group.id = :groupId and tp.hidden = false")
         .setLong("groupId", groupId).list();
+  }
+
+  public List<TopicPost> recent(int maxSize) {
+    return session().createQuery("from TopicPost tp order by tp.time desc").setMaxResults(maxSize).list();
   }
 
   @Override

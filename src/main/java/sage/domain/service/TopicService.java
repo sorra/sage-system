@@ -1,5 +1,7 @@
 package sage.domain.service;
 
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.stream.Collectors;
 import javax.transaction.Transactional;
@@ -15,8 +17,11 @@ import sage.domain.repository.*;
 import sage.entity.Blog;
 import sage.entity.TopicPost;
 import sage.entity.TopicReply;
+import sage.transfer.HotTopic;
 import sage.transfer.TopicPreview;
 import sage.util.Colls;
+
+import static java.util.Comparator.comparing;
 
 @Service
 @Transactional
@@ -89,10 +94,27 @@ public class TopicService {
           if (time == null) time = new Date(0);
           return Pair.of(topicPost, time);
         })
-        .sorted(Comparator.comparing(Pair::getRight, Comparator.<Date>reverseOrder()))
+        .sorted(comparing(Pair::getRight, Comparator.<Date>reverseOrder()))
         .map(Pair::getLeft).collect(Collectors.toList());
     return Colls.map(topicPosts,
         topicPost -> new TopicPreview(topicPost, getTopicReplies(topicPost.getId()).size()));
 
+  }
+
+  public Collection<HotTopic> hotTopics() {
+    //TODO 显然比较糙
+    return topicPostRepo.recent(1000).stream()
+        .map(topicPost -> new HotTopic(topicPost, getTopicReplies(topicPost.getId()).size(),
+            topicReplyRepo.theLastByTopicPost(topicPost.getId()).map(TopicReply::getTime).orElse(null)))
+        .map(hotTopic -> {
+          hotTopic.rank = (hotTopic.replyCount+1) * computeFallDown(hotTopic.lastActiveTime);
+          return hotTopic;
+        })
+        .sorted().collect(Collectors.toList());
+  }
+
+  private double computeFallDown(Date time) {
+    long days = Instant.ofEpochMilli(time.getTime()).until(Instant.now(), ChronoUnit.DAYS);
+    return Math.pow(0.8, days);
   }
 }

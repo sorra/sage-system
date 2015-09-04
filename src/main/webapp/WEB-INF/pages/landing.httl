@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<!--
+#set(components = ['bootstrap', 'layout', 'user'])
+#set(Collection<HotTopic> hotTopics)
+-->
+<head>
+  <meta charset="UTF-8">
+  <title>浏览一下</title>
+  $!{includeCSS()}
+  <style>
+    #container{
+      background: #e0e0e0;
+    }
+    .group_name{
+      margin-left: 1em;
+      margin-right: 1em;
+    }
+  </style>
+</head>
+<body>
+$!{include("navbar.httl")}
+<div id="container" class="container">
+  #for(topic : hotTopics)
+  <div class="topic">
+    <a class="title" href="/topic/${topic.id}">${topic.blog.title}</a>
+    <p class="summary">${topic.blog.summary}</p>
+    $!{include("user-label.httl", ["u": topic.blog.author])}
+    <span class="group_name">${topic.groupName}</span>
+    $!{spanHumanTime(topic.blog.createdTime)}
+    #if(topic.replyCount > 0) <span>${topic.replyCount}回复</span>#end
+  </div>
+  #end
+</div>
+$!{includeProto}
+$!{includeJS()}
+</body>
+</html>

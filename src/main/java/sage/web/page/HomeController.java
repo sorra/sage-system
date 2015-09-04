@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 import sage.domain.service.RelationService;
 import sage.domain.service.TagService;
+import sage.domain.service.TopicService;
 import sage.domain.service.UserService;
 import sage.web.auth.Auth;
 import sage.web.context.FrontMap;
@@ -20,6 +21,8 @@ public class HomeController {
   TagService tagService;
   @Autowired
   RelationService relationService;
+  @Autowired
+  TopicService topicService;
 
   @RequestMapping({ "/", "/home" })
   public String home(ModelMap model) {
@@ -28,6 +31,11 @@ public class HomeController {
     
     fm.put("friends", relationService.friends(uid));
     return "home";
+  }
+
+  @RequestMapping("/landing")
+  public ModelAndView landing() {
+    return new ModelAndView("landing").addObject("hotTopics", topicService.hotTopics());
   }
 
   @RequestMapping("/login")
