@@ -248,15 +248,23 @@ function commentDialog(){
 function createCommentList(tweetId, retach) {
   var $cl = $('#tmpl-comment-dialog').children().clone()
   var $input = $cl.find('textarea').on('keyup', textareaAutoResize)
-  $cl.find('.btn-success').click(function(){
-     $.post('/post/comment', {
-       content: $input.val(), sourceId: tweetId
-     }).success(function(){
-       console.info('Post comment success, retach the list.')
-       retach(createCommentList(tweetId, retach))
-     })
-     $input.val('')
+  function postComment(forward){
+    $.post('/post/comment', {
+      content: $input.val(), sourceId: tweetId, forward: forward
+    }).success(function(){
+      console.info('Post comment success, retach the list.')
+      retach(createCommentList(tweetId, retach))
+    })
+    $input.val('')
+  }
+
+  $cl.find('.btn_forw_and_comm').click(function(){
+    postComment(true)
   })
+  $cl.find('.btn_comment').click(function(){
+    postComment(false)
+  })
+
   var $loading = $cl.find('.loading')
   var $list = $cl.find('.comment-list')
 

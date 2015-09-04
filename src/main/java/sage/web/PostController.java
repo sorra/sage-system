@@ -2,6 +2,7 @@ package sage.web;
 
 import java.io.IOException;
 import java.util.Collection;
+import java.util.Collections;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -89,10 +90,14 @@ public class PostController {
   public boolean comment(
       @RequestParam String content,
       @RequestParam Long sourceId,
-      @RequestParam(required = false) Long replyUserId) {
+      @RequestParam(required = false) Long replyUserId,
+      @RequestParam(required = false) boolean forward) {
     Long uid = Auth.checkCuid();
     //TODO save reply info in the comment
     tweetPostService.comment(uid, content, sourceId, replyUserId);
+    if (forward) {
+      forward(content, sourceId, Collections.emptyList());
+    }
     return true;
   }
 }
