@@ -29,23 +29,24 @@ public class ControllerExceptionReporter {
 
   @ExceptionHandler(TypeMismatchException.class)
   @ResponseStatus(HttpStatus.BAD_REQUEST)
-  public ModelAndView typeMismatch(TypeMismatchException e) {
-    log.error(e.toString());
+  public ModelAndView typeMismatch(TypeMismatchException e, HttpServletRequest request) {
+    log.error("URI: {} Exception: {}", request.getRequestURI(), e.toString());
     return errorPage(HttpStatus.BAD_REQUEST, "Parameter type mismatch 参数类型不对");
   }
 
   @ExceptionHandler(BadArgumentException.class)
   @ResponseStatus(HttpStatus.BAD_REQUEST)
-  public ModelAndView badArgument(BadArgumentException e, HttpServletResponse response) throws IOException {
-    log.error(e.toString());
+  public ModelAndView badArgument(BadArgumentException e,
+                                  HttpServletRequest request, HttpServletResponse response) {
+    log.error("URI: {} Exception: {}", request.getRequestURI(), e.toString());
     return errorPage(HttpStatus.BAD_REQUEST, e.getMessage());
   }
 
   @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
   @ResponseStatus(HttpStatus.METHOD_NOT_ALLOWED)
   public ModelAndView httpMethodNotSupported(HttpRequestMethodNotSupportedException e,
-                                     HttpServletRequest request, HttpServletResponse response) throws IOException {
-    log.error("URI: " + request.getRequestURI(), e);
+                                     HttpServletRequest request, HttpServletResponse response) {
+    log.error("URI: {} Exception: {}", request.getRequestURI(), e.toString());
     return errorPage(HttpStatus.METHOD_NOT_ALLOWED, e.getMessage());
   }
 
@@ -68,9 +69,9 @@ public class ControllerExceptionReporter {
 
   @ExceptionHandler(HibernateJdbcException.class)
   @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-  public ModelAndView hibernateJDBCException(HibernateJdbcException e) {
+  public ModelAndView hibernateJDBCException(HibernateJdbcException e, HttpServletRequest request) {
     // Sometimes there is no sql
-    log.error("SQL: " + e.getSql() + "\n", e);
+    log.error("URI: " + request.getRequestURI() + " , SQL: " + e.getSql() + "\n", e);
     return errorPage(HttpStatus.INTERNAL_SERVER_ERROR, "Database error");
   }
 
