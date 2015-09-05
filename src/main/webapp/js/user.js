@@ -100,7 +100,7 @@ function cancelUcCloser() {
 
 function setupFollowDialog(){
   var $dia = $(renderTmpl('tmpl-modal', {modalId: 'follow-dialog'})).appendTo($('body'))
-  $dia.find('.modal-title').text('请选择0~n个标签')
+  $dia.find('.modal-title').text('请选择ta的0~n个标签')
   $dia.on('show.bs.modal', function(){
     var $this = $(this)
     var $body = $this.find('.modal-body').empty()

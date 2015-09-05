@@ -27,6 +27,7 @@ $!{include("navbar.httl")}
         <p>${group.introduction}</p>
         <div>创建者: $!{include("user-label.httl", ["u": group.creator])}</div>
         <div>成员数: ${group.membersCount}</div>
+        标签：
         #for(each : group.tags)
          $!{include("tag-label.httl")}
         #end

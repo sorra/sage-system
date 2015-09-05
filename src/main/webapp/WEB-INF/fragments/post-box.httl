@@ -1,7 +1,7 @@
 <div class="post-box">
 	<form class="post-tweet" action="/post/tweet" method="post">
 		<div>
-			<textarea class="input" placeholder="写微博" style="width: 620px"></textarea>
+			<textarea class="input" placeholder="写点什么吧" style="width: 620px"></textarea>
 		</div>
 		<div>
 			$!{include("tag-input.httl")}
