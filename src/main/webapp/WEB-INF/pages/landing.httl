@@ -12,6 +12,13 @@
     #container{
       background: #e0e0e0;
     }
+    #welcome-login{
+      margin: 20px;
+      padding: 5px;
+      background-color: beige;
+      max-width: 220px;
+      border-radius: 5px;
+    }
     .group_name{
       margin-left: 1em;
       margin-right: 1em;
@@ -21,6 +28,9 @@
 <body>
 $!{include("navbar.httl")}
 <div id="container" class="container">
+  <div id="welcome-login">
+    加入这里，看更多内容 <a class="btn btn-default btn-success" href="/register">加入</a>
+  </div>
   #for(topic : hotTopics)
   <div class="topic">
     <a class="title" href="/topic/${topic.id}">${topic.blog.title}</a>
