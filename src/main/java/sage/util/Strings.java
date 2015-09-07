@@ -25,6 +25,14 @@ public class Strings {
     }
   }
 
+  public static String omit(String source, int length) {
+    if (source.length() > length) {
+      return source.substring(0, length-3) + "...";
+    } else {
+      return source;
+    }
+  }
+
   /**
    * Replace all occurences of a substring within a string with
    * another string.

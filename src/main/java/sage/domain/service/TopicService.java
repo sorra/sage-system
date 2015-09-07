@@ -10,9 +10,7 @@ import httl.util.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import sage.domain.commons.DomainRuntimeException;
-import sage.domain.commons.IdCommons;
-import sage.domain.commons.ReplaceMention;
+import sage.domain.commons.*;
 import sage.domain.repository.*;
 import sage.entity.Blog;
 import sage.entity.TopicPost;
@@ -54,6 +52,7 @@ public class TopicService {
     content = StringUtils.escapeXml(content);
     Set<Long> mentionedIds = new HashSet<>();
     content = ReplaceMention.with(userRepo).apply(content, mentionedIds);
+    content = Links.linksToHtml(content);
 
     Long toUserId = Optional.ofNullable(toReplyId)
         .map(id -> topicReplyRepo.get(id).getAuthor().getId()).orElse(null);

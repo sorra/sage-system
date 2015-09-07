@@ -6,10 +6,7 @@ import httl.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import sage.domain.commons.BadArgumentException;
-import sage.domain.commons.DomainRuntimeException;
-import sage.domain.commons.IdCommons;
-import sage.domain.commons.ReplaceMention;
+import sage.domain.commons.*;
 import sage.domain.repository.CommentRepository;
 import sage.domain.repository.TagRepository;
 import sage.domain.repository.TweetRepository;
@@ -165,6 +162,7 @@ public class TweetPostService {
     content = StringUtils.escapeXml(content);
     Set<Long> mentionedIds = new HashSet<>();
     content = ReplaceMention.with(userRepo).apply(content, mentionedIds);
+    content = Links.linksToHtml(content);
     
     return new ParsedContent(content, mentionedIds);
   }
