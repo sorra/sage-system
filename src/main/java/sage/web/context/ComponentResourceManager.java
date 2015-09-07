@@ -74,6 +74,7 @@ public class ComponentResourceManager {
   public String includeJS(String[] components) {
     StringBuilder sb = new StringBuilder(160);
     sb.append(includeOneJS("jquery-1.9.1"));
+    sb.append(includeOneJS("libs"));
     if (components == null) {
       return sb.toString();
     }
