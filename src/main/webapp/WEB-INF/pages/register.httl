@@ -4,12 +4,13 @@
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
   <title>注册 - 轻境界</title>
-  <link href="rs/css/bootstrap.css" rel="stylesheet">
-  <link href="rs/css/layout.css" rel="stylesheet">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="">
   <meta charset="utf-8">
+  <link rel="stylesheet" type="text/css" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css"/>
+  <link rel="stylesheet" type="text/css" href="http://wangzuo.github.io/feng-ui/feng.min.css"/>
   <style>
+  /*
     body{
       min-height: 600px;
     }
@@ -44,32 +45,44 @@
     }
     .validation-alert{
       color: red;
-    }
+    } */
   </style>
 </head>
 <body class="background-dark">
-  <form action="/auth/register" method="post">
-    <h5 class="heading">注册一个轻境界账户</h5>
-    <div class="input-group">
-      <label for="email">邮箱</label>
-      <input id="email" name="email" type="text" placeholder="请输入您的邮箱" />
+
+  <div class="g-c">
+    <div class="g-r">
+      <div class="g-6">
+        <form class="u-form" action="/auth/register" method="post">
+          <h5 class="heading">注册一个轻境界账户</h5>
+          <div class="u-field">
+            <label class="label" for="email">邮箱</label>
+            <input id="email" name="email" type="text" placeholder="请输入您的邮箱" />
+          </div>
+          <div class="u-field">
+            <label class="label" for="password">密码</label>
+            <input id="password" name="password" type="password" placeholder="请输入密码" />
+          </div>
+          <div class="u-field">
+            <label class="label" for="repeat-password">再次输入密码</label>
+            <input id="repeat-password" name="repeat-password" type="password" placeholder="请再次输入密码" />
+          </div>
+
+          <div class="u-field">
+            <span class="u-checkbox">
+              <input type="checkbox" name="remember-me"/>
+              <span class="label">下次自动登入</span>
+            </span>
+          </div>
+
+          <div class="u-field" id="register-action">
+            <button class="u-btn u-btn-blue" type="submit">注册</button>
+            <a class="btn" href="/login">已有账号，我要登录</a>
+          </div>
+        </form>
+      </div>
     </div>
-    <div class="input-group">
-      <label for="password">密码</label>
-      <input id="password" name="password" type="password" placeholder="请输入密码" />
-    </div>
-    <div class="input-group">
-      <label for="repeat-password">再次输入密码</label>
-      <input id="repeat-password" name="repeat-password" type="password" placeholder="请再次输入密码" />
-    </div>
-    <div class="input-group" id="register-action">
-      <button type="submit" class="btn btn-block btn-lg btn-danger">
-        <span class="small-circle"><i class="fa fa-caret-right"></i></span>
-        <small>注册</small>
-      </button>
-      <a class="btn" href="/login">已有账号，我要登录</a>
-    </div>
-  </form>
+  </div>
 $!{includeJS()}
 </body>
 </html>
