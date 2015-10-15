@@ -10,7 +10,6 @@ import sage.entity.Tweet;
 
 @Repository
 public class TweetRepository extends BaseRepository<Tweet> {
-  private static final int MAX_RESULTS = 20;
 
   public List<Tweet> byTags(Collection<Tag> tags, Edge edge) {
     if (tags.isEmpty()) {
@@ -19,7 +18,6 @@ public class TweetRepository extends BaseRepository<Tweet> {
     String q = q("select t from Tweet t join t.tags tgs where tgs in :qtags");
     return enhanceQuery(q, edge)
         .setParameterList("qtags", TagRepository.getQueryTags(tags))
-        .setMaxResults(MAX_RESULTS)
         .list();
   }
 
@@ -108,17 +106,17 @@ public class TweetRepository extends BaseRepository<Tweet> {
     switch (edge.type) {
     case NONE:
       q += " order by t.id desc";
-      return session().createQuery(q).setMaxResults(MAX_RESULTS);
+      return session().createQuery(q).setMaxResults(Edge.FETCH_SIZE);
 
     case BEFORE:
       q += " and t.id < :beforeId";
       q += " order by t.id desc";
-      return session().createQuery(q).setLong("beforeId", edge.edgeId).setMaxResults(MAX_RESULTS);
+      return session().createQuery(q).setLong("beforeId", edge.edgeId).setMaxResults(Edge.FETCH_SIZE);
 
     case AFTER:
       q += " and t.id > :afterId";
       q += " order by t.id desc";
-      return session().createQuery(q).setLong("afterId", edge.edgeId).setMaxResults(MAX_RESULTS);
+      return session().createQuery(q).setLong("afterId", edge.edgeId).setMaxResults(Edge.FETCH_SIZE);
 
     default:
       throw new UnsupportedOperationException();

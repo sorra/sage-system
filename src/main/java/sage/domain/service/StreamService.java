@@ -1,6 +1,7 @@
 package sage.domain.service;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -8,7 +9,9 @@ import org.springframework.util.Assert;
 import sage.domain.commons.Comparators;
 import sage.domain.commons.Edge;
 import sage.domain.commons.IdCommons;
+import sage.domain.repository.TagRepository;
 import sage.entity.FollowListHeed;
+import sage.entity.Tag;
 import sage.entity.TagHeed;
 import sage.entity.Tweet;
 import sage.transfer.*;
@@ -22,6 +25,8 @@ public class StreamService {
   private TransferService transfers;
   @Autowired
   private HeedService heed;
+  @Autowired
+  private TagRepository tagRepo;
 
   public Stream istream(long userId) {
     return istream(userId, Edge.none());
@@ -37,6 +42,30 @@ public class StreamService {
     mergedSet.addAll(tcsByFollowListHeeds(userId, edge));
     
     return new Stream(higherSort(naiveSortTC(mergedSet)));
+  }
+
+  public Stream istreamByTag(long userId, long tagId, Edge edge) {
+    Tag tag = tagRepo.get(tagId);
+    Set<Long> qtagIds = tag.descendants().stream().map(Tag::getId).collect(Collectors.toSet());
+
+    final int pageSize = edge.limitCount * 2;
+    edge.limitCount  = pageSize;
+    Stream istream = istream(userId, edge);
+    List<Item> itemsByTag = filterByQueryTagIds(istream, qtagIds);
+    //如果滤后列表不够 而滤前列表还能往后翻页
+    while (itemsByTag.size() < Edge.FETCH_SIZE && istream.getItems().size() == pageSize) {
+      edge.limitStart += pageSize;
+      istream = istream(userId, edge);
+      itemsByTag.addAll(filterByQueryTagIds(istream, qtagIds));
+    }
+    return new Stream(Colls.limitList(itemsByTag, Edge.FETCH_SIZE));
+  }
+
+  private List<Item> filterByQueryTagIds(Stream istream, Set<Long> qtagIds) {
+    return istream.getItems().stream()
+        .filter(item -> item.getTags().stream().anyMatch(tagLabel -> qtagIds.contains(tagLabel.getId())))
+        .limit(Edge.FETCH_SIZE)
+        .collect(Collectors.toList());
   }
 
   private List<TweetView> tcsByTagHeeds(long userId, Edge edge) {

@@ -34,9 +34,17 @@ public class ReadController {
   public Stream istream(
       @RequestParam(required = false) Long before,
       @RequestParam(required = false) Long after) {
-    Long uid = Auth.checkCuid();
-    logger.debug("before {}, after {}", before, after);
-    return streamService.istream(uid, getEdge(before, after));
+    Long cuid = Auth.checkCuid();
+    return streamService.istream(cuid, getEdge(before, after));
+  }
+
+  @RequestMapping("istream-by-tag")
+  public Stream istreamByTag(
+      @RequestParam Long tagId,
+      @RequestParam(required = false) Long before,
+      @RequestParam(required = false) Long after) {
+    Long cuid = Auth.checkCuid();
+    return streamService.istreamByTag(cuid, tagId, getEdge(before, after));
   }
 
   @RequestMapping("/connect/{blogId}")

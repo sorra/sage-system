@@ -41,4 +41,8 @@ public abstract class Colls {
     values.forEach(v -> map.put(keyExtractor.apply(v), v));
     return map;
   }
+
+  public static <T> List<T> limitList(List<T> list, int limit) {
+    return list.size() > limit ? list.subList(0, limit) : list;
+  }
 }

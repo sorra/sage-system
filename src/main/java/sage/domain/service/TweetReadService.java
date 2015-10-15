@@ -24,7 +24,6 @@ import static java.util.stream.Collectors.toSet;
 @Service
 @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
 public class TweetReadService {
-  private static final int FETCH_SIZE = 20;
 
   private static final Logger log = LoggerFactory.getLogger(TweetReadService.class);
 
@@ -54,8 +53,7 @@ public class TweetReadService {
     Collections.sort(tweets, Comparators.tweetNewerFirst);
 
     // Select the top items, for later's higher sort
-    List<Tweet> tops = (FETCH_SIZE < tweets.size())
-        ? tweets.subList(0, FETCH_SIZE) : tweets;
+    List<Tweet> tops = Colls.limitList(tweets, Edge.FETCH_SIZE);
     // How to optimize the counting inside, by Hibernate L1 cache?
     return tops;
   }
