@@ -48,8 +48,7 @@ public class TagChangeService {
     if (parentId == null) parentId = Tag.ROOT_ID;
     Tag tag = new Tag(name, tagRepo.load(parentId), intro);
     if (tagRepo.byNameAndParent(name, parentId) == null) {
-      tagRepo.save(tag);
-      return tag.getId();
+      return tagRepo.save(tag).getId();
     } else {
       throw new DomainRuntimeException("Tag[name: %s, parentId: %s] already exists", name, parentId);
     }

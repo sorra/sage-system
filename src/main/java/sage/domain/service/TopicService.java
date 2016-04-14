@@ -56,9 +56,9 @@ public class TopicService {
 
     Long toUserId = Optional.ofNullable(toReplyId)
         .map(id -> topicReplyRepo.get(id).getAuthor().getId()).orElse(null);
-    TopicReply reply = topicReplyRepo.save(
-        new TopicReply(topicPostRepo.load(topicPostId), userRepo.load(userId), new Date(), content)
-            .setToInfo(toUserId, toReplyId));
+    TopicReply reply = new TopicReply(topicPostRepo.load(topicPostId), userRepo.load(userId), new Date(), content)
+        .setToInfo(toUserId, toReplyId);
+    topicReplyRepo.save(reply);
 
     mentionedIds.forEach(atId -> notifService.mentionedByTopicReply(atId, userId, reply.getId()));
     if (reply.getToUserId() != null) {

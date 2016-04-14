@@ -30,20 +30,22 @@ public class HeedService {
   }
   
   public void heedTag(long userId, long tagId) {
-    tagHeedRepo.merge(new TagHeed(userRepo.load(userId), tagRepo.load(tagId)));
+    if (tagHeedRepo.find(userId, tagId) == null) {
+      tagHeedRepo.save(new TagHeed(userRepo.load(userId), tagRepo.load(tagId)));
+    }
   }
   
   public void unheedTag(long userId, long tagId) {
-    TagHeed ht = tagHeedRepo.find(userId, tagId);
-    Assert.notNull(ht);
-    tagHeedRepo.delete(ht);
+    TagHeed existing = tagHeedRepo.find(userId, tagId);
+    Assert.notNull(existing);
+    tagHeedRepo.delete(existing);
   }
 
   public Collection<FollowListHeed> followListHeeds(long userId) {
     return Colls.copy(followListHeedRepo.byUser(userId));
   }
 
-  public boolean followListHeedStatus(long userId, long followListId) {
+  public boolean existsFollowListHeed(long userId, long followListId) {
     return followListHeedRepo.byUserAndList(userId, followListId) != null;
   }
 

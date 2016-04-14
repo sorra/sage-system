@@ -40,7 +40,7 @@ public class ListPageController {
       Map<Long, Boolean> followListHeedStatuses = new HashMap<>();
       if (!ownerId.equals(cuid)) {
         for (FollowList list : followLists) {
-          followListHeedStatuses.put(list.getId(), heedService.followListHeedStatus(cuid, list.getId()));
+          followListHeedStatuses.put(list.getId(), heedService.existsFollowListHeed(cuid, list.getId()));
         }
       }
       model.put("followListHeedStatuses", followListHeedStatuses);
