@@ -39,8 +39,8 @@ public class ComponentResourceManager {
   public void init() {
     instance = this;
 
-    addFileType(".css", "/css/");
-    addFileType(".js", "/js/");
+    addFileType(".css", "/static/css/");
+    addFileType(".js", "/static/js/");
     forFileType(".tmpl", "/WEB-INF/templates/", file -> templates.put(file.getName(), new JsTemplate(file)));
   }
 
@@ -117,12 +117,12 @@ public class ComponentResourceManager {
   }
 
   private String includeOneCSS(String componentName) {
-    return String.format("<link href=\"%s/css/%s.css\" rel=\"stylesheet\" "
-        + "type=\"text/css\" media=\"screen\" />\n", StaticPathExposer.RS, componentName);
+    return String.format("<link href=\"/static/css/%s.css\" rel=\"stylesheet\" "
+        + "type=\"text/css\"/>\n", componentName);
   }
 
   private String includeOneJS(String componentName) {
-    return String.format("<script src=\"%s/js/%s.js\" "
-        + "type=\"text/javascript\"></script>\n", StaticPathExposer.RS, componentName);
+    return String.format("<script src=\"/static/js/%s.js\" "
+        + "type=\"text/javascript\"></script>\n", componentName);
   }
 }

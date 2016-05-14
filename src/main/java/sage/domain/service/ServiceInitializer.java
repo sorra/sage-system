@@ -69,12 +69,12 @@ public class ServiceInitializer {
 
   private void user() {
     admin = userService.register(
-        new User("admin@a.com", "123", "Admin", "伟大的Admin", "/rs/img/1.jpg"));
+        new User("admin@a.com", "123", "Admin", "伟大的Admin", "/static/img/1.jpg"));
     userService.grantAuthority(admin, Authority.SITE_ADMIN);
     bethia = userService.register(
-        new User("bethia@b.com", "123", "Bethia", "Elegant user", "/rs/img/2.jpg"));
+        new User("bethia@b.com", "123", "Bethia", "Elegant user", "/static/img/2.jpg"));
     centos = userService.register(
-        new User("centkuma@c.com", "123", "CentKuma", "CentOS Fans Kuma", "/rs/img/3.jpg"));
+        new User("centkuma@c.com", "123", "CentKuma", "CentOS Fans Kuma", "/static/img/3.jpg"));
   }
 
   private void relation() {

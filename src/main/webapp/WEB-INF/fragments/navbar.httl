@@ -36,7 +36,7 @@
     <span id="tag-tree-json">${tagTreeJson}</span>
     #end
 </div>
-<script type="text/javascript" src="$!{rs}/js/jquery-1.9.1.js"></script>
+<script type="text/javascript" src="/static/js/jquery-1.9.1.js"></script>
 <script type="text/javascript">
 $(document).ready(function(){
 	$('form.search').submit(function(event){

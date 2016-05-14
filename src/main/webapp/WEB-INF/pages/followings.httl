@@ -6,7 +6,7 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<title>${thisUser.name}的关注</title>
   $!{includeCSS()}
-	<link href="$!{rs}/css/home.css" rel="stylesheet" type="text/css" media="screen" />
+	<link href="/static/css/home.css" rel="stylesheet" type="text/css" media="screen" />
 </head>
 <body>
 $!{include("navbar.httl")}

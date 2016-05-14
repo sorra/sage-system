@@ -1,5 +1,7 @@
 .idea
 sage.iml
-logs
-target
+build/
+classes/
+logs/
+.gradle/
 .DS_Store

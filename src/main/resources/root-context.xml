@@ -37,6 +37,6 @@
 		<property name="transactionManager" ref="transactionManager"/>
 	</bean>
 
-	<context:component-scan base-package="sage.domain.*"/>
+	<!--<context:component-scan base-package="sage.domain.*"/>-->
 	<tx:annotation-driven transaction-manager="transactionManager" />
 </beans>
