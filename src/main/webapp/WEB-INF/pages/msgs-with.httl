@@ -41,7 +41,7 @@ $!{include("navbar.httl")}
         $!{include("user-label.httl", ["u": users[msg.fromUser]])}
       </div>
       <div class="msg-body">
-        $!{spanHumanTime(msg.time)}
+        $!{spanHumanTime(msg.whenCreated)}
         <div class="msg-content">${msg.content}</div>
       </div>
     </div>

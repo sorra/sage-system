@@ -33,7 +33,7 @@ class Tweet : Model {
 
   var blogId: Long = 0
 
-  @ManyToMany(fetch = FetchType.EAGER)
+  @ManyToMany
   var tags: MutableSet<Tag> = HashSet()
 
   var deleted: Boolean = false

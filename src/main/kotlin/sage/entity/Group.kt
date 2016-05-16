@@ -1,7 +1,10 @@
 package sage.entity
 
 import java.util.*
-import javax.persistence.*
+import javax.persistence.Entity
+import javax.persistence.ManyToMany
+import javax.persistence.ManyToOne
+import javax.persistence.Table
 
 @Entity
 @Table(name = "groupp")
@@ -10,7 +13,7 @@ class Group : BaseModel {
   var name: String = ""
   var introduction: String = ""
 
-  @ManyToMany(fetch = FetchType.EAGER)
+  @ManyToMany
   var tags: Set<Tag> = HashSet()
 
   @ManyToOne(optional = false)

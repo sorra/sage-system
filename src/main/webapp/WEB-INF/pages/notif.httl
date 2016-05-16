@@ -1,7 +1,9 @@
 <!DOCTYPE html>
 <html>
+<!--
 #set(components = ["bootstrap", "layout", "tag", "user"])
 #set(Collection<NotifView> notifs)
+-->
 <head>
   <meta charset="UTF-8">
   <title>${category}通知</title>

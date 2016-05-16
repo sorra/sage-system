@@ -17,7 +17,7 @@ class Tag : BaseModel {
   @ManyToOne
   var parent: Tag?
 
-  @OneToMany(mappedBy = "parent", fetch = FetchType.EAGER)
+  @OneToMany(mappedBy = "parent")
   var children: Set<Tag> = HashSet()
 
   @JvmOverloads constructor(name: String, parent: Tag?, intro: String = "") {

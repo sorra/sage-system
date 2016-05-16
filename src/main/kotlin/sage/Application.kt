@@ -40,8 +40,8 @@ open class Application : WebMvcConfigurationSupport() {
 
   override fun addResourceHandlers(registry: ResourceHandlerRegistry) {
     registry.addResourceHandler("/static/**")?.addResourceLocations("/static/")
-    registry.addResourceHandler("/files/pic/**").addResourceLocations(toLocation(filesService!!.picDir()))
-    registry.addResourceHandler("/files/avatar/**").addResourceLocations(toLocation(filesService!!.avatarDir()))
+    registry.addResourceHandler("/files/pic/**").addResourceLocations(toLocation(filesService.picDir()))
+    registry.addResourceHandler("/files/avatar/**").addResourceLocations(toLocation(filesService.avatarDir()))
   }
 
   private fun toLocation(path: String): String {
@@ -56,7 +56,7 @@ open class Application : WebMvcConfigurationSupport() {
   open fun multipartResolver() = CommonsMultipartResolver().apply { setMaxUploadSize(10000000) }
 
   @Autowired
-  private val filesService: FilesService? = null
+  private lateinit var filesService: FilesService
 }
 
 fun main(args: Array<String>) {

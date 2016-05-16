@@ -21,7 +21,7 @@ class TopicService
 @Autowired constructor(private val notifService: NotifService) {
 
   fun post(userId: Long, blog: Blog, groupId: Long): TopicPost {
-    if (!IdCommons.equal(userId, blog.author!!.id)) {
+    if (!IdCommons.equal(userId, blog.author.id)) {
       throw DomainException("Cannot post topic. User[%d] is not the author of Blog[%d]", userId, blog.id)
     }
     val tp = TopicPost(blog, Group.ref(groupId))

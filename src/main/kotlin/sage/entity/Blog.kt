@@ -15,7 +15,7 @@ class Blog : BaseModel {
   @ManyToOne(optional = false)
   var author: User
 
-  @ManyToMany(fetch = FetchType.EAGER)
+  @ManyToMany
   var tags: MutableSet<Tag> = HashSet()
 
   @SoftDelete

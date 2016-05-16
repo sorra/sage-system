@@ -63,7 +63,6 @@ class TagChangeService {
     if (Authority.isTagAdminOrHigher(submitter.authority)) {
       // Admin权限者自动接受自己的修改
       acceptRequest(submitter.id, req.id)
-      req.update()
     } else {
       //TODO 暂时以全站Admin身份自动接受所有修改
       acceptRequest(1L, req.id)
@@ -95,19 +94,13 @@ class TagChangeService {
     request.status = Status.CANCELED
   }
 
-  fun acceptRequest(userId: Long, reqId: Long) {
-    transactRequest(userId, reqId, Status.ACCEPTED)
-  }
+  fun acceptRequest(userId: Long, reqId: Long) = transactRequest(userId, reqId, Status.ACCEPTED)
 
-  fun rejectRequest(userId: Long, reqId: Long) {
-    transactRequest(userId, reqId, Status.REJECTED)
-  }
+  fun rejectRequest(userId: Long, reqId: Long) = transactRequest(userId, reqId, Status.REJECTED)
 
-  fun userCanTransact(userId: Long): Boolean {
-    return Authority.isTagAdminOrHigher(User.byId(userId)!!.authority)
-  }
+  fun userCanTransact(userId: Long) = Authority.isTagAdminOrHigher(User.get(userId).authority)
 
-  private fun transactRequest(userId: Long, reqId: Long, status: Status) {
+  private fun transactRequest(userId: Long, reqId: Long, status: Status): TagChangeRequest {
     val user = User.get(userId)
     if (!Authority.isTagAdminOrHigher(user.authority)) {
       throw AuthorityException("Require TagAdmin or higher.")
@@ -118,6 +111,7 @@ class TagChangeService {
     }
     req.status = status
     req.transactor = user
+    req.update()
 
     if (status === Status.ACCEPTED) {
       val tagId = req.tag.id
@@ -130,6 +124,7 @@ class TagChangeService {
       }
       log.info("transactRequest done: {}", req)
     }
+    return req
   }
 
   private fun doTransact(tagId: Long, action: (Tag) -> Unit) {

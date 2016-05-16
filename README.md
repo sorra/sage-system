@@ -1,37 +1,28 @@
-程序:
-JDK 8
-Maven 3
-Tomcat 7/8
-MySQL 5
-  ElasticSearch (可选)
+需要程序:
 
-环境变量:
-JAVA_HOME
-M2_HOME
-TOMCAT_HOME
-PATH加上M2_HOME/bin:$JAVA_HOME/bin
-  SAGE_FILES_HOME (可选, 默认值为用户目录)
+- JDK 8
+- Gradle 2.12+
+- MySQL 5.5+
+- ElasticSearch 1.2.x (可选)
+
+环境设置:
+
+- 可有可无的环境变量SAGE\_FILES\_HOME (存放上传文件的位置, 默认值为用户目录)
+- Mac/Linux可在shell配置Gradle短命令 alias grad="./gradlew"
 
 数据库:
-建一个数据库, 名字sage, 字符集utf8_general_ci
-建一个用户, 名字sage, 密码1234, 给予所有权限
 
-脚本(Linux/Mac为.sh, Windows为.bat):
-./build.sh 构建+部署
-./web-build.sh 前端构建+部署(无需重启server)
-./run.sh 启动server(Ctrl+C关闭)
-首次启动后打开 localhost:8080/z-init 完成数据初始化
+- 建一个数据库, 名字sage, 字符集utf8\_general\_ci
+- 建一个用户, 名字sage, 密码1234, 给予所有权限
+
+启动:
+
+- IDE方式: 用Intellij导入项目(项目类型选Gradle)，执行Application.kt文件
+- 命令方式: `./gradlew bootRun` (用了alias就是`grad bootRun`)
+- 首次启动后打开 localhost:8080/z-init 完成数据初始化
 
 开发过程:
-后端 - 写了代码, shutdown, build+run (./build.sh && ./run.sh)
-前端 - 写了代码(css, js, httl), 执行web-build, server可保持开启
 
-
-```
-brew install maven
-brew install tomcat
-
-export JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk1.8.0_60.jdk/Contents/Home
-export TOMCAT_HOME=/Library/Tomcat
-
-```
+- 后端: 修改/新增文件, 重启程序
+- 前端: 修改文件, 刷新网页; 新增文件，重启程序
+- 干净构建: `./gradlew clean bootRun`
