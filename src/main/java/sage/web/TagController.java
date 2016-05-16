@@ -7,8 +7,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import sage.domain.service.TagChangeService;
-import sage.domain.service.TagService;
+import sage.entity.Tag;
+import sage.service.TagChangeService;
+import sage.service.TagService;
 import sage.transfer.TagCard;
 import sage.transfer.TagChangeRequestCard;
 import sage.transfer.TagNode;
@@ -37,6 +38,7 @@ public class TagController {
                      @RequestParam(required = false) Long parentId,
                      @RequestParam(required = false) String intro) {
     Auth.checkCuid();
+    if (parentId == null) parentId = Tag.Companion.getROOT_ID();
     return tagChangeService.newTag(name, parentId, intro);
   }
 

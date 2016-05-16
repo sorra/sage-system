@@ -11,10 +11,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 import org.springframework.web.context.WebApplicationContext;
-import sage.domain.service.BlogPostService;
-import sage.domain.service.ServiceInitializer;
-import sage.domain.service.TagService;
-import sage.domain.service.TweetPostService;
+import sage.service.BlogPostService;
+import sage.service.ServiceInitializer;
+import sage.service.TagService;
+import sage.service.TweetPostService;
 import sage.entity.Blog;
 import sage.entity.Tag;
 

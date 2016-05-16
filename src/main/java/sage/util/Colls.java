@@ -3,6 +3,7 @@ package sage.util;
 import java.util.*;
 import java.util.function.Function;
 
+@Deprecated
 public abstract class Colls {
   public static <T, R> List<R> map(Collection<T> coll, Function<T, R> transformer) {
     List<R> result = new ArrayList<>(coll.size());

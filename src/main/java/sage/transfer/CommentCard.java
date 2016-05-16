@@ -24,7 +24,7 @@ public class CommentCard {
     authorId = comment.getAuthor().getId();
     authorName = comment.getAuthor().getName();
     avatar = comment.getAuthor().getAvatar();
-    time = comment.getTime();
+    time = comment.getWhenCreated();
     replyUserId = comment.getReplyUserId();
   }
 

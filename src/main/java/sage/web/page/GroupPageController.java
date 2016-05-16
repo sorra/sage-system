@@ -9,7 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import sage.domain.commons.ReformMention;
-import sage.domain.service.*;
+import sage.service.*;
 import sage.entity.TopicPost;
 import sage.transfer.*;
 import sage.util.Colls;
@@ -49,7 +49,8 @@ public class GroupPageController {
     Auth.checkCuid();
     GroupPreview gp = groupService.getGroupPreview(id);
     model.put("group", gp);
-    model.put("existingTags", userService.filterUserTags(Auth.cuid(), gp.tags));
+    model.put("existingTags", gp.tags);
+    model.put("topTags", userService.filterNewTags(Auth.cuid(), gp.tags));
     return "edit-group";
   }
 
@@ -82,7 +83,7 @@ public class GroupPageController {
     TopicPost topicPost = topicService.getTopicPost(id);
     BlogView bv = new BlogView(topicPost.getBlog());
     UserCard author = userService.getUserCard(Auth.cuid(), bv.getAuthor().getId());
-    List<TopicReplyView> replies = Colls.map(topicService.getTopicReplies(id),
+    List<TopicReplyView> replies = Colls.map(topicService.repliesOfTopicPost(id),
         treply -> {
           treply.setContent(ReformMention.apply(treply.getContent()));
           return new TopicReplyView(treply,

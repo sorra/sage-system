@@ -3,7 +3,7 @@ package sage.web;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import sage.domain.service.UserService;
+import sage.service.UserService;
 import sage.transfer.UserCard;
 import sage.transfer.UserSelf;
 import sage.web.auth.Auth;

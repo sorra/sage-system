@@ -21,7 +21,7 @@ public class HotTopic implements Comparable<HotTopic> {
     groupName = topic.getGroup().getName();
     blog = new BlogPreview(topic.getBlog());
     this.replyCount = replyCount;
-    lastActiveTime = lastReplyTime!=null ? lastReplyTime : topic.getTime();
+    lastActiveTime = lastReplyTime!=null ? lastReplyTime : topic.getWhenCreated();
   }
 
   @Override

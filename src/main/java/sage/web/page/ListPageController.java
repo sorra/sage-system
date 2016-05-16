@@ -9,9 +9,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import sage.domain.service.HeedService;
-import sage.domain.service.ListService;
-import sage.domain.service.UserService;
+import sage.service.HeedService;
+import sage.service.ListService;
+import sage.service.UserService;
 import sage.transfer.FollowList;
 import sage.web.auth.Auth;
 

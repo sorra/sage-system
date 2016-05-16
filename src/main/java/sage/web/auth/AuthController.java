@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import sage.domain.commons.BadArgumentException;
-import sage.domain.commons.DomainRuntimeException;
-import sage.domain.service.UserService;
+import sage.domain.commons.DomainException;
+import sage.service.UserService;
 import sage.entity.User;
 
 @Controller
@@ -28,7 +28,7 @@ public class AuthController {
       @RequestParam("email") String email,
       @RequestParam("password") String password) {
     if (email.isEmpty() || password.isEmpty()) {
-      throw new DomainRuntimeException("Empty input!");
+      throw new DomainException("Empty input!");
     }
     log.info("Login email: {}", email);
     Auth.invalidateSession(request);

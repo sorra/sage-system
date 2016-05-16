@@ -1,12 +1,10 @@
 package sage.web.context;
 
-import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import sage.domain.service.TagService;
-import sage.domain.service.UserService;
+import sage.service.TagService;
+import sage.service.UserService;
 import sage.transfer.UserSelf;
 import sage.web.auth.Auth;
 

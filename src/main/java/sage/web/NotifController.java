@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import sage.domain.service.NotifService;
+import sage.service.NotifService;
 import sage.entity.Notif;
 import sage.transfer.NotifCounter;
 import sage.transfer.NotifView;
@@ -28,7 +28,7 @@ public class NotifController {
       NotifCounter notifCounter = counts.get(nv.type);
       if (notifCounter == null) {
         notifCounter = new NotifCounter();
-        notifCounter.desc = Notif.Type.valueOf(nv.type).shortDesc;
+        notifCounter.desc = Notif.Type.valueOf(nv.type).getShortDesc();
         counts.put(nv.type, notifCounter);
       }
       notifCounter.count++;

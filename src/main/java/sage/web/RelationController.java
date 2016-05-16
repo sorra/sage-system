@@ -5,9 +5,9 @@ import java.util.Collections;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import sage.domain.service.HeedService;
-import sage.domain.service.NotifService;
-import sage.domain.service.RelationService;
+import sage.service.HeedService;
+import sage.service.NotifService;
+import sage.service.RelationService;
 import sage.web.auth.Auth;
 
 @RestController

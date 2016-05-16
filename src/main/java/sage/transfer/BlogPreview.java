@@ -23,8 +23,8 @@ public class BlogPreview {
     title = blog.getTitle();
     author = new UserLabel(blog.getAuthor());
     summary = Strings.cut(blog.getContent(), 0, 100);
-    createdTime = blog.getCreatedTime();
-    modifiedTime = blog.getModifiedTime();
+    createdTime = blog.getWhenCreated();
+    modifiedTime = blog.getWhenModified();
     tags = Colls.map(blog.getTags(), TagLabel::new);
   }
 }

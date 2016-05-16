@@ -19,9 +19,9 @@ public class NotifView {
     id = notif.getId();
     ownerId = notif.getOwnerId();
     this.sender = sender;
-    time = notif.getTime();
+    time = notif.getWhenCreated();
     type = notif.getType().name();
-    desc = notif.getType().desc;
+    desc = notif.getType().getDesc();
     this.source = source;
   }
 }

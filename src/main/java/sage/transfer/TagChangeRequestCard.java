@@ -22,8 +22,8 @@ public class TagChangeRequestCard {
       transactor = new UserLabel(req.getTransactor());
     }
     statusKey = req.getStatus().name();
-    status = req.getStatus().desc;
-    type = req.getType().desc;
+    status = req.getStatus().getDesc();
+    type = req.getType().getDesc();
     switch (req.getType()) {
       case MOVE:
         desc = "移动到标签编号"+req.getParentId()+"下";

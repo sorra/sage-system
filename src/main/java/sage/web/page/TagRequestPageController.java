@@ -5,8 +5,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import sage.domain.service.TagChangeService;
-import sage.domain.service.TagService;
+import sage.service.TagChangeService;
+import sage.service.TagService;
 import sage.web.auth.Auth;
 
 @Controller

@@ -4,8 +4,8 @@ import java.util.Collection;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import sage.domain.commons.DomainRuntimeException;
-import sage.domain.service.MessageService;
+import sage.domain.commons.DomainException;
+import sage.service.MessageService;
 import sage.entity.Message;
 import sage.web.auth.Auth;
 
@@ -30,5 +30,5 @@ public class MessageController {
     ms.send(uid, to, content);
   }
 
-  private static final DomainRuntimeException CONTENT_EMPTY = new DomainRuntimeException("请输入内容!");
+  private static final DomainException CONTENT_EMPTY = new DomainException("请输入内容!");
 }

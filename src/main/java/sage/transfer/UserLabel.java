@@ -45,12 +45,4 @@ public class UserLabel {
   public String toString() {
     return String.format("UserLabel[%d, %s]", id, name);
   }
-  
-  public static List<UserLabel> listOf(Collection<User> users) {
-    List<UserLabel> labels = new ArrayList<>();
-    for (User user : users) {
-      labels.add(new UserLabel(user));
-    }
-    return labels;
-  }
 }

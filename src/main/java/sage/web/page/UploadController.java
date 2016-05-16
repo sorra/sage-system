@@ -10,8 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
-import sage.domain.commons.DomainRuntimeException;
-import sage.domain.service.FilesService;
+import sage.domain.commons.DomainException;
+import sage.service.FilesService;
 import sage.web.auth.Auth;
 
 @Controller
@@ -30,7 +30,7 @@ public class UploadController {
       response.setContentType("text/plain");
       response.getWriter().write(link);
     } catch (IOException e) {
-      throw new DomainRuntimeException("文件上传失败", e);
+      throw new DomainException("文件上传失败", e);
     }
   }
 }

@@ -23,7 +23,7 @@ public class GroupPreview {
     introduction = group.getIntroduction();
     tags = Colls.map(group.getTags(), TagLabel::new);
     creator = new UserLabel(group.getCreator());
-    createdTime = group.getCreatedTime();
+    createdTime = group.getWhenCreated();
     membersCount = group.getMembers().size();
   }
 }

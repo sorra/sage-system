@@ -11,9 +11,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import sage.domain.commons.Edge;
-import sage.domain.service.StreamService;
-import sage.domain.service.TransferService;
-import sage.domain.service.TweetReadService;
+import sage.service.StreamService;
+import sage.service.TransferService;
+import sage.service.TweetReadService;
 import sage.transfer.CommentCard;
 import sage.transfer.Stream;
 import sage.transfer.TweetView;
@@ -75,13 +75,6 @@ public class ReadController {
       @RequestParam(required = false) Long before,
       @RequestParam(required = false) Long after) {
     return streamService.personalStream(id, getEdge(before, after));
-  }
-
-  @RequestMapping("/group/{id}")
-  public Stream groupStream(@PathVariable Long id,
-      @RequestParam(required = false) Long before,
-      @RequestParam(required = false) Long after) {
-    return streamService.groupStream(id, getEdge(before, after));
   }
 
   private Edge getEdge(Long beforeId, Long afterId) {

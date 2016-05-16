@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
-import sage.domain.service.FilesService;
-import sage.domain.service.UserService;
+import sage.service.FilesService;
+import sage.service.UserService;
 import sage.web.auth.Auth;
 
 @Controller

@@ -1,16 +1,16 @@
 package sage.domain.commons;
 
 import java.util.Set;
+import java.util.function.Function;
 
-import sage.domain.repository.UserRepository;
 import sage.entity.User;
 
 public class ReplaceMention {
-  private UserRepository userRepo;
+  private Function<String, User> findByName;
 
-  public static ReplaceMention with(UserRepository userRepo) {
+  public static ReplaceMention with(Function<String, User> findByName) {
     ReplaceMention instance = new ReplaceMention();
-    instance.userRepo = userRepo;
+    instance.findByName = findByName;
     return instance;
   }
 
@@ -32,7 +32,7 @@ public class ReplaceMention {
 
     if (indexOfAt >= startIndex && indexOfSpace >= startIndex) {
       String name = content.substring(indexOfAt + 1, indexOfSpace);
-      User user = userRepo.findByName(name);
+      User user = findByName.apply(name);
 
       if (user != null) {
         // A valid mention

@@ -23,21 +23,21 @@ public class TweetView implements Item {
   private MidForwards midForwards;
   private List<TagLabel> tags = new ArrayList<>();
   
-  private long forwardCount;
-  private long commentCount;
+  private int forwardCount;
+  private int commentCount;
   
   private Long fromTag = null;
   private Long fromGroup = null;
 
   TweetView() {}
   
-  public TweetView(Tweet tweet, Tweet origin, long forwardCount, long commentCount) {
+  public TweetView(Tweet tweet, Tweet origin, int forwardCount, int commentCount) {
     id = tweet.getId();
     authorId = tweet.getAuthor().getId();
     authorName = tweet.getAuthor().getName();
     avatar = tweet.getAuthor().getAvatar();
     content = convertImgLinks(tweet.getContent());
-    time = tweet.getTime();
+    time = tweet.getWhenCreated();
     timeMillis = tweet.getTimeMillis();
     if (origin != null) {
       this.origin = new TweetView(origin, null, 0, 0);

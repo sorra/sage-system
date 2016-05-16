@@ -25,8 +25,8 @@ public class BlogView {
 
     title = blog.getTitle();
     content = blog.getContent();
-    createdTime = blog.getCreatedTime();
-    modifiedTime = blog.getModifiedTime();
+    createdTime = blog.getWhenCreated();
+    modifiedTime = blog.getWhenModified();
 
     tags = Colls.map(blog.getTags(), TagLabel::new);
   }

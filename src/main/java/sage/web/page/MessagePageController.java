@@ -10,9 +10,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import sage.domain.service.MessageService;
-import sage.domain.service.RelationService;
-import sage.domain.service.UserService;
+import sage.service.MessageService;
+import sage.service.RelationService;
+import sage.service.UserService;
 import sage.entity.Message;
 import sage.transfer.ConversationPreview;
 import sage.transfer.MessageList;
@@ -89,5 +89,5 @@ public class MessagePageController {
     model.put("conversations", conversations);
   }
 
-  private static Comparator<Message> byTimeDesc = Comparator.comparing(Message::getTime, Comparator.reverseOrder());
+  private static Comparator<Message> byTimeDesc = Comparator.comparing(Message::getWhenCreated, Comparator.reverseOrder());
 }

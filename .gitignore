@@ -5,3 +5,5 @@ classes/
 logs/
 .gradle/
 .DS_Store
+db-create-all.sql
+db-drop-all.sql

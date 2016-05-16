@@ -1,6 +1,5 @@
 package sage.web.page;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,9 +7,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import sage.domain.service.RelationService;
-import sage.domain.service.UserService;
-import sage.entity.Follow;
+import sage.service.RelationService;
+import sage.service.UserService;
 import sage.transfer.UserCard;
 import sage.util.Colls;
 import sage.web.auth.Auth;

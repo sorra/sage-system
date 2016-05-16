@@ -32,7 +32,7 @@ public class FavInfo {
       tweet = fetchTweet.apply(tweetId);
     }
     ownerId = fav.getOwner().getId();
-    time = fav.getTime();
+    time = fav.getWhenCreated();
   }
   
   public Long getId() {

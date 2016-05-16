@@ -5,10 +5,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
-import sage.domain.service.RelationService;
-import sage.domain.service.TagService;
-import sage.domain.service.TopicService;
-import sage.domain.service.UserService;
+import sage.service.RelationService;
+import sage.service.TagService;
+import sage.service.TopicService;
+import sage.service.UserService;
 import sage.web.auth.Auth;
 import sage.web.context.FrontMap;
 

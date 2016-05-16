@@ -4,7 +4,7 @@ import java.util.Collection;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import sage.domain.service.FavService;
+import sage.service.FavService;
 import sage.transfer.FavInfo;
 import sage.web.auth.Auth;
 
@@ -20,9 +20,9 @@ public class FavController {
     Long uid = Auth.checkCuid();
 
     if (link != null && tweetId == null) {
-      favService.addFav(uid, link);
+      favService.create(uid, link);
     } else if (tweetId != null && link == null) {
-      favService.addFav(uid, FavInfo.TWEET_PR + tweetId);
+      favService.create(uid, FavInfo.TWEET_PR + tweetId);
     } else {
       throw new IllegalArgumentException();
     }
@@ -32,7 +32,7 @@ public class FavController {
   public boolean deleteFav(@PathVariable Long favId) {
     Long uid = Auth.checkCuid();
     
-    favService.deleteFav(uid, favId);
+    favService.delete(uid, favId);
     return true;
   }
   

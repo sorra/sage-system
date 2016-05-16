@@ -4,9 +4,9 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import sage.domain.service.HeedService;
-import sage.domain.service.TagService;
-import sage.domain.service.UserService;
+import sage.service.HeedService;
+import sage.service.TagService;
+import sage.service.UserService;
 import sage.transfer.FollowList;
 import sage.transfer.FollowListLite;
 import sage.transfer.TagCard;

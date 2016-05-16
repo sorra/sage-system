@@ -22,7 +22,7 @@ public class TopicReplyView {
     content = reply.getContent();
     topicPostId = reply.getTopicPost().getId();
     author = new UserLabel(reply.getAuthor());
-    time = reply.getTime();
+    time = reply.getWhenCreated();
     toUser = toUserLabel;
     toReplyId = reply.getToReplyId();
   }
