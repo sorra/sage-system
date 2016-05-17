@@ -4,17 +4,22 @@ buildscript {
     kotlinVersion = '1.0.1-2'
   }
   repositories {
+    jcenter()
     mavenCentral()
   }
   dependencies {
-    classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
-    classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:${kotlinVersion}")
+    classpath "org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}"
+    classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${kotlinVersion}"
+    classpath 'com.eriwen:gradle-css-plugin:2.12.0'
+    classpath 'com.eriwen:gradle-js-plugin:2.12.0'
   }
 }
 
 apply plugin: 'java'
 apply plugin: 'kotlin'
 apply plugin: 'spring-boot'
+apply plugin: 'css'
+apply plugin: 'js'
 
 jar {
   baseName = 'sage'
@@ -55,3 +60,65 @@ dependencies {
   testCompile 'org.springframework.boot:spring-boot-starter-test'
 }
 
+ext {
+  staticSrc = 'src/main/webapp/static'
+}
+
+css.source {
+  dev {
+    css {
+      srcDir "${staticSrc}/css"
+      include "*.css"
+      exclude "*.min.css"
+      exclude "all.css"
+      exclude "bootstrap.css"
+    }
+  }
+}
+
+combineCss {
+  source = css.source.dev.css.files
+  dest = "${staticSrc}/css/all.css"
+}
+
+minifyCss {
+  source = combineCss
+  dest = "${staticSrc}/css/all.min.css"
+}
+
+javascript.source {
+  dev {
+    js {
+      srcDir "src/main/webapp/static/js"
+      include "*.js"
+      exclude "*.min.js"
+      exclude "all.js"
+      exclude "jquery-*.js"
+      exclude "bootstrap.js"
+      exclude "markdown.js"
+    }
+  }
+}
+
+task combinejs(type: com.eriwen.gradle.js.tasks.CombineJsTask) {
+  source = javascript.source.dev.js.files
+  dest = file("${staticSrc}/js/all.js")
+}
+
+task minifyjs(type: com.eriwen.gradle.js.tasks.MinifyJsTask) {
+  source = combinejs
+  dest = file("${staticSrc}/js/all.min.js")
+  closure {
+    warningLevel = 'QUIET'
+  }
+}
+
+task web {
+  dependsOn 'combineCss'
+  dependsOn 'combinejs'
+}
+
+task webmin {
+  dependsOn 'minifyCss'
+  dependsOn 'minifyjs'
+}

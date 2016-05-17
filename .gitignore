@@ -7,3 +7,7 @@ logs/
 .DS_Store
 db-create-all.sql
 db-drop-all.sql
+**/all.css
+**/all.min.css
+**/all.js
+**/all.min.js
