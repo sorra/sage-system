@@ -18,7 +18,7 @@
         {{include 'tmpl-tweet' asOrigin(origin)}}
       {{/if}}
       <div>
-        <a class="human-time span" href="/tweet/{{id}}" data-time="{{time}}">{{time | showTime}}</a>
+        <a class="human-time span" href="/tweets/{{id}}" data-time="{{time}}">{{time | showTime}}</a>
         <span class="tags span">
           {{(tags = origin ? origin.tags : tags)}}
           {{each tags as tag i}}

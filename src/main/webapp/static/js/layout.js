@@ -24,11 +24,12 @@ $(document).ready(function(){
         notifCountHtml += '<a href="/notifications/unread" style="display: block">'+notifCountLines[i]+'</a>'
       }
       if (notifCountHtml.length > 0) {
-        $('.navbar .search').popover({
+        $('#nav-user').popover({
           html: true,
           placement: 'bottom',
           trigger: 'manual',
           selector: '#notif-count-popover',
+          container: 'body',
           content: notifCountHtml
         }).popover('show')
       }
@@ -54,17 +55,18 @@ function buildNavTagTree($lnk, tagTree) {
   $dialog.find('input[name=name]').val('')
   $dialog.find('input[name=parent-id]').val('')
 
-  $dialog.find('.submit').click(function() {
-    var name = $dialog.find('#name').val()
-    var parentId = $dialog.find('#parent-id').val()
+  $(document).delegate('#new-tag-dialog .submit', 'click', function() {
+    var $dialog = $('#new-tag-dialog')
+    var name = $dialog.find('input[name=name]').val()
+    var parentId = $dialog.find('input[name=parent-id]').val()
     if (name && name.length > 0 && parentId && parentId.length > 0) {
       $.post('/tags/new', {
         name: name,
         parentId: parentId
       })
     }
-    $dialog.find('#name').val('')
-    $dialog.find('#parent-id').val('')
+    $dialog.find('input[name=parent-id]').val('')
+    $dialog.find('input[name=parent-id]').val('')
     $dialog.modal('hide')
   })
 

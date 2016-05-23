@@ -32,7 +32,7 @@ open class TagApi
                   @RequestParam(required = false) parentId: Long?,
                   @RequestParam(required = false) intro: String?): Long {
     Auth.checkUid()
-    return tagService.create(name, parentId ?: Tag.ROOT_ID, intro ?: "")
+    return tagService.create(name, parentId ?: Tag.ROOT_ID, intro ?: "").id
   }
 
   @RequestMapping("/{id}/move")

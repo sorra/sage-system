@@ -67,7 +67,7 @@ public class ServiceInitializer {
   }
 
   private long createTag(String name, long parentId) {
-    long tagId = tagService.create(name, parentId, "这就是" + name);
+    long tagId = tagService.create(name, parentId, "这就是" + name).getId();
     return tagId;
   }
 

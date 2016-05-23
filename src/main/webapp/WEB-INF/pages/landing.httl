@@ -32,13 +32,14 @@ $!{include("navbar.httl")}
     加入这里，看更多内容 <a class="btn btn-default btn-success" href="/register">加入</a>
   </div>
   #for(ht : hotTopics)
-  <div class="topic">
-    <a class="title" href="/topics/${ht.topic.id}">${ht.topic.title}</a>
-    <p class="summary">${ht.topic.summary}</p>
-    $!{include("user-label.httl", ["u": ht.topic.author])}
-    $!{spanHumanTime(ht.topic.whenCreated)}
-    #if(ht.replyCount > 0) <span>${ht.replyCount}回复</span>#end
-  </div>
+    #set(topic = ht.topic)
+    <div class="topic-preview">
+      <a class="title" href="/topics/${topic.id}">${topic.title}</a>
+      <p class="summary">${topic.summary}</p>
+      $!{include("user-label.httl", ["u": topic.author])}
+      $!{spanHumanTime(topic.whenCreated)}
+      #if(ht.replyCount > 0) <span>${ht.replyCount}回复</span>#end
+    </div>
   #end
 </div>
 $!{includeProto}

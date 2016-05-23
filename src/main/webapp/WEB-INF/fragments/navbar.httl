@@ -22,11 +22,12 @@
             <a href="/home">首页</a>
             <a id="nav-tags" href="javascript:;">标签</a>
             <a href="/topics">帖子</a>
+            <a href="/blogs">博客</a>
             <a href="/people">人们</a>
+            #if(userSelf != null)
             <a href="/blogs/new">写博客</a>
             <a href="/messages">私信</a>
-            #if(userSelf != null)
-            <a href="/users/self">${userSelf.name}</a>
+            <a id="nav-user" href="/users/self">${userSelf.name}</a>
             <a href="/user-info">设置</a>
             <a href="/logout">退出</a>
             #else

@@ -16,14 +16,13 @@ open class RelationApi
 
   @RequestMapping("/follow/{targetId}")
   open fun follow(@PathVariable targetId: Long,
-                  @RequestParam(required = false) reason: String,
-                  @RequestParam("tagIds[]", required = false) tagIds: Collection<Long>?,
+                  @RequestParam(required = false) reason: String?,
+                  @RequestParam("tagIds[]", defaultValue = "") tagIds: Collection<Long>,
                   @RequestParam(defaultValue = "false") includeNew: Boolean,
                   @RequestParam(defaultValue = "false") includeAll: Boolean,
                   @RequestParam(required = false) userTagOffset: Long?) {
     val uid = Auth.checkUid()
-    relationService.follow(uid, targetId, reason, tagIds ?: emptyList(),
-        includeNew, includeAll, userTagOffset)
+    relationService.follow(uid, targetId, reason, tagIds, includeNew, includeAll, userTagOffset)
     notifService.followed(targetId, uid)
   }
 

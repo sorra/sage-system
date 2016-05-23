@@ -35,8 +35,8 @@ class NotificationService @Autowired constructor(
     return counts
   }
 
-  fun confirmRead(userId: Long, ids: List<Long>) {
-    Ebean.createUpdate(Notification::class.java, "read = true where id in :ids and ownerId = :userId")
+  fun markRead(userId: Long, ids: List<Long>) {
+    Ebean.createUpdate(Notification::class.java, "update Notification set isRead = true where id in (:ids) and ownerId = :userId")
         .setParameter("ids", ids).setParameter("userId", userId).execute()
   }
 

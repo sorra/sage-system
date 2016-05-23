@@ -72,7 +72,9 @@ function getStream(url) {
 }
 
 function getStreamAfter(url, afterId, callback) {
-    if (afterId == undefined) throw new Error;
+    if (afterId == undefined) {
+      console.info('afterId is undefined')
+    }
     return $.get(url, {after: afterId})
         .done(function(resp){
             if (resp == null) console.error('stream is null');
@@ -87,7 +89,9 @@ function getStreamAfter(url, afterId, callback) {
 }
 
 function getStreamBefore(url, beforeId, callback) {
-    if (beforeId == undefined) throw new Error;
+    if (beforeId == undefined) {
+      console.info('beforeId is undefined')
+    }
     return $.get(url, {before: beforeId})
         .done(function(resp){
             if (resp == null) console.error('stream is null');
@@ -215,7 +219,7 @@ function deleteDialogEach() {
       console.warn('this id is '+id)
       return
     }
-    $.post('/tweet/'+id+'/delete')
+    $.post('/tweets/'+id+'/delete')
       .done(function(resp){
         if(resp == true) {
           if ($tweet.hasClass('t-forward')) {

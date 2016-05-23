@@ -15,7 +15,7 @@ import javax.annotation.PostConstruct
 @Service
 class TagService {
 
-  fun create(name: String, parentId: Long, intro: String): Long {
+  fun create(name: String, parentId: Long, intro: String): Tag {
     var intro = intro
     if (StringUtils.isBlank(name)) {
       throw IllegalArgumentException("name is empty!")
@@ -29,7 +29,7 @@ class TagService {
     if (Tag.where().eq("name", name).eq("parent", Tag.ref(parentId)).findUnique() == null) {
       val tag = Tag(name, Tag.ref(parentId), intro)
       tag.save()
-      return tag.id
+      return tag
     } else {
       throw DomainException("Tag[name: %s, parentId: %s] already exists", name, parentId)
     }

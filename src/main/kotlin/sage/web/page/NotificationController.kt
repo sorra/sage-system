@@ -1,5 +1,6 @@
 package sage.web.page
 
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Controller
 import org.springframework.ui.ModelMap
@@ -28,7 +29,7 @@ open class NotificationController @Autowired constructor(
   @ResponseBody
   open fun unreadCounts() = notificationService.unreadCounts(Auth.checkUid())
 
-  @RequestMapping("/all")
+  @RequestMapping
   open fun all(model: ModelMap): ModelAndView {
     val uid = Auth.checkUid()
     val ns = notificationService.all(uid)
@@ -36,10 +37,16 @@ open class NotificationController @Autowired constructor(
         .addObject("notifications", ns)
   }
 
-  @RequestMapping("/confirm-read")
+  @RequestMapping("/mark-read")
   @ResponseBody
-  open fun confirmRead(@RequestParam("id[]") ids: List<Long>) {
+  open fun confirmRead(@RequestParam("id[]", required = false) ids: List<Long>?) {
     val uid = Auth.checkUid()
-    notificationService.confirmRead(uid, ids)
+    if (ids == null) {
+      log.warn("User[{}] /notifications/mark-read is requested with no id!")
+    } else {
+      notificationService.markRead(uid, ids)
+    }
   }
+
+  private val log = LoggerFactory.getLogger(javaClass)
 }

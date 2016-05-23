@@ -24,7 +24,7 @@ open class PageController @Autowired constructor(
     return ModelAndView("people").addObject("recomms", recomms).addObject("people", people)
   }
 
-  @RequestMapping("/tweet/{id}")
+  @RequestMapping("/tweets/{id}")
   open fun tweetPage(@PathVariable id: Long, model: ModelMap): String {
     val tc = tweetReadService.getTweetView(id)!!
     FrontMap.from(model).attr("tc", tc)

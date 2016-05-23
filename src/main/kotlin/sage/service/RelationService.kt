@@ -32,7 +32,7 @@ class RelationService
    * *
    * @param userTagOffset The offset for includeNew. Fetch from DB if null
    */
-  fun follow(userId: Long, targetId: Long, reason: String, tagIds: Collection<Long>,
+  fun follow(userId: Long, targetId: Long, reason: String?, tagIds: Collection<Long>,
              includeNew: Boolean, includeAll: Boolean, userTagOffset: Long?) {
     if (IdCommons.equal(userId, targetId)) {
       logger.warn("user {} should not follow himself!", userId)
@@ -45,11 +45,11 @@ class RelationService
 
     if (follow == null) {
       Follow(User.ref(userId), User.ref(targetId),
-          reason, followedTags, includeNew, includeAll, userTagOffset).save()
+          reason?:"", followedTags, includeNew, includeAll, userTagOffset).save()
       notifService.followed(targetId, userId)
     } else {
       follow.tags = followedTags
-      follow.reason = reason
+      if (reason != null) follow.reason = reason
       follow.isIncludeNew = includeNew
       follow.isIncludeAll = includeAll
       follow.userTagOffset = userTagOffset

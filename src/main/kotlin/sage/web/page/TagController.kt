@@ -2,10 +2,7 @@ package sage.web.page
 
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Controller
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RequestMethod
-import org.springframework.web.bind.annotation.RequestParam
+import org.springframework.web.bind.annotation.*
 import org.springframework.web.servlet.ModelAndView
 import sage.entity.Tag
 import sage.service.TagChangeService
@@ -24,11 +21,13 @@ open class TagController @Autowired constructor(
 ) {
 
   @RequestMapping("/new", method = arrayOf(RequestMethod.POST))
+  @ResponseBody
   open fun create(@RequestParam name: String,
                   @RequestParam(required = false) parentId: Long?,
-                  @RequestParam(required = false) intro: String?): Long {
+                  @RequestParam(required = false) intro: String?): String {
     Auth.checkUid()
-    return tagService.create(name, parentId ?: Tag.ROOT_ID, intro ?: "")
+    val tag = tagService.create(name, parentId ?: Tag.ROOT_ID, intro ?: "")
+    return "/tags/${tag.id}"
   }
 
   @RequestMapping("/{id}")
