@@ -4,9 +4,9 @@ import javax.persistence.Entity
 
 @Entity
 class Message(
-    var content: String?,
-    var fromUser: Long?,
-    var toUser: Long?
+    var content: String,
+    var fromUser: Long,
+    var toUser: Long
 ) : BaseModel() {
   companion object : Find<Long, Message>() {
     fun byFromTo(fromUser: Long, toUser: Long) =

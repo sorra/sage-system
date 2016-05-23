@@ -4,7 +4,7 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<title>贤者：测试</title>
-    $!{includeCSS()}
+    $!{allcss}
 </head>
 <body>
 $!{include("navbar.httl")}
@@ -14,7 +14,7 @@ $!{include("navbar.httl")}
 	</div>
 </div>
 $!{includeProto}
-$!{includeJS()}
+$!{alljs}
 <script type="text/javascript">
 $(document).ready(function(){
 	getTagChain(8, $('body > .container'));

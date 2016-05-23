@@ -4,14 +4,15 @@
 <head>
 <meta charset="UTF-8">
 <title>微博 - 轻境界</title>
-$!{includeCSS()}
+$!{allcss}
 </head>
 <body>
 $!{include("navbar.httl")}
 <div class="container"></div>
 $!{includeProto}
-$!{includeJS()}
+$!{alljs}
 <script>
+setup(stream_setup, humanTime_setup)
 $(document).ready(function(){
   createTweetCard(window.frontMap.tc).appendTo($('body > .container'))
 })

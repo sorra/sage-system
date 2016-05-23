@@ -4,7 +4,7 @@
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
   <title>收藏夹</title>
-  $!{includeCSS()}
+  $!{allcss}
   <style>
     .the-link{
       color: black;
@@ -29,10 +29,11 @@ $!{include("navbar.httl")}
   </div>
 </div>
 $!{includeProto}
-$!{includeJS()}
+$!{alljs}
 <script>
 $(document).ready(function(){
   loadFavs()
+  humanTime_show()
 })
 function loadFavs() {
   $.get('/favs/get', {})
@@ -58,7 +59,6 @@ function loadFavs() {
 function createFavLink(favInfo) {
   var $favLink = $('.proto .fav-link').clone()
   $favLink.find('.the-link').attr('href', favInfo.link).text(limitStrLen(favInfo.link, 50))
-  $favLink.find('.time').text(showTime(favInfo.time))
   var id = favInfo.id
   $favLink.find('.remove-fav').each(function(){unfavPopover($(this), function(){removeFav(id, $favLink)})})
   return $favLink

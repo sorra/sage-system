@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<!--
+#set(components = ["bootstrap", "layout", "tag", "user"])
+#set(Collection<TopicPreview> topics)
+-->
+<head>
+  <meta charset="UTF-8">
+  <title>帖子列表</title>
+  $!{allcss}
+</head>
+<body>
+$!{include("navbar.httl")}
+<div id="container" class="container">
+  <div class="topic-list">
+    <a class="btn-write-post btn btn-primary btn-sm" href="/topics/new">发帖!</a>
+    #for(topic : topics)
+      $!{include("topic-preview.httl")}
+    #end
+  </div>
+</div>
+$!{alljs}
+<script>
+setup(tag_setup, user_setup)
+</script>
+</body>
+</html>

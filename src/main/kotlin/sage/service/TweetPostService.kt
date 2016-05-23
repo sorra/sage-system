@@ -17,11 +17,11 @@ class TweetPostService
     private val searchBase: SearchBase,
     private val userService: UserService,
     private val transfers: TransferService,
-    private val notifService: NotifService) {
+    private val notifService: NotificationService) {
 
   fun post(userId: Long, content: String, tagIds: Collection<Long>): Tweet {
     if (content.isEmpty() || content.length > TWEET_MAX_LEN) {
-      throw BAD_INPUT_LENGTH
+      throw BAD_TWEET_LENGTH
     }
     val parsedContent = processContent(content)
     val content = parsedContent.content
@@ -39,7 +39,7 @@ class TweetPostService
 
   fun forward(userId: Long, content: String, originId: Long, removedForwardIds: Collection<Long>): Tweet {
     if (content.length > TWEET_MAX_LEN) {
-      throw BAD_INPUT_LENGTH
+      throw BAD_TWEET_LENGTH
     }
     val parsedContent = processContent(content)
     var content = parsedContent.content
@@ -60,17 +60,17 @@ class TweetPostService
 
     userService.updateUserTag(userId, tweet.tags.map { it.id })
 
-    origins.forEach { origin -> notifService.forwarded(origin.author!!.id, userId, tweet.id) }
+    origins.forEach { origin -> notifService.forwarded(origin.author.id, userId, tweet.id) }
     parsedContent.mentionedIds.forEach { atId -> notifService.mentionedByTweet(atId, userId, tweet.id) }
 
     searchBase.index(tweet.id, transfers.toTweetViewNoCount(tweet))
     return tweet
   }
 
-  fun comment(userId: Long?, content: String, sourceId: Long?, replyUserId: Long?): Comment {
+  fun comment(userId: Long, content: String, sourceId: Long?, replyUserId: Long?): Comment {
     var content = content
     if (content.isEmpty() || content.length > COMMENT_MAX_LEN) {
-      throw BAD_INPUT_LENGTH
+      throw BAD_COMMENT_LENGTH
     }
     val parsedContent = processContent(content)
     content = parsedContent.content
@@ -79,7 +79,7 @@ class TweetPostService
     val comment = Comment(content, User.ref(userId), sourceId!!, replyUserId)
     comment.save()
 
-    notifService.commented(source.author!!.id, userId, comment.id)
+    notifService.commented(source.author.id, userId, comment.id)
     if (replyUserId != null) {
       notifService.replied(replyUserId, userId, comment.id)
     }
@@ -101,7 +101,7 @@ class TweetPostService
 
   fun delete(userId: Long, tweetId: Long) {
     val tweet = Tweet.ref(tweetId)
-    if (!IdCommons.equal(userId, tweet.author!!.id)) {
+    if (!IdCommons.equal(userId, tweet.author.id)) {
       throw DomainException("User[%d] is not the author of Tweet[%d]", userId, tweetId)
     }
     tweet.deleted = true
@@ -110,7 +110,7 @@ class TweetPostService
   }
 
   private fun blogRef(blog: Blog): String {
-    return String.format("<a href=\"%s\">%s</a>", "/blog/" + blog.id, blog.title)
+    return String.format("<a href=\"%s\">%s</a>", "/blogs/" + blog.id, blog.title)
   }
 
   /*
@@ -143,8 +143,9 @@ class TweetPostService
   private class ParsedContent internal constructor(internal val content: String, internal val mentionedIds: Set<Long>)
 
   companion object {
-    private val TWEET_MAX_LEN = 2000
-    private val COMMENT_MAX_LEN = 200
-    private val BAD_INPUT_LENGTH = BadArgumentException("输入长度不正确(1~200字)")
+    private val TWEET_MAX_LEN = 1000
+    private val COMMENT_MAX_LEN = 1000
+    private val BAD_TWEET_LENGTH = BadArgumentException("状态应为1~1000字")
+    private val BAD_COMMENT_LENGTH = BadArgumentException("评论应为1~1000字")
   }
 }

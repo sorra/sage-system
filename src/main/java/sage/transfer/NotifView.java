@@ -2,7 +2,7 @@ package sage.transfer;
 
 import java.util.Date;
 
-import sage.entity.Notif;
+import sage.entity.Notification;
 
 public class NotifView {
   public long id;
@@ -12,16 +12,17 @@ public class NotifView {
   public String type;
   public String desc;
   public String source;
+  public boolean read = false;
 
   NotifView() {}
 
-  public NotifView(Notif notif, UserLabel sender, String source) {
-    id = notif.getId();
-    ownerId = notif.getOwnerId();
+  public NotifView(Notification notification, UserLabel sender, String source) {
+    id = notification.getId();
+    ownerId = notification.getOwnerId();
     this.sender = sender;
-    time = notif.getWhenCreated();
-    type = notif.getType().name();
-    desc = notif.getType().getDesc();
+    time = notification.getWhenCreated();
+    type = notification.getType().name();
+    desc = notification.getType().getDesc();
     this.source = source;
   }
 }

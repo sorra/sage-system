@@ -6,20 +6,16 @@ import sage.entity.TopicPost;
 
 public class HotTopic implements Comparable<HotTopic> {
   public long id;
-  public long groupId;
-  public String groupName;
-  public BlogPreview blog;
+  public TopicPreview topic;
   public int replyCount;
   public Date lastActiveTime;
   public double rank;
 
   HotTopic() {}
 
-  public HotTopic(TopicPost topic, int replyCount, Date lastReplyTime) {
+  public HotTopic(TopicPreview topic, int replyCount, Date lastReplyTime) {
     id = topic.getId();
-    groupId = topic.getGroup().getId();
-    groupName = topic.getGroup().getName();
-    blog = new BlogPreview(topic.getBlog());
+    this.topic = topic;
     this.replyCount = replyCount;
     lastActiveTime = lastReplyTime!=null ? lastReplyTime : topic.getWhenCreated();
   }

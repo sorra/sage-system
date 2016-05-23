@@ -7,22 +7,31 @@ import httl.web.springmvc.HttlViewResolver
 import org.apache.commons.lang3.builder.ToStringBuilder
 import org.apache.commons.lang3.builder.ToStringStyle
 import org.avaje.agentloader.AgentLoader
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowire
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.config.ConfigurableBeanFactory.SCOPE_SINGLETON
 import org.springframework.boot.SpringApplication
 import org.springframework.boot.autoconfigure.SpringBootApplication
+import org.springframework.boot.autoconfigure.web.WebMvcAutoConfiguration
+import org.springframework.boot.context.embedded.EmbeddedServletContainerCustomizer
+import org.springframework.boot.context.embedded.ErrorPage
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Scope
+import org.springframework.http.HttpStatus
 import org.springframework.web.multipart.commons.CommonsMultipartResolver
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.ViewResolverRegistry
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView
 import sage.service.FilesService
+import javax.servlet.FilterChain
+import javax.servlet.FilterConfig
+import javax.servlet.ServletRequest
+import javax.servlet.ServletResponse
+import javax.servlet.http.HttpServletRequest
 
 @SpringBootApplication
-open class Application : WebMvcConfigurationSupport() {
+open class Application : WebMvcAutoConfiguration.WebMvcAutoConfigurationAdapter() {
 
   @Bean(autowire = Autowire.BY_TYPE) @Scope(SCOPE_SINGLETON)
   open fun getEbeanServer(): EbeanServer {
@@ -39,6 +48,7 @@ open class Application : WebMvcConfigurationSupport() {
   }
 
   override fun addResourceHandlers(registry: ResourceHandlerRegistry) {
+    super.addResourceHandlers(registry)
     registry.addResourceHandler("/static/**")?.addResourceLocations("/static/")
     registry.addResourceHandler("/files/pic/**").addResourceLocations(toLocation(filesService.picDir()))
     registry.addResourceHandler("/files/avatar/**").addResourceLocations(toLocation(filesService.avatarDir()))
@@ -49,11 +59,31 @@ open class Application : WebMvcConfigurationSupport() {
     else { return "file:///$path/" }
   }
 
-  @Bean @Scope(SCOPE_SINGLETON)
+  @Bean
   open fun json() = MappingJackson2JsonView()
 
-  @Bean @Scope(SCOPE_SINGLETON)
+  @Bean
   open fun multipartResolver() = CommonsMultipartResolver().apply { setMaxUploadSize(10000000) }
+
+  @Bean
+  open fun servletCustomizer() = EmbeddedServletContainerCustomizer { container ->
+    container.addErrorPages(ErrorPage(HttpStatus.NOT_FOUND, "/not-found"))
+  }
+
+  @Bean
+  open fun loggingURLFilter() = object : javax.servlet.Filter {
+    private val log = LoggerFactory.getLogger("LoggingURLFilter")
+    override fun doFilter(request: ServletRequest, response: ServletResponse, chain: FilterChain) {
+      if (request is HttpServletRequest) {
+        var url = request.requestURI
+        request.queryString?.apply { url = "$url?$this" }
+        log.info(request.method + " " + url)
+      }
+      chain.doFilter(request, response)
+    }
+    override fun init(filterConfig: FilterConfig?) {}
+    override fun destroy() {}
+  }
 
   @Autowired
   private lateinit var filesService: FilesService

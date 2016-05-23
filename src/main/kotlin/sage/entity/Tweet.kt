@@ -1,33 +1,27 @@
 package sage.entity
 
-import com.avaje.ebean.Model
 import sage.domain.commons.Edge
 import sage.transfer.MidForwards
-import java.sql.Timestamp
 import java.util.*
 import javax.persistence.*
 
 @Entity
-class Tweet : Model {
+class Tweet : BaseModel {
 
-  @Id @GeneratedValue
-  var id: Long = 0
-
-  var whenCreated: Timestamp? = Timestamp(System.currentTimeMillis())
-
-  var timeMillis: Long = System.currentTimeMillis()
-
-  @Column(columnDefinition = "TEXT") @Lob
+  @Column(columnDefinition = "TEXT", length = 65535)
+  @Lob @Basic
   var content: String? = null
     get() = if (deleted) "" else field
 
-  @ManyToOne
-  var author: User? = null
+  @ManyToOne(optional = false)
+  var author: User
 
   var originId: Long = 0
     @Column(nullable = false)
     get() = if (deleted) -1 else field
 
+  @Column(columnDefinition = "TEXT", length = 65535)
+  @Lob @Basic
   var midForwardsJson: String? = null
     get() = if (deleted) null else field
 
@@ -68,7 +62,9 @@ class Tweet : Model {
   @Suppress("NAME_SHADOWING")
   companion object : Find<Long, Tweet>() {
     fun byTags(tags: Collection<Tag>, edge: Edge): List<Tweet> {
-      if (tags.isEmpty()) { return LinkedList() }
+      if (tags.isEmpty()) {
+        return LinkedList()
+      }
       val tags = Tag.getQueryTags(tags)
       return ranged(edge).filterMany("tags").`in`("id", tags.map { it.id }).findList()
     }
@@ -77,8 +73,12 @@ class Tweet : Model {
         ranged(edge).eq("author", User.ref(authorId)).findList()
 
     fun byAuthorAndTags(authorId: Long, tags: Collection<Tag>, edge: Edge = Edge.none()): List<Tweet> {
-      if (tags.isEmpty()) { return LinkedList() }
-      if (hasRoot(tags)) { return byAuthor(authorId) }
+      if (tags.isEmpty()) {
+        return LinkedList()
+      }
+      if (hasRoot(tags)) {
+        return byAuthor(authorId, edge)
+      }
       val tags = Tag.getQueryTags(tags)
       return ranged(edge).eq("author", User.ref(authorId))
           .filterMany("tags").`in`("id", tags.map { it.id }).findList()

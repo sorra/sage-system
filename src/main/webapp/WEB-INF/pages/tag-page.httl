@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<!--
+#set(components = ["bootstrap", "layout", "stream", "tag", "user"])
+#set(Tag tag)
+#set(Integer countPendingRequestsOfTag, Integer countPendingRequestsOfTagScope)
+#set(Collection<TopicPreview> topics)
+-->
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<title>${tag.name} - 轻境界</title>
+  $!{allcss}
+  <style>
+    .side > div, #bkg-intro{
+      min-height: 50px;
+      margin: 2px;
+      padding: 5px;
+      background-color: #e5e5e5;
+    }
+  </style>
+</head>
+<body>
+$!{include("navbar.httl")}
+
+<div class="container" id="container">
+	<div id="chain"></div>
+	<div class="row" style="margin-top:50px">
+		<div class="side">
+      <div class="parallel-links">
+        <div>
+          <a href="/tag-changes/${tag.id}/scope">修改申请(范围内)</a>
+          #if(countPendingRequestsOfTagScope > 0)[${countPendingRequestsOfTagScope}]#end
+        </div>
+        <div>
+          <a href="/tag-changes/${tag.id}">修改申请(仅本标签)</a>
+          #if(countPendingRequestsOfTag > 0)[${countPendingRequestsOfTag}]#end
+        </div>
+      </div>
+      <div>订阅</div>
+      <div>子标签(核心)
+        <div>
+          #for(each : coreTags)
+          $!{include("tag-label.httl")}
+          #end
+        </div>
+      </div>
+      <div>子标签(普通)
+        <div>
+          #for(each : nonCoreTags)
+          $!{include("tag-label.httl")}
+          #end
+        </div>
+      </div>
+      <div>同名标签
+        <div>
+          #for(each : sameNameTags)
+          $!{include("tag-label.httl")}
+          #end
+        </div>
+      </div>
+      <div>关联标签</div>
+		</div>
+		<div class="main">
+		  <div id="bkg-intro" class="row" style="text-align:center;padding:10px">${tag.intro == null ? "没有背景介绍" : tag.intro}</div>
+      <div class="topic-list">
+        <a class="btn-write-post btn btn-primary btn-sm" href="/topics/new?belongTagId=${tag.id}">发帖!</a>
+        #for(topic : topics)
+        $!{include("topic-preview.httl")}
+        #end
+      </div>
+			<div class="stream">
+				<div class="slist"></div>
+			</div>
+		</div>
+	</div>
+	<div class="footer"></div>
+</div>
+$!{includeProto}
+$!{alljs}
+<script type="text/javascript">
+setup(tag_setup, stream_setup, user_setup)
+$(document).ready(function(){
+  $('#nav-tags').addClass('active');
+  
+	var tagId = window.frontMap.id
+	getStream('/read/tag/' + tagId)
+	getTagChain(tagId, $('#chain'));
+});
+</script>
+</body>
+</html>

@@ -1,8 +1,8 @@
 "use strict";
-$(document).ready(function() {
+function register_setup() {
   $('form').submit(function(event) {
     try {
-      var valid = validate()
+      var valid = register_validate()
     } catch (e) {
       event.preventDefault()
       alert('注册未能成功: ' + e)
@@ -12,9 +12,10 @@ $(document).ready(function() {
       event.preventDefault()
     }
   })
-})
 
-function validate() {
+}
+
+function register_validate() {
   var count = 0
   function alertNode(text) {
     count++

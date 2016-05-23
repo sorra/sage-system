@@ -16,6 +16,7 @@
     .heading{
       text-align: center;
       padding: 10px;
+      color: deepskyblue;
     }
     form{
       width: 400px;
@@ -65,6 +66,9 @@
       <a class="btn" href="/register">没有账号，注册一个</a>
     </div>
   </form>
-  $!{includeJS()}
+  $!{alljs}
+<script>
+  setup(login_setup)
+</script>
 </body>
 </html>

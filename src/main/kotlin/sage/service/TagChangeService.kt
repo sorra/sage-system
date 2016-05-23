@@ -16,26 +16,6 @@ import sage.transfer.TagChangeRequestCard
 @Service
 class TagChangeService {
 
-  fun newTag(name: String, parentId: Long, intro: String): Long {
-    var intro = intro
-    if (StringUtils.isBlank(name)) {
-      throw IllegalArgumentException("name is empty!")
-    }
-    if (Tag.byId(parentId) == null) {
-      throw IllegalArgumentException("parentId $parentId is wrong!")
-    }
-    if (StringUtils.isBlank(intro)) {
-      intro = "啊，$name！"
-    }
-    if (Tag.where().eq("name", name).eq("parent", Tag.ref(parentId)).findUnique() == null) {
-      val tag = Tag(name, Tag.ref(parentId), intro)
-      tag.save()
-      return tag.id
-    } else {
-      throw DomainException("Tag[name: %s, parentId: %s] already exists", name, parentId)
-    }
-  }
-
   fun requestMove(userId: Long?, tagId: Long?, parentId: Long): TagChangeRequest {
     if (Tag.byId(parentId) == null) {
       throw IllegalArgumentException("parentId $parentId is wrong!")

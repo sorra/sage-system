@@ -13,7 +13,7 @@ public class SceneTest {
     UserService userService;
     RelationService relationService;
     TweetPostService tweetService;
-    BlogPostService blogService;
+    BlogService blogService;
     TagService tagService;
     StreamService streamService;
     
@@ -23,7 +23,7 @@ public class SceneTest {
         userService = ac.getBean(UserService.class);
         relationService = ac.getBean(RelationService.class);
         tweetService = ac.getBean(TweetPostService.class);
-        blogService = ac.getBean(BlogPostService.class);
+        blogService = ac.getBean(BlogService.class);
         tagService = ac.getBean(TagService.class);
         streamService = ac.getBean(StreamService.class);
     }

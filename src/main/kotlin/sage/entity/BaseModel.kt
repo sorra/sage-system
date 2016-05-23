@@ -4,6 +4,7 @@ import com.avaje.ebean.Model
 import com.avaje.ebean.annotation.WhenCreated
 import com.avaje.ebean.annotation.WhenModified
 import sage.domain.commons.DomainException
+import sage.domain.commons.IdCommons
 import java.sql.Timestamp
 import javax.persistence.GeneratedValue
 import javax.persistence.Id
@@ -30,7 +31,7 @@ abstract class BaseModel : Model() {
     if (this === other) return true
     if (other?.javaClass != javaClass) return false
     other as BaseModel
-    if (id != other.id) return false
+    if (!IdCommons.equal(id, other.id)) return false
     return true
   }
 

@@ -53,7 +53,7 @@ class StreamService
   private fun tcsByTagHeeds(userId: Long, edge: Edge): List<TweetView> {
     val tcsByTags = ArrayList<TweetView>()
     for (hd in heed.tagHeeds(userId)) {
-      val tagId = hd.tag!!.id
+      val tagId = hd.tag.id
       val tagTcs = transfers.toTweetViews(tweetRead.byTag(tagId, edge))
       for (t in tagTcs) {
         t.beFromTag(tagId)
@@ -84,7 +84,7 @@ class StreamService
 
   private fun naiveSort(tweets: Collection<Tweet>) = naiveSortViews(transfers.toTweetViews(tweets))
 
-  private fun naiveSortViews(tcs: Collection<TweetView>) = tcs.sortedByDescending { it.timeMillis }
+  private fun naiveSortViews(tcs: Collection<TweetView>) = tcs.sortedByDescending { it.time }
 
   private fun higherSort(tcs: List<TweetView>): List<Item> {
     // TODO Pull-near

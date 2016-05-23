@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+#set(TopicPost topic)
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>发帖</title>
+$!{allcss}
+<style type="text/css">
+.topic {
+  width: 100%;
+	margin: 20px;
+}
+
+#title, #content {
+  overflow: hidden;
+  resize: none;
+}
+
+#title {
+  width: 67%;
+	height: 2em;
+  margin-left: 120px;
+  padding: 5px;
+}
+
+#content, #preview {
+  width: 90%;
+	min-height: 30em;
+}
+</style>
+</head>
+<body>
+$!{include("navbar.httl")}
+<div class="container" id="container">
+  <div id="topic">
+    <h3>撰写帖子</h3>
+    <form>
+      <div>
+        <textarea id="title" placeholder="这里是标题">${topic.title}</textarea>
+      </div>
+      <ul id="tabs" class="nav nav-tabs">
+        <li><a href="#content" data-toggle="tab">写作</a></li>
+        <li><a href="#preview" data-toggle="tab">预览</a></li>
+      </ul>
+      <div class="tab-content">
+				<textarea id="content" class="tab-pane active" placeholder="这里是内容">${topic.content}</textarea>
+        <div id="preview" class="tab-pane"></div>
+      </div>
+      <div>
+        $!{include("existing-tags.httl")}
+        $!{include("tag-input.httl")}
+      </div>
+    </form>
+    <button class="btn-submit btn btn-primary pull-right">发表</button>
+  </div>
+</div>
+<div class="footer"></div>
+$!{includeProto}
+$!{alljs}
+<script>
+  setup(tag_setup, writeTopic_setup)
+</script>
+</body>
+</html>

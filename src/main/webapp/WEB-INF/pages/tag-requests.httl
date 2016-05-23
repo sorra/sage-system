@@ -5,12 +5,12 @@
 <head>
   <meta charset="UTF-8">
   <title>${tag.name} - 的修改申请</title>
-  $!{includeCSS()}
+  $!{allcss}
 </head>
 <body>
 $!{include("navbar.httl")}
   <div id="container" class="container">
-    <a class="do-change" href="/pages/tag/${tag.id}/do-change">我要修改</a>
+    <a class="do-change" href="/tag-changes/${tag.id}/do-change">我要修改</a>
     <h3>${tag.name} - 的修改申请</h3>
     #for(each : reqs)
       <div class="tag-change-request" data-id="${each.id}">
@@ -32,7 +32,7 @@ $!{include("navbar.httl")}
     #end
   </div>
 $!{includeProto}
-$!{includeJS()}
+$!{alljs}
 <script>
   function actionSucceed(msg, $req){
     var $box = $('<h5 class="action-success">'+msg+'</h5>').hide().insertAfter($req).fadeIn()

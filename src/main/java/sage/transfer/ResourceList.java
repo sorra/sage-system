@@ -22,12 +22,12 @@ public class ResourceList extends AList {
   }
 
   public ResourceListEntity toEntity() {
-    return new ResourceListEntity(getOwnerId(), getName(), Json.json(getList()));
+    return new ResourceListEntity(getOwnerId(), getName(), Json.INSTANCE.json(getList()));
   }
 
   public static ResourceList fromEntity(ResourceListEntity entity) {
-    return new ResourceList(entity.getId(), entity.getOwnerId(), entity.getName(), Json.object(entity.getListJson(), RI_LIST));
+    return new ResourceList(entity.getId(), entity.getOwnerId(), entity.getName(), Json.INSTANCE.object(entity.getListJson(), RI_LIST));
   }
 
-  private static JavaType RI_LIST = Json.typeFactory().constructCollectionType(ArrayList.class, ResourceInfo.class);
+  private static JavaType RI_LIST = Json.INSTANCE.typeFactory().constructCollectionType(ArrayList.class, ResourceInfo.class);
 }

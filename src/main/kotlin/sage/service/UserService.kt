@@ -43,16 +43,14 @@ class UserService {
     return UserLabel(User.get(userId))
   }
 
-  fun changeInfo(userId: Long, name: String, intro: String, avatar: String?) {
+  fun changeInfo(userId: Long, name: String?, intro: String?, avatar: String?) {
     val user = User.get(userId)
     if (name == user.name && intro == user.intro && avatar == null) {
       return
     }
-    user.name = name
-    user.intro = intro
-    if (avatar != null) {
-      user.avatar = avatar
-    }
+    name?.apply { user.name = this }
+    intro?.apply { user.intro = this }
+    avatar?.apply { user.avatar = avatar }
     user.update()
   }
 
@@ -89,7 +87,7 @@ class UserService {
     }
     user.password = encryptPassword(user.password)
     user.save()
-    user.name = "u" + user.id
+    if(user.name.isEmpty()) user.name = "u" + user.id
     user.update()
     return user.id
   }
@@ -179,7 +177,7 @@ class UserService {
     return topTags
   }
 
-  private fun topTags(userId: Long) = userTags(userId).take(5)
+  fun topTags(userId: Long) = userTags(userId).take(5)
 
   private fun countTags(tags: Collection<Tag>, topping: MutableList<TagCounter>) {
     for (tag in tags) {
@@ -195,7 +193,7 @@ class UserService {
     }
   }
 
-  private class TagCounter internal constructor(internal var tag: Tag) : Comparable<TagCounter> {
+  private class TagCounter constructor(val tag: Tag) : Comparable<TagCounter> {
     var count: Int = 1
 
     override fun compareTo(other: TagCounter): Int {

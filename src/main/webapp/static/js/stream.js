@@ -1,51 +1,64 @@
 'use strict';
 
-template.helper('replaceMention', replaceMention)
-template.helper('reduceMention', reduceMention)
-template.helper('knowDeleted', function(content){
-  if (!content || content.length == 0) return '[已删除]'
-  else return content
-})
-template.helper('showCount', function(count){
-  return count>0 ? '('+count+')' : ''
-})
-template.helper('asOrigin', function(origin){
-  origin.isOrigin = true; return origin
-})
-template.helper('asForward', function(forward){
-  forward.isForward = true; return forward
-})
-template.helper('toFw', function(t){
-  return '@' + t.authorName + '#' + t.authorId + ' : ' + t.content
-})
-
-var tweetCache = {
-  prefix: 'tweet-',
-  set: function(t){
-    $(document).data(this.prefix + t.id, t)
-  },
-  get: function(id){
-    return $(document).data(this.prefix + id)
-  },
-  getNonNull: function(id){
-    var t = this.get(id)
-    if (!t) {throw new Error}
-    return t
-  },
-  getOrEmpty: function(id){
-    var t = this.get(id)
-    return t ? t : {}
-  }
-}
-
-$(setupForwardDialog)
-$(stream_setupListeners)
-
-$(document).ready(function() {
+function stream_setup() {
+  setupForwardDialog()
+  stream_setupListeners()
   $(document).on('click', '#forward-dialog .mf-x', function() {
     $(this).parents('*[mf-id]').addClass('mf-removed')
   })
-})
+
+  template.helper('global', function(){return window})
+  template.helper('userLinkAttrs', function(userId){
+    return "uid=\""+userId+"\" href=\"/users/"+userId+"\""
+  })
+  template.helper('replaceMention', replaceMention)
+  template.helper('reduceMention', reduceMention)
+  template.helper('knowDeleted', function(content){
+    if (!content || content.length == 0) return '[已删除]'
+    else return content
+  })
+  template.helper('showTime', function(time){
+    return humanTime_compute(parseInt(time))
+  })
+  template.helper('showCount', function(count){
+    return count>0 ? '('+count+')' : ''
+  })
+  template.helper('asOrigin', function(origin){
+    origin.isOrigin = true; return origin
+  })
+  template.helper('asForward', function(forward){
+    forward.isForward = true; return forward
+  })
+  template.helper('toFw', function(t){
+    return '@' + t.authorName + '#' + t.authorId + ' : ' + t.content
+  })
+
+  window.tweetCache = {
+    prefix: 'tweet-',
+    set: function(t){
+      $(document).data(this.prefix + t.id, t)
+    },
+    get: function(id){
+      return $(document).data(this.prefix + id)
+    },
+    getNonNull: function(id){
+      var t = this.get(id)
+      if (!t) {throw new Error}
+      return t
+    },
+    getOrEmpty: function(id){
+      var t = this.get(id)
+      return t ? t : {}
+    }
+  }
+}
+
+function renderTmpl(tmplId, object) {
+  if (!object || object == "") {
+    throw new Error
+  }
+  return template(tmplId, object)
+}
 
 function getStream(url) {
     return $.get(url, {})
@@ -171,7 +184,7 @@ function createStreamItem(item) {
 }
 
 function createTweetCard(tweet) {
-  tweetCache.set(tweet)
+  window.tweetCache.set(tweet)
   if(tweet.origin) {tweetCache.set(tweet.origin)}
   var $tc = $(renderTmpl('tmpl-tweet', tweet))
   enchantTweets($tc)
@@ -179,9 +192,9 @@ function createTweetCard(tweet) {
 }
 
 function createCombineGroup(group) {
-  tweetCache.set(group.origin)
+  window.tweetCache.set(group.origin)
   for(var i in group.forwards) {
-    tweetCache.set(group.forwards[i])
+    window.tweetCache.set(group.forwards[i])
   }
   var $cg = $(renderTmpl('tmpl-combine', group))
   enchantTweets($cg)
@@ -281,39 +294,14 @@ function createCommentList(tweetId, retach) {
   return $cl
 }
 
-function createBlogData(blog) {
-  var $bd = $('.proto > .blog').clone();
-
-  $bd.find('.avatar').attr(userLinkAttrs(blog.authorId))
-    .find('img').attr('src', blog.avatar);
-  $bd.find('.author-name').attr(userLinkAttrs(blog.authorId)).text(blog.authorName);
-  $bd.find('.title').text(blog.title);
-  $bd.find('.content').html(blog.content);
-  $bd.find('.time').text(showTime(blog.time)).attr('href', '/blog/'+blog.id);
-
-  var $tags = $bd.find('.tags');
-  var tags = blog.tags;
-  if (tags && tags.length > 0) {
-    $tags.html('');
-    $.each(blog.tags, function(idx, tag){
-      createTagLabel(tag).appendTo($tags);
-    });
-  }
-  else {
-    $tags.remove();
-  }
-
-  return $bd;
-}
-
 function setupForwardDialog() {
-  var $dia = $(renderTmpl("tmpl-modal", {modalId: 'forward-dialog'})).appendTo($('body'))
+  var $dia = $('#forward-dialog')
   $dia.find('.modal-title').text('转发')
   $dia.on('show.bs.modal', function(){
     var $this = $(this)
     var tweetId = $this.data('tweetId')
     if (!tweetId) {throw new Error}
-    var tweet = tweetCache.get(tweetId)
+    var tweet = window.tweetCache.get(tweetId)
     var $nodes = $(renderTmpl('tmpl-forward-dialog', {t: tweet, mfs: tweet.midForwards}))
     nodesCopy('.modal-title', $nodes, $this)
     nodesCopy('.modal-body', $nodes, $this)
@@ -337,7 +325,7 @@ function replaceMention(content) {
             var name = mention.slice(0, indexOfSharp);
             var id = mention.slice(indexOfSharp+1, mention.length);
             return content.slice(0, indexOfAt)
-                + $('<a>').text('@'+name).attr(userLinkAttrs(id))[0].outerHTML
+                + $('<a>').text('@'+name).attr({uid: id, href: '/users/'+id})[0].outerHTML
                 + replaceMention(content.slice(indexOfSpace, content.length));
         }
         else {

@@ -10,7 +10,7 @@
 <head>
   <meta charset="UTF-8">
   <title>${owner.name}的所有列表</title>
-  $!{includeCSS()}
+  $!{allcss}
   <style>
     .follow-list{
       background: #e0e0e0;
@@ -47,7 +47,7 @@ $!{include("navbar.httl")}
   #end
 </div>
 $!{includeProto}
-$!{includeJS()}
+$!{alljs}
 <script>
   $(document).on('click', '.heed_follow_list', function(){
     var $this = $(this)

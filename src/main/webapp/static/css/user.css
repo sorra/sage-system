@@ -18,6 +18,8 @@
   background: #e5e5e5;
   padding: 2px;
   border-radius: 8px;
+  margin: 10px;
+  float: left;
 }
 .user-card .name{
   font-weight: bold;

@@ -1,0 +1,51 @@
+.topic-list{
+  margin-top: 15px;
+  padding: 5px;
+  background: #e0e0e0;
+}
+
+.btn-write-post{
+  margin: 10px;
+}
+
+.topic-preview{
+  padding: 5px;
+  background: #e0e0e0;
+  border-bottom: 1px solid #aaa;
+}
+
+.topic-preview .title{
+  font-weight: bold;
+  font-size: 1.1em;
+  color: #256DAB;
+}
+
+.topic{
+  padding: 5px;
+  background: #e0e0e0;
+  border-bottom: 1px solid #aaa;
+  margin-bottom: 1em;
+}
+
+.topic-content{
+  padding: 10px;
+}
+
+.replies{
+  margin-top: 1em;
+  background: #e0e0e0;
+}
+
+.reply{
+  padding: 5px;
+  border-bottom: 1px solid #aaa;
+}
+
+.reply_input{
+  width: 20em;
+  border-radius: 5px;
+  border: 0;
+  resize: none;
+  outline: none;
+  padding: 5px;
+}

@@ -84,7 +84,7 @@ public class SearchBase {
     if (object == null) {
       throw new IllegalArgumentException("object is null");
     }
-    String json = Json.json(object);
+    String json = Json.INSTANCE.json(object);
     client.prepareIndex(INDEX, mapType(object.getClass()), String.valueOf(id))
         .setSource(json)
         .execute();

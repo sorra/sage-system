@@ -5,7 +5,7 @@
 <head>
   <meta charset="UTF-8">
   <title>用户信息 - 轻境界</title>
-  $!{includeCSS()}
+  $!{allcss}
 </head>
 <body>
 $!{include("navbar.httl")}
@@ -25,6 +25,6 @@ $!{include("navbar.httl")}
   <a href="/change-password">修改密码</a>
 </div>
 $!{includeProto}
-$!{includeJS()}
+$!{alljs}
 </body>
 </html>

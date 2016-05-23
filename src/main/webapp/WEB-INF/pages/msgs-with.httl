@@ -8,7 +8,7 @@
 <head>
   <meta charset="UTF-8">
   <title></title>
-  $!{includeCSS()}
+  $!{allcss}
   <style>
     #input-box{
       margin-top: 20px;
@@ -47,13 +47,13 @@ $!{include("navbar.httl")}
     </div>
   #end
   </div>
-  <div id="input-box" data-post="/message/send?to=${withUserId}" data-loadmore="/pages/message/more?withUser=${withUserId}">
+  <div id="input-box" data-post="/message/send?to=${withUserId}" data-loadmore="/messages/more?withUser=${withUserId}">
     <textarea class="input" placeholder="输入"></textarea>
     <button class="btn btn-sm" type="submit" style="margin-left: 10px">发送</button>
   </div>
 </div>
 $!{includeProto}
-$!{includeJS()}
+$!{alljs}
 <script>
   window.msgIds = {}
   $('.msg').each(function(){

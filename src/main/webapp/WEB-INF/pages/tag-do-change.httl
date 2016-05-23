@@ -5,7 +5,7 @@
 <head>
   <meta charset="UTF-8">
   <title>修改标签</title>
-  $!{includeCSS()}
+  $!{allcss}
 </head>
 <body>
 $!{include("navbar.httl")}
@@ -34,6 +34,6 @@ $!{include("navbar.httl")}
     </div>
   </div>
 $!{includeProto}
-$!{includeJS()}
+$!{alljs}
 </body>
 </html>

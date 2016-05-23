@@ -1,30 +1,44 @@
 #set(UserSelf userSelf)
-<div class="navbar navbar-inverse navbar-fixed-top">
-  <div class="container">
-    <a class="navbar-brand mybrand" href="/">轻境界</a>
-    <ul class="nav navbar-nav">
-      <li id="nav-home"><a href="/home">首页</a></li>
-      <li id="nav-tags"><a href="javascript:;">标签</a></li>
-      <li id="nav-people"><a href="/people">人们</a></li>
-      <li id="nav-blog"><a href="/groups">小组</a></li>
-      <li id="nav-write-blog"><a href="/write-blog">写博客</a></li>
-      <li id="nav-fav"><a href="/fav">收藏夹</a></li>
-      <li id="nav-msg"><a href="/pages/message">私信</a></li>
-      #if(userSelf != null)
-      <li id="nav-private"><a href="/private">${userSelf.name}</a></li>
-      <li id="nav-logout"><a href="/logout">退出</a></li>
-      #end
-    </ul>
-
-    <ul class="nav pull-right">
-      <li>
-        <form class="search" action="/search" method="get" accept-charset="UTF-8">
-          <input type="text" name="q" placeholder="搜索"/>
-        </form>
-      </li>
-    </ul>
+<div id="navbar">
+  <div class="nav-content">
+    <div style="padding-top: 6px;">
+      <table cellpadding="0" cellspacing="0" border="0" width="100%">
+        <tbody><tr>
+          <td width="100" align="left">
+            <a class="nav-brand" href="/">
+              <!--<img src="/static/img/logo.png" border="0" align="default" alt="轻境界" width="90" height="30">-->
+              Q 轻境界
+            </a>
+          </td>
+          <td width="auto" align="left">
+            <form id="search" action="/search" method="get" accept-charset="UTF-8">
+              <div style="width: 276px; height: 28px; display: inline-block;">
+                <input type="text" maxlength="50" name="q" placeholder="搜索" value="">
+                <button type="submit"><img src="/static/img/search.png"/></button>
+              </div>
+            </form>
+          </td>
+          <td class="nav-links" width="570" align="right" style="padding-top: 2px;">
+            <a href="/home">首页</a>
+            <a id="nav-tags" href="javascript:;">标签</a>
+            <a href="/topics">帖子</a>
+            <a href="/people">人们</a>
+            <a href="/blogs/new">写博客</a>
+            <a href="/messages">私信</a>
+            #if(userSelf != null)
+            <a href="/users/self">${userSelf.name}</a>
+            <a href="/user-info">设置</a>
+            <a href="/logout">退出</a>
+            #else
+            <a href="/login" style="color: lightgreen">登录</a>
+            #end
+          </td>
+        </tr></tbody>
+      </table>
+    </div>
   </div>
 </div>
+
 <div class="data-holder">
     #if(frontMap != null)
     <span id="front-map">${frontMap}</span>
@@ -36,14 +50,49 @@
     <span id="tag-tree-json">${tagTreeJson}</span>
     #end
 </div>
-<script type="text/javascript" src="/static/js/jquery-1.9.1.js"></script>
-<script type="text/javascript">
-$(document).ready(function(){
-	$('form.search').submit(function(event){
-		event.preventDefault();
-        var q = $('form.search > *[name=q]').val();
-		console.log(encodeURI(q));
-        window.open('/search?q='+encodeURI(q));
-	});
-});
-</script>
+
+<div id="new-tag-dialog" class="modal fade" tabindex="-1" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">新建标签</h4>
+      </div>
+      <div class="modal-body">
+        <div>
+          名字<input name="name" />
+        </div>
+        <div>
+          母标签id<input name="parent-id" />
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="submit btn btn-primary pull-right">确定</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div id="follow-dialog" class="modal fade" tabindex="-1" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">请选择ta的0~n个标签</h4>
+      </div>
+      <div class="modal-body"></div>
+      <div class="modal-footer"></div>
+    </div>
+  </div>
+</div>
+<div id="forward-dialog" class="modal fade" tabindex="-1" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">转发</h4>
+      </div>
+      <div class="modal-body"></div>
+      <div class="modal-footer"></div>
+    </div>
+  </div>
+</div>

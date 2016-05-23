@@ -1,10 +1,14 @@
 <!DOCTYPE html>
 <html>
+<!--
 #set(components = ["bootstrap", "layout", "tag", "user"])
+#set(List<UserCard> recomms)
+#set(List<UserCard> people)
+-->
 <head>
   <meta charset="UTF-8">
   <title>人们 - 轻境界</title>
-  $!{includeCSS()}
+  $!{allcss}
   <style>
     #container > div{
       clear: both;
@@ -15,24 +19,22 @@
 $!{include("navbar.httl")}
 <div id="container" class="container">
   <div><strong>推荐给你:</strong></div>
-  <div id="recomms"></div>
+  <div id="recomms">
+  #for(user : recomms)
+    $!{include("user-card.httl")}
+  #end
+  </div>
   <div><strong>全部用户:</strong></div>
-  <div id="people"></div>
+  <div id="people">
+  #for(user : people)
+    $!{include("user-card.httl")}
+  #end
+  </div>
 </div>
 $!{includeProto}
-$!{includeJS()}
+$!{alljs}
 <script>
-  'use strict'
-  $(document).ready(function(){
-    $.each(window.frontMap.recomms, function(i_, uc){
-      createUserCard(uc).css('margin', '10px').css('float', 'left')
-          .appendTo($('#recomms'))
-    })
-    $.each(window.frontMap.people, function(i_, uc){
-      createUserCard(uc).css('margin', '10px').css('float', 'left')
-          .appendTo($('#people'))
-    })
-  })
+setup(user_setup)
 </script>
 </body>
 </html>

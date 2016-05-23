@@ -9,7 +9,8 @@ class Blog : BaseModel {
 
   var title: String = ""
 
-  @Column(columnDefinition = "TEXT") @Lob
+  @Column(columnDefinition = "TEXT", length = 65535)
+  @Lob @Basic
   var content: String = ""
 
   @ManyToOne(optional = false)

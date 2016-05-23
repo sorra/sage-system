@@ -34,12 +34,12 @@ public class FollowListLite extends AList {
   }
 
   public FollowListEntity toEntity() {
-    return new FollowListEntity(getOwnerId(), getName(), Json.json(getList()));
+    return new FollowListEntity(getOwnerId(), getName(), Json.INSTANCE.json(getList()));
   }
 
   public static FollowListLite fromEntity(FollowListEntity entity) {
-    return new FollowListLite(entity.getId(), entity.getOwnerId(), entity.getName(), Json.object(entity.getListJson(), FIL_LIST));
+    return new FollowListLite(entity.getId(), entity.getOwnerId(), entity.getName(), Json.INSTANCE.object(entity.getListJson(), FIL_LIST));
   }
 
-  private static JavaType FIL_LIST = Json.typeFactory().constructCollectionType(ArrayList.class, FollowInfoLite.class);
+  private static JavaType FIL_LIST = Json.INSTANCE.typeFactory().constructCollectionType(ArrayList.class, FollowInfoLite.class);
 }

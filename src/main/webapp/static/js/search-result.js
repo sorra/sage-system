@@ -9,6 +9,7 @@ $(document).ready(function(){
 			createTweetCard(result).appendTo($('#result-list'));
 		}
 		else {
+		//TODO use HTTL
 			createBlogData(result).appendTo($('#result-list'));
 		}
 	});

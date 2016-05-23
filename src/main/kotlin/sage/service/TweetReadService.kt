@@ -18,7 +18,7 @@ class TweetReadService
     // Find and merge tweets from followings
     val followings = Follow.followings(userId)
     followings.forEach { f -> tweets.addAll(byFollow(f, edge)) }
-    tweets.sortByDescending { it.timeMillis }
+    tweets.sortByDescending { it.whenCreated }
 
     // Select the top items, for later's higher sort
     return tweets.take(Edge.FETCH_SIZE)
@@ -47,7 +47,7 @@ class TweetReadService
         val newTags = Tag.multiGet(UserTag.byUserAndAfterId(follow.target.id, oldOffset).map { it.id })
 
         val pureNewTags = newTags.filter { !coveredTags.contains(it) }.toSet()
-        if (pureNewTags.size > 0) {
+        if (pureNewTags.isNotEmpty()) {
           follow.tags.addAll(pureNewTags)
           follow.userTagOffset = newOffset
           follow.update()

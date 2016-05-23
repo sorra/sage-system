@@ -1,7 +1,7 @@
-$(document).ready(function() {
+function login_setup() {
   $('form').submit(function(event) {
     try {
-      var valid = validate()
+      var valid = login_validate()
     } catch (e) {
       event.preventDefault()
       alert('登录未能成功: ' + e)
@@ -11,9 +11,9 @@ $(document).ready(function() {
       event.preventDefault()
     }
   })
-})
+}
 
-function validate() {
+function login_validate() {
   var count = 0
   function alertNode(text) {
     count++

@@ -17,7 +17,7 @@ public class ReformMentionTest {
     String mat2 = ReformMention.apply("@V@Bethia#2");
     String mat3 = ReformMention.apply("@V#3@CentKuma#3");
 
-    String tmpl = "<a uid=\"%s\" href=\"/private/%s\">@%s</a>";
+    String tmpl = "<a uid=\"%s\" href=\"/user/%s\">@%s</a>";
     String admin = format(tmpl, 1, 1, "Admin");
     String bethia = format(tmpl, 2, 2, "Bethia");
     String centkuma = format(tmpl, 3, 3, "CentKuma");

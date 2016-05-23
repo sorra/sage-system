@@ -13,6 +13,11 @@ public class Edge {
     this.edgeId = edgeId;
   }
 
+  @Override
+  public String toString() {
+    return String.format("Edge[%s, %s]", type, edgeId);
+  }
+
   public static Edge none() {
     return new Edge(EdgeType.NONE, 0L);
   }

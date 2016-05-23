@@ -8,7 +8,7 @@
 		</encoder>
 	</appender>
 
-	<!-- 时间滚动输出 level为 DEBUG 日志 -->
+	<!-- 时间滚动输出 -->
 	<appender name="file-log"
 		class="ch.qos.logback.core.rolling.RollingFileAppender">
 		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
@@ -33,7 +33,7 @@
 		<appender-ref ref ="file-log"/>
 	</appender>
 
-	<!-- 时间滚动输出 level为 ERROR 日志 -->
+	<!-- 时间滚动输出 -->
 	<appender name="file-error"
 		class="ch.qos.logback.core.rolling.RollingFileAppender">
 		<filter class="ch.qos.logback.classic.filter.LevelFilter">
@@ -60,7 +60,10 @@
 	<logger name="httl">
 		<level value="INFO"/>
 	</logger>
-	<logger name="com.mchange">
+	<logger name="com.avaje">
+		<level value="INFO"/>
+	</logger>
+	<logger name="org.avaje">
 		<level value="INFO"/>
 	</logger>
 	<logger name="org.elasticsearch">

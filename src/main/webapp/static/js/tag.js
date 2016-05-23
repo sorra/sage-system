@@ -1,6 +1,8 @@
 'use strict';
 
-$(tag_input_init)
+function tag_setup() {
+  tag_input_init()
+}
 
 function getTagChain(id, $parent) {
 	$.get('/tag/card/'+id, {})
@@ -18,7 +20,7 @@ function createTagChain(tagCard) {
 		var item = tagCard.chainUp[i];
 
 		var $tag = $('<a></a>').addClass('tag btn').addClass('btn-info').appendTo($tch);
-		$tag.text(item.name).attr('href', '/public/'+item.id);
+		$tag.text(item.name).attr('href', '/tags/'+item.id);
 		$tag.css({display:	'block',
 				  width:	'58px',
 				  height:	'23px',
@@ -50,10 +52,10 @@ function createTagLabel(tagLabel) {
 	var $tl = $('<a class="tag-label" title=""></a>');
 	$tl.text(tagLabel.name)
 	   .attr('tag-id', tagLabel.id)
-	   .attr('href', '/public/'+tagLabel.id)
+	   .attr('href', '/tags/'+tagLabel.id)
 	   .click(function(event) {
 	     event.preventDefault()
-	     window.open('/public/'+tagLabel.id)
+	     window.open('/tags/'+tagLabel.id)
 	   });
 	if (tagLabel.chainStr) {
 		$tl.attr('title', tagLabel.chainStr);
@@ -70,7 +72,7 @@ function tag_tree(tagTree, params) {
 function tag_node($tree, tag, depth, params) {
 	if (depth >= 0) {
 		var $tag = $('<a class="tag-label btn btn-default">').appendTo($tree)
-			.attr({title: tag.chainStr, 'tag-id': tag.id, 'href': '/public/'+tag.id})
+			.attr({title: tag.chainStr, 'tag-id': tag.id, 'href': '/tags/'+tag.id})
 			.text(tag.name)
 			.css('margin-left', (30*depth) + 'px')
 		if (depth <= 0) {
@@ -94,13 +96,33 @@ function hideTagTreeInput($tagPlus){
 }
 
 function tag_input_init() {
-	$(document).delegate('.tag-sel', 'click', function(){
-	  $(this).toggleClass('btn-success')
-	})
+	function tagSelClick() {
+		var $this = $(this)
+		var tagId = parseInt($this.attr('tag-id'))
+		var $tagInput = $this.parents('.tag-input')
+		var $brothers = $tagInput.find('.tag-sel[tag-id='+tagId+']')
+		var selections = $tagInput.data('selections')
+
+		if (!$this.hasClass('btn-success')) {
+			selections.push(tagId)
+			$brothers.addClass('btn-success')
+		} else {
+			arrayRemoveValue(selections, tagId)
+			$brothers.removeClass('btn-success')
+		}
+	}
+	$(document).delegate('.tag-sel', 'click', tagSelClick)
+
+	var selections = $('.tag-input').data('selections')
+	if (selections) {
+		$('.tag-sel').each(function(){
+			var tagId = parseInt($(this).attr('tag-id'))
+			if (selections.indexOf(tagId) >= 0) tagSelClick.apply(this)
+		})
+	}
 
 	$('.tag-plus').popover({
 		html: true,
-		placement: 'bottom',
 		trigger: 'manual',
 		content: $('<div>')
 	}).each(function(){

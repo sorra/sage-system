@@ -1,13 +1,15 @@
 package sage.entity
 
 import javax.persistence.Entity
+import javax.persistence.ManyToOne
 
 @Entity
 class Comment : BaseModel {
 
-  var content: String? = null
+  var content: String = ""
 
-  var author: User? = null
+  @ManyToOne(optional = false)
+  var author: User
 
   var sourceId: Long = 0
 
@@ -26,6 +28,6 @@ class Comment : BaseModel {
   companion object : Find<Long, Comment>() {
     fun ofTweet(id: Long) = where().eq("sourceId", id).findList()
 
-    fun countOfTweet(id: Long) = where().eq("sourceId", id).findRowCount()
+    fun commentsCountOfTweet(id: Long) = where().eq("sourceId", id).findRowCount()
   }
 }

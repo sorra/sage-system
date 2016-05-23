@@ -12,10 +12,11 @@ import sage.transfer.UserLabel
 
 @Service
 class RelationService
-@Autowired constructor(private val notifService: NotifService) {
+@Autowired constructor(private val notifService: NotificationService) {
   private val logger = LoggerFactory.getLogger(javaClass)
 
-  /**
+  @Suppress("NAME_SHADOWING")
+      /**
    * Act as 'follow' or 'editFollow'
    * @param userId The acting user
    * *
@@ -38,12 +39,9 @@ class RelationService
       return
     }
     val follow = Follow.find(userId, targetId)
-    val followedTags = Tag.where().`in`("id", tagIds).findSet()
+    val followedTags = Tag.multiGet(tagIds)
 
-    var userTagOffset = userTagOffset
-    if (userTagOffset == null) {
-      userTagOffset = UserTag.lastIdByUser(targetId)
-    }
+    val userTagOffset = userTagOffset ?: UserTag.lastIdByUser(targetId)
 
     if (follow == null) {
       Follow(User.ref(userId), User.ref(targetId),
@@ -72,15 +70,15 @@ class RelationService
     }
   }
 
-  fun followings(userId: Long): Collection<Follow> {
+  fun followings(userId: Long): List<Follow> {
     return Follow.followings(userId)
   }
 
-  fun followers(userId: Long): Collection<Follow> {
+  fun followers(userId: Long): List<Follow> {
     return Follow.followers(userId)
   }
 
-  fun friends(userId: Long): Collection<UserLabel> {
+  fun friends(userId: Long): List<UserLabel> {
     val followingUsers = followings(userId).map { it.target }
     val followerUsers = followers(userId).map { it.source }
     return followingUsers.intersect(followerUsers).map { UserLabel(it) }

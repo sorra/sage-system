@@ -32,7 +32,7 @@ public class ReformMention {
       Long id = safeToLong(content.substring(indexOfSharp + 1, indexOfSpace));
       String done;
       if (name.length() > 0 && id != null) {
-        done = content.substring(0, indexOfAt) + String.format("<a uid=\"%s\" href=\"/private/%s\">@%s</a>", id, id, name);
+        done = content.substring(0, indexOfAt) + String.format("<a uid=\"%s\" href=\"/user/%s\">@%s</a>", id, id, name);
       } else {
         done = content.substring(0, indexOfSpace);
       }

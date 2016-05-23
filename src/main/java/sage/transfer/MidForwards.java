@@ -37,15 +37,15 @@ public class MidForwards {
   }
 
   public static MidForwards from(Tweet tweet) {
-    return Json.object(tweet.getMidForwardsJson(), MidForwards.class);
+    return Json.INSTANCE.object(tweet.getMidForwardsJson(), MidForwards.class);
   }
 
   public static MidForwards fromJson(String json) {
-    return Json.object(json, MidForwards.class);
+    return Json.INSTANCE.object(json, MidForwards.class);
   }
 
   public String toJson() {
-    return Json.json(this);
+    return Json.INSTANCE.json(this);
   }
 
   public List<Long> getIds() {

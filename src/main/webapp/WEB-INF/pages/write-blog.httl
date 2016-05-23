@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html>
-#set(components = ["bootstrap", "markdown", "layout", "tag", "write-blog"])
 #set(BlogView blog)
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<title>写博客</title> $!{includeCSS()}
+<title>写博客</title>
+$!{allcss}
 <style type="text/css">
 .blog {
   width: 100%;
@@ -32,9 +32,9 @@
 <body>
 $!{include("navbar.httl")}
 <div class="container" id="container">
-	<div>
-		#if(groupToPost)<span>同步发布到小组[${groupToPost}]</span>#end
-		<form class="blog">
+	<div id="blog">
+		<h3>撰写博客</h3>
+		<form>
 			<div>
 				<textarea id="title" placeholder="这里是标题">${blog.title}</textarea>
 			</div>
@@ -43,21 +43,22 @@ $!{include("navbar.httl")}
 				<li><a href="#preview" data-toggle="tab">预览</a></li>
 			</ul>
 			<div class="tab-content">
-				<textarea id="content" class="tab-pane active"
-					placeholder="这里是内容">${blog.content}</textarea>
+				<textarea id="content" class="tab-pane active" placeholder="这里是内容">${blog.content}</textarea>
 				<div id="preview" class="tab-pane"></div>
 			</div>
 			<div>
         $!{include("existing-tags.httl")}
 				$!{include("tag-input.httl")}
-				<button class="btn btn-primary pull-right" type="submit">发表</button>
 			</div>
 		</form>
+		<button class="btn-submit btn btn-primary pull-right">发表</button>
 	</div>
 </div>
 <div class="footer"></div>
-
 $!{includeProto}
-$!{includeJS()}
+$!{alljs}
+<script>
+	setup(tag_setup, writeBlog_setup)
+</script>
 </body>
 </html>

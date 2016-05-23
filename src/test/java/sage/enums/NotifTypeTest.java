@@ -1,11 +1,10 @@
 package sage.enums;
 
-import org.junit.Assert;
 import org.junit.Test;
-import sage.entity.Notif.Type;
+import sage.entity.Notification.Type;
 
 import static org.junit.Assert.assertArrayEquals;
-import static sage.entity.Notif.Type.*;
+import static sage.entity.Notification.Type.*;
 
 public class NotifTypeTest {
   @Test

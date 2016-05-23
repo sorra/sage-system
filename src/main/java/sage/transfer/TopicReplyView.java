@@ -1,6 +1,6 @@
 package sage.transfer;
 
-import java.util.Date;
+import java.sql.Timestamp;
 
 import sage.entity.TopicReply;
 
@@ -9,7 +9,7 @@ public class TopicReplyView {
   public String content;
   public Long topicPostId;
   public UserLabel author;
-  public Date time;
+  public Timestamp whenCreated;
   /** Nullable */
   public UserLabel toUser;
   /** Nullable */
@@ -20,9 +20,9 @@ public class TopicReplyView {
   public TopicReplyView(TopicReply reply, UserLabel toUserLabel) {
     id = reply.getId();
     content = reply.getContent();
-    topicPostId = reply.getTopicPost().getId();
+    topicPostId = reply.getTopicPostId();
     author = new UserLabel(reply.getAuthor());
-    time = reply.getWhenCreated();
+    whenCreated = reply.getWhenCreated();
     toUser = toUserLabel;
     toReplyId = reply.getToReplyId();
   }

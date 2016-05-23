@@ -1,0 +1,29 @@
+#set(UserCard u = user)
+#set(Boolean isSelf)
+#if(u != null)
+<div class="user-card" data-usercard="${json(u)}">
+  <a class="avatar" href="/users/${u.id}"><img src="${u.avatar}"/></a>
+  <div class="info-part">
+    <div class="name-intro">
+      <p class="name">${u.name}</p>
+      <p class="intro">${u.intro}</p>
+    </div>
+    <div>
+      <a href="/followers/${u.id}">粉丝</a>: ${u.followerCount}
+      博客: ${u.blogCount}
+      微博: ${u.tweetCount}
+    </div>
+  </div>
+  #if(isSelf)
+    #set(text = "自己")
+  #else(u.isFollowing && u.isFollower)
+    #set(text = "互相关注")
+  #else(u.isFollowing)
+    #set(text = "已关注")
+  #else
+    #set(text = "+关注")
+  #end
+  <button class="btn_action #if(!isSelf)follow btn-success#end btn span pull-right">${text}</button>
+  <button class="btn_message" data-url="/messages?withUserId=${u.id}">私信</button>
+</div>
+#end

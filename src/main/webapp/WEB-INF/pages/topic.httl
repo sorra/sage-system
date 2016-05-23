@@ -1,79 +1,57 @@
 <!DOCTYPE html>
 <html>
 <!--
-#set(components = ["bootstrap", "layout", "tag", "user"])
-#set(TopicPost topicPost)
-#set(BlogView topic)
+#set(TopicView topic)
 #set(List<TopicReplyView> replies)
 -->
 <head>
   <meta charset="UTF-8">
   <title>${topic.title}</title>
-  $!{includeCSS()}
-  <style>
-    .topic{
-      padding: 5px;
-      background: #e0e0e0;
-      border-bottom: 1px solid #aaa;
-      margin-bottom: 1em;
-    }
-    .huitie{
-      font-weight: bold;
-      padding: 5px;
-      border-bottom: 1px solid #aaa;
-    }
-    .replies{
-      margin-top: 1em;
-      background: #e0e0e0;
-    }
-    .reply{
-      padding: 5px;
-      border-bottom: 1px solid #aaa;
-    }
-    .reply_input{
-      width: 20em;
-      border-radius: 5px;
-      border: 0;
-      resize: none;
-      outline: none;
-      padding: 5px;
-    }
-  </style>
+  $!{allcss}
 </head>
 <body>
-  $!{include("navbar.httl")}
-  <div id="container" class="container">
-    <div class="topic" topic-id="${topic.id}">
-      <h5>${topic.title}</h5>
-      <div>${topic.content}</div>
-      $!{include("user-label.httl", ["u": topic.author])}
-      $!{spanHumanTime(topic.createdTime)}
-      #if(topic.modifiedTime)$!{spanHumanTime(topic.modifiedTime)}#end
-      <a class="btn_reply" href="javascript:;">评论</a>
-    </div>
-    <div class="replies">
-      #for(reply : replies)
-        <div class="reply" data-id="${reply.id}">
-          #if(reply.toUser)
-            <span style="color: gray">回复 ${reply.toUser.name}:</span>
-          #end
-          <div>$!{reply.content}</div>
-          $!{include("user-label.httl", ["u": reply.author])}
-          $!{spanHumanTime(reply.time)}
-          <a class="btn_reply" href="javascript:;">回复</a>
-        </div>
+$!{include("navbar.httl")}
+<div id="container" class="container">
+  <div class="topic" data-id="${topic.id}">
+    <h3>${topic.title}</h3>
+    $!{include("user-label.httl", ["u": topic.author])}
+    <span class="human-time" data-time="${topic.whenCreated.time}"></span>
+    #if(topic.whenModified > topic.whenCreated)
+    <span class="human-time" data-time="${topic.whenModified.time}"></span>
+    #end
+    <div class="topic-content">$!{topic.content}</div>
+    #for(each : topic.tags)
+    $!{include("tag-label.httl")}
+    #end
+    <a class="btn_reply" href="javascript:;">回复</a>
+  </div>
+  <div class="replies">
+    #for(reply : replies)
+    <div class="reply" data-id="${reply.id}">
+      #if(reply.toUser)
+      <span style="color: gray">回复 ${reply.toUser.name}:</span>
       #end
+      <div>$!{reply.content}</div>
+      $!{include("user-label.httl", ["u": reply.author])}
+      <span class="human-time" data-time="${reply.whenCreated.time}"></span>
+      <a class="btn_reply" href="javascript:;">回复</a>
     </div>
+    #end
   </div>
+</div>
 
-  <div id="reply_box" style="display: none">
-    <textarea class="reply_input"></textarea>
-    <br/>
-    <button class="reply_submit" data-url="/topic/${topicPost.id}/reply">发表</button>
-  </div>
-$!{includeProto}
-$!{includeJS()}
+<div id="reply_box" style="display: none">
+  <textarea class="reply_input"></textarea>
+  <br/>
+  <button class="reply_submit" data-url="/topics/${topic.id}/reply">发表</button>
+</div>
+$!{alljs}
 <script>
+setup(humanTime_setup, tag_setup, user_setup)
+$(document).ready(function() {
+  $('.topic-content').each(function(){
+    this.innerHTML = marked(this.innerHTML)
+  })
   $(document).on('click', '.btn_reply', function(){
     var $rb = $('#reply_box')
     if ($(this).next('#reply_box').length == 0 || $rb.css('display') == 'none') {
@@ -102,6 +80,7 @@ $!{includeJS()}
       tipover($this, '发表回复遇到问题', 1000)
     })
   })
+})
 </script>
 </body>
 </html>

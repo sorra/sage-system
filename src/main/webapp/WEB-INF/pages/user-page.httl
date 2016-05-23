@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+#set(components = ["bootstrap", "layout", "stream", "tag", "user"])
+#set(UserCard thisUser)
+#set(Map frontMap)
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<title>用户主页</title>
+	$!{allcss}
+</head>
+<body>
+$!{include("navbar.httl")}
+
+<div class="container" id="container">
+	<div class="row">
+		<div class="side background-silver">
+      <div style="height:30px;"></div>
+      #if(frontMap.get("isSelfPage") == true)
+      <a href="/user-info">修改↓️</a>
+      #end
+      <a href="/lists?uid=${thisUser.id}">分享的列表</a>
+      #set(user = thisUser)
+      $!{include("user-card.httl")}
+    </div>
+		<div class="main">
+			<div class="stream">
+				<div class="slist"></div>
+			</div>
+		</div>
+	</div>
+	<div class="footer"></div>
+</div>
+$!{includeProto}
+$!{alljs}
+<script type="text/javascript">
+  setup(user_setup, stream_setup)
+  $(document).ready(function() {
+    var $thisUser = $('.side .user-card').css('border', '').css('border-radius', '')
+    if (window.frontMap.isSelfPage) {
+      $thisUser.find('.avatar').attr('href', '/user-info')
+      $thisUser.find('.btn_action, .btn_message').remove()
+    }
+
+    getStream('/read/u/' + window.frontMap.id);
+  });
+</script>
+</body>
+</html>

@@ -1,10 +1,14 @@
 <!DOCTYPE html>
 <html>
+<!--
 #set(components = ["bootstrap", "layout", "stream", "tag", "user", "home", "jq.ajaxfileupload"])
+#set(UserSelf self = userSelf)
+#set(List<UserLabel> friends)
+-->
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<title>首页 - 轻境界</title>
-  $!{includeCSS()}
+  $!{allcss}
 </head>
 <body>
 $!{include("navbar.httl")}
@@ -12,8 +16,27 @@ $!{include("navbar.httl")}
 <div id="container" class="container">
 	<div class="row">
 		<div class="side">
-		  <div class="self-card"></div>
-		  <ul class="friends unstyled">好友</ul>
+			<div class="user-self user-card" style="border-radius: 0">
+				<a class="avatar" href="/users/self"><img src="${self.avatar}"/></a>
+				<div class="info-part">
+					<div class="name-intro">
+						<p class="name">${self.name}</p>
+						<p class="intro">${self.intro}</p>
+					</div>
+					<div>
+						<a href="/followings/${self.id}">关注</a>: ${self.followingCount}
+						<a href="/followers/${self.id}">粉丝</a>: ${self.followerCount}
+						博客: ${self.blogCount}
+						微博: ${self.tweetCount}
+					</div>
+				</div>
+			</div>
+		  <ul class="friends unstyled">
+				好友
+				#for(u : friends)
+				<li>$!{include("user-label.httl")}</li>
+				#end
+			</ul>
 		</div>
 		<div class="main">
 			$!{include("post-box.httl")}
@@ -25,6 +48,9 @@ $!{include("navbar.httl")}
 	<div class="footer"></div>
 </div>
 $!{includeProto}
-$!{includeJS()}
+$!{alljs}
+<script>
+setup(home_setup, stream_setup, humanTime_setup, tag_setup, user_setup)
+</script>
 </body>
 </html>

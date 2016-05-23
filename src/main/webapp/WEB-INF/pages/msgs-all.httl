@@ -9,7 +9,7 @@
 <head>
   <meta charset="UTF-8">
   <title>私信列表</title>
-  $!{includeCSS()}
+  $!{allcss}
   <style>
     #friends{
       margin-left: 20px;
@@ -38,8 +38,8 @@ $!{include("navbar.httl")}
         <div class="conversation-header">
           $!{include("user-label.httl", ["u": conv.withUser])}
         </div>
-        <a class="last-msg" href="/pages/message?withUser=${conv.withUser.id}">
-          $!{spanHumanTime(conv.lastmsg.whenCreated)}
+        <a class="last-msg" href="/messages?withUserId=${conv.withUser.id}">
+          $!{spanHumanTime(conv.lastMsg.whenCreated)}
           <div>
             #if(conv.lastMsg.fromUser == conv.self.id)
             <span style="color: darkcyan;">我：</span>
@@ -54,13 +54,13 @@ $!{include("navbar.httl")}
     好友
     #for(u : friends)
       <span class="user-label" data-id="${u.id}" style="display: block">
-        <a class="avatar" uid="${u.id}" href="/pages/message?withUser=${u.id}"><img src="${u.avatar}"/></a>
-        <a class="name" uid="${u.id}" href="/pages/message?withUser=${u.id}">${u.name}</a>
+        <a class="avatar" uid="${u.id}" href="/messages?withUserId=${u.id}"><img src="${u.avatar}"/></a>
+        <a class="name" uid="${u.id}" href="/messages?withUserId=${u.id}">${u.name}</a>
       </span>
     #end
   </div>
 </div>
 $!{includeProto}
-$!{includeJS()}
+$!{alljs}
 </body>
 </html>

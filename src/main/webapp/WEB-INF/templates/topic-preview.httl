@@ -1,0 +1,8 @@
+#set(TopicPreview topic)
+<div class="topic-preview">
+  <a class="title" href="/topics/${topic.id}">${topic.title}</a>
+  <p class="summary">${topic.summary}</p>
+  $!{include("user-label.httl", ["u": topic.author])}
+  <span class="human-time" data-time="${topic.whenCreated.time}"></span>
+  #if(topic.replyCount > 0)<span>${topic.replyCount}个回复</span>#end
+</div>

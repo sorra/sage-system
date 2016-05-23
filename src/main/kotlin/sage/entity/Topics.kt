@@ -1,70 +1,84 @@
 package sage.entity
 
+import com.avaje.ebean.Ebean
 import com.avaje.ebean.ExpressionList
-import javax.persistence.Entity
-import javax.persistence.ManyToOne
+import com.avaje.ebean.TxCallable
+import com.avaje.ebean.annotation.SoftDelete
+import sage.domain.commons.DomainException
+import java.sql.Connection
+import java.util.*
+import javax.persistence.*
 
 @Entity
-class TopicPost : BaseModel {
+class TopicPost(
+    var title: String,
 
-  var blog: Blog?
-    private set
+    @Column(columnDefinition = "TEXT", length = 65535)
+    @Lob @Basic
+    var content: String = "",
 
-  @ManyToOne
-  var author: User?
+    var reference: String = "",
 
-  var group: Group?
+    @ManyToOne(optional = false)
+    val author: User,
 
-  var isHidden = false
+    @ManyToOne
+    var belongTag: Tag,
 
-  constructor(blog: Blog, group: Group) {
-    this.blog = blog
-    this.author = blog.author
-    this.group = group
-  }
+    @ManyToMany
+    var tags: MutableSet<Tag> = HashSet(),
+
+    var maxFloorNumber: Int = 0
+) : BaseModel() {
+  @SoftDelete
+  var deleted: Boolean = false
 
   companion object : Find<Long, TopicPost>() {
     fun get(id: Long) = getNonNull(TopicPost::class, id)
 
-    fun byGroup(groupId: Long) =
-        where().eq("group", Group.ref(groupId)).eq("hidden", false).findList()
+    fun nextFloorNumber(id: Long) = Ebean.execute(TxCallable {
+      get(id).run {
+        maxFloorNumber += 1
+        update()
+        maxFloorNumber
+      }
+    })
+
 
     fun recent(maxSize: Int) = query().orderBy("id desc").setMaxRows(maxSize).findList()
   }
 }
 
 @Entity
-class TopicReply : BaseModel {
+class TopicReply(
+    @Column(columnDefinition = "TEXT", length = 65535)
+    @Lob @Basic
+    var content: String,
 
-  var content: String? = null
+    @ManyToOne(optional = false)
+    val author: User,
 
-  var topicPost: TopicPost? = null
+    val topicPostId: Long,
 
-  @ManyToOne
-  var author: User? = null
+    val toUserId: Long?,
 
-  var toUserId: Long? = null
+    val toReplyId: Long?,
 
-  var toReplyId: Long? = null
+    val floorNumber: Int
+) : BaseModel() {
+  @SoftDelete
+  var deleted: Boolean = false
 
-  constructor(topicPost: TopicPost, author: User, content: String) {
-    this.topicPost = topicPost
-    this.author = author
-    this.content = content
-  }
-
-  fun setToInfo(toUserId: Long?, toReplyId: Long?): TopicReply {
-    this.toUserId = toUserId
-    this.toReplyId = toReplyId
-    return this
-  }
+  fun topicPost() = TopicPost.get(topicPostId)
 
   companion object : Find<Long, TopicReply>() {
     fun get(id: Long) = getNonNull(TopicReply::class, id)
 
-    fun <T> ExpressionList<T>.ofPost(postId: Long) = eq("topicPost", TopicPost.ref(postId))
+    fun ExpressionList<TopicReply>.ofPost(postId: Long) = eq("topicPostId", postId)
 
-    fun ofPost(postId : Long) = where().ofPost(postId).findList()
+    fun byPostId(postId: Long) = where().ofPost(postId).findList()
+
+    fun repliesCountOfPost(postId: Long) = where().ofPost(postId).findRowCount()
 
     fun lastReplyOfPost(postId: Long) =
         where().ofPost(postId).orderBy("id desc").setMaxRows(1).findUnique()

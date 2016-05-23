@@ -7,7 +7,7 @@
 <head>
   <meta charset="UTF-8">
   <title>浏览一下</title>
-  $!{includeCSS()}
+  $!{allcss}
   <style>
     #container{
       background: #e0e0e0;
@@ -31,18 +31,17 @@ $!{include("navbar.httl")}
   <div id="welcome-login">
     加入这里，看更多内容 <a class="btn btn-default btn-success" href="/register">加入</a>
   </div>
-  #for(topic : hotTopics)
+  #for(ht : hotTopics)
   <div class="topic">
-    <a class="title" href="/topic/${topic.id}">${topic.blog.title}</a>
-    <p class="summary">${topic.blog.summary}</p>
-    $!{include("user-label.httl", ["u": topic.blog.author])}
-    <span class="group_name">${topic.groupName}</span>
-    $!{spanHumanTime(topic.blog.createdTime)}
-    #if(topic.replyCount > 0) <span>${topic.replyCount}回复</span>#end
+    <a class="title" href="/topics/${ht.topic.id}">${ht.topic.title}</a>
+    <p class="summary">${ht.topic.summary}</p>
+    $!{include("user-label.httl", ["u": ht.topic.author])}
+    $!{spanHumanTime(ht.topic.whenCreated)}
+    #if(ht.replyCount > 0) <span>${ht.replyCount}回复</span>#end
   </div>
   #end
 </div>
 $!{includeProto}
-$!{includeJS()}
+$!{alljs}
 </body>
 </html>

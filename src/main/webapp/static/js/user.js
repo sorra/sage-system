@@ -1,106 +1,92 @@
 'use strict';
-window.ucOpener;
-window.ucCloser;
 
-setupFollowDialog()
-user_setupListeners()
-
+function user_setup() {
+  window.ucOpener = null
+  window.ucCloser = null
+  setupFollowDialog()
+  user_setupListeners()
+}
 
 function launchUcOpener() {
   if (this == undefined) {
     console.log("launchUcOpener's this is undefined");
   }
   if (window.ucCloser && window.ucCloser.locator == this) {
-    cancelUcCloser();
-//		return;
+    cancelUcCloser()
+    // return
   }
-
-  cancelUcOpener();
+  cancelUcOpener()
   window.ucOpener = {
-    timer : window.setTimeout($.proxy(openUserCard, this), 200),
+    timer: window.setTimeout($.proxy(openUserCard, this), 200),
     locator: this,
     uid: $(this).attr('uid')
-  };
+  }
 }
 
 function launchUcCloser() {
   if (this == undefined) {
-    console.log("launchUcCloser's this is undefined");
+    console.log("launchUcCloser's this is undefined")
   }
-  cancelUcOpener();
-
-  cancelUcCloser();
+  cancelUcOpener()
+  cancelUcCloser()
   window.ucCloser = {
     timer: window.setTimeout(closeUserCard, 200),
     locator: this,
     uid: $(this).attr('uid')
-  };
+  }
 }
 
 function openUserCard() {
-  var target = this;
-  cancelUcOpener();
-  closeUserCard();
-  console.log("open");
-  $.get('/user/card/' + $(target).attr('uid'), {})
-    .done(function(resp) {
+  var target = this
+  cancelUcOpener()
+  closeUserCard()
+  console.log("openUserCard")
+  var url = '/users/' + $(target).attr('uid') + '/card'
+  $.get(url, {}).done(function(resp) {
       createPopupUserCard(target, resp).hide()
-        .appendTo($('body')).fadeIn();
+        .appendTo($('body')).fadeIn()
+    }).fail(function(resp) {
+      console.log(url + ' Oops! ' + resp)
     })
-    .fail(function(resp) {
-      console.log('usercard Oops! ' + resp);
-    });
 }
 
 function closeUserCard() {
-  cancelUcCloser();
-  console.log("close");
-  var $uc = $('.user-card.popup:not(.proto *)');
-  $uc.fadeOut('', function(){$uc.remove();});
+  cancelUcCloser()
+  console.log("close")
+  var $uc = $('.user-card.popup:not(.proto *)')
+  $uc.fadeOut('', function(){$uc.remove()})
 }
 
-function createPopupUserCard(target, card) {
-  console.log("create");
-  var $uc = createUserCard(card).addClass('popup');
-  if (window.userSelf && window.userSelf.id == card.id) {
-    $('<button>').addClass('btn span').text('自己')
-      .replaceAll($uc.find('.follow'));
-  }
-  var locatorPos = $(target).offset();
-  var pleft = locatorPos.left;
-  var ptop = locatorPos.top + $(target).height();
+function createPopupUserCard(target, resp) {
+  console.log("createPopupUserCard")
+  var $uc = $(resp).addClass('popup')
+  var locatorPos = $(target).offset()
+  var pleft = locatorPos.left
+  var ptop = locatorPos.top + $(target).height()
   $uc.css({
     position: 'absolute',
     left: pleft+'px', top: ptop+'px'
-  });
-  $uc.mouseenter(cancelUcCloser).mouseleave($.proxy(launchUcCloser, target));
-
-  return $uc;
-}
-
-function createUserCard(ucard) {
-  var $uc = $(renderTmpl('tmpl-user-card', ucard))
-  $uc.data('usercard', ucard)
+  })
+  $uc.mouseenter(cancelUcCloser).mouseleave($.proxy(launchUcCloser, target))
   return $uc
 }
 
 function cancelUcOpener() {
   if (window.ucOpener) {
-    window.clearTimeout(window.ucOpener.timer);
-    window.ucOpener = null;
+    window.clearTimeout(window.ucOpener.timer)
+    window.ucOpener = null
   }
 }
 
 function cancelUcCloser() {
   if (window.ucCloser) {
-    window.clearTimeout(window.ucCloser.timer);
-    window.ucCloser = null;
+    window.clearTimeout(window.ucCloser.timer)
+    window.ucCloser = null
   }
 }
 
 function setupFollowDialog(){
-  var $dia = $(renderTmpl('tmpl-modal', {modalId: 'follow-dialog'})).appendTo($('body'))
-  $dia.find('.modal-title').text('请选择ta的0~n个标签')
+  var $dia = $('#follow-dialog')
   $dia.on('show.bs.modal', function(){
     var $this = $(this)
     var $body = $this.find('.modal-body').empty()
@@ -175,7 +161,7 @@ function user_setupListeners() {
   })
 
   $docu.delegate('.user-card .follow', 'click', function(){
-    var isFollowing = $(this).text() == '已关注'
+    var isFollowing = $(this).text() != '+关注'
     var $dialog = $('#follow-dialog').data('usercard', $(this).parents('.user-card').data('usercard'))
     if (isFollowing){
       $('<button>').text('修改').addClass('btn_editfollow btn btn-primary')

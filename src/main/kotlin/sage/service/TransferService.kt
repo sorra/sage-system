@@ -9,28 +9,20 @@ import java.util.*
 @Service
 class TransferService {
 
-  fun toTweetView(tweet: Tweet): TweetView {
-    return TweetView(tweet, Tweet.getOrigin(tweet),
-        forwardCount(tweet.id),
-        commentCount(tweet.id))
-  }
+  fun toTweetView(tweet: Tweet) = TweetView(tweet, Tweet.getOrigin(tweet), forwardCount(tweet.id), commentCount(tweet.id))
 
-  fun toTweetViewNoCount(tweet: Tweet): TweetView {
-    return TweetView(tweet, Tweet.getOrigin(tweet), 0, 0)
-  }
+  fun toTweetViewNoCount(tweet: Tweet) = TweetView(tweet, Tweet.getOrigin(tweet), 0, 0)
 
   @JvmOverloads fun toTweetViews(tweets: Collection<Tweet>, showOrigin: Boolean = true, showCounts: Boolean = true): List<TweetView> {
-    val tcs = ArrayList<TweetView>(20)
-    for (t in tweets) {
+    return tweets.map { t ->
       val origin = if (showOrigin) Tweet.getOrigin(t) else null
       val forwardCount = if (showCounts) forwardCount(t.id) else 0
       val commentCount = if (showCounts) commentCount(t.id) else 0
-      tcs.add(TweetView(t, origin, forwardCount, commentCount))
+      TweetView(t, origin, forwardCount, commentCount)
     }
-    return tcs
   }
 
   fun forwardCount(originId: Long) = Tweet.forwardCount(originId)
 
-  fun commentCount(sourceId: Long) = Comment.countOfTweet(sourceId)
+  fun commentCount(sourceId: Long) = Comment.commentsCountOfTweet(sourceId)
 }
