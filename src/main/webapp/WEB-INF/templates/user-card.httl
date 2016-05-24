@@ -1,5 +1,5 @@
 #set(UserCard u = user)
-#set(Boolean isSelf)
+#set(UserSelf userSelf)
 #if(u != null)
 <div class="user-card" data-usercard="${json(u)}">
   <a class="avatar" href="/users/${u.id}"><img src="${u.avatar}"/></a>
@@ -14,6 +14,7 @@
       微博: ${u.tweetCount}
     </div>
   </div>
+  #set(isSelf = userSelf && userSelf.id == u.id)
   #if(isSelf)
     #set(text = "自己")
   #else(u.isFollowing && u.isFollower)

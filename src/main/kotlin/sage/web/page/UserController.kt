@@ -31,7 +31,7 @@ open class UserController @Autowired constructor(
   open fun userCard(@PathVariable id: Long): ModelAndView {
     val uid = Auth.checkUid()
     val theUser = userService.getUserCard(uid, id)
-    return ModelAndView("user-card").addObject("user", theUser).addObject("isSelf", uid == id)
+    return ModelAndView("user-card").addObject("user", theUser)
   }
 
   @RequestMapping

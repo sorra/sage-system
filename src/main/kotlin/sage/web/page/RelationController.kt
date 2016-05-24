@@ -25,7 +25,7 @@ open class RelationController @Autowired constructor(
       userService.getUserCard(uid, fol.target.id)
     }
     return ModelAndView("followings").addObject("users", followings)
-        .addObject("thisUser", thisUser).addObject("isSelf", uid == userId)
+        .addObject("thisUser", thisUser)
 }
 
   @RequestMapping("/followers")
@@ -39,6 +39,6 @@ open class RelationController @Autowired constructor(
       userService.getUserCard(uid, fol.source.id)
     }
     return ModelAndView("followers").addObject("users", followers)
-        .addObject("thisUser", thisUser).addObject("isSelf", uid == userId)
+        .addObject("thisUser", thisUser)
   }
 }
