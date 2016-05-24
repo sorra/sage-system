@@ -59,11 +59,10 @@ function buildNavTagTree($lnk, tagTree) {
     var $dialog = $('#new-tag-dialog')
     var name = $dialog.find('input[name=name]').val()
     var parentId = $dialog.find('input[name=parent-id]').val()
-    if (name && name.length > 0 && parentId && parentId.length > 0) {
-      $.post('/tags/new', {
-        name: name,
-        parentId: parentId
-      })
+    if (name && name.length > 0) {
+      var attrs = {name: name}
+      if (parentId.length > 0) attrs.parentId = parentId
+      $.post('/tags/new', attrs)
     }
     $dialog.find('input[name=parent-id]').val('')
     $dialog.find('input[name=parent-id]').val('')
@@ -71,7 +70,7 @@ function buildNavTagTree($lnk, tagTree) {
   })
 
   $(document).delegate('.create-tag', 'click', function(){
-    $dialog.modal('show')
+    $('#new-tag-dialog').modal('show')
   })
 
   tag_tree(tagTree).appendTo($navTagTree)
