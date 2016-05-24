@@ -10,7 +10,7 @@ import sage.service.TagService
 import sage.web.auth.Auth
 
 @Controller
-@RequestMapping("/tag-changes/")
+@RequestMapping("/tag-changes")
 open class TagChangeController @Autowired constructor(
     private val tagService: TagService,
     private val tagChangeService: TagChangeService
@@ -42,4 +42,7 @@ open class TagChangeController @Autowired constructor(
     model.put("tag", tagService.getTagCard(id))
     return "tag-do-change"
   }
+
+  @RequestMapping
+  open fun allRequests() = "forward:/tag-changes/1/scope"
 }

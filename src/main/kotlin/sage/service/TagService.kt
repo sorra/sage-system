@@ -36,11 +36,11 @@ class TagService {
   }
 
   fun getTagCard(tagId: Long): TagCard {
-    return TagCard(Tag.byId(tagId))
+    return TagCard(Tag.get(tagId))
   }
 
-  fun getTagLabel(tagId: Long): TagLabel {
-    return TagLabel(Tag.byId(tagId))
+  fun getTagLabel(tagId: Long): TagLabel? {
+    return Tag.byId(tagId)?.run { TagLabel(this) }
   }
 
   fun getTagTree() = TagNode(Tag.byId(Tag.ROOT_ID))

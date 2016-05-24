@@ -12,6 +12,8 @@ import sage.entity.TagChangeRequest.Status
 import sage.entity.TagChangeRequest.Type
 import sage.entity.User
 import sage.transfer.TagChangeRequestCard
+import sage.transfer.TagLabel
+import sage.transfer.UserLabel
 
 @Service
 class TagChangeService {
@@ -51,7 +53,7 @@ class TagChangeService {
   }
 
   fun getRequestsOfTag(tagId: Long): Collection<TagChangeRequestCard> {
-    return TagChangeRequest.byTag(tagId).map { TagChangeRequestCard(it) }
+    return TagChangeRequest.byTag(tagId).map(asTagChangeRequestCard)
   }
 
   fun countPendingRequestsOfTag(tagId: Long): Int {
@@ -59,11 +61,33 @@ class TagChangeService {
   }
 
   fun getRequestsOfTagScope(tagId: Long): Collection<TagChangeRequestCard> {
-    return TagChangeRequest.byTagScope(Tag.get(tagId)).map { TagChangeRequestCard(it) }
+    return TagChangeRequest.byTagScope(Tag.get(tagId)).map(asTagChangeRequestCard)
   }
 
   fun countPendingRequestsOfTagScope(tagId: Long): Int {
     return TagChangeRequest.byTagScopeAndStatus(Tag.get(tagId), Status.PENDING).size
+  }
+
+  private val asTagChangeRequestCard = {req: TagChangeRequest ->
+    TagChangeRequestCard().apply {
+      id = req.id
+      tag = TagLabel(req.tag)
+      submitter = UserLabel(req.submitter)
+      if (req.transactor != null) {
+        transactor = UserLabel(req.transactor)
+      }
+      statusKey = req.status.name
+      status = req.status.desc
+      type = req.type.desc
+      when (req.type) {
+        TagChangeRequest.Type.MOVE -> {
+          val parent = Tag.get(req.parentId)
+          desc = "移动到标签${parent.name}[${parent.id}]下"
+        }
+        TagChangeRequest.Type.RENAME -> desc = "改名为\"${req.name}\""
+        TagChangeRequest.Type.SET_INTRO -> desc = "修改简介为\"${req.intro}\""
+      }
+    }
   }
 
   fun cancelRequest(userId: Long, reqId: Long) {
