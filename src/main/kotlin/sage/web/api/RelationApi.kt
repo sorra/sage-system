@@ -23,7 +23,6 @@ open class RelationApi
                   @RequestParam(required = false) userTagOffset: Long?) {
     val uid = Auth.checkUid()
     relationService.follow(uid, targetId, reason, tagIds, includeNew, includeAll, userTagOffset)
-    notifService.followed(targetId, uid)
   }
 
   @RequestMapping("/unfollow/{targetId}")
