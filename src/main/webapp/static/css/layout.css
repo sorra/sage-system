@@ -2,14 +2,16 @@
 	display:none;
 }
 
-body{
+html, body{
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif, "Microsoft YaHei", "微软雅黑", STXihei, "华文细黑";
+  width: 100%;
+  height: 100%;
 }
 .background-silver{
     background: #e5e5e5;
 }
 body, .background-dark{
-   background: radial-gradient(farthest-side ellipse at 10% 0, rgba(102,105,104,0.9),rgba(93,112,119,0.89),rgba(160,174,150,0.9));
+   background: radial-gradient(farthest-side ellipse at 100% 0, rgba(102,105,104,0.9),rgba(93,112,119,0.89),rgba(160,174,150,0.9));
 }
 
 body>.container{
