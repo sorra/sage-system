@@ -25,7 +25,7 @@ class TopicPost(
     @ManyToOne
     var belongTag: Tag,
 
-    @ManyToMany
+    @ManyToMany(cascade = arrayOf(javax.persistence.CascadeType.ALL))
     var tags: MutableSet<Tag> = HashSet(),
 
     var maxFloorNumber: Int = 0

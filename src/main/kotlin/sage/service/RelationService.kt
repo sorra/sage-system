@@ -64,9 +64,9 @@ class RelationService
   fun unfollow(userId: Long, targetId: Long) {
     val follow = Follow.find(userId, targetId)
     if (follow != null) {
-      follow.update()
+      follow.delete()
     } else {
-      logger.warn("user {} should not unfollow duplicately!", userId)
+      logger.warn("user {} should not unfollow user {} duplicately!", userId, targetId)
     }
   }
 

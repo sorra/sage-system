@@ -29,7 +29,7 @@ class Tweet : BaseModel {
 
   var blogId: Long = 0
 
-  @ManyToMany
+  @ManyToMany(cascade = arrayOf(CascadeType.ALL))
   var tags: MutableSet<Tag> = HashSet()
 
   var deleted: Boolean = false

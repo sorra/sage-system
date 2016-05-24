@@ -16,7 +16,7 @@ class Blog : BaseModel {
   @ManyToOne(optional = false)
   var author: User
 
-  @ManyToMany
+  @ManyToMany(cascade = arrayOf(CascadeType.ALL))
   var tags: MutableSet<Tag> = HashSet()
 
   @SoftDelete
