@@ -74,12 +74,20 @@ open class Application : WebMvcAutoConfiguration.WebMvcAutoConfigurationAdapter(
   open fun loggingURLFilter() = object : javax.servlet.Filter {
     private val log = LoggerFactory.getLogger("LoggingURLFilter")
     override fun doFilter(request: ServletRequest, response: ServletResponse, chain: FilterChain) {
+      var msg: String? = null
       if (request is HttpServletRequest) {
-        var url = request.requestURI
-        request.queryString?.apply { url = "$url?$this" }
-        log.info(request.method + " " + url)
+        val query = if(request.queryString != null) "?"+request.queryString else ""
+        msg = request.method + " " + request.requestURI + query
       }
-      chain.doFilter(request, response)
+      val timeStart = System.currentTimeMillis()
+      try {
+        chain.doFilter(request, response)
+      } finally {
+        if (msg != null) {
+          val timeCost = System.currentTimeMillis() - timeStart
+          log.info("${timeCost}ms $msg")
+        }
+      }
     }
     override fun init(filterConfig: FilterConfig?) {}
     override fun destroy() {}
