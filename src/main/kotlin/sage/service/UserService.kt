@@ -1,6 +1,7 @@
 package sage.service
 
 import org.jasypt.util.password.StrongPasswordEncryptor
+import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 import sage.domain.commons.DomainException
 import sage.domain.commons.IdCommons
@@ -14,6 +15,7 @@ import java.util.*
 
 @Service
 class UserService {
+  private val log = LoggerFactory.getLogger(javaClass)
 
   fun getSelf(userId: Long): UserSelf {
     return UserSelf(User.get(userId),
@@ -112,11 +114,14 @@ class UserService {
   }
 
   fun updateUserTag(userId: Long, tagIds: Collection<Long>) {
-    val newTagIds = HashSet(tagIds)
-    val usedTagIds = UserTag.byUser(userId).map { it.id }
-    newTagIds.removeAll(usedTagIds)
-    for (tagId in newTagIds) {
-      UserTag(userId, tagId).save()
+    val usedTagIds = UserTag.byUser(userId).map { it.tagId }
+    val newTagIds = tagIds - usedTagIds
+    newTagIds.forEach { tagId ->
+      try {
+        UserTag(userId, tagId).save()
+      } catch (e: Exception) {
+        log.error("UserTag[userId=$userId, tagId=$tagId] saving failed!", e)
+      }
     }
   }
 

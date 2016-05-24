@@ -1,6 +1,8 @@
 package sage.entity
 
+import org.slf4j.LoggerFactory
 import sage.domain.commons.Edge
+import sage.transfer.MidForward
 import sage.transfer.MidForwards
 import java.util.*
 import javax.persistence.*
@@ -57,10 +59,17 @@ class Tweet : BaseModel {
 
   fun hasOrigin() = originId > 0
 
-  fun midForwards() = midForwardsJson?.run { MidForwards.fromJson(this) }
+  fun midForwards(): MidForwards? = try {
+    midForwardsJson?.run { MidForwards.fromJson(this) }
+  } catch (e: Exception) {
+    log.error("midForwards cannot be deserialized from JSON", e)
+    MidForwards().apply { xs.add(MidForward(0, "//?")) }
+  }
 
   @Suppress("NAME_SHADOWING")
   companion object : Find<Long, Tweet>() {
+    private val log = LoggerFactory.getLogger(Tweet::class.java)
+
     fun byTags(tags: Collection<Tag>, edge: Edge): List<Tweet> {
       if (tags.isEmpty()) {
         return LinkedList()
