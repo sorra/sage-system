@@ -1,0 +1,12 @@
+.blog-preview{
+  padding: 5px;
+  background: #e0e0e0;
+  border-bottom: 1px solid #aaa;
+}
+
+.blog-preview .title{
+  display: block;
+  font-weight: bold;
+  font-size: 1.1em;
+  color: #256DAB;
+}

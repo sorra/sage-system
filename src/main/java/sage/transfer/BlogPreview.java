@@ -22,7 +22,7 @@ public class BlogPreview {
     id = blog.getId();
     title = blog.getTitle();
     author = new UserLabel(blog.getAuthor());
-    summary = Strings.cut(blog.getContent(), 0, 100);
+    summary = Strings.omit(blog.getContent(), 200);
     createdTime = blog.getWhenCreated();
     modifiedTime = blog.getWhenModified();
     tags = Colls.map(blog.getTags(), TagLabel::new);

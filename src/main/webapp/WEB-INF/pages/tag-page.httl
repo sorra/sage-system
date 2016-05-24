@@ -39,21 +39,21 @@ $!{include("navbar.httl")}
       <div>订阅</div>
       <div>子标签(核心)
         <div>
-          #for(each : coreTags)
+          #for(tag : coreTags)
           $!{include("tag-label.httl")}
           #end
         </div>
       </div>
       <div>子标签(普通)
         <div>
-          #for(each : nonCoreTags)
+          #for(tag : nonCoreTags)
           $!{include("tag-label.httl")}
           #end
         </div>
       </div>
       <div>同名标签
         <div>
-          #for(each : sameNameTags)
+          #for(tag : sameNameTags)
           $!{include("tag-label.httl")}
           #end
         </div>

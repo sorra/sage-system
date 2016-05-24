@@ -15,7 +15,7 @@
     #for(each : reqs)
     <div class="tag-change-request" data-id="${each.id}">
       <div>编号: ${each.id}</div>
-      <div>标签: $!{include("tag-label.httl", ["each": each.tag])}</div>
+      <div>标签: $!{include("tag-label.httl", ["tag": each.tag])}</div>
       <div>发起者: $!{include("user-label.httl", ["u": each.submitter])}</div>
       <div>处理者: $!{include("user-label.httl", ["u": each.transactor])}</div>
       <div>状态: <span class="status">${each.status}</span></div>

@@ -25,11 +25,19 @@
             <a href="/blogs">博客</a>
             <a href="/people">人们</a>
             #if(userSelf != null)
-            <a href="/blogs/new">写博客</a>
-            <a href="/messages">私信</a>
             <a id="nav-user" href="/users/self">${userSelf.name}</a>
-            <a href="/user-info">设置</a>
-            <a href="/logout">退出</a>
+            <span class="dropdown">
+              <a id="userDropdownMenu" href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                <span class="caret"></span>
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="userDropdownMenu">
+                <li><a href="/blogs/new">写博客</a></li>
+                <li><a href="/notifications">通知</a></li>
+                <li><a href="/user-info">设置</a></li>
+                <li><a href="/logout">退出</a></li>
+              </ul>
+            </span>
+            <a href="/messages">私信</a>
             #else
             <a href="/login" style="color: lightgreen">登录</a>
             #end

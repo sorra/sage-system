@@ -15,6 +15,7 @@
 }
 
 .topic-preview .title{
+  display: block;
   font-weight: bold;
   font-size: 1.1em;
   color: #256DAB;

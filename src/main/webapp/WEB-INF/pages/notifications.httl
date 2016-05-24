@@ -32,7 +32,7 @@ $!{include("navbar.httl")}
 $!{includeProto}
 $!{alljs}
 <script>
-  // set readTo after 1 second
+  // mark-read after 1 second
   window.setTimeout(function () {
     var ids = []
     $('.notif').each(function(){

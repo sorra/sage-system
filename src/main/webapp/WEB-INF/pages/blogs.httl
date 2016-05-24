@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<!--
+#set(List<BlogPreview> blogs)
+-->
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>博客列表</title>
+  $!{allcss}
+  <style type="text/css">
+    #container{
+      background-color: #F0F0F0;
+    }
+  </style>
+</head>
+<body>
+$!{include("navbar.httl")}
+<div class="container" id="container">
+  <div class="blog-list">
+    #for(blog : blogs)
+      <div class="blog-preview">
+        <span id="id" style="display:none">$!{blog.id}</span>
+        <a class="title" href="/blogs/${blog.id}">${blog.title}</a>
+        $!{include("user-label.httl", ["u": blog.author])}
+        创建于 <span class="human-time" data-time="${blog.createdTime.time}">${humanTime(blog.createdTime)}</span>
+        #if(blog.modifiedTime)
+        修改于 <span class="human-time" data-time="${blog.createdTime.time}">${humanTime(blog.modifiedTime)}</span>
+        #end
+        <div class="tags">
+          #for(tag : blog.tags)
+          $!{include("tag-label.httl")}
+          #end
+        </div>
+        <div class="summary">$!{blog.summary}</div>
+      </div>
+    #end
+  </div>
+</div>
+$!{alljs}
+<script type="text/javascript">
+  console.log('blog-id: ' + $('#id').text());
+  function unescape(str) {
+    return String(str).replace(/&gt;/g, '>');
+  }
+  setup(stream_setup, humanTime_setup, tag_setup, user_setup)
+  $(document).ready(function() {
+    humanTime_show()
+    $('.summary').warnEmpty().each(function(){
+      $(this).html(marked(unescape($(this).html())))
+    })
+
+    getStream('/read/connect/'+$('#id').text()).done(function(){
+      $('.newfeed').remove()
+      $('.oldfeed').remove()
+    })
+  })
+</script>
+</body>
+</html>

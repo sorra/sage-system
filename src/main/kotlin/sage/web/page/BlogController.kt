@@ -11,6 +11,7 @@ import org.springframework.web.servlet.ModelAndView
 import sage.entity.Blog
 import sage.service.BlogService
 import sage.service.UserService
+import sage.transfer.BlogPreview
 import sage.transfer.BlogView
 import sage.transfer.TagLabel
 import sage.web.auth.Auth
@@ -72,7 +73,7 @@ open class BlogController @Autowired constructor(
 
   @RequestMapping
   open fun all(): ModelAndView {
-    val blogs = Blog.all().sortedBy { it.whenCreated }.map { BlogView(it) }
+    val blogs = Blog.all().sortedBy { it.whenCreated }.map { BlogPreview(it) }
     return ModelAndView("blogs").addObject("blogs", blogs)
   }
 }

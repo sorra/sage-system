@@ -6,7 +6,7 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<title>${blog.title}</title>
-    $!{allcss}
+	$!{allcss}
 	<style type="text/css">
 	#container{
 		background-color: #F0F0F0;
@@ -19,19 +19,19 @@
 <body>
 $!{include("navbar.httl")}
 <div class="container" id="container">
-	<div class="author"></div>
 	<div class="blog">
 		<span id="id" style="display:none">$!{blog.id}</span>
 		<h3 class="title">$!{blog.title}</h3>
 		#if(uid == blog.author.id)
 		<a href="/blogs/$!{blog.id}/edit">编辑</a>
 		#end
+		$!{include("user-label.httl", ["u": blog.author])}
 		创建于 <span class="human-time" data-time="${blog.createdTime.time}">${humanTime(blog.createdTime)}</span>
 		#if(blog.modifiedTime)
 		修改于 <span class="human-time" data-time="${blog.modifiedTime.time}">${humanTime(blog.modifiedTime)}</span>
 		#end
 		<div class="tags">
-		#for(each : blog.tags)
+		#for(tag : blog.tags)
 		  $!{include("tag-label.httl")}
 		#end
 		</div>
@@ -44,22 +44,22 @@ $!{include("navbar.httl")}
 </div>
 $!{alljs}
 <script type="text/javascript">
-console.log('blog-id: ' + $('#id').text());
-function unescape(str) {
-    return String(str).replace(/&gt;/g, '>');
-}
-setup(stream_setup, humanTime_setup, tag_setup, user_setup)
-$(document).ready(function() {
-	humanTime_show()
-	var $content = $('.content').warnEmpty();
-	$content.html(marked(unescape($content.html())));
+	console.log('blog-id: ' + $('#id').text());
+	function unescape(str) {
+			return String(str).replace(/&gt;/g, '>');
+	}
+	setup(stream_setup, humanTime_setup, tag_setup, user_setup)
+	$(document).ready(function() {
+		humanTime_show()
+		var $content = $('.content').warnEmpty();
+		$content.html(marked(unescape($content.html())));
 
-	getStream('/read/connect/'+$('#id').text())
-			.done(function(){
-					$('.newfeed').remove();
-					$('.oldfeed').remove();
-			});
-})
+		getStream('/read/connect/'+$('#id').text())
+				.done(function(){
+						$('.newfeed').remove();
+						$('.oldfeed').remove();
+				});
+	})
 </script>
 </body>
 </html>

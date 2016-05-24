@@ -118,3 +118,8 @@ input[name=q]{
   height: 25px;
   border-radius: 3px;
 }
+
+#userDropdownMenu:hover{
+  border: 1px solid #ccc;
+  border-radius: 2px;
+}
