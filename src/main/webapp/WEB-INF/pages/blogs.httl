@@ -27,7 +27,7 @@ $!{include("navbar.httl")}
         修改于 <span class="human-time" data-time="${blog.createdTime.time}">${humanTime(blog.modifiedTime)}</span>
         #end
         <div class="tags">
-          #for(tag : blog.tags)
+          #for(each : blog.tags)
           $!{include("tag-label.httl")}
           #end
         </div>

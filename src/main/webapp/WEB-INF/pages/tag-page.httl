@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html>
 <!--
-#set(components = ["bootstrap", "layout", "stream", "tag", "user"])
 #set(Tag tag)
 #set(Integer countPendingRequestsOfTag, Integer countPendingRequestsOfTagScope)
 #set(Collection<TopicPreview> topics)
@@ -39,21 +38,21 @@ $!{include("navbar.httl")}
       <div>订阅</div>
       <div>子标签(核心)
         <div>
-          #for(tag : coreTags)
+          #for(each : coreTags)
           $!{include("tag-label.httl")}
           #end
         </div>
       </div>
       <div>子标签(普通)
         <div>
-          #for(tag : nonCoreTags)
+          #for(each : nonCoreTags)
           $!{include("tag-label.httl")}
           #end
         </div>
       </div>
       <div>同名标签
         <div>
-          #for(tag : sameNameTags)
+          #for(each : sameNameTags)
           $!{include("tag-label.httl")}
           #end
         </div>

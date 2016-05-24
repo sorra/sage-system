@@ -20,7 +20,7 @@ $!{include("navbar.httl")}
     <span class="human-time" data-time="${topic.whenModified.time}"></span>
     #end
     <div class="topic-content">$!{topic.content}</div>
-    #for(tag : topic.tags)
+    #for(each : topic.tags)
     $!{include("tag-label.httl")}
     #end
     <a class="btn_reply" href="javascript:;">回复</a>

@@ -1,7 +1,9 @@
 <!DOCTYPE html>
 <html>
+<!--
 #set(components = ["bootstrap", "layout", "tag", "user", "tag-requests"])
 #set(TagCard tag, Collection<TagChangeRequestCard> reqs)
+-->
 <head>
   <meta charset="UTF-8">
   <title>${tag.name} - 的修改申请</title>
@@ -12,19 +14,19 @@ $!{include("navbar.httl")}
   <div id="container" class="container">
     <a class="do-change" href="/tag-changes/${tag.id}/do-change">我要修改</a>
     <h3>${tag.name} - 的修改申请</h3>
-    #for(each : reqs)
-      <div class="tag-change-request" data-id="${each.id}">
-        <div>编号: ${each.id}</div>
-        <div>发起者: $!{include("user-label.httl", ["u": each.submitter])}</div>
-        <div>处理者: $!{include("user-label.httl", ["u": each.transactor])}</div>
-        <div>状态: <span class="status">${each.status}</span></div>
-        <div>描述: ${each.desc}</div>
-        #if(each.statusKey == "PENDING")
+    #for(req : reqs)
+      <div class="tag-change-request" data-id="${req.id}">
+        <div>编号: ${req.id}</div>
+        <div>发起者: $!{include("user-label.httl", ["u": req.submitter])}</div>
+        <div>处理者: $!{include("user-label.httl", ["u": req.transactor])}</div>
+        <div>状态: <span class="status">${req.status}</span></div>
+        <div>描述: ${req.desc}</div>
+        #if(req.statusKey == "PENDING")
           #if(userCanTransact == true)
           <button class="accept-btn btn btn-default">同意</button>
           <button class="reject-btn btn btn-default">拒绝</button>
           #end
-          #if(currentUserId == each.submitter.id)
+          #if(currentUserId == req.submitter.id)
           <button class="cancel-btn btn btn-default btn-warning">取消</button>
           #end
         #end

@@ -13,7 +13,7 @@
   <div class="finfo">
     $!{include('user-label.httl', ['u': f.user])}
     <div class="finfo-tags">
-      #for(tag : f.tags)
+      #for(each : f.tags)
       $!{include('tag-label.httl')}
       #end
     </div>
