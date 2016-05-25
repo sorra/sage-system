@@ -37,14 +37,15 @@ class NotificationService @Autowired constructor(
 
   fun markRead(userId: Long, ids: List<Long>) {
     Ebean.createUpdate(Notification::class.java, "update Notification set isRead = true where id in (:ids) and ownerId = :userId")
-        .setParameter("ids", ids).setParameter("userId", userId).execute()
+        .setParameter("ids", ids).setParameter("userId", userId)
+        .execute()
   }
 
   fun toView(notif: Notification): NotifView? {
     val sourceId = notif.sourceId ?: return null
     val source: String
     when (notif.type!!.sourceType) {
-      Notification.SourceType.USER -> source = "/users/" + sourceId
+      Notification.SourceType.USER -> source = ""
       Notification.SourceType.TWEET -> source = "/tweets/" + sourceId
       Notification.SourceType.COMMENT -> {
         val tweetId = Comment.byId(sourceId)?.sourceId
