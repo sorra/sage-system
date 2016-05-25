@@ -121,7 +121,11 @@ input[name=q]{
   border-radius: 3px;
 }
 
-#userDropdownMenu:hover{
-  border: 1px solid #ccc;
+#userDropdownMenu{
+  border: 1px solid transparent;
   border-radius: 2px;
+}
+
+#userDropdownMenu:hover{
+  border-color: #ccc;
 }
