@@ -1,18 +1,14 @@
 <!DOCTYPE html>
 <html>
-#set(components = ["login"])
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<title>登录 - 轻境界</title>
   <link href="static/css/bootstrap.css" rel="stylesheet">
-  <link href="static/css/layout.css" rel="stylesheet">
+  <link href="static/css/all.css" rel="stylesheet">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="">
   <meta charset="utf-8">
   <style>
-    body{
-      min-height: 600px;
-    }
     .heading{
       text-align: center;
       padding: 10px;
