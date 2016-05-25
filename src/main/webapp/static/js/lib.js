@@ -49,11 +49,15 @@ function humanTime_compute(millis) {
   if (diffMinutes < 60) return diffMinutes.toFixed(0) + '分钟前'
 
   var date = new Date(millis)
-  if (now.getYear() == date.getYear() && now.getMonth() == date.getMonth() && now.getDay() == date.getDay()) {
-    var diffHours = diffMinutes / 60
-    return date.getHours() + ':' + date.getMinutes()
+  var hm = date.getHours() + ':' + date.getMinutes()
+  if (now.getFullYear() == date.getFullYear() && now.getMonth() == date.getMonth() && now.getDate() == date.getDate()) {
+    return hm
   }
-  return date.toLocaleString()
+  var mdhm = (date.getMonth()+1) + '/' + date.getDate() + ' ' + hm
+  if (now.getFullYear() == date.getFullYear()) {
+    return mdhm
+  }
+  return date.getFullYear() + ' ' + mdhm
 }
 
 function arrayRemoveValue(value) {

@@ -1,3 +1,5 @@
+@file:Suppress("unused")
+
 package sage.web.context
 
 import java.time.Instant
@@ -31,10 +33,6 @@ object DateUtil {
       return DateTimeFormatter.ofPattern("MM-dd HH:mm").cn().format(thatTime)
     }
     return DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm").cn().format(thatTime)
-  }
-
-  @JvmStatic fun spanHumanTime(time: Date): String {
-    return String.format("<span class=\"human-time\">%s</span>", humanTime(time))
   }
 
   fun DateTimeFormatter.cn() = withZone(ZoneId.of("UTC+8"))

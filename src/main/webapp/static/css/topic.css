@@ -21,6 +21,10 @@
   color: #256DAB;
 }
 
+.topic-preview .unread.badge{
+  background-color: #428BCA;
+}
+
 .topic{
   padding: 5px;
   background: #e0e0e0;

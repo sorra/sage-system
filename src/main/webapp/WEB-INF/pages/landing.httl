@@ -33,16 +33,13 @@ $!{include("navbar.httl")}
   </div>
   #for(ht : hotTopics)
     #set(topic = ht.topic)
-    <div class="topic-preview">
-      <a class="title" href="/topics/${topic.id}">${topic.title}</a>
-      <p class="summary">${topic.summary}</p>
-      $!{include("user-label.httl", ["u": topic.author])}
-      $!{spanHumanTime(topic.whenCreated)}
-      #if(ht.replyCount > 0) <span>${ht.replyCount}回复</span>#end
-    </div>
+    $!{include("topic-preview.httl")}
   #end
 </div>
 $!{includeProto}
 $!{alljs}
+<script>
+  setup(humanTime_setup)
+</script>
 </body>
 </html>

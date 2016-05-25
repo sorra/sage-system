@@ -34,6 +34,7 @@ $!{include("navbar.httl")}
       <div>$!{reply.content}</div>
       $!{include("user-label.httl", ["u": reply.author])}
       <span class="human-time" data-time="${reply.whenCreated.time}"></span>
+      <span>&nbsp;${reply.floorNumber}楼</span>
       <a class="btn_reply" href="javascript:;">回复</a>
     </div>
     #end
