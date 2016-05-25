@@ -23,11 +23,11 @@
       margin: 15% auto auto auto;
       background-color: rgba(51,51,51,0.4);
     }
-    label, input{
-      display: block;
-    }
     input{
       width: 20em;
+    }
+    input[type=checkbox]{
+      width: auto;
     }
     .input-group{
       display: block;
@@ -57,6 +57,11 @@
     <div class="input-group">
       <label for="password">密码</label>
       <input id="password" name="password" type="password" placeholder="请输入密码" />
+    </div>
+    <div class="input-group">
+      <label for="rememberMe" title="建议在网吧或公共电脑上取消该选项">
+        <input id="rememberMe" name="rememberMe" type="checkbox" checked />&nbsp;记住登录
+      </label>
     </div>
     <div class="input-group" id="login-action">
       <button type="submit" class="btn btn-block btn-lg btn-danger">

@@ -44,11 +44,4 @@ open class HomeController
 
   @RequestMapping("/register")
   open fun register(): String = "register"
-
-  @RequestMapping("/not-found")
-  open fun notFound(): ModelAndView {
-    val mv = ModelAndView("error")
-    mv.modelMap.addAttribute("errorCode", 404).addAttribute("reason", "找不到页面")
-    return mv
-  }
 }

@@ -11,7 +11,6 @@ import sage.domain.commons.DomainException
 import sage.entity.User
 import sage.service.UserService
 import sage.web.auth.Auth
-import sage.web.auth.SessionKeys
 import javax.servlet.http.HttpServletRequest
 
 @Controller
@@ -21,13 +20,13 @@ open class AuthController
 
   @RequestMapping("/login", method = arrayOf(POST))
   open fun login(request: HttpServletRequest,
-                 @RequestParam("email") email: String,
-                 @RequestParam("password") password: String): String {
+                 @RequestParam email: String, @RequestParam password: String,
+                 @RequestParam(required = false) rememberMe: Boolean?): String {
     if (email.isEmpty() || password.isEmpty()) {
       throw DomainException("Empty input!")
     }
     log.info("Login email: {}", email)
-    Auth.invalidateSession(request)
+    Auth.logout()
 
     val referer = request.getHeader("referer")
     log.debug("Referer: {}", referer)
@@ -42,17 +41,16 @@ open class AuthController
     }
 
     val user = userService.login(email, password)
-    val sesison = request.getSession(true)
-    sesison.setAttribute(SessionKeys.UID, user.id)
+    Auth.login(user.id, rememberMe ?: false)
     log.info("User {} logged in.", user)
     if (dest == null) { return "redirect:/" }
     else { return "redirect:" + Auth.decodeLink(dest) }
   }
 
   @RequestMapping("/logout")
-  open fun logout(request: HttpServletRequest): String {
+  open fun logout(): String {
     log.info("Logout uid: ", Auth.uid())
-    Auth.invalidateSession(request)
+    Auth.logout()
     return "redirect:/login"
   }
 
@@ -85,7 +83,7 @@ open class AuthController
     }
 
     userService.register(User(email, password))
-    login(request, email, password)
+    login(request, email, password, false)
     return "redirect:/user-info?next=/people"
   }
 

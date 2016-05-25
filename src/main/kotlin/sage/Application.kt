@@ -24,6 +24,8 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.ViewResolverRegistry
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView
 import sage.service.FilesService
+import sage.web.filter.CurrentRequestFilter
+import sage.web.filter.LoggingURLFilter
 import javax.servlet.FilterChain
 import javax.servlet.FilterConfig
 import javax.servlet.ServletRequest
@@ -71,27 +73,9 @@ open class Application : WebMvcAutoConfiguration.WebMvcAutoConfigurationAdapter(
   }
 
   @Bean
-  open fun loggingURLFilter() = object : javax.servlet.Filter {
-    private val log = LoggerFactory.getLogger("LoggingURLFilter")
-    override fun doFilter(request: ServletRequest, response: ServletResponse, chain: FilterChain) {
-      var msg: String? = null
-      if (request is HttpServletRequest) {
-        val query = if(request.queryString != null) "?"+request.queryString else ""
-        msg = request.method + " " + request.requestURI + query
-      }
-      val timeStart = System.currentTimeMillis()
-      try {
-        chain.doFilter(request, response)
-      } finally {
-        if (msg != null) {
-          val timeCost = System.currentTimeMillis() - timeStart
-          log.info("${timeCost}ms $msg")
-        }
-      }
-    }
-    override fun init(filterConfig: FilterConfig?) {}
-    override fun destroy() {}
-  }
+  open fun loggingURLFilter() = LoggingURLFilter()
+  @Bean
+  open fun currentRequestFilter() = CurrentRequestFilter()
 
   @Autowired
   private lateinit var filesService: FilesService

@@ -10,21 +10,20 @@ import sage.transfer.UserSelf
 import sage.web.auth.Auth
 
 @ControllerAdvice("sage.web.page")
-open class CommonModelAttributesHandler {
+open class CommonModelAttributesHandler @Autowired constructor(
+    private val userService: UserService,
+    private val tagService: TagService
+) {
   private val log = LoggerFactory.getLogger(javaClass)
-  @Autowired
-  private val userService: UserService? = null
-  @Autowired
-  private val tagService: TagService? = null
 
   @ModelAttribute("userSelf")
-  open fun userSelf(): UserSelf? = Auth.uid()?.run { silent { userService!!.getSelf(this) } }
+  open fun userSelf(): UserSelf? = Auth.uid()?.run { silent { userService.getSelf(this) } }
 
   @ModelAttribute("userSelfJson")
-  open fun userSelfJson(): String? = Auth.uid()?.run { silent { Json.json(userService!!.getSelf(this)) } }
+  open fun userSelfJson(): String? = Auth.uid()?.run { silent { Json.json(userService.getSelf(this)) } }
 
   @ModelAttribute("tagTreeJson")
-  open fun tagTreeJson(): String? = silent { tagService!!.getTagTreeJson() }
+  open fun tagTreeJson(): String? = silent { tagService.getTagTreeJson() }
 
   private inline fun <T> silent(f: () -> T) =
       try {
