@@ -31,7 +31,7 @@ $!{include("navbar.httl")}
           $!{include("tag-label.httl")}
           #end
         </div>
-        <div class="summary">$!{blog.summary}</div>
+        <div class="summary">${blog.summary}</div>
       </div>
     #end
   </div>
@@ -39,14 +39,11 @@ $!{include("navbar.httl")}
 $!{alljs}
 <script type="text/javascript">
   console.log('blog-id: ' + $('#id').text());
-  function unescape(str) {
-    return String(str).replace(/&gt;/g, '>');
-  }
   setup(stream_setup, humanTime_setup, tag_setup, user_setup)
   $(document).ready(function() {
     humanTime_show()
     $('.summary').warnEmpty().each(function(){
-      $(this).html(marked(unescape($(this).html())))
+      $(this).html(marked($(this).text()))
     })
 
     getStream('/read/connect/'+$('#id').text()).done(function(){

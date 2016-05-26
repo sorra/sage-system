@@ -8,6 +8,7 @@ import sage.domain.search.SearchBase
 import sage.entity.*
 import sage.transfer.MidForwards
 import sage.transfer.TweetView
+import sage.util.Strings
 import java.util.*
 
 @Suppress("NAME_SHADOWING")
@@ -131,8 +132,7 @@ class TweetPostService
    * Escape HTML and replace mentions
    */
   private fun processContent(content: String): ParsedContent {
-    var content = content
-    content = StringUtils.escapeXml(content)
+    var content = Strings.escapeHtmlTag(content)
     val mentionedIds = HashSet<Long>()
     content = ReplaceMention.with {User.byName(it)}.apply(content, mentionedIds)
     content = Links.linksToHtml(content)

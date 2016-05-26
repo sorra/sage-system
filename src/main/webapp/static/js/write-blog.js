@@ -59,13 +59,10 @@ function writeBlog_setup() {
     });
   $('#tabs a[href="#content"]').warnEmpty().tab('show');
 
-  //TODO is this OK?
-  $content.val(unescapeHtml($content.val()));
-
   refresh();
 }
 
 function refresh() {
   var input = $('#content').val()
-  $('#preview').html(marked.toHTML(input))
+  $('#preview').html(marked(input))
 }

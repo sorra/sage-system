@@ -12,6 +12,7 @@ function setup(/*functions*/) {
 
 function common_setup() {
   marked.setOptions({
+    sanitize: true,
     highlight: function (code) {
       return hljs.highlightAuto(code).value;
     }

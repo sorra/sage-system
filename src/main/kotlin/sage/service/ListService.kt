@@ -8,6 +8,7 @@ import sage.entity.ResourceListEntity
 import sage.entity.Tag
 import sage.entity.User
 import sage.transfer.*
+import sage.util.Strings
 import java.util.*
 
 @Service
@@ -58,7 +59,7 @@ class ListService {
   private fun escaped(rc: ResourceList): ResourceList {
     val neo = ResourceList(rc.id, rc.ownerId, rc.name, ArrayList<ResourceInfo>())
     rc.list.forEach { info ->
-      neo.list.add(ResourceInfo(StringUtils.escapeXml(info.link), StringUtils.escapeXml(info.desc)))
+      neo.list.add(ResourceInfo(Strings.escapeHtmlTag(info.link), Strings.escapeHtmlTag(info.desc)))
     }
     return neo
   }

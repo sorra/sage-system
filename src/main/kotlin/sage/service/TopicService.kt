@@ -1,12 +1,16 @@
 package sage.service
 
-import httl.util.StringUtils
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
-import sage.domain.commons.*
-import sage.entity.*
+import sage.domain.commons.BadArgumentException
+import sage.domain.commons.DomainException
+import sage.domain.commons.Links
+import sage.domain.commons.ReplaceMention
+import sage.entity.Tag
+import sage.entity.TopicPost
+import sage.entity.TopicReply
 import sage.entity.TopicReply.Companion.lastReplyOfPost
-import sage.entity.TopicReply.Companion.ofPost
+import sage.entity.User
 import sage.transfer.HotTopic
 import sage.transfer.TopicPreview
 import sage.transfer.TopicView
@@ -24,11 +28,7 @@ class TopicService
     if (content.isEmpty() || content.length > MAX_CONTENT_LENGTH) throw BAD_CONTENT_LENGTH
     if (tagIds.size > MAX_TAGS) throw TOO_MANY_TAGS
 
-    val title = StringUtils.escapeXml(title)
-    var content = StringUtils.escapeXml(content)
-    val mentionedIds = HashSet<Long>()
-    content = ReplaceMention.with { User.byName(it) }.apply(content, mentionedIds)
-    content = Links.linksToHtml(content)
+    val (content, mentionedIds) = processContent(content)
 
     val belongTag = Tag.get(tagIds.firstOrNull() ?: Tag.ROOT_ID)
     val tags = Tag.multiGet(tagIds)
@@ -49,10 +49,7 @@ class TopicService
     val tp = TopicPost.get(id)
     if (userId != tp.author.id) throw DomainException("User[$userId] is not the author of TopicPost[${tp.id}]")
 
-    var content = StringUtils.escapeXml(content)
-    val mentionedIds = HashSet<Long>()
-    content = ReplaceMention.with { User.byName(it) }.apply(content, mentionedIds)
-    content = Links.linksToHtml(content)
+    val (content, mentionedIds) = processContent(content)
 
     tp.title = title
     tp.content = content
@@ -65,10 +62,7 @@ class TopicService
   fun reply(userId: Long, content: String, topicPostId: Long, toReplyId: Long?): TopicReply {
     if (content.isEmpty() || content.length > MAX_REPLY_LENGTH) throw BAD_REPLY_LENGTH
 
-    var content = StringUtils.escapeXml(content)
-    val mentionedIds = HashSet<Long>()
-    content = ReplaceMention.with { User.byName(it) }.apply(content, mentionedIds)
-    content = Links.linksToHtml(content)
+    val (content, mentionedIds) = processContent(content)
 
     val toUserId = TopicReply.byId(toReplyId ?: 0)?.author?.id
     val floorNumber = TopicPost.nextFloorNumber(topicPostId)
@@ -82,6 +76,14 @@ class TopicService
       notificationService.repliedInTopic(toUserId, userId, reply.id)
     }
     return reply
+  }
+
+  private fun processContent(content: String): Pair<String, HashSet<Long>> {
+    var content = content.replace("\n", "  \n") // "  \n" is Markdown paragraph
+    val mentionedIds = HashSet<Long>()
+    content = ReplaceMention.with { User.byName(it) }.apply(content, mentionedIds)
+    content = Links.linksToHtml(content)
+    return Pair(content, mentionedIds)
   }
 
   val asTopicView = { post: TopicPost ->

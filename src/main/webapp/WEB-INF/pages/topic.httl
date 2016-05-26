@@ -19,7 +19,7 @@ $!{include("navbar.httl")}
     #if(topic.whenModified > topic.whenCreated)
     <span class="human-time" data-time="${topic.whenModified.time}"></span>
     #end
-    <div class="topic-content">$!{topic.content}</div>
+    <div class="topic-content">${topic.content}</div>
     #for(each : topic.tags)
     $!{include("tag-label.httl")}
     #end

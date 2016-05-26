@@ -48,9 +48,6 @@ function writeTopic_setup() {
     });
   $('#tabs a[href="#content"]').warnEmpty().tab('show');
 
-  //TODO is this OK?
-  $content.val(unescapeHtml($content.val()));
-
   refresh();
 }
 

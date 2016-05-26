@@ -2,6 +2,7 @@
 <html>
 <!--
 #set(BlogView blog, List<TweetView> tweets)
+#set(UserSelf userSelf)
 -->
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -21,21 +22,21 @@ $!{include("navbar.httl")}
 <div class="container" id="container">
 	<div class="blog">
 		<span id="id" style="display:none">$!{blog.id}</span>
-		<h3 class="title">$!{blog.title}</h3>
-		#if(uid == blog.author.id)
-		<a href="/blogs/$!{blog.id}/edit">编辑</a>
-		#end
+		<h3 class="title">${blog.title}</h3>
 		$!{include("user-label.httl", ["u": blog.author])}
 		创建于 <span class="human-time" data-time="${blog.createdTime.time}">${humanTime(blog.createdTime)}</span>
 		#if(blog.modifiedTime)
 		修改于 <span class="human-time" data-time="${blog.modifiedTime.time}">${humanTime(blog.modifiedTime)}</span>
+		#end
+		#if(userSelf.id == blog.author.id)
+		<a href="/blogs/$!{blog.id}/edit">编辑</a>
 		#end
 		<div class="tags">
 		#for(each : blog.tags)
 		  $!{include("tag-label.httl")}
 		#end
 		</div>
-		<div class="content">$!{blog.content}</div>
+		<div class="content">${blog.content}</div>
 	</div>
 	<h5>连接到的微博：</h5>
 	<div class="stream">
@@ -45,14 +46,11 @@ $!{include("navbar.httl")}
 $!{alljs}
 <script type="text/javascript">
 	console.log('blog-id: ' + $('#id').text());
-	function unescape(str) {
-			return String(str).replace(/&gt;/g, '>');
-	}
 	setup(stream_setup, humanTime_setup, tag_setup, user_setup)
 	$(document).ready(function() {
 		humanTime_show()
 		var $content = $('.content').warnEmpty();
-		$content.html(marked(unescape($content.html())));
+		$content.html(marked($content.text()));
 
 		getStream('/read/connect/'+$('#id').text())
 				.done(function(){
