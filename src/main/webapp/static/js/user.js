@@ -53,7 +53,7 @@ function openUserCard() {
 function closeUserCard() {
   cancelUcCloser()
   console.log("close")
-  var $uc = $('.user-card.popup:not(.proto *)')
+  var $uc = $('.user-card.popup')
   $uc.fadeOut('', function(){$uc.remove()})
 }
 
