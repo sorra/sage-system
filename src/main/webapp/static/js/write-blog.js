@@ -15,8 +15,8 @@ function writeBlog_setup() {
       selectedTagIds.push(tagId)
     })
 
-    var blogId = window.frontMap.id;
-    var submitUrl = blogId ? '/blogs/'+blogId+'/edit' : '/blogs/new'
+    var id = window.frontMap.id;
+    var submitUrl = id ? '/blogs/'+id+'/edit' : '/blogs/new'
     var reqAttrs = {
       title: $('#title').val(),
       content: $('#content').val(),
@@ -24,10 +24,12 @@ function writeBlog_setup() {
     }
     if (reqAttrs.title.length == 0) {
       $('#title').fadeOut().fadeIn()
+      tipover($submit, '请填写标题')
       return
     }
     if (reqAttrs.content.length == 0) {
       $('#content').fadeOut().fadeIn()
+      tipover($submit, '请填写内容')
       return
     }
     $submit.prop('disabled', true)
@@ -37,7 +39,7 @@ function writeBlog_setup() {
       })
       .fail(function(err){
         var $submit = $('#blog .btn-submit')
-        tipover($submit, '发表失败: '+err, 1000)
+        tipover($submit, '发表失败: '+err, 2000)
         $submit.prop('disabled', false)
       })
   })

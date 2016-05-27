@@ -36,7 +36,7 @@ $!{include("navbar.httl")}
 		<h3>撰写博客</h3>
 		<form>
 			<div>
-				<textarea id="title" placeholder="这里是标题">${blog.title}</textarea>
+				<input id="title" placeholder="这里是标题" value="${blog.title}"/>
 			</div>
 			<ul id="tabs" class="nav nav-tabs">
 				<li><a href="#content" data-toggle="tab">写作</a></li>

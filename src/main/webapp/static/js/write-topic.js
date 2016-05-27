@@ -10,8 +10,8 @@ function writeTopic_setup() {
 
     var selections = $('.tag-input').data('selections')
 
-    var topicId = window.frontMap.id;
-    var submitUrl = topicId ? '/topics/'+topicId+'/edit' : '/topics/new'
+    var id = window.frontMap.id;
+    var submitUrl = id ? '/topics/'+id+'/edit' : '/topics/new'
     var reqAttrs = {
       title: $('#title').val(),
       content: $('#content').val(),
@@ -20,6 +20,16 @@ function writeTopic_setup() {
     if (selections[0]) {
       reqAttrs.belongTagId = selections[0]
     }
+    if (reqAttrs.title.length == 0) {
+      $('#title').fadeOut().fadeIn()
+      tipover($submit, '请填写标题')
+      return
+    }
+    if (reqAttrs.content.length == 0) {
+      $('#content').fadeOut().fadeIn()
+      tipover($submit, '请填写内容')
+      return
+    }
     $submit.prop('disabled', true)
     $.post(submitUrl, reqAttrs)
       .done(function(url){
@@ -27,7 +37,7 @@ function writeTopic_setup() {
       })
       .fail(function(err){
         var $submit = $('#topic .btn-submit')
-        tipover($submit, '发表失败: '+err, 1000)
+        tipover($submit, '发表失败: '+err, 2000)
         $submit.prop('disabled', false)
       })
   })
