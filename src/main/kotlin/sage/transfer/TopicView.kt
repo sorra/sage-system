@@ -33,7 +33,7 @@ class TopicView {
 
     this.replyCount = topic.maxFloorNumber
     whenCreated = topic.whenCreated
-    whenModified = topic.whenModified
+    whenModified = actualWhenModified(topic.whenCreated, topic.whenModified)
     this.whenLastReplied = whenLastReplied
   }
 }

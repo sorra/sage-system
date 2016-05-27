@@ -16,7 +16,7 @@ $!{include("navbar.httl")}
     <h3>${topic.title}</h3>
     $!{include("user-label.httl", ["u": topic.author])}
     $!{spanHumanTime(topic.whenCreated)}
-    #if(topic.whenModified > topic.whenCreated)
+    #if(topic.whenModified)
     $!{spanHumanTime(topic.whenModified)}
     #end
     <div class="topic-content">${topic.content}</div>

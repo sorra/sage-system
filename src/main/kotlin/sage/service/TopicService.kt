@@ -106,7 +106,7 @@ class TopicService
       HotTopic(post.run(asTopicPreview), TopicReply.repliesCountOfPost(post.id),
           TopicReply.lastReplyOfPost(post.id)?.whenCreated)
     }).map { hotTopic ->
-      hotTopic.rank = (hotTopic.replyCount + 1) * computeFallDown(hotTopic.lastActiveTime)
+      hotTopic.rank = (hotTopic.replyCount + 1) * computeFallDown(hotTopic.lastActiveTime!!)
       hotTopic
     }.sorted().take(20)
   }
