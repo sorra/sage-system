@@ -2,15 +2,14 @@
 <div class="blog-preview">
   <span id="id" style="display:none">$!{blog.id}</span>
   <a class="title" href="/blogs/${blog.id}">${blog.title}</a>
-  $!{include("user-label.httl", ["u": blog.author])}
-  创建于 $!{spanHumanTime(blog.createdTime)}
-  #if(blog.modifiedTime)
-  修改于 $!{spanHumanTime(blog.modifiedTime)}
-  #end
-  <div class="tags">
-    #for(each : blog.tags)
-    $!{include("tag-label.httl")}
-    #end
+  <p class="summary">${blog.summary}</p>
+  <div>
+    $!{include("user-label.httl", ["u": blog.author])}
+    $!{spanHumanTime(blog.createdTime)}
+    <span class="tags">
+      #for(each : blog.tags)
+      $!{include("tag-label.httl")}
+      #end
+    </span>
   </div>
-  <div class="summary">${blog.summary}</div>
 </div>

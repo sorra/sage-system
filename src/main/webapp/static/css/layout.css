@@ -16,7 +16,6 @@ body, .background-dark{
 
 body>.container{
     margin-top: 50px;
-    min-height: 600px;
 }
 
 .side{
@@ -29,7 +28,7 @@ body>.container{
   margin-left: 5px;
   margin-right: 5px;
 }
-.footer {
+.footer{
   clear: both;
 }
 
@@ -37,95 +36,17 @@ body>.container{
 	color: green;
 }
 
-.create-tag{
-  width: 100%;
-}
-#new-tag-dialog .modal-dialog{
-  width: 300px;
-  min-height: 100px;
-  border-radius: 10px;
-}
-
 .rich-bg{
   background: #e9eaed;
 }
+
 .human-time{
   color: gray;
 }
 
-#navbar{
-  text-align: center;
-  height: 43px;
-  font-size: 15px;
-  background-size: 44px 44px;
-  padding: 0 20px 0 20px;
-
-  position: fixed;
-  right: 0;
-  left: 0;
-  z-index: 1030;
-  transform: translate3d(0, 0, 0);
-  margin-bottom: 20px;
-  border: 1px solid transparent;
-  background-color: #222;
-  top: 0;
+.summary{
+  margin-bottom: 10px;
 }
-
-.nav-content{
-  min-width: 600px;
-  max-width: 1100px;
-  margin: 0 auto 0 auto;
-}
-
-.nav-links a{
-  color: #999;
-  text-decoration: none;
-  margin-right: 5px;
-}
-.nav-links a:hover{
-  color: #fff;
-  background-color: transparent;
-}
-
-.nav-brand{
-  color: deepskyblue;
-  text-decoration: none;
-  font-size: 20px;
-  font-weight:bold;
-  text-shadow: 0 1px 0 rgba(255,255,255,.1), 0 0 30px rgba(255,255,255,.125);
-}
-.nav-brand:hover{
-  color: lightskyblue;
-  text-decoration: none;
-}
-
-input[name=q]{
-  width: 226px;
-  height: 26px;
-  border: 0;
-  border-radius: 5px;
-  padding: 5px;
-  margin-top: 1px;
-}
-#search button{
-  width: 25px;
-  height: 25px;
-  background-color: transparent;
-  border: 0;
-  padding: 0;
-  margin-left: -5px
-}
-#search img{
-  width: 25px;
-  height: 25px;
-  border-radius: 3px;
-}
-
-#userDropdownMenu{
-  border: 1px solid transparent;
-  border-radius: 2px;
-}
-
-#userDropdownMenu:hover{
-  border-color: #ccc;
+.tags{
+  margin: 5px;
 }

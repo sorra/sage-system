@@ -2,9 +2,16 @@
 <div class="topic-preview">
   <a class="title" href="/topics/${topic.id}#reply${topic.replyCount}">${topic.title}</a>
   <p class="summary">${topic.summary}</p>
-  $!{include("user-label.httl", ["u": topic.author])}
-  $!{spanHumanTime(topic.whenCreated)}
-  #if(topic.replyCount > 0)
-  <span><a class="reply-count badge" href="/topics/${topic.id}#reply${topic.replyCount}">${topic.replyCount}</a>个回复</span>
-  #end
+  <div>
+    $!{include("user-label.httl", ["u": topic.author])}
+    $!{spanHumanTime(topic.whenCreated)}
+    #if(topic.replyCount > 0)
+    <span><a class="reply-count badge" href="/topics/${topic.id}#reply${topic.replyCount}">${topic.replyCount}</a>个回复</span>
+    #end
+    <span class="tags">
+      #for(each : topic.tags)
+      $!{include("tag-label.httl")}
+      #end
+    </span>
+  </div>
 </div>
