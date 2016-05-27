@@ -1,8 +1,0 @@
-#set(Collection existingTags)
-
-<div class="existing-tags">
-  #for(TagLabel each : existingTags)
-  <a class="tag-sel btn-success btn btn-sm btn-default" tag-id="${each.id}"
-     title="${each.chainStr}">${each.name}</a>
-  #end
-</div>

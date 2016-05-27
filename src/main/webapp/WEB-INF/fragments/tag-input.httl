@@ -1,3 +1,4 @@
+#set(Collection existingTags)
 #set(Collection topTags)
   #if(topTags == null)
     #set(UserSelf userSelf)
@@ -7,6 +8,14 @@
 
 <div class="tag-input" $!{initialData}>
   <div>贴标签(最多3个)</div>
+  #if(existingTags)
+  <div class="existing-tags">
+    #for(TagLabel each : existingTags)
+    <a class="tag-sel btn-success btn btn-sm btn-default" tag-id="${each.id}"
+       title="${each.chainStr}">${each.name}</a>
+    #end
+  </div>
+  #end
   #for(TagLabel each : topTags)
   <a class="tag-sel btn btn-sm btn-default" tag-id="${each.id}"
      title="${each.chainStr}">${each.name}</a>

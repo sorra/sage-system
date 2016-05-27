@@ -47,7 +47,6 @@ $!{include("navbar.httl")}
 				<div id="preview" class="tab-pane"></div>
 			</div>
 			<div>
-        $!{include("existing-tags.httl")}
 				$!{include("tag-input.httl")}
 			</div>
 		</form>
