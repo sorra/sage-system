@@ -26,6 +26,7 @@ function common_setup() {
 }
 
 function humanTime_setup() {
+  humanTime_show()
   window.setInterval(humanTime_show(), 60000)
 }
 

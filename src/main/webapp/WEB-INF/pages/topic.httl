@@ -13,13 +13,13 @@
 $!{include("navbar.httl")}
 <div id="container" class="container">
   <div class="topic" data-id="${topic.id}">
-    <h3>${topic.title}</h3>
+    <h3 class="title">${topic.title}</h3>
     $!{include("user-label.httl", ["u": topic.author])}
     $!{spanHumanTime(topic.whenCreated)}
     #if(topic.whenModified)
     $!{spanHumanTime(topic.whenModified)}
     #end
-    <div class="topic-content">${topic.content}</div>
+    <div class="content">${topic.content}</div>
     #for(each : topic.tags)
     $!{include("tag-label.httl")}
     #end
@@ -50,9 +50,9 @@ $!{alljs}
 <script>
 setup(humanTime_setup, tag_setup, user_setup)
 $(document).ready(function() {
-  $('.topic-content').each(function(){
-    this.innerHTML = marked(this.innerHTML)
-  })
+  var $content = $('.content').warnEmpty();
+  $content.html(marked($content.text()));
+
   $(document).on('click', '.btn_reply', function(){
     var $rb = $('#reply_box')
     if ($(this).next('#reply_box').length == 0 || $rb.css('display') == 'none') {

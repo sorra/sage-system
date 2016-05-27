@@ -48,7 +48,6 @@ $!{alljs}
 	console.log('blog-id: ' + $('#id').text());
 	setup(stream_setup, humanTime_setup, tag_setup, user_setup)
 	$(document).ready(function() {
-		humanTime_show()
 		var $content = $('.content').warnEmpty();
 		$content.html(marked($content.text()));
 
