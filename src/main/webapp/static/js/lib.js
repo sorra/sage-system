@@ -50,7 +50,12 @@ function humanTime_compute(millis) {
   if (diffMinutes < 60) return diffMinutes.toFixed(0) + '分钟前'
 
   var date = new Date(millis)
-  var hm = date.getHours() + ':' + date.getMinutes()
+  var hours = date.getHours().toString()
+  if (hours.length == 1) hours = '0' + hours
+  var minutes = date.getMinutes().toString()
+  if (minutes.length == 1) minutes = '0' + minutes
+  
+  var hm = hours + ':' + minutes
   if (now.getFullYear() == date.getFullYear() && now.getMonth() == date.getMonth() && now.getDate() == date.getDate()) {
     return hm
   }

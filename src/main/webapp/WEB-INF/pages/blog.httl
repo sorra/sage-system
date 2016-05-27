@@ -24,9 +24,9 @@ $!{include("navbar.httl")}
 		<span id="id" style="display:none">$!{blog.id}</span>
 		<h3 class="title">${blog.title}</h3>
 		$!{include("user-label.httl", ["u": blog.author])}
-		创建于 <span class="human-time" data-time="${blog.createdTime.time}">${humanTime(blog.createdTime)}</span>
+		创建于 $!{spanHumanTime(blog.createdTime)}
 		#if(blog.modifiedTime)
-		修改于 <span class="human-time" data-time="${blog.modifiedTime.time}">${humanTime(blog.modifiedTime)}</span>
+		修改于 $!{spanHumanTime(blog.modifiedTime)}
 		#end
 		#if(userSelf.id == blog.author.id)
 		<a href="/blogs/$!{blog.id}/edit">编辑</a>

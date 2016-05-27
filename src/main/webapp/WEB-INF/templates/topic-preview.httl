@@ -3,7 +3,7 @@
   <a class="title" href="/topics/${topic.id}">${topic.title}</a>
   <p class="summary">${topic.summary}</p>
   $!{include("user-label.httl", ["u": topic.author])}
-  <span class="human-time" data-time="${topic.whenCreated.time}">${humanTime(topic.whenCreated)}</span>
+  $!{spanHumanTime(topic.whenCreated)}
   #if(topic.replyCount > 0)
   <span><span class="unread badge">${topic.replyCount}</span>个回复</span>
   #end

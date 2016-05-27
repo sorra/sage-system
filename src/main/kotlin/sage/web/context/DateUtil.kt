@@ -30,9 +30,13 @@ object DateUtil {
       return DateTimeFormatter.ofPattern("HH:mm").cn().format(thatTime)
     }
     if (LocalDate.now().year == thatDay.year) { // 当年
-      return DateTimeFormatter.ofPattern("MM-dd HH:mm").cn().format(thatTime)
+      return DateTimeFormatter.ofPattern("MM/dd HH:mm").cn().format(thatTime)
     }
-    return DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm").cn().format(thatTime)
+    return DateTimeFormatter.ofPattern("yyyy MM/dd HH:mm").cn().format(thatTime)
+  }
+
+  @JvmStatic fun spanHumanTime(date: Date?): String? {
+    return "<span class=\"human-time\" data-time=\"${date?.time}\">${humanTime(date)}</span>"
   }
 
   fun DateTimeFormatter.cn() = withZone(ZoneId.of("UTC+8"))

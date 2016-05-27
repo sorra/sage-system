@@ -15,9 +15,9 @@ $!{include("navbar.httl")}
   <div class="topic" data-id="${topic.id}">
     <h3>${topic.title}</h3>
     $!{include("user-label.httl", ["u": topic.author])}
-    <span class="human-time" data-time="${topic.whenCreated.time}"></span>
+    $!{spanHumanTime(topic.whenCreated)}
     #if(topic.whenModified > topic.whenCreated)
-    <span class="human-time" data-time="${topic.whenModified.time}"></span>
+    $!{spanHumanTime(topic.whenModified)}
     #end
     <div class="topic-content">${topic.content}</div>
     #for(each : topic.tags)
@@ -33,7 +33,7 @@ $!{include("navbar.httl")}
       #end
       <div>$!{reply.content}</div>
       $!{include("user-label.httl", ["u": reply.author])}
-      <span class="human-time" data-time="${reply.whenCreated.time}"></span>
+      $!{spanHumanTime(reply.whenCreated)}
       <span>&nbsp;${reply.floorNumber}楼</span>
       <a class="btn_reply" href="javascript:;">回复</a>
     </div>
