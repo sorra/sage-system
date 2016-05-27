@@ -2,15 +2,17 @@
 <html>
 <!--
 #set(components = ['bootstrap', 'layout', 'user'])
-#set(Collection<HotTopic> hotTopics)
+#set(List<HotTopic> hotTopics)
+#set(List<BlogPreview> blogs)
 -->
 <head>
   <meta charset="UTF-8">
   <title>轻境界</title>
   $!{allcss}
   <style>
-    #container{
+    .topic-list, .blog-list{
       background: #e0e0e0;
+      padding: 0;
     }
     #welcome-login{
       margin: 20px;
@@ -19,22 +21,33 @@
       max-width: 220px;
       border-radius: 5px;
     }
-    .group_name{
-      margin-left: 1em;
-      margin-right: 1em;
+    .interlayer{
+      text-align: center;
+      min-height: 20px;
+      border-bottom: 1px solid #aaa;
     }
   </style>
 </head>
 <body>
 $!{include("navbar.httl")}
 <div id="container" class="container">
+  #if(userSelf == null)
   <div id="welcome-login">
     加入这里，看更多内容 <a class="btn btn-default btn-success" href="/register">加入</a>
   </div>
-  #for(ht : hotTopics)
-    #set(topic = ht.topic)
-    $!{include("topic-preview.httl")}
   #end
+  <div class="topic-list">
+    #for(ht : hotTopics)
+      #set(topic = ht.topic)
+      $!{include("topic-preview.httl")}
+    #end
+  </div>
+  <div class="interlayer"></div>
+  <div class="blog-list">
+    #for(blog : blogs)
+      $!{include("blog-preview.httl")}
+    #end
+  </div>
 </div>
 $!{includeProto}
 $!{alljs}

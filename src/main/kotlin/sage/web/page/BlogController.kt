@@ -73,7 +73,7 @@ open class BlogController @Autowired constructor(
 
   @RequestMapping
   open fun all(): ModelAndView {
-    val blogs = Blog.all().sortedBy { it.whenCreated }.map { BlogPreview(it) }
+    val blogs = Blog.all().sortedByDescending { it.whenCreated }.map { BlogPreview(it) }
     return ModelAndView("blogs").addObject("blogs", blogs)
   }
 }

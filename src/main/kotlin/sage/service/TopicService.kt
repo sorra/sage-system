@@ -100,7 +100,7 @@ class TopicService
   fun byTags(tagIds: List<Long>) = TopicPost.where()
       .`in`("tags", Tag.multiGet(tagIds)).orderBy("id desc").setMaxRows(20).findList()
 
-  fun hotTopics(): Collection<HotTopic> {
+  fun hotTopics(): List<HotTopic> {
     //TODO 显然比较糙
     return TopicPost.recent(1000).map({ post ->
       HotTopic(post.run(asTopicPreview), TopicReply.repliesCountOfPost(post.id),
@@ -108,7 +108,7 @@ class TopicService
     }).map { hotTopic ->
       hotTopic.rank = (hotTopic.replyCount + 1) * computeFallDown(hotTopic.lastActiveTime)
       hotTopic
-    }.sorted()
+    }.sorted().take(20)
   }
 
   private fun computeFallDown(time: Date): Double {

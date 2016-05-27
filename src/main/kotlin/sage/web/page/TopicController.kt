@@ -46,10 +46,11 @@ open class TopicController @Autowired constructor(
   open fun editPage(@PathVariable id: Long): ModelAndView {
     val uid = Auth.checkUid()
     val topic = TopicPost.get(id)
+    val existingTags = topic.tags.map { TagLabel(it) }
     val topTags = userService.filterNewTags(uid, topic.tags.map { TagLabel(it) })
     return ModelAndView("write-topic")
         .addObject("topic", topic)
-        .addObject("existingTags", topic.tags).addObject("topTags", topTags)
+        .addObject("existingTags", existingTags).addObject("topTags", topTags)
         .include(FrontMap().attr("id", id))
   }
 

@@ -5,8 +5,10 @@ import org.springframework.stereotype.Controller
 import org.springframework.ui.ModelMap
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.servlet.ModelAndView
+import sage.service.BlogService
 import sage.service.RelationService
 import sage.service.TopicService
+import sage.transfer.BlogPreview
 import sage.web.auth.Auth
 import sage.web.context.FrontMap
 
@@ -15,12 +17,12 @@ import sage.web.context.FrontMap
 open class HomeController
 @Autowired constructor(
     private val relationService: RelationService,
-    private val topicService: TopicService) {
+    private val topicService: TopicService,
+    private val blogService: BlogService) {
 
   @RequestMapping("/")
   open fun index(model: ModelMap): ModelAndView {
-    Auth.uid() ?: return landing()
-    return home()
+    return landing()
   }
 
   @RequestMapping("/home")
@@ -32,8 +34,10 @@ open class HomeController
 
   @RequestMapping("/landing")
   open fun landing(): ModelAndView {
-    val hotTopics = topicService.hotTopics()
-    return ModelAndView("landing").addObject("hotTopics", hotTopics)
+    val uid = Auth.uid()
+    val hotTopics = topicService.hotTopics().apply { if(uid == null) take(10) }
+    val blogs = blogService.pickedBlogs().map { BlogPreview(it) }.apply { if(uid == null) take(10) }
+    return ModelAndView("landing").addObject("hotTopics", hotTopics).addObject("blogs", blogs)
   }
 
   @RequestMapping("/login")

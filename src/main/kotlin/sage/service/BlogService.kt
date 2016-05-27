@@ -25,7 +25,7 @@ class BlogService
 
   fun edit(userId: Long, blogId: Long, title: String, content: String, tagIds: Set<Long>): Blog {
     checkLength(title, content)
-    val blog = get(blogId)
+    val blog = Blog.get(blogId)
     if (userId != blog.author.id) {
       throw DomainException("User[%s] is not the author of Blog[%s]", userId, blogId)
     }
@@ -38,7 +38,7 @@ class BlogService
   }
 
   fun delete(userId: Long, blogId: Long) {
-    val blog = get(blogId)
+    val blog = Blog.get(blogId)
     if (userId != blog.author.id) {
       throw DomainException("User[%d] is not the author of Blog[%d]", userId, blogId)
     }
@@ -46,8 +46,7 @@ class BlogService
     searchBase.delete(BlogView::class.java, blog.id)
   }
 
-  private fun get(blogId: Long) =
-      Blog.byId(blogId) ?: throw DomainException("Blog{%s] does not exist", blogId)
+  fun pickedBlogs() = Blog.recent(20)
 
   private fun checkLength(title: String, content: String) {
     if (title.isEmpty() || title.length > BLOG_TITLE_MAX_LEN
