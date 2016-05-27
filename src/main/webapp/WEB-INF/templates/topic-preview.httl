@@ -1,10 +1,10 @@
 #set(TopicPreview topic)
 <div class="topic-preview">
-  <a class="title" href="/topics/${topic.id}">${topic.title}</a>
+  <a class="title" href="/topics/${topic.id}#reply${topic.replyCount}">${topic.title}</a>
   <p class="summary">${topic.summary}</p>
   $!{include("user-label.httl", ["u": topic.author])}
   $!{spanHumanTime(topic.whenCreated)}
   #if(topic.replyCount > 0)
-  <span><span class="unread badge">${topic.replyCount}</span>个回复</span>
+  <span><a class="reply-count badge" href="/topics/${topic.id}#reply${topic.replyCount}">${topic.replyCount}</a>个回复</span>
   #end
 </div>

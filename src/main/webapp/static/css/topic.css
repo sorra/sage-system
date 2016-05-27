@@ -21,8 +21,11 @@
   color: #256DAB;
 }
 
-.topic-preview .unread.badge{
+.topic-preview .reply-count{
   background-color: #428BCA;
+}
+.topic-preview .reply-count:visited{
+  background-color: #c0c0c0;
 }
 
 .topic{
