@@ -31,27 +31,26 @@ $!{allcss}
 </head>
 <body>
 $!{include("navbar.httl")}
-<div class="container" id="container">
-  <div id="topic">
-    <h3>撰写帖子</h3>
-    <form>
-      <div>
-        <input id="title" placeholder="这里是标题" value="${topic.title}"/>
-      </div>
-      <ul id="tabs" class="nav nav-tabs">
-        <li><a href="#content" data-toggle="tab">写作</a></li>
-        <li><a href="#preview" data-toggle="tab">预览</a></li>
-      </ul>
-      <div class="tab-content">
-				<textarea id="content" class="tab-pane active" placeholder="这里是内容">$!{topic.content}</textarea>
-        <div id="preview" class="tab-pane"></div>
-      </div>
-      <div>
-        $!{include("tag-input.httl")}
-      </div>
-    </form>
-    <button class="btn-submit btn btn-primary pull-right">发表</button>
-  </div>
+<div class="container background-silver" id="container">
+  <h3>撰写帖子</h3>
+  #set(action = topic.id ? '/topics/' + topic.id.toString + '/edit' : '/topics/new')
+  <form id="topic" action="${action}" method="post">
+    <div>
+      <input id="title" name="title" placeholder="这里是标题" value="${topic.title}"/>
+    </div>
+    <ul id="tabs" class="nav nav-tabs">
+      <li><a href="#content" data-toggle="tab">写作</a></li>
+      <li><a href="#preview" data-toggle="tab">预览</a></li>
+    </ul>
+    <div class="tab-content">
+      <textarea id="content" name="content" class="tab-pane active" placeholder="这里是内容">$!{topic.content}</textarea>
+      <div id="preview" class="tab-pane"></div>
+    </div>
+    <div>
+      $!{include("tag-input.httl")}
+    </div>
+    <button class="btn-submit btn btn-primary pull-right" type="submit">发表</button>
+  </form>
 </div>
 <div class="footer"></div>
 $!{includeProto}

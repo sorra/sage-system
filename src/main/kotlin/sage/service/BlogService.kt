@@ -2,9 +2,7 @@ package sage.service
 
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
-import sage.domain.commons.BadArgumentException
-import sage.domain.commons.DomainException
-import sage.domain.commons.Links
+import sage.domain.commons.*
 import sage.domain.search.SearchBase
 import sage.entity.Blog
 import sage.entity.Tag
@@ -56,8 +54,7 @@ class BlogService
   }
 
   private fun Blog.escapeAndSetText(): Blog {
-    content = content.replace("\n", "  \n") // "  \n" is Markdown paragraph
-    content = Links.linksToHtml(content)
+    content = Markdown.addBlankRow(content)
     return this
   }
 

@@ -21,7 +21,7 @@ public class Links {
       } else {
         idxLinkEnd++;
       }
-      return Section.f(str.substring(idxLinkStart, idxLinkEnd), idxLinkStart, idxLinkEnd);
+      return Section.substr(str, idxLinkStart, idxLinkEnd);
     }, section -> String.format("<a href=\"%s\" title=\"%s\">%s</a>",
         section.data, section.data, Strings.omit(section.data, 50)));
   }

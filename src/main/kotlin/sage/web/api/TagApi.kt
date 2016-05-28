@@ -26,22 +26,4 @@ open class TagApi
 
   @RequestMapping("/tree")
   open fun tagTree() = tagService.getTagTree()
-
-  @RequestMapping("/{id}/move")
-  open fun move(@PathVariable id: Long, @RequestParam parentId: Long): String {
-    tagChangeService.requestMove(Auth.checkUid(), id, parentId)
-    return "/tag-changes/$id"
-  }
-
-  @RequestMapping("/{id}/rename")
-  open fun rename(@PathVariable id: Long, @RequestParam name: String): String {
-    tagChangeService.requestRename(Auth.checkUid(), id, name)
-    return "/tag-changes/$id"
-  }
-
-  @RequestMapping("/{id}/setIntro")
-  open fun setIntro(@PathVariable id: Long, @RequestParam intro: String): String {
-    tagChangeService.requestSetIntro(Auth.checkUid(), id, intro)
-    return "/tag-changes/$id"
-  }
 }

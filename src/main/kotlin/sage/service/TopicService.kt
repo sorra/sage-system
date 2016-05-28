@@ -2,10 +2,7 @@ package sage.service
 
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
-import sage.domain.commons.BadArgumentException
-import sage.domain.commons.DomainException
-import sage.domain.commons.Links
-import sage.domain.commons.ReplaceMention
+import sage.domain.commons.*
 import sage.entity.Tag
 import sage.entity.TopicPost
 import sage.entity.TopicReply
@@ -79,10 +76,9 @@ class TopicService
   }
 
   private fun processContent(content: String): Pair<String, HashSet<Long>> {
-    var content = content.replace("\n", "  \n") // "  \n" is Markdown paragraph
+    var content = Markdown.addBlankRow(content)
     val mentionedIds = HashSet<Long>()
     content = ReplaceMention.with { User.byName(it) }.apply(content, mentionedIds)
-    content = Links.linksToHtml(content)
     return Pair(content, mentionedIds)
   }
 

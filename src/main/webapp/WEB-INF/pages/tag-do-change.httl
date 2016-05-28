@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html>
-#set(components = ["bootstrap", "layout", "tag"])
 #set(TagCard tag)
 <head>
   <meta charset="UTF-8">
@@ -16,17 +15,17 @@ $!{include("navbar.httl")}
       <li><a href="#form-move" data-toggle="tab">移动</a></li>
     </ul>
     <div class="tab-content">
-      <form id="form-setintro" class="tab-pane active" action="/tag/${tag.id}/setIntro" method="post">
+      <form id="form-setintro" class="tab-pane active" action="/tag-changes/${tag.id}/setIntro" method="post">
         <div>旧简介：${tag.intro}</div>
         <div>新简介：<textarea name="intro"></textarea></div>
         <button type="submit">提交</button>
       </form>
-      <form id="form-rename" class="tab-pane" action="/tag/${tag.id}/rename" method="post">
+      <form id="form-rename" class="tab-pane" action="/tag-changes/${tag.id}/rename" method="post">
         <div>旧名字：${tag.name}</div>
         <div>新名字：<input name="name" /></div>
         <button type="submit">提交</button>
       </form>
-      <form id="form-move" class="tab-pane" action="/tag/${tag.id}/move" method="post">
+      <form id="form-move" class="tab-pane" action="/tag-changes/${tag.id}/move" method="post">
         <div>旧层级：${new TagLabel(tag).chainStr}</div>
         <div>新母标签：<input name="parentId"/></div>
         <button type="submit">提交</button>
@@ -35,5 +34,16 @@ $!{include("navbar.httl")}
   </div>
 $!{includeProto}
 $!{alljs}
+<script>
+  setup(function(){
+    $('form').submit(function(){
+      $(this).ajaxSubmit({
+        success: redirect,
+        error: formSubmitError
+      })
+      return false
+    })
+  })
+</script>
 </body>
 </html>

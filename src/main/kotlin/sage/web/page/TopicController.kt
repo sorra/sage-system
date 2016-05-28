@@ -17,7 +17,6 @@ import sage.service.UserService
 import sage.transfer.TagLabel
 import sage.transfer.TopicReplyView
 import sage.web.auth.Auth
-import sage.web.context.FrontMap
 import java.sql.Timestamp
 
 @Controller
@@ -51,7 +50,6 @@ open class TopicController @Autowired constructor(
     return ModelAndView("write-topic")
         .addObject("topic", topic)
         .addObject("existingTags", existingTags).addObject("topTags", topTags)
-        .include(FrontMap().attr("id", id))
   }
 
   @RequestMapping("/{id}/edit", method = arrayOf(POST))

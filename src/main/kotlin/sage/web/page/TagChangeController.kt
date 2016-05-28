@@ -5,6 +5,8 @@ import org.springframework.stereotype.Controller
 import org.springframework.ui.ModelMap
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestParam
+import org.springframework.web.bind.annotation.ResponseBody
 import sage.service.TagChangeService
 import sage.service.TagService
 import sage.web.auth.Auth
@@ -41,6 +43,27 @@ open class TagChangeController @Autowired constructor(
     Auth.checkUid()
     model.put("tag", tagService.getTagCard(id))
     return "tag-do-change"
+  }
+
+  @RequestMapping("/{id}/move")
+  @ResponseBody
+  open fun move(@PathVariable id: Long, @RequestParam parentId: Long): String {
+    tagChangeService.requestMove(Auth.checkUid(), id, parentId)
+    return "/tag-changes/$id"
+  }
+
+  @RequestMapping("/{id}/rename")
+  @ResponseBody
+  open fun rename(@PathVariable id: Long, @RequestParam name: String): String {
+    tagChangeService.requestRename(Auth.checkUid(), id, name)
+    return "/tag-changes/$id"
+  }
+
+  @RequestMapping("/{id}/setIntro")
+  @ResponseBody
+  open fun setIntro(@PathVariable id: Long, @RequestParam intro: String): String {
+    tagChangeService.requestSetIntro(Auth.checkUid(), id, intro)
+    return "/tag-changes/$id"
   }
 
   @RequestMapping

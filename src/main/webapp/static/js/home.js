@@ -81,14 +81,14 @@ function home_setup() {
 }
 
 function postTweetDone() {
-  var $submit = $('form.post-tweet .btn[type="submit"]');
-  $('form.post-tweet .input').val('');
+  var $submit = $('form.post-tweet .btn[type="submit"]')
+  $('form.post-tweet .input').val('')
   hideTagTreeInput($('.tag-plus'))
-  tipover($submit, '发表成功', 1000);
+  tipover($submit, '发表成功')
   funcLookNewer('/read/istream')()
 }
 
 function postTweetFail() {
-  var $submit = $('form.post-tweet .btn[type="submit"]');
-  tipover($submit, '发表失败', 1000);
+  var $submit = $('form.post-tweet .btn[type="submit"]')
+  tipover($submit, '发表失败')
 }
