@@ -53,6 +53,11 @@ $!{includeProto}
 $!{alljs}
 <script>
   setup(humanTime_setup)
+  $(document).ready(function() {
+    $('.summary').warnEmpty().each(function(){
+      $(this).html(marked($(this).text()))
+    })
+  })
 </script>
 </body>
 </html>

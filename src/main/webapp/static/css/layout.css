@@ -50,3 +50,19 @@ body>.container{
 .tags{
   margin: 5px;
 }
+
+.topic-preview h1, .blog-preview h1{
+  font-size: 26px;
+}
+.topic-preview h2, .blog-preview h2{
+  font-size: 22px;
+}
+.topic-preview h3, .blog-preview h3{
+  font-size: 18px;
+}
+.topic-preview h4, .blog-preview h4{
+  font-size: 14px;
+}
+.topic-preview blockquote, .blog-preview blockquote{
+  font-size: 14px;
+}
