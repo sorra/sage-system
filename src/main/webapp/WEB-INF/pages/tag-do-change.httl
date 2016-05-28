@@ -8,7 +8,7 @@
 </head>
 <body>
 $!{include("navbar.httl")}
-  <div id="container" class="container">
+  <div id="container" class="container background-silver">
     <ul id="tabs" class="nav nav-tabs">
       <li><a href="#form-setintro" data-toggle="tab">修改简介</a></li>
       <li><a href="#form-rename" data-toggle="tab">改名</a></li>
@@ -17,7 +17,7 @@ $!{include("navbar.httl")}
     <div class="tab-content">
       <form id="form-setintro" class="tab-pane active" action="/tag-changes/${tag.id}/setIntro" method="post">
         <div>旧简介：${tag.intro}</div>
-        <div>新简介：<textarea name="intro"></textarea></div>
+        <div>新简介：<textarea name="intro" style="width: 20em; height: 5em;"></textarea></div>
         <button type="submit">提交</button>
       </form>
       <form id="form-rename" class="tab-pane" action="/tag-changes/${tag.id}/rename" method="post">

@@ -1,8 +1,7 @@
 <!DOCTYPE html>
 <html>
 <!--
-#set(components = ["bootstrap", "layout", "tag", "user", "tag-requests"])
-#set(TagCard tag, Collection<TagChangeRequestCard> reqs)
+#set(TagLabel tag, Collection<TagChangeRequestCard> reqs)
 -->
 <head>
   <meta charset="UTF-8">
@@ -11,8 +10,9 @@
 </head>
 <body>
 $!{include("navbar.httl")}
-  <div id="container" class="container">
+  <div id="container" class="container background-silver">
     <a class="do-change" href="/tag-changes/${tag.id}/do-change">我要修改</a>
+    $!{include("tag-label.httl", ["each": tag])}
     <h3>${tag.name} - 的修改申请</h3>
     #for(req : reqs)
       <div class="tag-change-request" data-id="${req.id}">
@@ -33,16 +33,16 @@ $!{include("navbar.httl")}
       </div>
     #end
   </div>
-$!{includeProto}
 $!{alljs}
 <script>
-  function actionSucceed(msg, $req){
+  setup()
+  function actionSucceed(msg, $req) {
     var $box = $('<h5 class="action-success">'+msg+'</h5>').hide().insertAfter($req).fadeIn()
     window.setTimeout(function(){$box.fadeOut().remove()}, 1000)
     $req.find('.status').text(msg)
     $req.find('.btn').fadeOut()
   }
-  function actionFail($req){
+  function actionFail($req) {
     var $box = $('<h5 class="action-failure">操作失败</h5>').hide().insertAfter($req).fadeIn()
     window.setTimeout(function(){$box.fadeOut().remove()}, 1000)
   }

@@ -21,7 +21,7 @@ open class TagChangeController @Autowired constructor(
   @RequestMapping("/{id}")
   open fun requests(@PathVariable id: Long, model: ModelMap): String {
     val cuid = Auth.checkUid()
-    model.put("tag", tagService.getTagCard(id))
+    model.put("tag", tagService.getTagLabel(id))
     model.put("reqs", tagChangeService.getRequestsOfTag(id))
     model.put("userCanTransact", tagChangeService.userCanTransact(cuid))
     model.put("currentUserId", cuid)
@@ -31,7 +31,7 @@ open class TagChangeController @Autowired constructor(
   @RequestMapping("/{id}/scope")
   open fun scopeRequests(@PathVariable id: Long, model: ModelMap): String {
     val cuid = Auth.checkUid()
-    model.put("tag", tagService.getTagCard(id))
+    model.put("tag", tagService.getTagLabel(id))
     model.put("reqs", tagChangeService.getRequestsOfTagScope(id))
     model.put("userCanTransact", tagChangeService.userCanTransact(cuid))
     model.put("currentUserId", cuid)

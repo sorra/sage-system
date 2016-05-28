@@ -1,66 +1,82 @@
 <!DOCTYPE html>
 <html>
-#set(components = ["bootstrap", "layout", "tag", "user", "tag-requests"])
-#set(TagCard tag, Collection<TagChangeRequestCard> reqs)
-  <head>
-    <meta charset="UTF-8">
-    <title>${tag.name} - 范围的修改申请</title>
-    $!{allcss}
-  </head>
-  <body>
-  $!{include("navbar.httl")}
-  <div id="container" class="container">
+<!--
+#set(TagLabel tag, Collection<TagChangeRequestCard> reqs)
+-->
+<head>
+  <meta charset="UTF-8">
+  <title>${tag.name} - 范围的修改申请</title>
+  $!{allcss}
+</head>
+<body>
+$!{include("navbar.httl")}
+  <div id="container" class="container background-silver">
     <a class="do-change" href="/tag-changes/${tag.id}/do-change">我要修改</a>
+    $!{include("tag-label.httl", ["each": tag])}
     <h3>${tag.name} - 范围的修改申请</h3>
     #for(req : reqs)
-    <div class="tag-change-request" data-id="${req.id}">
-      <div>编号: ${req.id}</div>
-      <div>标签: $!{include("tag-label.httl", ["each": req.tag])}</div>
-      <div>发起者: $!{include("user-label.httl", ["u": req.submitter])}</div>
-      <div>处理者: $!{include("user-label.httl", ["u": req.transactor])}</div>
-      <div>状态: <span class="status">${req.status}</span></div>
-      <div>描述: ${req.desc}</div>
-      #if(req.statusKey == "PENDING")
-      #if(userCanTransact == true)
-      <button class="accept-btn btn btn-default">同意</button>
-      <button class="reject-btn btn btn-default">拒绝</button>
-      #end
-      #if(currentUserId == req.submitter.id)
-      <button class="cancel-btn btn btn-default btn-warning">取消</button>
-      #end
-      #end
-    </div>
+      <div class="tag-change-request" data-id="${req.id}">
+        <div>编号: ${req.id}</div>
+        <div>标签: $!{include("tag-label.httl", ["each": req.tag])}</div>
+        <div>发起者: $!{include("user-label.httl", ["u": req.submitter])}</div>
+        <div>处理者: $!{include("user-label.httl", ["u": req.transactor])}</div>
+        <div>状态: <span class="status">${req.status}</span></div>
+        <div>描述: ${req.desc}</div>
+        #if(req.statusKey == "PENDING")
+          #if(userCanTransact == true)
+          <button class="accept-btn btn btn-default">同意</button>
+          <button class="reject-btn btn btn-default">拒绝</button>
+          #end
+          #if(currentUserId == req.submitter.id)
+          <button class="cancel-btn btn btn-default btn-warning">取消</button>
+          #end
+        #end
+      </div>
     #end
   </div>
-  $!{includeProto}
-  $!{alljs}
-  <script>
-    function actionSucceed(msg, $req){
-      var $box = $('<h5 class="action-success">'+msg+'</h5>').hide().insertAfter($req).fadeIn()
-      window.setTimeout(function(){$box.fadeOut().remove()}, 1000)
-      $req.find('.status').text(msg)
-      $req.find('.btn').fadeOut()
-    }
-    function actionFail($req){
-      var $box = $('<h5 class="action-failure">操作失败</h5>').hide().insertAfter($req).fadeIn()
-      window.setTimeout(function(){$box.fadeOut().remove()}, 1000)
-    }
-    $(document).delegate('.accept-btn', 'click', function(){
-      var $req = $(this).parents('.tag-change-request')
-      var id = $req.data('id')
-      $.post('/tag-change/accept?requestId='+id).done(function(){actionSucceed('已接受', $req)}).fail(function(){actionFail($req)})
+$!{alljs}
+<script>
+  setup()
+  function actionSucceed(msg, $req) {
+    var $box = $('<h5 class="action-success">' + msg + '</h5>').hide().insertAfter($req).fadeIn()
+    setTimeout(function () {
+      $box.fadeOut().remove()
+    }, 1000)
+    $req.find('.status').text(msg)
+    $req.find('.btn').fadeOut()
+  }
+  function actionFail($req) {
+    var $box = $('<h5 class="action-failure">操作失败</h5>').hide().insertAfter($req).fadeIn()
+    setTimeout(function () {
+      $box.fadeOut().remove()
+    }, 1000)
+  }
+  $(document).delegate('.accept-btn', 'click', function () {
+    var $req = $(this).parents('.tag-change-request')
+    var id = $req.data('id')
+    $.post('/tag-change/accept?requestId=' + id).done(function () {
+      actionSucceed('已接受', $req)
+    }).fail(function () {
+      actionFail($req)
     })
-        .delegate('.reject-btn', 'click', function(){
-          var $req = $(this).parents('.tag-change-request')
-          var id = $req.data('id')
-          $.post('/tag-change/reject?requestId='+id).done(function(){actionSucceed('已拒绝', $req)}).fail(function(){actionFail($req)})
-        })
-        .delegate('.cancel-btn', 'click', function(){
-          var $req = $(this).parents('.tag-change-request')
-          var id = $req.data('id')
-          $.post('/tag-change/cancel?requestId='+id).done(function(){actionSucceed('已取消', $req)}).fail(function(){actionFail($req)})
-        })
+  }).delegate('.reject-btn', 'click', function () {
+    var $req = $(this).parents('.tag-change-request')
+    var id = $req.data('id')
+    $.post('/tag-change/reject?requestId=' + id).done(function () {
+      actionSucceed('已拒绝', $req)
+    }).fail(function () {
+      actionFail($req)
+    })
+  }).delegate('.cancel-btn', 'click', function () {
+    var $req = $(this).parents('.tag-change-request')
+    var id = $req.data('id')
+    $.post('/tag-change/cancel?requestId=' + id).done(function () {
+      actionSucceed('已取消', $req)
+    }).fail(function () {
+      actionFail($req)
+    })
+  })
 
-  </script>
-  </body>
+</script>
+</body>
 </html>
