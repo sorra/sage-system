@@ -8,6 +8,9 @@ public class Markdown {
   public static String addBlankRow(String text) {
     return SemiTemplate.transform(text, (str, range) -> {
       int idxLF = str.indexOf('\n', range.begin);
+      if (idxLF <= 0) {
+        return null;
+      }
       if (idxLF >= 2
           && str.charAt(idxLF-1) == ' ' && str.charAt(idxLF-2) == ' ') {
         return null; // Already has '  \n', skip

@@ -15,7 +15,7 @@ public class Links {
       if (idxLinkStart < 0) {
         return null;
       }
-      int idxLinkEnd = least(endChar -> str.indexOf(endChar, range.begin), ' ', '，', '。', '；');
+      int idxLinkEnd = least(endChar -> str.indexOf(endChar, idxLinkStart), ' ', '，', '。', '；');
       if (idxLinkEnd < 0) {
         idxLinkEnd = str.length();
       } else {
