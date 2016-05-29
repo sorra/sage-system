@@ -10,10 +10,6 @@
   <title>轻境界</title>
   $!{allcss}
   <style>
-    .topic-list, .blog-list{
-      background: #e0e0e0;
-      padding: 0;
-    }
     #welcome-login{
       margin: 20px;
       padding: 5px;
@@ -37,6 +33,7 @@ $!{include("navbar.httl")}
   </div>
   #end
   <div class="topic-list">
+    <h2 class="heading-hot">帖子精选</h2>
     #for(ht : hotTopics)
       #set(topic = ht.topic)
       $!{include("topic-preview.httl")}
@@ -44,6 +41,7 @@ $!{include("navbar.httl")}
   </div>
   <div class="interlayer"></div>
   <div class="blog-list">
+    <h2 class="heading-hot">博客精选</h2>
     #for(blog : blogs)
       $!{include("blog-preview.httl")}
     #end

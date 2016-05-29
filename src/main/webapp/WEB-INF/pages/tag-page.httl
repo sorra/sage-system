@@ -3,7 +3,7 @@
 <!--
 #set(Tag tag)
 #set(Integer countPendingRequestsOfTag, Integer countPendingRequestsOfTagScope)
-#set(Collection<TopicPreview> topics)
+#set(Collection<TopicPreview> topics, Collection<BlogPreview> blogs)
 -->
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
@@ -62,9 +62,16 @@ $!{include("navbar.httl")}
 		<div class="main">
 		  <div id="bkg-intro" class="row" style="text-align:center;padding:10px">${tag.intro == null ? "没有背景介绍" : tag.intro}</div>
       <div class="topic-list">
-        <a class="btn-write-post btn btn-primary btn-sm" href="/topics/new?belongTagId=${tag.id}">发帖!</a>
+        <h2 class="heading-hot">帖子精选</h2>
+        <a class="btn-write-topic btn btn-primary btn-sm" href="/topics/new?belongTagId=${tag.id}">发帖!</a>
         #for(topic : topics)
-        $!{include("topic-preview.httl")}
+          $!{include("topic-preview.httl")}
+        #end
+      </div>
+      <div class="blog-list">
+        <h2 class="heading-hot">博客精选</h2>
+        #for(blog : blogs)
+          $!{include("blog-preview.httl")}
         #end
       </div>
 			<div class="stream">
@@ -77,10 +84,12 @@ $!{include("navbar.httl")}
 $!{includeProto}
 $!{alljs}
 <script type="text/javascript">
-setup(tag_setup, stream_setup, user_setup)
+setup(humanTime_setup, tag_setup, stream_setup, user_setup)
 $(document).ready(function(){
-  $('#nav-tags').addClass('active');
-  
+  $('.summary').warnEmpty().each(function(){
+    $(this).html(marked($(this).text()))
+  })
+
 	var tagId = window.frontMap.id
 	getStream('/read/tag/' + tagId)
 	getTagChain(tagId, $('#chain'));

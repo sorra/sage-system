@@ -25,7 +25,7 @@
   <a class="tag-plus btn btn-sm btn-info">+更多</a>
   <a class="tag-clear btn btn-sm btn-default">全不选</a>
   <div>
-    <input class="tag-complete" />
+    搜索: <input class="tag-complete" />
     <span class="added-tags tag-sel-list"></span>
   </div>
 </div>

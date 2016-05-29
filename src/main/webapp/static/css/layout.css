@@ -51,6 +51,12 @@ body>.container{
   margin: 5px;
 }
 
+.heading-hot{
+  text-align: center;
+  font-size: 20px;
+  margin-top: 0;
+}
+
 .topic-preview h1, .blog-preview h1{
   font-size: 26px;
 }

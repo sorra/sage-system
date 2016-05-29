@@ -54,11 +54,7 @@ class Tag : BaseModel {
     return descendants
   }
 
-  fun getQueryTags(): Set<Tag> {
-    val queryTags = HashSet(descendants())
-    queryTags.add(this)
-    return queryTags
-  }
+  fun getQueryTags(): Set<Tag> = descendants() + this
 
   companion object : Find<Long, Tag>() {
     val ROOT_ID: Long = 1
