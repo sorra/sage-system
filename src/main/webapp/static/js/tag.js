@@ -48,21 +48,6 @@ function createTagChain(tagCard) {
 	return $tch;
 }
 
-function createTagLabel(tagLabel) {
-	var $tl = $('<a class="tag-label" title=""></a>');
-	$tl.text(tagLabel.name)
-	   .attr('tag-id', tagLabel.id)
-	   .attr('href', '/tags/'+tagLabel.id)
-	   .click(function(event) {
-	     event.preventDefault()
-	     window.open('/tags/'+tagLabel.id)
-	   });
-	if (tagLabel.chainStr) {
-		$tl.attr('title', tagLabel.chainStr);
-	}
-	return $tl;
-}
-
 function tag_tree(tagTree, params) {
   var $tree = $('<div class="tag-tree">')
 	tag_node($tree, tagTree, -1, params)
@@ -151,4 +136,62 @@ function tag_input_init() {
 	$(document).delegate('.tag-clear', "click", function(){
 	  $(this).parents('.tag-input').find('.tag-sel').removeClass('btn-success')
 	})
+
+	$('.tag-complete').each(function(){
+		var comp = new Awesomplete(this, {
+			minChars: 1,
+			list: [],
+			replace: function (chosen) {
+				this.input.value = ''
+				var $input = $(this.input)
+				var list = $input.data('comp')._list
+				var tag = tag_findValueByLabel(chosen, list)
+				if (tag) {
+					var $tagInput = $input.parents('.tag-input')
+					var $selsBeenThere = $tagInput.find('.tag-sel-list .tag-sel[tag-id=' + tag.id + ']')
+					if ($selsBeenThere.length == 0) {
+						tag_createTagSel(tag).appendTo($tagInput.find('.added-tags')).each(tagSelClick)
+					} else {
+						$selsBeenThere.each(tagSelClick)
+					}
+				}
+			}
+		})
+		$(this).data('comp', comp)
+	})
+	$(document).delegate('.tag-complete', 'input', function(){
+		var $input = $(this)
+		var list = $input.data('comp')._list
+		var inputVal = $input.val().trim()
+		if (inputVal && inputVal.length > 0 && inputVal != $input.data('q')) {
+			$input.data('q', inputVal)
+			$.get('/tag/suggestions', {q: inputVal}).done(function(tags){
+				for (var i in tags) {
+					var tag = tags[i]
+					if (!tag_findValueByLabel(tag.chainStr, list)) {
+						list.push({label: tag.chainStr, value: tag})
+					}
+				}
+				$input.data('comp').evaluate()
+			}).fail(function(msg){
+				tipover($input, '发生异常: '+msg)
+			})
+		}
+	})
+}
+
+function tag_findValueByLabel(label, list) {
+	for (var i in list) {
+		if (list[i].label == label) return list[i].value
+	}
+	return null
+}
+
+function tag_createTagSel(tagLabel) {
+	var $e = $('<a class="tag-sel btn btn-sm btn-default"></a>');
+	$e.text(tagLabel.name).attr('tag-id', tagLabel.id)
+	if (tagLabel.chainStr) {
+		$e.attr('title', tagLabel.chainStr);
+	}
+	return $e;
 }

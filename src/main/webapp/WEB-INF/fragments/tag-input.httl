@@ -9,17 +9,23 @@
 <div class="tag-input" $!{initialData}>
   <div>贴标签(最多3个)</div>
   #if(existingTags)
-  <div class="existing-tags">
+  <div class="existing-tags tag-sel-list">
+    已有:
     #for(TagLabel each : existingTags)
-    <a class="tag-sel btn-success btn btn-sm btn-default" tag-id="${each.id}"
-       title="${each.chainStr}">${each.name}</a>
+    <a class="tag-sel btn-success btn btn-sm btn-default" tag-id="${each.id}" title="${each.chainStr}">${each.name}</a>
     #end
   </div>
   #end
-  #for(TagLabel each : topTags)
-  <a class="tag-sel btn btn-sm btn-default" tag-id="${each.id}"
-     title="${each.chainStr}">${each.name}</a>
-  #end
+  <span class="top-tags tag-sel-list">
+    常用:
+    #for(TagLabel each : topTags)
+    <a class="tag-sel btn btn-sm btn-default" tag-id="${each.id}" title="${each.chainStr}">${each.name}</a>
+    #end
+  </span>
   <a class="tag-plus btn btn-sm btn-info">+更多</a>
   <a class="tag-clear btn btn-sm btn-default">全不选</a>
+  <div>
+    <input class="tag-complete" />
+    <span class="added-tags tag-sel-list"></span>
+  </div>
 </div>
