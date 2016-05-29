@@ -75,7 +75,7 @@ class Tweet : BaseModel {
         return LinkedList()
       }
       val tags = Tag.getQueryTags(tags)
-      return ranged(edge).filterMany("tags").`in`("id", tags.map { it.id }).findList()
+      return ranged(edge).`in`("tags.id", tags.map { it.id }).findList()
     }
 
     fun byAuthor(authorId: Long, edge: Edge = Edge.none()) =
@@ -89,8 +89,7 @@ class Tweet : BaseModel {
         return byAuthor(authorId, edge)
       }
       val tags = Tag.getQueryTags(tags)
-      return ranged(edge).eq("author", User.ref(authorId))
-          .filterMany("tags").`in`("id", tags.map { it.id }).findList()
+      return ranged(edge).eq("author", User.ref(authorId)).`in`("tags.id", tags.map { it.id }).findList()
     }
 
     fun connectTweets(blogId: Long): List<Tweet> {

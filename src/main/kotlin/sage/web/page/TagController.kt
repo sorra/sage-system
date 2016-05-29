@@ -36,7 +36,8 @@ open class TagController @Autowired constructor(
   open fun get(@PathVariable id: Long): ModelAndView {
     val tag = Tag.get(id)
     val topics = topicService.byTags(listOf(id)).map(topicService.asTopicPreview)
-    val blogs = Blog.where().filterMany("tags").`in`("id", tag.getQueryTags().map { it.id }).findList().map { BlogPreview(it) }
+    val blogs = Blog.where().`in`("tags.id", tag.getQueryTags().map { it.id }).findList()
+        .sortedByDescending { it.whenCreated }.map { BlogPreview(it) }
 
     val (coreTags, nonCoreTags) = tag.children.map { TagLabel(it) }.partition { it.isCore }
     val sameNameTags = tagService.getSameNameTags(id).map { TagLabel(it) }
