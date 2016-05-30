@@ -26,8 +26,7 @@ class NotificationService @Autowired constructor(
     unread(userId).forEach { nv ->
       var notifCounter: NotifCounter? = counts[nv.type]
       if (notifCounter == null) {
-        notifCounter = NotifCounter()
-        notifCounter.desc = Notification.Type.valueOf(nv.type).shortDesc
+        notifCounter = NotifCounter(desc = Notification.Type.valueOf(nv.type).shortDesc)
         counts.put(nv.type, notifCounter)
       }
       notifCounter.count++
