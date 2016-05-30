@@ -15,14 +15,16 @@ $!{include("navbar.httl")}
   <div class="topic" data-id="${topic.id}">
     <h3 class="title">${topic.title}</h3>
     $!{include("user-label.httl", ["u": topic.author])}
-    $!{spanHumanTime(topic.whenCreated)}
+    发表于 $!{spanHumanTime(topic.whenCreated)}
     #if(topic.whenModified)
-    $!{spanHumanTime(topic.whenModified)}
+    修改于 $!{spanHumanTime(topic.whenModified)}
     #end
+    <div class="tags">
+      #for(each : topic.tags)
+      $!{include("tag-label.httl")}
+      #end
+    </div>
     <div class="content">${topic.content}</div>
-    #for(each : topic.tags)
-    $!{include("tag-label.httl")}
-    #end
     <a class="btn_reply" href="javascript:;">回复</a>
   </div>
   <div class="replies">

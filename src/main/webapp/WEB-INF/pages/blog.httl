@@ -24,7 +24,7 @@ $!{include("navbar.httl")}
 		<span id="id" style="display:none">$!{blog.id}</span>
 		<h3 class="title">${blog.title}</h3>
 		$!{include("user-label.httl", ["u": blog.author])}
-		创建于 $!{spanHumanTime(blog.createdTime)}
+		发表于 $!{spanHumanTime(blog.createdTime)}
 		#if(blog.modifiedTime)
 		修改于 $!{spanHumanTime(blog.modifiedTime)}
 		#end
@@ -32,9 +32,9 @@ $!{include("navbar.httl")}
 		<a href="/blogs/$!{blog.id}/edit">编辑</a>
 		#end
 		<div class="tags">
-		#for(each : blog.tags)
-		  $!{include("tag-label.httl")}
-		#end
+			#for(each : blog.tags)
+				$!{include("tag-label.httl")}
+			#end
 		</div>
 		<div class="content">${blog.content}</div>
 	</div>
