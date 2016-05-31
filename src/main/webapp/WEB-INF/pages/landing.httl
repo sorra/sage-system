@@ -1,8 +1,7 @@
 <!DOCTYPE html>
 <html>
 <!--
-#set(components = ['bootstrap', 'layout', 'user'])
-#set(List<HotTopic> hotTopics)
+#set(List<TopicPreview> topics)
 #set(List<BlogPreview> blogs)
 -->
 <head>
@@ -34,8 +33,7 @@ $!{include("navbar.httl")}
   #end
   <div class="topic-list">
     <h2 class="heading-hot">帖子精选</h2>
-    #for(ht : hotTopics)
-      #set(topic = ht.topic)
+    #for(topic : topics)
       $!{include("topic-preview.httl")}
     #end
   </div>

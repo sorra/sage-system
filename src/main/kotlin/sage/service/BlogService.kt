@@ -2,11 +2,15 @@ package sage.service
 
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
-import sage.domain.commons.*
+import sage.domain.commons.BadArgumentException
+import sage.domain.commons.DomainException
+import sage.domain.commons.Markdown
 import sage.domain.search.SearchBase
 import sage.entity.Blog
+import sage.entity.BlogStat
 import sage.entity.Tag
 import sage.entity.User
+import sage.transfer.BlogPreview
 import sage.transfer.BlogView
 
 @Service
@@ -17,6 +21,8 @@ class BlogService
     checkLength(title, content)
     val blog = Blog(title, content, User.ref(userId), Tag.multiGet(tagIds))
     blog.escapeAndSetText().save()
+    BlogStat(id = blog.id, whenCreated =  blog.whenCreated).save()
+
     searchBase.index(blog.id, BlogView(blog))
     return blog
   }
@@ -44,7 +50,10 @@ class BlogService
     searchBase.delete(BlogView::class.java, blog.id)
   }
 
-  fun pickedBlogs() = Blog.recent(20)
+  fun hotBlogs() : List<BlogPreview> {
+    val stats = BlogStat.where().orderBy("rank desc, id desc").setMaxRows(20).findList()
+    return stats.map { BlogPreview(Blog.get(it.id)) }
+  }
 
   private fun checkLength(title: String, content: String) {
     if (title.isEmpty() || title.length > BLOG_TITLE_MAX_LEN

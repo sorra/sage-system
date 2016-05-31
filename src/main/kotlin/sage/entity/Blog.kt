@@ -29,6 +29,8 @@ class Blog : BaseModel {
     this.tags = HashSet(tags)
   }
 
+  fun stat() = BlogStat.get(id)
+
   companion object : Find<Long, Blog>() {
     fun get(id: Long) = getNonNull(Blog::class, id)
 

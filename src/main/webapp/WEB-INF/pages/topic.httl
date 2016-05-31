@@ -19,6 +19,7 @@ $!{include("navbar.httl")}
     #if(topic.whenModified)
     修改于 $!{spanHumanTime(topic.whenModified)}
     #end
+    浏览数${topic.views}
     <div class="tags">
       #for(each : topic.tags)
       $!{include("tag-label.httl")}

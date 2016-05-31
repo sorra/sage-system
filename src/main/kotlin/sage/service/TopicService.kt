@@ -2,15 +2,12 @@ package sage.service
 
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
-import sage.domain.commons.*
-import sage.entity.Tag
-import sage.entity.TopicPost
-import sage.entity.TopicReply
-import sage.entity.TopicReply.Companion.lastReplyOfPost
-import sage.entity.User
-import sage.transfer.HotTopic
+import sage.domain.commons.BadArgumentException
+import sage.domain.commons.DomainException
+import sage.domain.commons.Markdown
+import sage.domain.commons.ReplaceMention
+import sage.entity.*
 import sage.transfer.TopicPreview
-import sage.transfer.TopicView
 import java.time.Instant
 import java.time.temporal.ChronoUnit
 import java.util.*
@@ -20,7 +17,7 @@ import java.util.*
 class TopicService
 @Autowired constructor(private val notificationService: NotificationService) {
 
-  fun post(userId: Long, title: String, content: String, reference: String, tagIds: Set<Long>): TopicPost {
+  fun post(userId: Long, title: String, content: String, reference: String, tagIds: Collection<Long>): TopicPost {
     if (title.isEmpty() || title.length > MAX_TITLE_LENGTH) throw BAD_TITLE_LENGTH
     if (content.isEmpty() || content.length > MAX_CONTENT_LENGTH) throw BAD_CONTENT_LENGTH
     if (tagIds.size > MAX_TAGS) throw TOO_MANY_TAGS
@@ -31,6 +28,8 @@ class TopicService
     val tags = Tag.multiGet(tagIds)
     val tp = TopicPost(title, content, reference, User.ref(userId), belongTag, tags)
     tp.save()
+
+    TopicStat(id = tp.id, whenCreated = tp.whenCreated).save()
 
     mentionedIds.forEach { atId ->
       notificationService.mentionedByTopicPost(atId, userId, tp.id)
@@ -66,6 +65,8 @@ class TopicService
     val reply = TopicReply(content, User.ref(userId), topicPostId, toUserId, toReplyId, floorNumber)
     reply.save()
 
+    TopicStat(id = topicPostId, whenLastReplied = reply.whenCreated, replies =  floorNumber).computeRank().update()
+
     mentionedIds.forEach { atId ->
       notificationService.mentionedByTopicReply(atId, userId, reply.id)
     }
@@ -82,29 +83,15 @@ class TopicService
     return Pair(content, mentionedIds)
   }
 
-  val asTopicView = { post: TopicPost ->
-    TopicView(post, lastReplyOfPost(post.id)?.whenCreated)
-  }
-
-  val asTopicPreview = { post: TopicPost ->
-    TopicPreview(post, lastReplyOfPost(post.id)?.whenCreated)
-  }
-
   fun byBelongTag(belongTagId: Long) = TopicPost.where()
       .eq("belongTag", Tag.ref(belongTagId)).orderBy("id desc").setMaxRows(20).findList()
 
   fun byTags(tagIds: List<Long>) = TopicPost.where()
       .`in`("tags", Tag.multiGet(tagIds)).orderBy("id desc").setMaxRows(20).findList()
 
-  fun hotTopics(): List<HotTopic> {
-    //TODO 显然比较糙
-    return TopicPost.recent(1000).map({ post ->
-      HotTopic(post.run(asTopicPreview), TopicReply.repliesCountOfPost(post.id),
-          TopicReply.lastReplyOfPost(post.id)?.whenCreated)
-    }).map { hotTopic ->
-      hotTopic.rank = (hotTopic.replyCount + 1) * computeFallDown(hotTopic.lastActiveTime!!)
-      hotTopic
-    }.sorted().take(20)
+  fun hotTopics(): List<TopicPreview> {
+    val stats = TopicStat.where().orderBy("rank desc, id desc").setMaxRows(20).findList()
+    return stats.map { TopicPreview(TopicPost.get(it.id)) }
   }
 
   private fun computeFallDown(time: Date): Double {

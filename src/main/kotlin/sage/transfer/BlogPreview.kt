@@ -9,8 +9,8 @@ class BlogPreview {
   var author: UserLabel? = null
   var title: String = ""
   var summary: String = ""
-  var createdTime: Timestamp? = null
-  var modifiedTime: Timestamp? = null
+  var whenCreated: Timestamp? = null
+  var whenModified: Timestamp? = null
   var tags: List<TagLabel> = arrayListOf()
 
   internal constructor() {
@@ -22,8 +22,8 @@ class BlogPreview {
 
     title = blog.title
     summary = Strings.omit(blog.content, 200)
-    createdTime = blog.whenCreated
-    modifiedTime = actualWhenModified(blog.whenCreated, blog.whenModified)
+    whenCreated = blog.whenCreated
+    whenModified = actualWhenModified(blog.whenCreated, blog.whenModified)
 
     tags = blog.tags.map { TagLabel(it) }
   }

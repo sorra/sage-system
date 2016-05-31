@@ -24,13 +24,14 @@ $!{include("navbar.httl")}
 		<span id="id" style="display:none">$!{blog.id}</span>
 		<h3 class="title">${blog.title}</h3>
 		$!{include("user-label.httl", ["u": blog.author])}
-		发表于 $!{spanHumanTime(blog.createdTime)}
-		#if(blog.modifiedTime)
-		修改于 $!{spanHumanTime(blog.modifiedTime)}
+		发表于 $!{spanHumanTime(blog.whenCreated)}
+		#if(blog.whenModified)
+		修改于 $!{spanHumanTime(blog.whenModified)}
 		#end
 		#if(userSelf.id == blog.author.id)
 		<a href="/blogs/$!{blog.id}/edit">编辑</a>
 		#end
+		浏览数${blog.views}
 		<div class="tags">
 			#for(each : blog.tags)
 				$!{include("tag-label.httl")}

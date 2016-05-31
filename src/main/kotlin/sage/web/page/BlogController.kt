@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.ResponseBody
 import org.springframework.web.servlet.ModelAndView
 import sage.entity.Blog
+import sage.entity.BlogStat
 import sage.service.BlogService
 import sage.service.UserService
 import sage.transfer.BlogPreview
@@ -66,6 +67,8 @@ open class BlogController @Autowired constructor(
   @RequestMapping("/{id}")
   open fun get(@PathVariable id: Long) : ModelAndView {
     val blog = Blog.get(id).run { BlogView(this) }
+    blog.views += 1
+    BlogStat.incViews(id)
     return ModelAndView("blog").addObject("blog", blog)
   }
 

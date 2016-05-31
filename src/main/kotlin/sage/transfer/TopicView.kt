@@ -1,6 +1,7 @@
 package sage.transfer
 
 import sage.entity.TopicPost
+import sage.entity.TopicStat
 import java.sql.Timestamp
 
 class TopicView {
@@ -18,10 +19,13 @@ class TopicView {
   var whenLastReplied: Timestamp? = null
   var replyCount: Int = 0
 
+  var likes: Int = 0
+  var views: Int = 0
+
   internal constructor() {
   }
 
-  constructor(topic: TopicPost, whenLastReplied: Timestamp?) {
+  constructor(topic: TopicPost) {
     id = topic.id
     title = topic.title
     content = topic.content
@@ -31,9 +35,12 @@ class TopicView {
     belongTag = TagLabel(topic.belongTag)
     tags = topic.tags.map { TagLabel(it) }
 
-    this.replyCount = topic.maxFloorNumber
     whenCreated = topic.whenCreated
     whenModified = actualWhenModified(topic.whenCreated, topic.whenModified)
-    this.whenLastReplied = whenLastReplied
+    val stat = topic.stat()
+    whenLastReplied = stat.whenLastReplied
+    replyCount = topic.maxFloorNumber
+    likes = stat.likes
+    views = stat.views
   }
 }

@@ -33,6 +33,8 @@ class TopicPost(
   @SoftDelete
   var deleted: Boolean = false
 
+  fun stat() = TopicStat.get(id)
+
   companion object : Find<Long, TopicPost>() {
     fun get(id: Long) = getNonNull(TopicPost::class, id)
 
@@ -43,7 +45,6 @@ class TopicPost(
         maxFloorNumber
       }
     })
-
 
     fun recent(maxSize: Int) = query().orderBy("id desc").setMaxRows(maxSize).findList()
   }
@@ -77,10 +78,5 @@ class TopicReply(
     fun ExpressionList<TopicReply>.ofPost(postId: Long) = eq("topicPostId", postId)
 
     fun byPostId(postId: Long) = where().ofPost(postId).findList()
-
-    fun repliesCountOfPost(postId: Long) = where().ofPost(postId).findRowCount()
-
-    fun lastReplyOfPost(postId: Long) =
-        where().ofPost(postId).orderBy("id desc").setMaxRows(1).findUnique()
   }
 }

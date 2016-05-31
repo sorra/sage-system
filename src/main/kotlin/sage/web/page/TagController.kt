@@ -11,6 +11,7 @@ import sage.service.TagService
 import sage.service.TopicService
 import sage.transfer.BlogPreview
 import sage.transfer.TagLabel
+import sage.transfer.TopicPreview
 import sage.web.auth.Auth
 import sage.web.context.FrontMap
 
@@ -35,7 +36,7 @@ open class TagController @Autowired constructor(
   @RequestMapping("/{id}")
   open fun get(@PathVariable id: Long): ModelAndView {
     val tag = Tag.get(id)
-    val topics = topicService.byTags(listOf(id)).map(topicService.asTopicPreview)
+    val topics = topicService.byTags(listOf(id)).map { TopicPreview(it) }
     val blogs = Blog.where().`in`("tags.id", tag.getQueryTags().map { it.id }).findList()
         .sortedByDescending { it.whenCreated }.map { BlogPreview(it) }
 

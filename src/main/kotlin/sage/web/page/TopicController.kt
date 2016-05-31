@@ -12,10 +12,13 @@ import org.springframework.web.servlet.ModelAndView
 import sage.domain.commons.ReformMention
 import sage.entity.TopicPost
 import sage.entity.TopicReply
+import sage.entity.TopicStat
 import sage.service.TopicService
 import sage.service.UserService
 import sage.transfer.TagLabel
+import sage.transfer.TopicPreview
 import sage.transfer.TopicReplyView
+import sage.transfer.TopicView
 import sage.web.auth.Auth
 import java.sql.Timestamp
 
@@ -35,7 +38,7 @@ open class TopicController @Autowired constructor(
   @ResponseBody
   open fun create(@RequestParam title: String, @RequestParam content: String,
                   @RequestParam(defaultValue = "") reference: String,
-                  @RequestParam("tagIds[]", defaultValue = "") tagIds: Set<Long>): String {
+                  @RequestParam("tagIds[]", defaultValue = "") tagIds: List<Long>): String {
     val uid = Auth.checkUid()
     val topic = topicService.post(uid, title, content, reference, tagIds)
     return "/topics/${topic.id}"
@@ -65,11 +68,13 @@ open class TopicController @Autowired constructor(
 
   @RequestMapping("/{id}")
   open fun get(@PathVariable id: Long): ModelAndView {
-    val topic = TopicPost.get(id).run(topicService.asTopicView)
+    val topic = TopicPost.get(id).run { TopicView(this) }
     val replies = TopicReply.byPostId(id).map { reply ->
       reply.content = ReformMention.apply(reply.content)
       TopicReplyView(reply, reply.toUserId?.run { userService.getUserLabel(this) })
     }
+    topic.views += 1
+    TopicStat.incViews(id)
     return ModelAndView("topic").addObject("topic", topic).addObject("replies", replies)
   }
 
@@ -83,7 +88,7 @@ open class TopicController @Autowired constructor(
 
   @RequestMapping
   open fun all() : ModelAndView {
-    val topics = TopicPost.all().map(topicService.asTopicPreview)
+    val topics = TopicPost.all().map { TopicPreview(it) }
         .sortedByDescending { it.whenLastReplied ?: it.whenCreated ?: Timestamp(0) }
     return ModelAndView("topics").addObject("topics", topics)
   }
