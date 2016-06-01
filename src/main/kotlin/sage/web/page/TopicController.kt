@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.ResponseBody
 import org.springframework.web.servlet.ModelAndView
 import sage.domain.commons.ReformMention
+import sage.entity.Liking
 import sage.entity.TopicPost
 import sage.entity.TopicReply
 import sage.entity.TopicStat
@@ -75,7 +76,9 @@ open class TopicController @Autowired constructor(
     }
     topic.views += 1
     TopicStat.incViews(id)
+    val isLiked: Boolean? = Auth.uid()?.run { Liking.find(this, Liking.TOPIC, id) != null }
     return ModelAndView("topic").addObject("topic", topic).addObject("replies", replies)
+        .addObject("isLiked", isLiked)
   }
 
   @RequestMapping("/{id}/reply", method = arrayOf(POST))
@@ -85,6 +88,24 @@ open class TopicController @Autowired constructor(
     topicService.reply(Auth.checkUid(), content, id, toReplyId)
     return "/topics/$id"
   }
+
+  @RequestMapping("/{id}/like")
+  @ResponseBody
+  open fun like(@PathVariable id: Long) {
+    val uid = Auth.checkUid()
+    TopicStat.like(id, uid)
+  }
+
+  @RequestMapping("/{id}/unlike")
+  @ResponseBody
+  open fun unlike(@PathVariable id: Long) {
+    val uid = Auth.checkUid()
+    TopicStat.unlike(id, uid)
+  }
+
+  @RequestMapping("/{id}/likes")
+  @ResponseBody
+  open fun likes(@PathVariable id: Long) = TopicStat.get(id).likes
 
   @RequestMapping
   open fun all() : ModelAndView {

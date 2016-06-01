@@ -42,8 +42,25 @@ class BlogStat (
   companion object : Find<Long, BlogStat>() {
     fun get(id: Long) = getNonNull(BlogStat::class, id)
 
+    fun like(id: Long, userId: Long) {
+      if (Liking.find(userId, Liking.BLOG, id) == null) {
+        Liking(userId, Liking.BLOG, id).save()
+        Ebean.createUpdate(BlogStat::class.java, "update blogStat set likes = likes+1 where id = :id")
+            .setParameter("id", id).execute()
+      }
+    }
+
+    fun unlike(id: Long, userId: Long) {
+      Liking.find(userId, Liking.BLOG, id)?.apply {
+        delete()
+        Ebean.createUpdate(BlogStat::class.java, "update blogStat set likes = likes-1 where id = :id")
+            .setParameter("id", id).execute()
+      }
+    }
+
     fun incViews(id: Long) {
-      Ebean.createUpdate(BlogStat::class.java, "update blogStat set views = views+1 where id = :id").setParameter("id", id).execute()
+      Ebean.createUpdate(BlogStat::class.java, "update blogStat set views = views+1 where id = :id")
+          .setParameter("id", id).execute()
       byId(id)?.apply {
         if (views % 10 == 0) computeRank().update()
       }

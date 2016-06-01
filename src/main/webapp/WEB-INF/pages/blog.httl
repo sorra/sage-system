@@ -38,6 +38,9 @@ $!{include("navbar.httl")}
 			#end
 		</div>
 		<div class="content">${blog.content}</div>
+		<div>
+			$!{include("btn_like.httl", ["likes": blog.likes, "isLiked": isLiked])}
+		</div>
 	</div>
 	<h5>连接到的微博：</h5>
 	<div class="stream">
@@ -46,11 +49,12 @@ $!{include("navbar.httl")}
 </div>
 $!{alljs}
 <script type="text/javascript">
-	console.log('blog-id: ' + $('#id').text());
 	setup(stream_setup, humanTime_setup, tag_setup, user_setup)
 	$(document).ready(function() {
 		var $content = $('.content').warnEmpty();
 		$content.html(marked($content.text()));
+
+		btnLike_init('/blogs/'+$('#id').text())
 
 		getStream('/read/connect/'+$('#id').text())
 				.done(function(){

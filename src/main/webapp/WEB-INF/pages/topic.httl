@@ -13,6 +13,7 @@
 $!{include("navbar.httl")}
 <div id="container" class="container">
   <div class="topic" data-id="${topic.id}">
+    <span id="id" style="display:none">$!{topic.id}</span>
     <h3 class="title">${topic.title}</h3>
     $!{include("user-label.httl", ["u": topic.author])}
     发表于 $!{spanHumanTime(topic.whenCreated)}
@@ -26,7 +27,10 @@ $!{include("navbar.httl")}
       #end
     </div>
     <div class="content">${topic.content}</div>
-    <a class="btn_reply" href="javascript:;">回复</a>
+    <div>
+      <a class="btn_reply" href="javascript:;">回复</a>
+      $!{include("btn_like.httl", ["likes": topic.likes, "isLiked": isLiked])}
+    </div>
   </div>
   <div class="replies">
     #for(reply : replies)
@@ -84,6 +88,8 @@ $(document).ready(function() {
       tipover($this, '发表回复遇到问题', 1000)
     })
   })
+
+  btnLike_init('/topics/'+$('#id').text())
 })
 </script>
 </body>

@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ResponseBody
 import org.springframework.web.servlet.ModelAndView
 import sage.entity.Blog
 import sage.entity.BlogStat
+import sage.entity.Liking
 import sage.service.BlogService
 import sage.service.UserService
 import sage.transfer.BlogPreview
@@ -57,6 +58,15 @@ open class BlogController @Autowired constructor(
     return "/blogs/$id"
   }
 
+  @RequestMapping("/{id}")
+  open fun get(@PathVariable id: Long) : ModelAndView {
+    val blog = Blog.get(id).run { BlogView(this) }
+    blog.views += 1
+    BlogStat.incViews(id)
+    val isLiked: Boolean? = Auth.uid()?.run { Liking.find(this, Liking.BLOG, id) != null }
+    return ModelAndView("blog").addObject("blog", blog).addObject("isLiked", isLiked)
+  }
+
   @RequestMapping("/{id}/delete", method = arrayOf(POST))
   open fun delete(@PathVariable id: Long): String {
     val uid = Auth.checkUid()
@@ -64,13 +74,23 @@ open class BlogController @Autowired constructor(
     return "redirect:/"
   }
 
-  @RequestMapping("/{id}")
-  open fun get(@PathVariable id: Long) : ModelAndView {
-    val blog = Blog.get(id).run { BlogView(this) }
-    blog.views += 1
-    BlogStat.incViews(id)
-    return ModelAndView("blog").addObject("blog", blog)
+  @RequestMapping("/{id}/like")
+  @ResponseBody
+  open fun like(@PathVariable id: Long) {
+    val uid = Auth.checkUid()
+    BlogStat.like(id, uid)
   }
+
+  @RequestMapping("/{id}/unlike")
+  @ResponseBody
+  open fun unlike(@PathVariable id: Long) {
+    val uid = Auth.checkUid()
+    BlogStat.unlike(id, uid)
+  }
+
+  @RequestMapping("/{id}/likes")
+  @ResponseBody
+  open fun likes(@PathVariable id: Long) = BlogStat.get(id).likes
 
   @RequestMapping
   open fun all(): ModelAndView {
