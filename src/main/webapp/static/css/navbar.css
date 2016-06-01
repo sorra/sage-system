@@ -71,10 +71,6 @@ input[name=q]{
   border-radius: 2px;
 }
 
-#userDropdownMenu:hover{
-  border-color: #ccc;
-}
-
 .create-tag{
   width: 100%;
 }

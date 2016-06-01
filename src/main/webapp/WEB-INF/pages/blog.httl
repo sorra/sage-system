@@ -28,10 +28,10 @@ $!{include("navbar.httl")}
 		#if(blog.whenModified)
 		修改于 $!{spanHumanTime(blog.whenModified)}
 		#end
-		#if(userSelf.id == blog.author.id)
-		<a href="/blogs/$!{blog.id}/edit">编辑</a>
-		#end
 		浏览数${blog.views}
+		#if(userSelf.id == blog.author.id)
+		<a href="/blogs/$!{blog.id}/edit"><span class="glyphicon glyphicon-edit">编辑</span></a>
+		#end
 		<div class="tags">
 			#for(each : blog.tags)
 				$!{include("tag-label.httl")}
