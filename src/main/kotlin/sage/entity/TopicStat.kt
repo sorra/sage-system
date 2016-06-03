@@ -34,11 +34,19 @@ class TopicStat (
   fun computeRank() = apply {
     if (whenCreated == null) return@apply
     if(floatUp == 0.0) {
-      var days = Instant.ofEpochMilli(siteLaunchTime).until(whenCreated!!.toInstant(), ChronoUnit.DAYS)
-      if (days < 0) days = 0
-      floatUp = Math.pow(1.25, days.toDouble())
+      val daysCr = Instant.ofEpochMilli(siteLaunchTime).until(whenCreated!!.toInstant(), ChronoUnit.DAYS)
+      val daysRe = whenLastReplied?.run { Instant.ofEpochMilli(siteLaunchTime).until(toInstant(), ChronoUnit.DAYS) } ?: 0
+      val days =
+        if (daysCr == 0L) {
+          0.0
+        } else if (daysRe > 0) {
+          daysCr * 0.2 + daysRe * 0.8
+        } else {
+          daysCr.toDouble()
+        }
+      floatUp = Math.pow(1.25, days)
     }
-    rank = (1 + tune + likes + replies + views / 10) * floatUp
+    rank = (1 + tune + replies + likes + views / 10) * floatUp
   }
 
   companion object : Find<Long, TopicStat>() {
