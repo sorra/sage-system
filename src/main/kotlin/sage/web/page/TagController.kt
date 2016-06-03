@@ -29,8 +29,8 @@ open class TagController @Autowired constructor(
                   @RequestParam(required = false) parentId: Long?,
                   @RequestParam(required = false) isCore: Boolean?,
                   @RequestParam(required = false) intro: String?): String {
-    Auth.checkUid()
-    val tag = tagService.create(name, parentId ?: Tag.ROOT_ID, isCore ?: false, intro ?: "")
+    val uid = Auth.checkUid()
+    val tag = tagService.create(uid, name, parentId ?: Tag.ROOT_ID, isCore ?: false, intro ?: "")
     return "/tags/${tag.id}"
   }
 

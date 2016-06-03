@@ -15,7 +15,7 @@ import javax.annotation.PostConstruct
 @Service
 class TagService {
 
-  fun create(name: String, parentId: Long, isCore: Boolean, intro: String): Tag {
+  fun create(userId: Long, name: String, parentId: Long, isCore: Boolean, intro: String): Tag {
     if (StringUtils.isBlank(name)) {
       throw IllegalArgumentException("name is empty!")
     }
@@ -23,7 +23,7 @@ class TagService {
       throw IllegalArgumentException("parentId $parentId is wrong!")
     }
     if (Tag.where().eq("name", name).eq("parent", Tag.ref(parentId)).findUnique() == null) {
-      val tag = Tag(name, Tag.ref(parentId), isCore, if(intro.isNotBlank()) intro else "啊，$name！")
+      val tag = Tag(name, Tag.ref(parentId), isCore, if(intro.isNotBlank()) intro else "啊，$name！", userId)
       tag.save()
       return tag
     } else {
@@ -60,7 +60,7 @@ class TagService {
   @PostConstruct
   fun setup() {
     if (Tag.byId(Tag.ROOT_ID) == null) {
-      val root = Tag(Tag.ROOT_NAME, null, true)
+      val root = Tag(Tag.ROOT_NAME, null, isCore = true, creatorId = 1)
       root.id = Tag.ROOT_ID
       root.save()
       assertEqual(root.id, Tag.ROOT_ID)

@@ -20,11 +20,14 @@ class Tag : BaseModel {
   @OneToMany(mappedBy = "parent")
   var children: Set<Tag> = HashSet()
 
-  @JvmOverloads constructor(name: String, parent: Tag?, isCore: Boolean, intro: String = "") {
+  val creatorId: Long
+
+  @JvmOverloads constructor(name: String, parent: Tag?, isCore: Boolean, intro: String = "", creatorId: Long) {
     this.name = name
     this.parent = parent
     this.isCore = isCore
     this.intro = intro
+    this.creatorId = creatorId
   }
 
   /**
