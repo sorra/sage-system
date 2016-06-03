@@ -1,7 +1,7 @@
 'use strict';
 
 $(document).ready(function(){
-  $(document).on('click focus', 'a', function(){this.blur()})
+  $(document).on('focus', 'a, button, input[type=submit]', function(){this.blur()})
 
   if ($('#front-map').length > 0) {
     window.frontMap = $.parseJSON($('#front-map').text());

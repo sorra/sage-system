@@ -14,7 +14,7 @@
             <form id="search" action="/search" method="get" accept-charset="UTF-8">
               <div style="width: 276px; height: 28px; display: inline-block;">
                 <input type="text" maxlength="50" name="q" placeholder="搜索" value="">
-                <button type="submit"><img src="/static/img/search.png"/></button>
+                <button type="submit" class="glyphicon glyphicon-search"></button>
               </div>
             </form>
           </td>

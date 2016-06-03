@@ -53,17 +53,14 @@ input[name=q]{
   margin-top: 1px;
 }
 #search button{
+  position: relative;
+  right: 27px;
+  top: 2px;
   width: 25px;
   height: 25px;
   background-color: transparent;
   border: 0;
   padding: 0;
-  margin-left: -5px
-}
-#search img{
-  width: 25px;
-  height: 25px;
-  border-radius: 3px;
 }
 
 #userDropdownMenu{

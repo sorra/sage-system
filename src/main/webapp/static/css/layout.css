@@ -40,6 +40,10 @@ body>.container{
   background: #e9eaed;
 }
 
+input[type=text]{
+  outline: none;
+}
+
 .human-time{
   color: gray;
 }
