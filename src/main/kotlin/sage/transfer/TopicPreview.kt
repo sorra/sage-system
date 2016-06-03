@@ -2,6 +2,7 @@ package sage.transfer
 
 import sage.entity.TopicPost
 import sage.entity.TopicStat
+import sage.util.Strings
 import java.sql.Timestamp
 
 class TopicPreview {
@@ -18,6 +19,7 @@ class TopicPreview {
   var whenModified: Timestamp? = null
   var whenLastReplied: Timestamp? = null
   var replyCount: Int = 0
+  var likes: Int = 0
 
   internal constructor() {
   }
@@ -25,7 +27,7 @@ class TopicPreview {
   constructor(topic: TopicPost) {
     id = topic.id
     title = topic.title
-    summary = topic.content.take(100)
+    summary = Strings.omit(topic.content, 103)
     reference = topic.reference
     author = UserLabel(topic.author)
 
@@ -37,5 +39,6 @@ class TopicPreview {
     val stat = topic.stat()
     whenLastReplied = stat.whenLastReplied
     replyCount = topic.maxFloorNumber
+    likes = stat.likes
   }
 }

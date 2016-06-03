@@ -2,16 +2,22 @@
 <div class="topic-preview">
   <a class="title" href="/topics/${topic.id}#reply${topic.replyCount}">${topic.title}</a>
   <p class="summary">${topic.summary}</p>
-  <div>
+  <div class="tags">
+    #for(each : topic.tags)
+    $!{include("tag-label.httl")}
+    #end
+  </div>
+  <div class="metadata-row">
     $!{include("user-label.httl", ["u": topic.author])}
     $!{spanHumanTime(topic.whenCreated)}
     #if(topic.replyCount > 0)
-    <span><a class="reply-count badge" href="/topics/${topic.id}#reply${topic.replyCount}">${topic.replyCount}</a>个回复</span>
+      <a class="reply-count" href="/topics/${topic.id}#reply${topic.replyCount}">
+        <span class="glyphicon glyphicon-comment" aria-hidden="true">${topic.replyCount}</span>
+        <span></span>
+      </a>
     #end
-    <span class="tags">
-      #for(each : topic.tags)
-      $!{include("tag-label.httl")}
-      #end
-    </span>
+    #if(topic.likes > 0)
+     <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true">${topic.likes}</span>
+    #end
   </div>
 </div>

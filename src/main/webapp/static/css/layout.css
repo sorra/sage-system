@@ -48,7 +48,11 @@ body>.container{
   margin-bottom: 10px;
 }
 .tags{
-  margin: 5px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+.metadata-row > *{
+  margin-right: 5px;
 }
 
 .heading-hot{
@@ -57,18 +61,10 @@ body>.container{
   margin-top: 0;
 }
 
-.topic-preview h1, .blog-preview h1{
-  font-size: 26px;
+.summary h1, .summary h2, .summary h3, .summary h4{
+  font-size: 16px;
 }
-.topic-preview h2, .blog-preview h2{
-  font-size: 22px;
-}
-.topic-preview h3, .blog-preview h3{
-  font-size: 18px;
-}
-.topic-preview h4, .blog-preview h4{
-  font-size: 14px;
-}
-.topic-preview blockquote, .blog-preview blockquote{
-  font-size: 14px;
+
+.summary blockquote{
+  font-size: 13px;
 }

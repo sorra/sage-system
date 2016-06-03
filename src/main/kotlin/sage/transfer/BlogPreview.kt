@@ -12,6 +12,7 @@ class BlogPreview {
   var whenCreated: Timestamp? = null
   var whenModified: Timestamp? = null
   var tags: List<TagLabel> = arrayListOf()
+  var likes: Int = 0
 
   internal constructor() {
   }
@@ -21,10 +22,12 @@ class BlogPreview {
     author = UserLabel(blog.author)
 
     title = blog.title
-    summary = Strings.omit(blog.content, 200)
+    summary = Strings.omit(blog.content, 103)
     whenCreated = blog.whenCreated
     whenModified = actualWhenModified(blog.whenCreated, blog.whenModified)
 
     tags = blog.tags.map { TagLabel(it) }
+    val stat = blog.stat()
+    likes = stat.likes
   }
 }

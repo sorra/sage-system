@@ -22,10 +22,10 @@
 }
 
 .topic-preview .reply-count{
-  background-color: #428BCA;
+  color: #333;
 }
 .topic-preview .reply-count:visited{
-  background-color: #c0c0c0;
+  color: #999;
 }
 
 .topic{
