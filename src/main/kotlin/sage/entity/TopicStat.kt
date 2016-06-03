@@ -30,6 +30,10 @@ class TopicStat (
     computeRank()
     super.save()
   }
+  override fun update() {
+    computeRank()
+    super.update()
+  }
 
   fun computeRank() = apply {
     if (whenCreated == null) return@apply
@@ -72,7 +76,7 @@ class TopicStat (
       Ebean.createUpdate(TopicStat::class.java, "update topicStat set views = views+1 where id = :id")
           .setParameter("id", id).execute()
       byId(id)?.apply {
-        if (views % 10 == 0) computeRank().update()
+        if (views % 10 == 0) update()
       }
     }
   }

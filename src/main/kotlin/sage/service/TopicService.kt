@@ -65,7 +65,7 @@ class TopicService
     val reply = TopicReply(content, User.ref(userId), topicPostId, toUserId, toReplyId, floorNumber)
     reply.save()
 
-    TopicStat(id = topicPostId, whenLastReplied = reply.whenCreated, replies =  floorNumber).computeRank().update()
+    TopicStat(id = topicPostId, whenLastReplied = reply.whenCreated, replies =  floorNumber).update()
 
     mentionedIds.forEach { atId ->
       notificationService.mentionedByTopicReply(atId, userId, reply.id)
