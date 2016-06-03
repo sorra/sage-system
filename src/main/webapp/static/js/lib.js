@@ -18,17 +18,20 @@ function common_setup() {
     }
   })
   // Prevent form submitting on enter
-  $(document).on('keypress keydown keyup', 'form input:not(textarea)', function(e) {
+  $(document).on('keypress keydown keyup', 'form:not(#search) input:not(textarea)', function(e) {
     if(e.which == 13) {
       e.preventDefault()
       return false
     }
   })
-  $('form.search').submit(function(event){
-    event.preventDefault();
-    var q = $('form.search > *[name=q]').val();
-    console.log(encodeURI(q));
-    window.open('/search?q='+encodeURI(q));
+  $('#search').submit(function(event){
+    event.preventDefault()
+    var q = $('#search input[name=q]').val()
+    if(q) {
+      console.log(encodeURI(q))
+      //window.open('/search?q='+encodeURI(q))
+      window.open('https://www.google.com/?q=site:qingjingjie.com+' + encodeURI(q))
+    }
   });
 }
 
