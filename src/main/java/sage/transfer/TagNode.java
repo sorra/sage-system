@@ -18,7 +18,7 @@ public class TagNode {
     name = tag.getName();
     isCore = tag.isCore();
     for (Tag child : tag.getChildren()) {
-      children.add(new TagNode(child));
+      if(child.isCore()) children.add(new TagNode(child));
     }
   }
 

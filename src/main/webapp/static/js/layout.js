@@ -52,20 +52,21 @@ function buildNavTagTree($lnk, tagTree) {
   var $createTag = $('<button class="create-tag btn btn-warning">新建</button>').appendTo($navTagTree)
 
   var $dialog = $('#new-tag-dialog')
-  $dialog.find('input[name=name]').val('')
-  $dialog.find('input[name=parent-id]').val('')
 
   $(document).delegate('#new-tag-dialog .submit', 'click', function() {
     var $dialog = $('#new-tag-dialog')
     var name = $dialog.find('input[name=name]').val()
-    var parentId = $dialog.find('input[name=parent-id]').val()
+    var parentId = $dialog.find('input[name=parentId]').val()
+    var isCore = $dialog.find('input[name=isCore]')[0].checked
     if (name && name.length > 0) {
       var attrs = {name: name}
       if (parentId.length > 0) attrs.parentId = parentId
+      if (isCore) attrs.isCore = isCore
       $.post('/tags/new', attrs)
     }
-    $dialog.find('input[name=parent-id]').val('')
-    $dialog.find('input[name=parent-id]').val('')
+    $dialog.find('input[name=name]').val('')
+    $dialog.find('input[name=parentId]').val('')
+    $dialog.find('input[name=isCore]').removeAttr('checked')
     $dialog.modal('hide')
   })
 

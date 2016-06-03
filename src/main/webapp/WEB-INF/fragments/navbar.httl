@@ -69,11 +69,15 @@
       </div>
       <div class="modal-body">
         <div>
-          名字<input name="name" />
+          名字 <input name="name" />
         </div>
         <div>
-          母标签id<input name="parent-id" />
+          母标签id <input name="parentId" />
         </div>
+        <div>
+          是核心标签? <input name="isCore" type="checkbox" checked/>
+        </div>
+        <span style="color: gray">大伙儿常用的标签是"核心标签"，显示在标签树上。<br/>如果每个标签都设为核心，显示空间可能容不下。</span>
       </div>
       <div class="modal-footer">
         <button class="submit btn btn-primary pull-right">确定</button>

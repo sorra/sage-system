@@ -35,7 +35,6 @@ $!{include("navbar.httl")}
           #if(countPendingRequestsOfTag > 0)[${countPendingRequestsOfTag}]#end
         </div>
       </div>
-      <div>订阅</div>
       <div>子标签(核心)
         <div>
           #for(each : coreTags)
