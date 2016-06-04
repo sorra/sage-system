@@ -32,6 +32,11 @@
   background-color: transparent;
 }
 
+#nav-tags{
+  position: relative;
+  right: 18em;
+}
+
 .nav-brand{
   color: deepskyblue;
   text-decoration: none;

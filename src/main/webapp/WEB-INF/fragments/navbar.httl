@@ -19,8 +19,8 @@
             </form>
           </td>
           <td class="nav-links" width="570" align="right" style="padding-top: 2px;">
+            <a id="nav-tags" href="javascript:;">标签<span class="glyphicon glyphicon-tags"></span></a>
             <a href="/home"><span class="glyphicon glyphicon-home" title="Home"></span></a>
-            <a id="nav-tags" href="javascript:;">标签</a>
             <a href="/topics">帖子</a>
             <a href="/blogs">博客</a>
             <a href="/people">人们</a>
@@ -75,9 +75,9 @@
           母标签id <input name="parentId" />
         </div>
         <div>
-          是核心标签? <input name="isCore" type="checkbox" checked/>
+          显示在树上? <input name="isCore" type="checkbox" checked/>
         </div>
-        <span style="color: gray">大伙儿常用的标签是"核心标签"，显示在标签树上。<br/>如果每个标签都设为核心，显示空间可能容不下。</span>
+        <span style="color: gray">建议只让人们常用的标签显示在树上。如果每个标签都显示，太占屏幕空间。</span>
       </div>
       <div class="modal-footer">
         <button class="submit btn btn-primary pull-right">确定</button>

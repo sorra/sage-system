@@ -4,6 +4,7 @@
 #set(Tag tag)
 #set(Integer countPendingRequestsOfTag, Integer countPendingRequestsOfTagScope)
 #set(Collection<TopicPreview> topics, Collection<BlogPreview> blogs)
+#set(Collection coreTags, Collection nonCoreTags, Collection relatedTags, Collection sameNameTags)
 -->
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
@@ -35,28 +36,37 @@ $!{include("navbar.httl")}
           #if(countPendingRequestsOfTag > 0)[${countPendingRequestsOfTag}]#end
         </div>
       </div>
-      <div>子标签(核心)
+      <div>子标签
         <div>
           #for(each : coreTags)
-          $!{include("tag-label.httl")}
+            $!{include("tag-label.httl")}
           #end
         </div>
-      </div>
-      <div>子标签(普通)
+        <hr style="margin: 5px;"/>
         <div>
           #for(each : nonCoreTags)
-          $!{include("tag-label.httl")}
+            $!{include("tag-label.httl")}
           #end
         </div>
       </div>
+      #if(relatedTags)
+      <div>关联标签
+        <div>
+          #for(each : sameNameTags)
+            $!{include("tag-label.httl")}
+          #end
+        </div>
+      </div>
+      #end
+      #if(sameNameTags)
       <div>同名标签
         <div>
           #for(each : sameNameTags)
-          $!{include("tag-label.httl")}
+            $!{include("tag-label.httl")}
           #end
         </div>
       </div>
-      <div>关联标签</div>
+      #end
 		</div>
 		<div class="main">
 		  <div id="bkg-intro" class="row" style="text-align:center;padding:10px">${tag.intro == null ? "没有背景介绍" : tag.intro}</div>

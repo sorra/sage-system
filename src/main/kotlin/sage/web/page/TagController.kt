@@ -42,12 +42,12 @@ open class TagController @Autowired constructor(
         .sortedByDescending { it.whenCreated }.map { BlogPreview(it) }
 
     val (coreTags, nonCoreTags) = tag.children.map { TagLabel(it) }.partition { it.isCore }
-    val sameNameTags = tagService.getSameNameTags(id).map { TagLabel(it) }
     val relatedTags = null
+    val sameNameTags = tagService.getSameNameTags(id).map { TagLabel(it) }
 
     return ModelAndView("tag-page").addObject("tag", tag).addObject("topics", topics).addObject("blogs", blogs)
         .addObject("coreTags", coreTags).addObject("nonCoreTags", nonCoreTags)
-        .addObject("sameNameTags", sameNameTags).addObject("relatedTags", relatedTags)
+        .addObject("relatedTags", relatedTags).addObject("sameNameTags", sameNameTags)
         .addObject("countPendingRequestsOfTagScope", tagChangeService.countPendingRequestsOfTagScope(id))
         .addObject("countPendingRequestsOfTag", tagChangeService.countPendingRequestsOfTag(id))
         .include(FrontMap().attr("id", id))
