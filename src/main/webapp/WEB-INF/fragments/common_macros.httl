@@ -14,3 +14,7 @@
 <script src="/static/js/marked-highlight.min.js" type="text/javascript"></script>
 <script src="/static/js/all.js" type="text/javascript"></script>
 #end
+
+#macro(desc)
+<meta name="description" content="程序员和远程工作者社区" />
+#end

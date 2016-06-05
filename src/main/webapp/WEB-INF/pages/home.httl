@@ -6,7 +6,8 @@
 #set(List<UserLabel> friends)
 -->
 <head>
-	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<meta charset="UTF-8">
+	$!{desc}
 	<title>首页 - 轻境界</title>
   $!{allcss}
 </head>

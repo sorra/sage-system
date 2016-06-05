@@ -6,6 +6,7 @@
 -->
 <head>
   <meta charset="UTF-8">
+  $!{desc}
   <title>轻境界</title>
   $!{allcss}
   <style>
