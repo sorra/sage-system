@@ -12,14 +12,14 @@
   <div class="existing-tags tag-sel-list">
     已有:
     #for(TagLabel each : existingTags)
-    <a class="tag-sel btn-success btn btn-sm btn-default" tag-id="${each.id}" title="${each.chainStr}">${each.name}</a>
+    <a class="tag-sel btn-success btn btn-sm btn-default" tag-id="${each.id}" title="${each.chainStr}" data-toggle="tooltip">${each.name}</a>
     #end
   </div>
   #end
   <span class="top-tags tag-sel-list">
     常用:
     #for(TagLabel each : topTags)
-    <a class="tag-sel btn btn-sm btn-default" tag-id="${each.id}" title="${each.chainStr}">${each.name}</a>
+    <a class="tag-sel btn btn-sm btn-default" tag-id="${each.id}" title="${each.chainStr}" data-toggle="tooltip">${each.name}</a>
     #end
   </span>
   <a class="tag-plus btn btn-sm btn-info">+更多</a>

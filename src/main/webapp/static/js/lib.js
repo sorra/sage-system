@@ -17,6 +17,8 @@ function common_setup() {
       return hljs.highlightAuto(code).value;
     }
   })
+  // Setup all simple tooltips
+  $('[data-toggle="tooltip"]').tooltip()
   // Prevent form submitting on enter
   $(document).on('keypress keydown keyup', 'form:not(#search) input:not(textarea)', function(e) {
     if(e.which == 13) {
@@ -24,6 +26,7 @@ function common_setup() {
       return false
     }
   })
+  // Setup the search box
   $('#search').submit(function(event){
     event.preventDefault()
     var q = $('#search input[name=q]').val()
