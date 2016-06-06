@@ -19,8 +19,7 @@ class MidForwards {
 
   private fun addForward(forward: Tweet): MidForwards {
     val t = forward
-    val asString = "@${t.author.name}#${t.author.id} : ${t.content}"
-    xs.add(MidForward(t.id, asString))
+    xs.add(MidForward(t.id, t.author.id, t.author.name, t.content))
     return this
   }
 

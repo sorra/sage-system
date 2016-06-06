@@ -18,3 +18,25 @@
 #macro(desc)
 <meta name="description" content="程序员和远程工作者社区" />
 #end
+
+#macro(tagLabel(TagLabel tag))
+<a class="tag-label btn btn-default btn-xs" href="javascript:;" tag-id="${tag.id}" title="${tag.chainStr}"
+   data-toggle="tooltip" onclick="window.open('/tags/${tag.id}')">
+  ${tag.name}
+</a>
+#end
+
+#macro(userLabel(UserLabel u))
+<span class="user-label" data-id="${u.id}">
+  <a class="avatar" uid="${u.id}" href="/users/${u.id}"><img src="${u.avatar}"/></a>
+  <a class="name" uid="${u.id}" href="/users/${u.id}">${u.name}</a>
+</span>
+#end
+
+#macro(userLinkAttrs(uid))
+uid="${uid}" href="/users/${uid}"
+#end
+
+#macro(showCount(count))
+#if(count.toInt > 0)(${count})#end
+#end

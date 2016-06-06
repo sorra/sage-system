@@ -35,7 +35,7 @@ $!{include("navbar.httl")}
 		  <ul class="friends unstyled">
 				好友
 				#for(u : friends)
-				<li>$!{include("user-label.httl")}</li>
+				<li>$!{userLabel(u)}</li>
 				#end
 			</ul>
 		</div>

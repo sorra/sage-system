@@ -26,15 +26,16 @@ public class TweetView implements Item {
   private int commentCount;
   
   private Long fromTag = null;
-  private Long fromGroup = null;
 
   TweetView() {}
   
   public TweetView(Tweet tweet, Tweet origin, int forwardCount, int commentCount) {
     id = tweet.getId();
-    authorId = tweet.getAuthor().getId();
-    authorName = tweet.getAuthor().getName();
-    avatar = tweet.getAuthor().getAvatar();
+    if (!tweet.getDeleted()) {
+      authorId = tweet.getAuthor().getId();
+      authorName = tweet.getAuthor().getName();
+      avatar = tweet.getAuthor().getAvatar();
+    }
     content = convertImgLinks(tweet.getContent());
     time = tweet.getWhenCreated();
     if (origin != null) {
@@ -50,11 +51,6 @@ public class TweetView implements Item {
   
   public TweetView beFromTag(Long tagId) {
     fromTag = tagId;
-    return this;
-  }
-  
-  public TweetView beFromGroup(Long groupId) {
-    fromGroup = groupId;
     return this;
   }
 
@@ -113,10 +109,6 @@ public class TweetView implements Item {
   
   public Long getFromTag() {
     return fromTag;
-  }
-  
-  public Long getFromGroup() {
-    return fromGroup;
   }
 
   @Override

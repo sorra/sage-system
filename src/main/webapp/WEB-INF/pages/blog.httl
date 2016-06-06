@@ -23,7 +23,7 @@ $!{include("navbar.httl")}
 	<div class="blog">
 		<span id="id" style="display:none">$!{blog.id}</span>
 		<h3 class="title">${blog.title}</h3>
-		$!{include("user-label.httl", ["u": blog.author])}
+		$!{userLabel(blog.author)}
 		发表于 $!{spanHumanTime(blog.whenCreated)}
 		#if(blog.whenModified)
 		修改于 $!{spanHumanTime(blog.whenModified)}
@@ -34,7 +34,7 @@ $!{include("navbar.httl")}
 		#end
 		<div class="tags">
 			#for(each : blog.tags)
-				$!{include("tag-label.httl")}
+				$!{tagLabel(each)}
 			#end
 		</div>
 		<div class="content">${blog.content}</div>

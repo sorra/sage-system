@@ -19,28 +19,9 @@ import sage.web.auth.Auth
 @RequestMapping("/read")
 open class ReadController {
   @Autowired
-  private val streamService: StreamService? = null
-  @Autowired
   private val tweetReadService: TweetReadService? = null
   @Autowired
   private val transfers: TransferService? = null
-
-  @RequestMapping("/istream")
-  open fun istream(
-      @RequestParam(required = false) before: Long?,
-      @RequestParam(required = false) after: Long?): Stream {
-    val cuid = Auth.checkUid()
-    return streamService!!.istream(cuid, getEdge(before, after))
-  }
-
-  @RequestMapping("istream-by-tag")
-  open fun istreamByTag(
-      @RequestParam tagId: Long?,
-      @RequestParam(required = false) before: Long?,
-      @RequestParam(required = false) after: Long?): Stream {
-    val cuid = Auth.checkUid()
-    return streamService!!.istreamByTag(cuid, tagId!!, getEdge(before, after))
-  }
 
   @RequestMapping("/connect/{blogId}")
   open fun connect(@PathVariable blogId: Long?): Stream {
@@ -56,36 +37,5 @@ open class ReadController {
   @RequestMapping("/{tweetId}/comments")
   open fun comments(@PathVariable tweetId: Long?): Collection<CommentCard> {
     return CommentCard.listOf(tweetReadService!!.getComments(tweetId!!))
-  }
-
-  @RequestMapping("/tag/{id}")
-  open fun tagStream(@PathVariable id: Long?,
-                     @RequestParam(required = false) before: Long?,
-                     @RequestParam(required = false) after: Long?): Stream {
-    return streamService!!.tagStream(id!!, getEdge(before, after))
-  }
-
-  @RequestMapping("/u/{id}")
-  open fun personalStream(@PathVariable id: Long?,
-                          @RequestParam(required = false) before: Long?,
-                          @RequestParam(required = false) after: Long?): Stream {
-    return streamService!!.personalStream(id!!, getEdge(before, after))
-  }
-
-  private fun getEdge(beforeId: Long?, afterId: Long?): Edge {
-    if (beforeId == null && afterId == null) {
-      return Edge.none()
-    } else if (beforeId != null && afterId != null) {
-      throw UnsupportedOperationException()
-    } else if (beforeId != null) {
-      return Edge.before(beforeId)
-    } else if (afterId != null) {
-      return Edge.after(afterId)
-    }
-    throw UnsupportedOperationException()
-  }
-
-  companion object {
-    private val logger = LoggerFactory.getLogger(ReadController::class.java)
   }
 }

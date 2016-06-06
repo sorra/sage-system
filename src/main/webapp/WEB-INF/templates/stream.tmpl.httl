@@ -1,50 +1,3 @@
-<script id="tmpl-tweet" type="text/html">
-  <div class="tweet {{if isForward}}t-forward{{else if isOrigin}}t-origin{{else}}stream-item{{/if}}"
-      tweet-id="{{id}}" author-id="{{authorId}}">
-    {{if !isOrigin}}
-    <a class="avatar" {{authorId | userLinkAttrs}}><img src="{{avatar}}"/></a>
-    {{/if}}
-    <div class="tweet-body">
-      <a class="author-name" {{authorId | userLinkAttrs}}>{{authorName}}</a>
-      <p class="tweet-content">
-        {{#content | replaceMention | knowDeleted}}
-        {{if midForwards}}
-          {{each midForwards.xs as mf i}}
-          ||{{#mf.msg | replaceMention}}
-          {{/each}}
-        {{/if}}
-      </p>
-      {{if origin}}
-        {{include 'tmpl-tweet' asOrigin(origin)}}
-      {{/if}}
-      <div>
-        <a class="human-time span" href="/tweets/{{id}}" data-time="{{time}}">{{time | showTime}}</a>
-        <span class="tags span">
-          {{(tags = origin ? origin.tags : tags)}}
-          {{each tags as tag i}}
-            {{include 'tmpl-tag-label' tag}}
-          {{/each}}
-        </span>
-        <span class="tweet-ops span pull-right">
-          {{if global().userSelf && global().userSelf.id === authorId}}
-          <a class="delete" href="javascript:;" style="margin-left: 0.5em; margin-right: 0.5em">删除</a>
-          {{/if}}
-          <a class="forward" href="javascript:;">转发{{forwardCount | showCount}}</a>
-          <a class="comment" href="javascript:;">评论{{commentCount | showCount}}</a>
-        </span>
-      </div>
-    </div>
-  </div>
-</script>
-<script id="tmpl-combine" type="text/html">
-  <div class="combine stream-item" data-contains-origin="{{containsOrigin}}">
-  {{each forwards as forward i}}
-    {{include 'tmpl-tweet' asForward(forward)}}
-  {{/each}}
-
-  {{include 'tmpl-tweet' asOrigin(origin)}}
-  </div>
-</script>
 <script id="tmpl-tweet-comment" type="text/html">
   <div class="tweet-comment">
     <a class="avatar pull-left" {{authorId | userLinkAttrs}} style="margin-right: 10px">
@@ -59,31 +12,6 @@
     </div>
   </div>
 </script>
-<script id="tmpl-forward-dialog" type="text/html">
-  <div>
-    <div class="modal-title">
-      <span>转发</span>
-      {{if t.isForward}}
-        <span mf-id="{{t.id}}">
-          ||{{toFw(t) | reduceMention}} <a class="mf-x">&times;</a>
-        </span>
-      {{/if}}
-      {{if mfs}}
-        {{each mfs.xs as mf i}}
-          <span mf-id="{{mf.id}}">
-            ||{{mf.msg | reduceMention}} <a class="mf-x">&times;</a>
-          </span>
-        {{/each}}
-      {{/if}}
-    </div>
-    <div class="modal-body">
-      <textarea class="input"></textarea>
-    </div>
-    <div class="modal-footer">
-      <button class="btn btn-primary" style="float: right">转发</button>
-    </div>
-  </div>
-</script>
 <div id="tmpl-comment-dialog" class="tmpl">
   <div class="comment-dialog">
     <textarea></textarea>
@@ -93,6 +21,3 @@
     <div class="comment-list"></div>
   </div>
 </div>
-<script id="tmpl-tag-label" type="text/html">
-  <a class="tag-label" href="/tags/{{id}}" title="{{chainStr}}">{{name}}</a>
-</script>

@@ -3,106 +3,56 @@
 function stream_setup() {
   setupForwardDialog()
   stream_setupListeners()
-  $(document).on('click', '#forward-dialog .mf-x', function() {
-    $(this).parents('*[mf-id]').addClass('mf-removed')
-  })
 
-  template.helper('global', function(){return window})
   template.helper('userLinkAttrs', function(userId){
     return "uid=\""+userId+"\" href=\"/users/"+userId+"\""
-  })
-  template.helper('replaceMention', replaceMention)
-  template.helper('reduceMention', reduceMention)
-  template.helper('knowDeleted', function(content){
-    if (!content || content.length == 0) return '[已删除]'
-    else return content
   })
   template.helper('showTime', function(time){
     return humanTime_compute(parseInt(time))
   })
-  template.helper('showCount', function(count){
-    return count>0 ? '('+count+')' : ''
-  })
-  template.helper('asOrigin', function(origin){
-    origin.isOrigin = true; return origin
-  })
-  template.helper('asForward', function(forward){
-    forward.isForward = true; return forward
-  })
-  template.helper('toFw', function(t){
-    return '@' + t.authorName + '#' + t.authorId + ' : ' + t.content
-  })
-
-  window.tweetCache = {
-    prefix: 'tweet-',
-    set: function(t){
-      $(document).data(this.prefix + t.id, t)
-    },
-    get: function(id){
-      return $(document).data(this.prefix + id)
-    },
-    getNonNull: function(id){
-      var t = this.get(id)
-      if (!t) {throw new Error}
-      return t
-    },
-    getOrEmpty: function(id){
-      var t = this.get(id)
-      return t ? t : {}
-    }
-  }
-}
-
-function renderTmpl(tmplId, object) {
-  if (!object || object == "") {
-    throw new Error
-  }
-  return template(tmplId, object)
 }
 
 function getStream(url) {
-    return $.get(url, {})
-        .done(function(resp){
-            if (resp == null) alert('stream is null');
-            else createStream(resp, url);
-        })
-        .fail(function(resp){
-            tipover($('.slist'), 'stream Oops! ' + resp);
-        });
+  return $.get(url)
+    .done(function (resp) {
+      if (resp) createStream(resp, url)
+      else tipover($('.slist'), '信息流为空')
+    })
+    .fail(function (resp) {
+      tipover($('.slist'), '信息流加载失败: ' + resp);
+    });
 }
 
 function getStreamAfter(url, afterId, callback) {
-    if (afterId == undefined) {
-      console.info('afterId is undefined')
-    }
-    return $.get(url, {after: afterId})
-        .done(function(resp){
-            if (resp == null) console.error('stream is null');
-            else {
-              createStreamAfter(resp, url);
-              if (callback) callback(resp)
-            }
-        })
-        .fail(function(resp){
-            console.error('getStreamAfter Oops! ' + resp);
-        });
+  if (!afterId) {
+    console.error('afterId is ' + afterId)
+  }
+  return $.get(url, {after: afterId})
+    .done(function (resp) {
+      if (resp) {
+        $('.slist').prepend($(resp))
+      }
+      callback(resp)
+    })
+    .fail(function (resp) {
+      tipover($('.slist'), '信息流向后加载失败: ' + resp)
+    });
 }
 
 function getStreamBefore(url, beforeId, callback) {
-    if (beforeId == undefined) {
-      console.info('beforeId is undefined')
-    }
-    return $.get(url, {before: beforeId})
-        .done(function(resp){
-            if (resp == null) console.error('stream is null');
-            else {
-              createStreamBefore(resp, url);
-              if (callback) callback(resp)
-            }
-        })
-        .fail(function(resp){
-            console.error('getStreamBefore Oops! ' + resp);
-        });
+  if (!beforeId) {
+    console.error('beforeId is ' + beforeId)
+  }
+  return $.get(url, {before: beforeId})
+    .done(function (resp) {
+      if (resp) {
+        $('.slist').append($(resp))
+      }
+      callback(resp)
+    })
+    .fail(function (resp) {
+      tipover($('.slist'), '信息流向前加载失败: ' + resp)
+    });
 }
 
 function funcLookNewer(url, callback) {
@@ -133,26 +83,18 @@ function funcLookEarlier(url, callback) {
   }
 }
 
-function createStream(stream, url) {
+function createStream(resp, url) {
   var $stream = $('.stream')
-  var $slist = $('.slist').empty().warnEmpty()
-  $.each(stream.items, function(idx, item){
-    if (item.type == 'TweetView') {
-      createTweetCard(item).appendTo($slist)
-    }
-    else if (item.type == 'CombineGroup') {
-      createCombineGroup(item).appendTo($slist)
-    }
-  })
+  $('.slist').empty().append($(resp))
 
-  $('<a class="newfeed btn">').text('看看新的').prependTo($stream).click(funcLookNewer(url, function(stream){
-    if (stream.items.length == 0) {
+  $('<a class="newfeed btn">').text('看看新的').prependTo($stream).click(funcLookNewer(url, function(resp){
+    if (!resp) {
       tipover($('.stream .newfeed').warnEmpty(), '还没有新的')
     }
   }))
 
-  var lookEarlier = funcLookEarlier(url, function(stream){
-    if (stream.items.length ==0) {
+  var lookEarlier = funcLookEarlier(url, function(resp){
+    if (!resp) {
       tipover($('.stream .oldfeed').warnEmpty(), '没有更早的了')
     }
   })
@@ -166,49 +108,6 @@ function createStream(stream, url) {
       console.info(scrollTop + ' ' + winHeight + ' ' +docuHeight)
     }
   })
-}
-
-function createStreamAfter(stream) {
-  var $slist = $('.slist');
-  $.each(stream.items.reverse(), function(idx, item){
-    createStreamItem(item).prependTo($slist)
-  });
-}
-
-function createStreamBefore(stream) {
-  var $slist = $('.slist')
-  $.each(stream.items, function(idx, item){
-    createStreamItem(item).appendTo($slist)
-  });
-}
-
-function createStreamItem(item) {
-  if (item.type == 'TweetView') {return createTweetCard(item)}
-  else if (item.type == 'CombineGroup') {return createCombineGroup(item)}
-}
-
-function createTweetCard(tweet) {
-  window.tweetCache.set(tweet)
-  if(tweet.origin) {tweetCache.set(tweet.origin)}
-  var $tc = $(renderTmpl('tmpl-tweet', tweet))
-  enchantTweets($tc)
-  return $tc;
-}
-
-function createCombineGroup(group) {
-  window.tweetCache.set(group.origin)
-  for(var i in group.forwards) {
-    window.tweetCache.set(group.forwards[i])
-  }
-  var $cg = $(renderTmpl('tmpl-combine', group))
-  enchantTweets($cg)
-  return $cg
-}
-
-function enchantTweets($elem) {
-  $elem.find('a[uid]').mouseenter(launchUcOpener).mouseleave(launchUcCloser)
-  $elem.find('.tweet-ops .delete').each(deleteDialogEach)
-  $elem.find('.tweet-ops .comment').click(commentDialog)
 }
 
 function deleteDialogEach() {
@@ -302,79 +201,44 @@ function setupForwardDialog() {
   var $dia = $('#forward-dialog')
   $dia.find('.modal-title').text('转发')
   $dia.on('show.bs.modal', function(){
-    var $this = $(this)
-    var tweetId = $this.data('tweetId')
-    if (!tweetId) {throw new Error}
-    var tweet = window.tweetCache.get(tweetId)
-    var $nodes = $(renderTmpl('tmpl-forward-dialog', {t: tweet, mfs: tweet.midForwards}))
-    nodesCopy('.modal-title', $nodes, $this)
-    nodesCopy('.modal-body', $nodes, $this)
-    nodesCopy('.modal-footer', $nodes, $this)
+    var $tweet = $dia.data('tweet')
+    var $midForwards = $dia.find('.mid-forwards').empty()
+    $tweet.find("*[mf-id]").clone().appendTo($midForwards).show()
+    $midForwards.children().each(function(){
+      $(this).append('<a class="mf-x" href="javascript:;">&times;</a>')
+    }).find('a[uid]').removeAttr('href')
+    $dia.find('.modal-body .input').val('')
   })
-}
-
-function replaceMention(content) {
-    if (!content) return content
-    var indexOfAt = content.indexOf('@');
-    var indexOfSpace = content.indexOf(' ', indexOfAt);
-    
-    if (indexOfAt >= 0 && indexOfSpace > 0) {
-        var indexOfInnerAt = content.lastIndexOf('@', indexOfSpace-1);
-        if (indexOfInnerAt > indexOfAt && indexOfInnerAt < indexOfSpace) {
-            indexOfAt = indexOfInnerAt;
-        }
-        var mention = content.slice(indexOfAt+1, indexOfSpace);
-        var indexOfSharp = mention.indexOf('#');
-        if (indexOfSharp > 0) {
-            var name = mention.slice(0, indexOfSharp);
-            var id = mention.slice(indexOfSharp+1, mention.length);
-            return content.slice(0, indexOfAt)
-                + $('<a>').text('@'+name).attr({uid: id, href: '/users/'+id})[0].outerHTML
-                + replaceMention(content.slice(indexOfSpace, content.length));
-        }
-        else {
-            return content.slice(0, indexOfSpace)
-                + replaceMention(content.slice(indexOfSpace, content.length));
-        }
-    }
-    return content;
-}
-
-function reduceMention(text) {
-  if (!text) return text
-  var indexOfAt = text.indexOf('@')
-  var indexOfSpace = text.indexOf(' ', indexOfAt)
-  var indexOfSharp = text.indexOf('#', indexOfAt)
-
-  if (indexOfAt >= 0 && indexOfSpace > 0 && indexOfSharp > 0 && indexOfSharp < indexOfSpace) {
-    var indexOfInnerAt = text.lastIndexOf('@', indexOfSharp-1);
-    if (indexOfInnerAt > indexOfAt && indexOfInnerAt < indexOfSharp) {
-      indexOfAt = indexOfInnerAt;
-    }
-    return text.slice(0, indexOfSharp) + reduceMention(text.slice(indexOfSpace, text.length))
-  }
-  return text
 }
 
 function stream_setupListeners() {
-  $(document).delegate('.tweet-ops .forward', 'click', function () {
-    var tweetId = $(this).parents('.tweet').warnEmpty().attr('tweet-id')
-    $('#forward-dialog').data('tweetId', tweetId).modal('show')
+  var $doc = $(document)
+  $doc.delegate('a[uid]', 'mouseenter', launchUcOpener).delegate('a[uid]', 'mouseleave', launchUcCloser)
+  $doc.delegate('.tweet-ops .forward', 'click', function() {
+    var $tweet = $(this).parents('.tweet').warnEmpty()
+    $('#forward-dialog').data('tweet', $tweet).modal('show')
   })
+  $doc.delegate('.tweet-ops .comment', 'click', commentDialog)
+  //TODO deleteDialogEach is not done yet
+  $doc.delegate('.tweet-ops .delete', 'click', deleteDialogEach)
 
-  $(document).delegate('#forward-dialog .btn-primary', 'click', function() {
+
+  $doc.delegate('#forward-dialog .mf-x', 'click', function() {
+    $(this).parents('*[mf-id]').addClass('mf-removed')
+  })
+  $doc.delegate('#forward-dialog .btn-primary', 'click', function() {
     var $dialog = $('#forward-dialog')
     $.post('/post/forward', {
       content: $dialog.find('.input').val(),
-      originId: $dialog.data('tweetId'),
+      originId: $dialog.data('tweet').attr('tweet-id'),
       removedIds: $dialog.find('.mf-removed').map(function() {
         return $(this).attr('mf-id')
       }).get()
-    }).done(funcLookNewer('/read/istream'))
+    }).done(funcLookNewer('/stream/i'))
     $dialog.modal('hide')
   })
 
-  $(document).delegate('.tweet-content .view-img', 'click', function(){
+  $doc.delegate('.tweet-content .view-img', 'click', function(){
     $(this).toggleClass('view-large')
   })
 }

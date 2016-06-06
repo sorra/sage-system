@@ -15,7 +15,7 @@ $!{include("navbar.httl")}
   <div class="topic" data-id="${topic.id}">
     <span id="id" style="display:none">$!{topic.id}</span>
     <h3 class="title">${topic.title}</h3>
-    $!{include("user-label.httl", ["u": topic.author])}
+    $!{userLabel(topic.author)}
     发表于 $!{spanHumanTime(topic.whenCreated)}
     #if(topic.whenModified)
     修改于 $!{spanHumanTime(topic.whenModified)}
@@ -23,7 +23,7 @@ $!{include("navbar.httl")}
     浏览数${topic.views}
     <div class="tags">
       #for(each : topic.tags)
-      $!{include("tag-label.httl")}
+      $!{tagLabel(each)}
       #end
     </div>
     <div class="content">${topic.content}</div>
@@ -39,7 +39,7 @@ $!{include("navbar.httl")}
       <span style="color: gray">回复 ${reply.toUser.name}:</span>
       #end
       <div>$!{reply.content}</div>
-      $!{include("user-label.httl", ["u": reply.author])}
+      $!{userLabel(reply.author)}
       $!{spanHumanTime(reply.whenCreated)}
       <span>&nbsp;${reply.floorNumber}楼</span>
       <a class="btn_reply" href="javascript:;">回复</a>

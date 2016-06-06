@@ -70,10 +70,7 @@
 	min-height: 100px;
 	border-radius: 10px;
 }
-#forward-dialog *[mf-id]{
-  background-color: lightgrey;
-  padding: 2px;
-}
+
 #forward-dialog .mf-removed{
 	display: none;
 }

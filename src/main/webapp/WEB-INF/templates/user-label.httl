@@ -1,7 +1,0 @@
-#set(UserLabel u)
-#if(u != null)
-<span class="user-label" data-id="${u.id}">
-  <a class="avatar" uid="${u.id}" href="/users/${u.id}"><img src="${u.avatar}"/></a>
-  <a class="name" uid="${u.id}" href="/users/${u.id}">${u.name}</a>
-</span>
-#end

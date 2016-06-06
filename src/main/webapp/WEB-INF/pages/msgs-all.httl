@@ -36,7 +36,7 @@ $!{include("navbar.httl")}
     #for(conv : conversations)
       <div class="conversation-preview rich-bg clearfix">
         <div class="conversation-header">
-          $!{include("user-label.httl", ["u": conv.withUser])}
+          $!{userLabel(conv.withUser)}
         </div>
         <a class="last-msg" href="/messages?withUserId=${conv.withUser.id}">
           $!{spanHumanTime(conv.lastMsg.whenCreated)}

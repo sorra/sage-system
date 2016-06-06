@@ -71,10 +71,10 @@ function home_setup() {
     })
 
   // load istream
-  getStream('/read/istream')
+  getStream('/stream/i')
 
-  setInterval(funcLookNewer('/read/istream', function (stream) {
-    if (stream.items.length > 0) {
+  setInterval(funcLookNewer('/stream/i', function (resp) {
+    if (resp) {
       tipover($('.stream .newfeed').warnEmpty(), '又出现了' + stream.items.length + '组新信息')
     }
   }), 5000)
@@ -85,7 +85,7 @@ function postTweetDone() {
   $('form.post-tweet .input').val('')
   hideTagTreeInput($('.tag-plus'))
   tipover($submit, '发表成功')
-  funcLookNewer('/read/istream')()
+  funcLookNewer('/stream/i')()
 }
 
 function postTweetFail() {

@@ -12,13 +12,13 @@
 $!{include("navbar.httl")}
   <div id="container" class="container background-silver">
     <a class="do-change" href="/tag-changes/${tag.id}/do-change">我要修改</a>
-    $!{include("tag-label.httl", ["each": tag])}
+    $!{tagLabel(tag))}
     <h3>${tag.name} - 的修改申请</h3>
     #for(req : reqs)
       <div class="tag-change-request" data-id="${req.id}">
         <div>编号: ${req.id}</div>
-        <div>发起者: $!{include("user-label.httl", ["u": req.submitter])}</div>
-        <div>处理者: $!{include("user-label.httl", ["u": req.transactor])}</div>
+        <div>发起者: $!{userLabel(req.submitter)}</div>
+        <div>处理者: $!{userLabel(req.transactor)}</div>
         <div>状态: <span class="status">${req.status}</span></div>
         <div>描述: ${req.desc}</div>
         #if(req.statusKey == "PENDING")

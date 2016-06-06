@@ -39,13 +39,13 @@ $!{include("navbar.httl")}
       <div>子标签
         <div>
           #for(each : coreTags)
-            $!{include("tag-label.httl")}
+            $!{tagLabel(each)}
           #end
         </div>
         <hr style="margin: 5px;"/>
         <div>
           #for(each : nonCoreTags)
-            $!{include("tag-label.httl")}
+            $!{tagLabel(each)}
           #end
         </div>
       </div>
@@ -53,7 +53,7 @@ $!{include("navbar.httl")}
       <div>关联标签
         <div>
           #for(each : sameNameTags)
-            $!{include("tag-label.httl")}
+            $!{tagLabel(each)}
           #end
         </div>
       </div>
@@ -62,7 +62,7 @@ $!{include("navbar.httl")}
       <div>同名标签
         <div>
           #for(each : sameNameTags)
-            $!{include("tag-label.httl")}
+            $!{tagLabel(each)}
           #end
         </div>
       </div>

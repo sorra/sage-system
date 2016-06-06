@@ -22,7 +22,7 @@ $!{include("navbar.httl")}
   <div id="container" class="container">
     #for(each : notifications)
     <div class="notif" data-id="${each.id}">
-      $!{include("user-label.httl", ["u": each.sender])}
+      $!{userLabel(each.sender)}
       ${each.desc}
       #if(each.source.length > 0)<a href="${each.source}">${each.source}</a>#end
       <div>${humanTime(each.time)}</div>

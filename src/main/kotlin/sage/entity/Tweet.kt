@@ -12,7 +12,7 @@ class Tweet : BaseModel {
 
   @Column(columnDefinition = "TEXT", length = 65535)
   @Lob @Basic
-  var content: String? = null
+  var content: String = ""
     get() = if (deleted) "" else field
 
   @ManyToOne(optional = false)
@@ -59,12 +59,13 @@ class Tweet : BaseModel {
 
   fun hasOrigin() = originId > 0
 
-  fun midForwards(): MidForwards? = try {
-    midForwardsJson?.run { MidForwards.fromJson(this) }
-  } catch (e: Exception) {
-    log.error("midForwards cannot be deserialized from JSON", e)
-    MidForwards().apply { xs.add(MidForward(0, "//?")) }
-  }
+  fun midForwards(): MidForwards? =
+    try {
+      midForwardsJson?.run { MidForwards.fromJson(this) }
+    } catch (e: Exception) {
+      log.error("midForwards cannot be deserialized from JSON", e)
+      MidForwards().apply { xs.add(MidForward(0, 0, "", "")) }
+    }
 
   @Suppress("NAME_SHADOWING")
   companion object : Find<Long, Tweet>() {

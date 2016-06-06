@@ -1,0 +1,41 @@
+#set(TweetView t = tweet)
+#set(UserSelf userSelf)
+
+#if(isForward) #set(cls = 't-forward')
+#else(isOrigin) #set(cls = 't-origin')
+#else #set(cls = 'stream-item')
+#end
+<div class="tweet ${cls}" tweet-id="${t.id}" author-id="${t.authorId}">
+  #if(!isOrigin)
+  <a class="avatar" $!{userLinkAttrs(t.authorId)}><img src="${t.avatar}"/></a>
+  #end
+  <div class="tweet-body">
+    <a class="author-name" $!{userLinkAttrs(t.authorId)}>${t.authorName}</a>
+    <div>
+      #set(reformedContent = t.content.reformMention())
+      <span class="tweet-content">$!{reformedContent}</span>
+      <span mf-id="${t.id}" style="display: none"> ||<a>@${t.authorName}</a>: $!{reformedContent}</span>
+      #if(t.midForwards)#for(MidForward x : t.midForwards.xs)
+      <span mf-id="${x.id}"> ||$!{('@'+x.authorName+'#'+x.authorId.toString+' : '+x.content).reformMention()}</span>
+      #end#end
+    </div>
+    #if(origin)
+      $!{include("tweet.httl", ['tweet': t.origin, 'isOrigin': true])}
+    #end
+    <div>
+      <a href="/tweets/${t.id}">$!{spanHumanTime(t.time)}</a>
+      <span class="tags">
+        #for(each : (t.origin ? t.origin.tags : t.tags))
+          $!{tagLabel(each)}
+        #end
+      </span>
+      <span class="tweet-ops pull-right">
+        #if(userSelf && userSelf.id == t.authorId)
+        <a class="delete" href="javascript:;" style="margin-left: 0.5em; margin-right: 0.5em">删除</a>
+        #end
+        <a class="forward" href="javascript:;">转发${showCount(t.forwardCount)}</a>
+        <a class="comment" href="javascript:;">评论${showCount(t.commentCount)}</a>
+      </span>
+    </div>
+  </div>
+</div>

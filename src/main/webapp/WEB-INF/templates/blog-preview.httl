@@ -5,11 +5,11 @@
   <p class="summary">${blog.summary}</p>
   <div class="tags">
     #for(each : blog.tags)
-    $!{include("tag-label.httl")}
+    $!{tagLabel(each)}
     #end
   </div>
   <div class="metadata-row">
-    $!{include("user-label.httl", ["u": blog.author])}
+    $!{userLabel(blog.author)}
     $!{spanHumanTime(blog.whenCreated)}
     #if(blog.likes > 0)
       <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true">${blog.likes}</span>

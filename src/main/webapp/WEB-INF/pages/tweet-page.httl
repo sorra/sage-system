@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+#set(TweetView tweet)
+<head>
+<meta charset="UTF-8">
+<title>微博 - 轻境界</title>
+$!{allcss}
+</head>
+<body>
+$!{include("navbar.httl")}
+<div class="container">
+  $!{include("tweet.httl")}
+</div>
+$!{alljs}
+$!{includeProto}
+<script>
+setup(stream_setup, humanTime_setup, user_setup)
+</script>
+</body>
+</html>

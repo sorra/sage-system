@@ -25,10 +25,10 @@ open class PageController @Autowired constructor(
   }
 
   @RequestMapping("/tweets/{id}")
-  open fun tweetPage(@PathVariable id: Long, model: ModelMap): String {
-    val tc = tweetReadService.getTweetView(id)!!
-    FrontMap.from(model).attr("tc", tc)
-    return "tweet"
+  open fun tweetPage(@PathVariable id: Long): ModelAndView {
+    val tweet = tweetReadService.getTweetView(id)
+        ?: return ModelAndView("forward:/not-found")
+    return ModelAndView("tweet-page").addObject("tweet", tweet)
   }
 
   @RequestMapping("/test")

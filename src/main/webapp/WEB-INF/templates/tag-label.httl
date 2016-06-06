@@ -1,6 +1,0 @@
-#set(TagLabel tag = each)
-#set(href = "/tags/" + tag.id.toString)
-<a class="tag-label btn btn-default btn-xs" href="javascript:;" tag-id="${tag.id}" title="${tag.chainStr}"
-   data-toggle="tooltip" onclick="window.open('${href}')">
-  ${tag.name}
-</a>
