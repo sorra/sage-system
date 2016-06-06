@@ -18,8 +18,10 @@
               </div>
             </form>
           </td>
-          <td class="nav-links" width="570" align="right" style="padding-top: 2px;">
+          <td>
             <a id="nav-tags" href="javascript:;">标签<span class="glyphicon glyphicon-tags"></span></a>
+          </td>
+          <td class="nav-links" width="570" align="right" style="padding-top: 2px;">
             <a href="/home"><span class="glyphicon glyphicon-home" title="Home"></span></a>
             <a href="/topics">帖子</a>
             <a href="/blogs">博客</a>
@@ -103,7 +105,7 @@
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal">&times;</button>
         <h4 class="modal-title">转发</h4>
-        <div class="mid-forwards"></div>
+        <div class=""></div>
       </div>
       <div class="modal-body">
         <textarea class="input"></textarea>

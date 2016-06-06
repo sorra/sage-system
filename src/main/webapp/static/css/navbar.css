@@ -22,19 +22,19 @@
   margin: 0 auto 0 auto;
 }
 
-.nav-links a{
+.nav-links a, #nav-tags{
   color: #999;
   text-decoration: none;
   margin-right: 5px;
 }
-.nav-links a:hover{
+.nav-links a:hover, #nav-tags:hover{
   color: #fff;
   background-color: transparent;
 }
 
 #nav-tags{
   position: relative;
-  right: 18em;
+  right: -3em;
 }
 
 .nav-brand{

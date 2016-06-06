@@ -28,7 +28,7 @@ $!{include("navbar.httl")}
 		#if(blog.whenModified)
 		修改于 $!{spanHumanTime(blog.whenModified)}
 		#end
-		浏览数${blog.views}
+		阅读数${blog.views}
 		#if(userSelf.id == blog.author.id)
 		<a href="/blogs/$!{blog.id}/edit"><span class="glyphicon glyphicon-edit">编辑</span></a>
 		#end
