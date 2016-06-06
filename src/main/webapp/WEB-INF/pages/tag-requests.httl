@@ -12,7 +12,7 @@
 $!{include("navbar.httl")}
   <div id="container" class="container background-silver">
     <a class="do-change" href="/tag-changes/${tag.id}/do-change">我要修改</a>
-    $!{tagLabel(tag))}
+    $!{tagLabel(tag)}
     <h3>${tag.name} - 的修改申请</h3>
     #for(req : reqs)
       <div class="tag-change-request" data-id="${req.id}">
