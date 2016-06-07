@@ -186,7 +186,7 @@ function createCommentList(tweetId, retach) {
 
   $.get('/read/'+tweetId+'/comments')
     .done(function(resp){
-      $.each(resp, function(idx, item){
+      resp.forEach(function(item){
         $(renderTmpl('tmpl-tweet-comment', item)).appendTo($list)
       })
       $loading.text('评论')

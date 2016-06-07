@@ -92,14 +92,14 @@ function setupFollowDialog(){
     var $body = $this.find('.modal-body').empty()
     var uc = $this.data('usercard')
     if (!uc) {throw new Error}
-    $.each(uc.tags, function(idx, item){
+    uc.tags.forEach(function(item){
       var $tagBtn = $('<button>').text(item.name).attr('tag-id', item.id).addClass('btn').appendTo($body)
         .click(function(){
           $(this).toggleClass('btn-success');
         });
       if (uc.follow) {
         console.info('followed tag ids: '+uc.follow.tagIds);
-        if ($.inArray(item.id, uc.follow.tagIds) >= 0) {
+        if (uc.follow.tagIds.indexOf(item.id) >= 0) {
           $tagBtn.addClass('btn-success');
         }
       }
