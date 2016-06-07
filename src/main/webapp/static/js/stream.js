@@ -216,7 +216,7 @@ function stream_setupListeners() {
   $doc.delegate('a[uid]', 'mouseenter', launchUcOpener).delegate('a[uid]', 'mouseleave', launchUcCloser)
   $doc.delegate('.tweet-ops .forward', 'click', function() {
     var $tweet = $(this).parents('.tweet').warnEmpty()
-    $('#forward-dialog').data('tweet', $tweet).modal('show')
+    $('#forward-dialog').data('tweet', $tweet).modal({backdrop: false})
   })
   $doc.delegate('.tweet-ops .comment', 'click', commentDialog)
   //TODO deleteDialogEach is not done yet
