@@ -57,24 +57,19 @@ class TopicStat (
     fun get(id: Long) = getNonNull(TopicStat::class, id)
 
     fun like(id: Long, userId: Long) {
-      if (Liking.find(userId, Liking.TOPIC, id) == null) {
-        Liking(userId, Liking.TOPIC, id).save()
-        Ebean.createUpdate(TopicStat::class.java, "update topicStat set likes = likes+1 where id = :id")
-            .setParameter("id", id).execute()
-      }
+      Liking.like(userId, Liking.TOPIC, id, TopicStat::class.java, "topicStat")
+      TopicStat.get(id).update()
     }
 
     fun unlike(id: Long, userId: Long) {
-      Liking.find(userId, Liking.TOPIC, id)?.apply {
-        delete()
-        Ebean.createUpdate(TopicStat::class.java, "update topicStat set likes = likes-1 where id = :id")
-            .setParameter("id", id).execute()
-      }
+      Liking.unlike(userId, Liking.TOPIC, id, TopicStat::class.java, "topicStat")
+      TopicStat.get(id).update()
     }
 
     fun incViews(id: Long) {
       Ebean.createUpdate(TopicStat::class.java, "update topicStat set views = views+1 where id = :id")
-          .setParameter("id", id).execute()
+          .setParameter("id", id)
+          .execute()
       byId(id)?.apply {
         if (views % 10 == 0) update()
       }

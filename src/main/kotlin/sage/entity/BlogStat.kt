@@ -47,19 +47,13 @@ class BlogStat (
     fun get(id: Long) = getNonNull(BlogStat::class, id)
 
     fun like(id: Long, userId: Long) {
-      if (Liking.find(userId, Liking.BLOG, id) == null) {
-        Liking(userId, Liking.BLOG, id).save()
-        Ebean.createUpdate(BlogStat::class.java, "update blogStat set likes = likes+1 where id = :id")
-            .setParameter("id", id).execute()
-      }
+      Liking.like(userId, Liking.BLOG, id, BlogStat::class.java, "blogStat")
+      BlogStat.get(id).update()
     }
 
     fun unlike(id: Long, userId: Long) {
-      Liking.find(userId, Liking.BLOG, id)?.apply {
-        delete()
-        Ebean.createUpdate(BlogStat::class.java, "update blogStat set likes = likes-1 where id = :id")
-            .setParameter("id", id).execute()
-      }
+      Liking.unlike(userId, Liking.BLOG, id, BlogStat::class.java, "blogStat")
+      BlogStat.get(id).update()
     }
 
     fun incViews(id: Long) {
