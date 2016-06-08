@@ -38,7 +38,7 @@ $!{include("navbar.httl")}
       #if(reply.toUser)
       <span style="color: gray">回复 ${reply.toUser.name}:</span>
       #end
-      <div>$!{reply.content}</div>
+      <div class="content">$!{reply.content}</div>
       $!{userLabel(reply.author)}
       $!{spanHumanTime(reply.whenCreated)}
       <span>&nbsp;${reply.floorNumber}楼</span>
@@ -57,8 +57,10 @@ $!{alljs}
 <script>
 setup(humanTime_setup, tag_setup, user_setup)
 $(document).ready(function() {
-  var $content = $('.content').warnEmpty();
-  $content.html(marked($content.text()));
+  $('.content').warnEmpty().each(function(){
+    var $this = $(this)
+    $this.html(marked($this.text()))
+  });
 
   $(document).on('click', '.btn_reply', function(){
     var $rb = $('#reply_box')

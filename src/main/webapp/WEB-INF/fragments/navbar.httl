@@ -4,11 +4,8 @@
     <div style="padding-top: 6px;">
       <table cellpadding="0" cellspacing="0" border="0" width="100%">
         <tbody><tr>
-          <td width="100" align="left">
-            <a class="nav-brand" href="/">
-              <!--<img src="/static/img/logo.png" border="0" align="default" alt="轻境界" width="90" height="30">-->
-              Q 轻境界
-            </a>
+          <td width="80" align="left">
+            <a class="nav-brand" href="/">轻境界</a>
           </td>
           <td width="auto" align="left">
             <form id="search" action="/search" method="get" accept-charset="UTF-8">

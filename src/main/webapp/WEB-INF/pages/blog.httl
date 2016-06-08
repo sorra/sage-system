@@ -51,8 +51,10 @@ $!{alljs}
 <script type="text/javascript">
 	setup(stream_setup, humanTime_setup, tag_setup, user_setup)
 	$(document).ready(function() {
-		var $content = $('.content').warnEmpty();
-		$content.html(marked($content.text()));
+		$('.content').warnEmpty().each(function(){
+			var $this = $(this)
+			$this.html(marked($this.text()))
+		});
 
 		btnLike_init('/blogs/'+$('#id').text())
 
