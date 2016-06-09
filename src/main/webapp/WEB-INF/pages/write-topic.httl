@@ -6,7 +6,7 @@
 <title>发帖</title>
 $!{allcss}
 <style type="text/css">
-.topic {
+#topic {
   width: 100%;
 	margin: 20px;
 }

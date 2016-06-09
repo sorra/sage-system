@@ -7,11 +7,6 @@
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   <title>博客列表</title>
   $!{allcss}
-  <style type="text/css">
-    #container{
-      background-color: #F0F0F0;
-    }
-  </style>
 </head>
 <body>
 $!{include("navbar.httl")}

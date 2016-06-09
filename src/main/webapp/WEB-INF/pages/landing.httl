@@ -45,6 +45,7 @@ $!{include("navbar.httl")}
       $!{include("blog-preview.httl")}
     #end
   </div>
+  $!{include("footer.httl")}
 </div>
 $!{includeProto}
 $!{alljs}

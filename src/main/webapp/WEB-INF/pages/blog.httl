@@ -9,9 +9,6 @@
 	<title>${blog.title}</title>
 	$!{allcss}
 	<style type="text/css">
-	#container{
-		background-color: #F0F0F0;
-	}
 	.title, .content, .tweets{
 		border: 1px solid #eee;
 	}
