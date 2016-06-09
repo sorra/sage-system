@@ -11,29 +11,35 @@ $(document).ready(function(){
 
   if ($('#user-self-json').length > 0) {
     window.userSelf = $.parseJSON($('#user-self-json').text());
-    $.get("/notifications/unread-counts").done(function(data){
-      var notifCountLines = []
-      parseNotifCount('FORWARDED', data, notifCountLines)
-      parseNotifCount('COMMENTED', data, notifCountLines)
-      parseNotifCount('REPLIED', data, notifCountLines)
-      parseNotifCount('MENTIONED_TWEET', data, notifCountLines)
-      parseNotifCount('MENTIONED_COMMENT', data, notifCountLines)
-      parseNotifCount('FOLLOWED', data, notifCountLines)
-      var notifCountHtml = ''
-      for (var i in notifCountLines) {
-        notifCountHtml += '<a href="/notifications/unread" style="display: block">'+notifCountLines[i]+'</a>'
-      }
-      if (notifCountHtml.length > 0) {
-        $('#nav-user').popover({
-          html: true,
-          placement: 'bottom',
-          trigger: 'manual',
-          selector: '#notif-count-popover',
-          container: 'body',
-          content: notifCountHtml
-        }).popover('show')
-      }
-    })
+
+    var uri = window.location.toString()
+    var idxOfQueMark = uri.indexOf('?')
+    if(idxOfQueMark >= 0) uri = uri.substring(0, idxOfQueMark)
+    if (uri.indexOf('/notifications') < 0) {
+      $.get("/notifications/unread-counts").done(function (data) {
+        var notifCountLines = []
+        parseNotifCount('FORWARDED', data, notifCountLines)
+        parseNotifCount('COMMENTED', data, notifCountLines)
+        parseNotifCount('REPLIED', data, notifCountLines)
+        parseNotifCount('MENTIONED_TWEET', data, notifCountLines)
+        parseNotifCount('MENTIONED_COMMENT', data, notifCountLines)
+        parseNotifCount('FOLLOWED', data, notifCountLines)
+        var notifCountHtml = ''
+        for (var i in notifCountLines) {
+          notifCountHtml += '<a href="/notifications/unread" style="display: block">' + notifCountLines[i] + '</a>'
+        }
+        if (notifCountHtml.length > 0) {
+          $('#nav-user').popover({
+            html: true,
+            placement: 'bottom',
+            trigger: 'manual',
+            selector: '#notif-count-popover',
+            container: 'body',
+            content: notifCountHtml
+          }).popover('show')
+        }
+      })
+    }
   }
 
   if ($('#tag-tree-json').length > 0) {
