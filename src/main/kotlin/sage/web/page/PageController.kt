@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.servlet.ModelAndView
 import sage.service.TweetReadService
 import sage.service.UserService
+import sage.transfer.CommentView
 import sage.web.auth.Auth
 import sage.web.context.FrontMap
 
@@ -29,6 +30,12 @@ open class PageController @Autowired constructor(
     val tweet = tweetReadService.getTweetView(id)
         ?: return ModelAndView("forward:/not-found")
     return ModelAndView("tweet-page").addObject("tweet", tweet)
+  }
+
+  @RequestMapping("/tweets/{id}/comments")
+  open fun comments(@PathVariable id: Long) : ModelAndView {
+    val comments = tweetReadService.getComments(id).map { CommentView(it) }
+    return ModelAndView("comment-list").addObject("comments", comments)
   }
 
   @RequestMapping("/test")

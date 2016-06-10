@@ -46,7 +46,7 @@ $!{include("navbar.httl")}
     #end
   #end
 </div>
-$!{includeProto}
+
 $!{alljs}
 <script>
   $(document).on('click', '.heed_follow_list', function(){

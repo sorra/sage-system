@@ -52,7 +52,7 @@ $!{include("navbar.httl")}
     <button class="btn btn-sm" type="submit" style="margin-left: 10px">发送</button>
   </div>
 </div>
-$!{includeProto}
+
 $!{alljs}
 <script>
   window.msgIds = {}

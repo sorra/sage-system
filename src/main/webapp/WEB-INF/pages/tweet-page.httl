@@ -12,7 +12,7 @@ $!{include("navbar.httl")}
   $!{include("tweet.httl")}
 </div>
 $!{alljs}
-$!{includeProto}
+
 <script>
 setup(stream_setup, humanTime_setup, user_setup)
 </script>

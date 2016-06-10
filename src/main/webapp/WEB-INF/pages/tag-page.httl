@@ -90,7 +90,7 @@ $!{include("navbar.httl")}
 	</div>
 	<div class="footer"></div>
 </div>
-$!{includeProto}
+
 $!{alljs}
 <script type="text/javascript">
 setup(humanTime_setup, tag_setup, stream_setup, user_setup)

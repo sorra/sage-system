@@ -32,7 +32,7 @@ $!{include("navbar.httl")}
       </form>
     </div>
   </div>
-$!{includeProto}
+
 $!{alljs}
 <script>
   setup(function(){

@@ -97,7 +97,6 @@ javascript.source {
       exclude "vue*.js"
       exclude "bootstrap.js"
       exclude "plugins.js"
-      exclude "marked-highlight*.js"
     }
   }
 }

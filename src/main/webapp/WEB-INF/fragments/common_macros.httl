@@ -1,17 +1,13 @@
-#macro($includeProto)
-  $!{include('stream.tmpl.httl')}
-#end
-
 #macro(allcss)
 <link href="/static/css/bootstrap.css" rel="stylesheet" type="text/css"/>
 <link href="/static/css/all.css" rel="stylesheet" type="text/css"/>
 #end
 
 #macro(alljs)
+$!{include("tmpl.httl")}
 <script src="/static/js/jquery-1.12.4.min.js" type="text/javascript"></script>
 <script src="/static/js/bootstrap.js" type="text/javascript"></script>
 <script src="/static/js/plugins.js" type="text/javascript"></script>
-<script src="/static/js/marked-highlight.min.js" type="text/javascript"></script>
 <script src="/static/js/all.js" type="text/javascript"></script>
 #end
 

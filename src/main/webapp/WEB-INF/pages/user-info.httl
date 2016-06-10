@@ -24,7 +24,7 @@ $!{include("navbar.httl")}
   </form>
   <a href="/change-password">修改密码</a>
 </div>
-$!{includeProto}
+
 $!{alljs}
 </body>
 </html>

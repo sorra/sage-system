@@ -17,7 +17,7 @@ $!{include("navbar.httl")}
 	$!{include("user-card.httl")}
 #end
 </div>
-$!{includeProto}
+
 $!{alljs}
 <script>
 	setup(user_setup, followings_setup)

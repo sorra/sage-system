@@ -29,7 +29,7 @@ $!{include("navbar.httl")}
     </div>
     #end
   </div>
-$!{includeProto}
+
 $!{alljs}
 <script>
   // mark-read after 1 second

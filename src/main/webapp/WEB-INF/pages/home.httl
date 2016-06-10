@@ -46,7 +46,7 @@ $!{include("navbar.httl")}
 	</div>
 	$!{include("footer.httl")}
 </div>
-$!{includeProto}
+
 $!{alljs}
 <script>
 setup(home_setup, stream_setup, humanTime_setup, tag_setup, user_setup)

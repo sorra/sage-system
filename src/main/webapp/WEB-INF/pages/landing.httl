@@ -47,7 +47,7 @@ $!{include("navbar.httl")}
   </div>
   $!{include("footer.httl")}
 </div>
-$!{includeProto}
+
 $!{alljs}
 <script>
   setup(humanTime_setup)

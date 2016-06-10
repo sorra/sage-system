@@ -31,7 +31,7 @@ $!{include("navbar.httl")}
   #end
   </div>
 </div>
-$!{includeProto}
+
 $!{alljs}
 <script>
 setup(user_setup)

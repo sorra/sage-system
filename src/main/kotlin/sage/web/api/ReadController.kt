@@ -10,7 +10,7 @@ import sage.domain.commons.Edge
 import sage.service.StreamService
 import sage.service.TransferService
 import sage.service.TweetReadService
-import sage.transfer.CommentCard
+import sage.transfer.CommentView
 import sage.transfer.Stream
 import sage.transfer.TweetView
 import sage.web.auth.Auth
@@ -32,10 +32,5 @@ open class ReadController {
   @RequestMapping("/{tweetId}/forwards")
   open fun forwards(@PathVariable tweetId: Long?): Collection<TweetView> {
     return transfers!!.toTweetViews(tweetReadService!!.getForwards(tweetId!!), false, false)
-  }
-
-  @RequestMapping("/{tweetId}/comments")
-  open fun comments(@PathVariable tweetId: Long?): Collection<CommentCard> {
-    return CommentCard.listOf(tweetReadService!!.getComments(tweetId!!))
   }
 }

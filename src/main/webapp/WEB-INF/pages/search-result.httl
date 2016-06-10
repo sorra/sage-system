@@ -17,7 +17,7 @@ $!{include("navbar.httl")}
 <div id="container" class="container">
 	<div id="result-list"></div>
 </div>
-$!{includeProto}
+
 $!{alljs}
 </body>
 </html>

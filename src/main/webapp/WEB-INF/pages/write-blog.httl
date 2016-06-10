@@ -53,7 +53,7 @@ $!{include("navbar.httl")}
 	</form>
 </div>
 <div class="footer"></div>
-$!{includeProto}
+
 $!{alljs}
 <script>
 	setup(tag_setup, writeBlog_setup)

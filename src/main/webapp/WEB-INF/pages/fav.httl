@@ -28,7 +28,7 @@ $!{include("navbar.httl")}
     </div>
   </div>
 </div>
-$!{includeProto}
+
 $!{alljs}
 <script>
 $(document).ready(function(){

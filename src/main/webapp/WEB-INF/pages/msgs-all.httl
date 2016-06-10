@@ -60,7 +60,7 @@ $!{include("navbar.httl")}
     #end
   </div>
 </div>
-$!{includeProto}
+
 $!{alljs}
 </body>
 </html>

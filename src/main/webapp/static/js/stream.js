@@ -3,13 +3,6 @@
 function stream_setup() {
   setupForwardDialog()
   stream_setupListeners()
-
-  template.helper('userLinkAttrs', function(userId){
-    return "uid=\""+userId+"\" href=\"/users/"+userId+"\""
-  })
-  template.helper('showTime', function(time){
-    return humanTime_compute(parseInt(time))
-  })
 }
 
 function getStream(url) {
@@ -138,63 +131,61 @@ function deleteDialogEach() {
   commonConfirmPopover($(this), function(){doDelete(tweetId)}, '确认要删除吗？', 'left')
 }
 
-function commentDialog(){
-  var $this = $(this)
-  var $tc = $this.parents('.tweet')
-  var tweetId = $tc.attr('tweet-id')
-  var clKey = 'comment-list'
-  var $cl = $this.data(clKey)
+function toggleComments(){
+  var $tweet = $(this).parents('.tweet')
+  var tweetId = $tweet.attr('tweet-id')
 
-  if ($cl) {
-    $cl.remove()
-    $this.removeData(clKey)
-  } else {
-    var retach = function($commentList){
-      var $clOld = $this.data(clKey)
-      if ($clOld) {
-        $clOld.remove()
-      }
-      var $clNew = $commentList.appendTo($tc.find('.tweet-body'))
-      $this.data(clKey, $clNew)
+  var $box = $tweet.find('.comments-box')
+  if ($box.length) {
+    if ($box.data('hidden')) {
+      $box.show()
+      $box.data('hidden', false)
+      loadComments(tweetId, $box)
+    } else {
+      $box.hide()
+      $box.data('hidden', true)
     }
-    retach(createCommentList(tweetId, retach))
+  } else {
+    createCommentsBox(tweetId).appendTo($tweet.find('.tweet-body'))
   }
 }
 
-function createCommentList(tweetId, retach) {
-  var $cl = $('#tmpl-comment-dialog').children().clone()
-  var $input = $cl.find('textarea').on('keyup', textareaAutoResize)
+function createCommentsBox(tweetId) {
+  var $box = $('#tmpl-comments-box').children().clone()
+  var $input = $box.find('textarea').on('keyup', textareaAutoResize)
   function postComment(forward){
     $.post('/post/comment', {
       content: $input.val(), sourceId: tweetId, forward: forward
     }).success(function(){
       console.info('Post comment success, retach the list.')
-      retach(createCommentList(tweetId, retach))
+      loadComments(tweetId, $box)
     })
     $input.val('')
   }
 
-  $cl.find('.btn_forw_and_comm').click(function(){
+  $box.find('.btn_forw_and_comm').click(function(){
     postComment(true)
   })
-  $cl.find('.btn_comment').click(function(){
+  $box.find('.btn_comment').click(function(){
     postComment(false)
   })
 
-  var $loading = $cl.find('.loading')
-  var $list = $cl.find('.comment-list')
+  loadComments(tweetId, $box)
+  return $box
+}
 
-  $.get('/read/'+tweetId+'/comments')
+function loadComments(tweetId, $box) {
+  var $loading = $box.find('.loading')
+  var $list = $box.find('.comment-list')
+
+  $.get('/tweets/'+tweetId+'/comments')
     .done(function(resp){
-      resp.forEach(function(item){
-        $(renderTmpl('tmpl-tweet-comment', item)).appendTo($list)
-      })
+      $list.replaceWith($(resp))
       $loading.text('评论')
     })
     .fail(function(){
       $loading.text('评论加载失败')
     })
-  return $cl
 }
 
 function setupForwardDialog() {
@@ -218,7 +209,7 @@ function stream_setupListeners() {
     var $tweet = $(this).parents('.tweet').warnEmpty()
     $('#forward-dialog').data('tweet', $tweet).modal({backdrop: false})
   })
-  $doc.delegate('.tweet-ops .comment', 'click', commentDialog)
+  $doc.delegate('.tweet-ops .comment', 'click', toggleComments)
   //TODO deleteDialogEach is not done yet
   $doc.delegate('.tweet-ops .delete', 'click', deleteDialogEach)
 
