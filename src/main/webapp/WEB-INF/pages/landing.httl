@@ -17,11 +17,6 @@
       max-width: 220px;
       border-radius: 5px;
     }
-    .interlayer{
-      text-align: center;
-      min-height: 20px;
-      border-bottom: 1px solid #aaa;
-    }
   </style>
 </head>
 <body>
@@ -38,7 +33,6 @@ $!{include("navbar.httl")}
       $!{include("topic-preview.httl")}
     #end
   </div>
-  <div class="interlayer"></div>
   <div class="blog-list">
     <h2 class="heading-hot">博客精选</h2>
     #for(blog : blogs)
