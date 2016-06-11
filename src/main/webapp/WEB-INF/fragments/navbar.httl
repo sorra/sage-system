@@ -71,12 +71,12 @@
           名字 <input name="name" />
         </div>
         <div>
-          母标签id <input name="parentId" />
+          上一级标签 <input name="parentId" />
         </div>
         <div>
           显示在树上? <input name="isCore" type="checkbox" checked/>
         </div>
-        <span style="color: gray">建议只让人们常用的标签显示在树上。如果每个标签都显示，太占屏幕空间。</span>
+        <span style="color: gray">建议只让人们常用的标签显示在树上。如果每个标签都显示，屏幕空间不够用。</span>
       </div>
       <div class="modal-footer">
         <button class="submit btn btn-primary pull-right">确定</button>

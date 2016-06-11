@@ -57,7 +57,12 @@ function buildNavTagTree($lnk, tagTree) {
   var $navTagTree = $('<div>')
   var $createTag = $('<button class="create-tag btn btn-warning">新建</button>').appendTo($navTagTree)
 
-  var $dialog = $('#new-tag-dialog')
+  var $parentInput = $('#new-tag-dialog').find('input[name=parentId]')
+
+  $parentInput.each(tagCompleteInitFunc(function(tag){
+    this.value = tag.id
+  }))
+  $parentInput.on('input', tagCompleteHandlerOnInput)
 
   $(document).delegate('#new-tag-dialog .submit', 'click', function() {
     var $dialog = $('#new-tag-dialog')
@@ -72,12 +77,15 @@ function buildNavTagTree($lnk, tagTree) {
     }
     $dialog.find('input[name=name]').val('')
     $dialog.find('input[name=parentId]').val('')
-    $dialog.find('input[name=isCore]').removeAttr('checked')
     $dialog.modal('hide')
   })
 
   $(document).delegate('.create-tag', 'click', function(){
-    $('#new-tag-dialog').modal('show')
+    if (window.userSelf) {
+      $('#new-tag-dialog').modal('show')
+    } else {
+      tipover($(this), '需要登录')
+    }
   })
 
   tag_tree(tagTree).appendTo($navTagTree)

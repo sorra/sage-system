@@ -137,7 +137,20 @@ function tag_input_init() {
 	  $(this).parents('.tag-input').find('.tag-sel').removeClass('btn-success')
 	})
 
-	$('.tag-complete').each(function(){
+	$('.tag-complete').each(tagCompleteInitFunc(function(tag){
+		var $tagInput = $(this).parents('.tag-input')
+		var $selsBeenThere = $tagInput.find('.tag-sel-list .tag-sel[tag-id=' + tag.id + ']')
+		if ($selsBeenThere.length == 0) {
+			tag_createTagSel(tag).appendTo($tagInput.find('.added-tags')).each(tagSelClick)
+		} else {
+			$selsBeenThere.each(tagSelClick)
+		}
+	}))
+	$(document).delegate('.tag-complete', 'input', tagCompleteHandlerOnInput)
+}
+
+function tagCompleteInitFunc(callback){
+	return function() {
 		var comp = new Awesomplete(this, {
 			minChars: 1,
 			list: [],
@@ -147,37 +160,32 @@ function tag_input_init() {
 				var list = $input.data('comp')._list
 				var tag = tag_findValueByLabel(chosen, list)
 				if (tag) {
-					var $tagInput = $input.parents('.tag-input')
-					var $selsBeenThere = $tagInput.find('.tag-sel-list .tag-sel[tag-id=' + tag.id + ']')
-					if ($selsBeenThere.length == 0) {
-						tag_createTagSel(tag).appendTo($tagInput.find('.added-tags')).each(tagSelClick)
-					} else {
-						$selsBeenThere.each(tagSelClick)
-					}
+					callback.apply(this.input, [tag])
 				}
 			}
 		})
 		$(this).data('comp', comp)
-	})
-	$(document).delegate('.tag-complete', 'input', function(){
-		var $input = $(this)
-		var list = $input.data('comp')._list
-		var inputVal = $input.val().trim()
-		if (inputVal && inputVal.length > 0 && inputVal != $input.data('q')) {
-			$input.data('q', inputVal)
-			$.get('/tag/suggestions', {q: inputVal}).done(function(tags){
-				for (var i in tags) {
-					var tag = tags[i]
-					if (!tag_findValueByLabel(tag.chainStr, list)) {
-						list.push({label: tag.chainStr, value: tag})
-					}
+	}
+}
+
+function tagCompleteHandlerOnInput(){
+	var $input = $(this)
+	var list = $input.data('comp')._list
+	var inputVal = $input.val().trim()
+	if (inputVal && inputVal.length > 0 && inputVal != $input.data('q')) {
+		$input.data('q', inputVal)
+		$.get('/tag/suggestions', {q: inputVal}).done(function(tags){
+			for (var i in tags) {
+				var tag = tags[i]
+				if (!tag_findValueByLabel(tag.chainStr, list)) {
+					list.push({label: tag.chainStr, value: tag})
 				}
-				$input.data('comp').evaluate()
-			}).fail(function(msg){
-				tipover($input, '发生异常: '+msg)
-			})
-		}
-	})
+			}
+			$input.data('comp').evaluate()
+		}).fail(function(msg){
+			tipover($input, '发生异常: '+msg)
+		})
+	}
 }
 
 function tag_findValueByLabel(label, list) {
