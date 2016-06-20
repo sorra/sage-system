@@ -63,7 +63,7 @@ class BlogService
   }
 
   private fun Blog.escapeAndSetText(): Blog {
-    content = Markdown.addBlankRow(content)
+//    content = Markdown.addBlankRow(content)
     return this
   }
 

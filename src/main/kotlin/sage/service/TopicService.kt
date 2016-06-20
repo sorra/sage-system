@@ -81,10 +81,10 @@ class TopicService
   }
 
   private fun processContent(content: String): Pair<String, HashSet<Long>> {
-    var content = Markdown.addBlankRow(content)
+//    var text = Markdown.addBlankRow(content)
     val mentionedIds = HashSet<Long>()
-    content = ReplaceMention.with { User.byName(it) }.apply(content, mentionedIds)
-    return Pair(content, mentionedIds)
+    val text = ReplaceMention.with { User.byName(it) }.apply(content, mentionedIds)
+    return Pair(text, mentionedIds)
   }
 
   fun byBelongTag(belongTagId: Long) = TopicPost.where()
