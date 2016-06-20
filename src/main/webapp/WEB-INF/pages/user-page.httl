@@ -23,6 +23,11 @@ $!{include("navbar.httl")}
       $!{include("user-card.httl")}
     </div>
 		<div class="main">
+			<div class="blog-list">
+				#for(blog : blogs)
+				$!{include("blog-preview.httl")}
+				#end
+			</div>
 			<div class="stream">
 				<div class="slist"></div>
 			</div>
@@ -33,8 +38,12 @@ $!{include("navbar.httl")}
 
 $!{alljs}
 <script type="text/javascript">
-  setup(user_setup, stream_setup)
+  setup(user_setup, tag_setup, humanTime_setup, stream_setup)
   $(document).ready(function() {
+		$('.summary').warnEmpty().each(function(){
+      $(this).html(marked($(this).text()))
+    })
+
     var $thisUser = $('.side .user-card').css('border', '').css('border-radius', '')
     if (window.frontMap.isSelfPage) {
       $thisUser.find('.avatar').attr('href', '/user-info')

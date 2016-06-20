@@ -5,7 +5,9 @@ import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.servlet.ModelAndView
+import sage.entity.Blog
 import sage.service.UserService
+import sage.transfer.BlogPreview
 import sage.web.auth.Auth
 import sage.web.context.FrontMap
 import sage.web.context.Json
@@ -17,13 +19,15 @@ open class UserController @Autowired constructor(
 ) {
 
   @RequestMapping("/self")
-  open fun userPage() = "forward:/users/${Auth.checkUid()}"
+  open fun userPage() = "redirect:/users/${Auth.checkUid()}"
 
   @RequestMapping("/{id}")
   open fun userPage(@PathVariable id: Long): ModelAndView {
     val uid = Auth.checkUid()
     val thisUser = userService.getUserCard(uid, id)
+    val blogs = Blog.byAuthor(uid).sortedByDescending { it.whenCreated }.map { BlogPreview(it) }
     return ModelAndView("user-page").addObject("thisUser", thisUser)
+        .addObject("blogs", blogs)
         .include(FrontMap().attr("id", id).attr("isSelfPage", uid == id))
   }
 

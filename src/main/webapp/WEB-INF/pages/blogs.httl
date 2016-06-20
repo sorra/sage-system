@@ -19,7 +19,6 @@ $!{include("navbar.httl")}
 </div>
 $!{alljs}
 <script type="text/javascript">
-  console.log('blog-id: ' + $('#id').text());
   setup(stream_setup, humanTime_setup, tag_setup, user_setup)
   $(document).ready(function() {
     $('.summary').warnEmpty().each(function(){
