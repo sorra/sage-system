@@ -19,8 +19,8 @@
       <span mf-id="${x.id}"> ||$!{('@'+x.authorName+'#'+x.authorId.toString+' : '+x.content).reformMention()}</span>
       #end#end
     </div>
-    #if(origin)
-      $!{include("tweet.httl", ['tweet': t.origin, 'isOrigin': true])}
+    #if(t.origin)
+      $!{renderOrigin(t.origin)}
     #end
     <div>
       <a href="/tweets/${t.id}">$!{spanHumanTime(t.time)}</a>

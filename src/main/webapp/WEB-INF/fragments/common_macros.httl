@@ -36,3 +36,8 @@ uid="${uid}" href="/users/${uid}"
 #macro(showCount(count))
 #if(count.toInt > 0)(${count})#end
 #end
+
+<!-- tweet.httl cannot include itself directly, so we bypass with a macro -->
+#macro(renderOrigin(origin))
+$!{include("tweet.httl", ['tweet': origin, 'isOrigin': true])}
+#end
