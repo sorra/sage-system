@@ -24,5 +24,5 @@ class TransferService {
 
   fun forwardCount(originId: Long) = Tweet.forwardCount(originId)
 
-  fun commentCount(sourceId: Long) = Comment.commentsCountOfTweet(sourceId)
+  fun commentCount(sourceId: Long) = Comment.countByTweet(sourceId)
 }

@@ -131,10 +131,9 @@ function deleteDialogEach() {
   commonConfirmPopover($(this), function(){doDelete(tweetId)}, '确认要删除吗？', 'left')
 }
 
-function toggleComments(){
+function toggleTweetComments(){
   var $tweet = $(this).parents('.tweet')
   var tweetId = $tweet.attr('tweet-id')
-
   var $box = $tweet.find('.comments-box')
   if ($box.length) {
     if ($box.data('hidden')) {
@@ -146,19 +145,19 @@ function toggleComments(){
       $box.data('hidden', true)
     }
   } else {
-    createCommentsBox(tweetId).appendTo($tweet.find('.tweet-body'))
+    createCommentsBox(2, tweetId).appendTo($tweet.find('.tweet-body'))
   }
 }
 
-function createCommentsBox(tweetId) {
+function createCommentsBox(sourceType, sourceId) {
   var $box = $('#tmpl-comments-box').children().clone()
   var $input = $box.find('textarea').on('keyup', textareaAutoResize)
   function postComment(forward){
-    $.post('/post/comment', {
-      content: $input.val(), sourceId: tweetId, forward: forward
+    $.post('/api/comments/new', {
+      content: $input.val(), sourceType: sourceType, sourceId: sourceId, forward: forward
     }).success(function(){
       console.info('Post comment success, retach the list.')
-      loadComments(tweetId, $box)
+      loadComments(sourceType, sourceId, $box)
     })
     $input.val('')
   }
@@ -170,15 +169,21 @@ function createCommentsBox(tweetId) {
     postComment(false)
   })
 
-  loadComments(tweetId, $box)
+  loadComments(sourceType, sourceId, $box)
   return $box
 }
 
-function loadComments(tweetId, $box) {
+function loadComments(sourceType, sourceId, $box) {
   var $loading = $box.find('.loading')
   var $list = $box.find('.comment-list')
 
-  $.get('/tweets/'+tweetId+'/comments')
+  var source = '/unknown/'
+  if (sourceType == 1) {
+    source = '/blogs/'
+  } else if (sourceType == 2) {
+    source = '/tweets/'
+  }
+  $.get(source + sourceId + '/comments')
     .done(function(resp){
       $list.replaceWith($(resp))
       $loading.text('评论')
@@ -209,7 +214,7 @@ function stream_setupListeners() {
     var $tweet = $(this).parents('.tweet').warnEmpty()
     $('#forward-dialog').data('tweet', $tweet).modal({backdrop: false})
   })
-  $doc.delegate('.tweet-ops .comment', 'click', toggleComments)
+  $doc.delegate('.tweet-ops .comment', 'click', toggleTweetComments)
   //TODO deleteDialogEach is not done yet
   $doc.delegate('.tweet-ops .delete', 'click', deleteDialogEach)
 

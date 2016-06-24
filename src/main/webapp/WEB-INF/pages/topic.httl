@@ -13,7 +13,6 @@
 $!{include("navbar.httl")}
 <div id="container" class="container">
   <div class="topic" data-id="${topic.id}">
-    <span id="id" style="display:none">$!{topic.id}</span>
     <h3 class="title">${topic.title}</h3>
     $!{userLabel(topic.author)}
     发表于 $!{spanHumanTime(topic.whenCreated)}
@@ -91,7 +90,7 @@ $(document).ready(function() {
     })
   })
 
-  btnLike_init('/topics/'+$('#id').text())
+  btnLike_init('/topics/' + $('.topic').data('id'))
 })
 </script>
 </body>

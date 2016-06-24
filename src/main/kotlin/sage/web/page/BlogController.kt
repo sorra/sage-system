@@ -11,11 +11,13 @@ import org.springframework.web.bind.annotation.ResponseBody
 import org.springframework.web.servlet.ModelAndView
 import sage.entity.Blog
 import sage.entity.BlogStat
+import sage.entity.Comment
 import sage.entity.Liking
 import sage.service.BlogService
 import sage.service.UserService
 import sage.transfer.BlogPreview
 import sage.transfer.BlogView
+import sage.transfer.CommentView
 import sage.web.auth.Auth
 
 @Controller
@@ -65,6 +67,12 @@ open class BlogController @Autowired constructor(
     BlogStat.incViews(id)
     val isLiked: Boolean? = Auth.uid()?.run { Liking.find(this, Liking.BLOG, id) != null }
     return ModelAndView("blog").addObject("blog", blog).addObject("isLiked", isLiked)
+  }
+
+  @RequestMapping("/{id}/comments")
+  open fun comments(@PathVariable id: Long) : ModelAndView {
+    val comments = Comment.byBlog(id).map { CommentView(it) }
+    return ModelAndView("blog-comments").addObject("comments", comments)
   }
 
   @RequestMapping("/{id}/delete", method = arrayOf(POST))

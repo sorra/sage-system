@@ -77,7 +77,7 @@ class NotificationService @Autowired constructor(
   }
 
   fun replied(toUser: Long, fromUser: Long, sourceId: Long) {
-    send(Notification(toUser, fromUser, Type.REPLIED, sourceId))
+    send(Notification(toUser, fromUser, Type.REPLIED_IN_COMMENT, sourceId))
   }
 
   fun mentionedByTweet(toUser: Long, fromUser: Long, sourceId: Long) {
@@ -94,6 +94,10 @@ class NotificationService @Autowired constructor(
 
   fun mentionedByTopicReply(toUser: Long, fromUser: Long, replyId: Long) {
     send(Notification(toUser, fromUser, Type.MENTIONED_TOPIC_REPLY, replyId))
+  }
+
+  fun mentionedByBlog(toUser: Long, fromUser: Long, blogId: Long) {
+    send(Notification(toUser, fromUser, Type.MENTIONED_BLOG, blogId))
   }
 
   fun repliedInTopic(toUser: Long, fromUser: Long, replyId: Long) {

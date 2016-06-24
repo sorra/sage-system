@@ -82,7 +82,7 @@ class TweetReadService
     if (tweet == null || tweet.deleted) {
       return emptyList()
     }
-    return Comment.ofTweet(sourceId)
+    return Comment.byTweet(sourceId)
   }
 
   /**

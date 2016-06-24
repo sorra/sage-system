@@ -68,7 +68,7 @@ class TweetPostService
     return tweet
   }
 
-  fun comment(userId: Long, content: String, sourceId: Long?, replyUserId: Long?): Comment {
+  fun comment(userId: Long, content: String, sourceId: Long, replyUserId: Long?): Comment {
     var content = content
     if (content.isEmpty() || content.length > COMMENT_MAX_LEN) {
       throw BAD_COMMENT_LENGTH
@@ -76,11 +76,10 @@ class TweetPostService
     val parsedContent = processContent(content)
     content = parsedContent.content
 
-    val source = Tweet.ref(sourceId)
-    val comment = Comment(content, User.ref(userId), sourceId!!, replyUserId)
+    val comment = Comment(content, User.ref(userId), Comment.TWEET, sourceId, replyUserId)
     comment.save()
 
-    notifService.commented(source.author.id, userId, comment.id)
+    notifService.commented(Tweet.ref(sourceId).author.id, userId, comment.id)
     if (replyUserId != null) {
       notifService.replied(replyUserId, userId, comment.id)
     }

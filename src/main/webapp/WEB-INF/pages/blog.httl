@@ -9,16 +9,19 @@
 	<title>${blog.title}</title>
 	$!{allcss}
 	<style type="text/css">
-	.title, .content, .tweets{
-		border: 1px solid #eee;
-	}
+		.title, .content, .tweets{
+			border: 1px solid #eee;
+		}
+		#comment-container{
+			margin-top: 20px;
+			padding: 10px;
+		}
 	</style>
 </head>
 <body>
 $!{include("navbar.httl")}
 <div class="container" id="container">
-	<div class="blog">
-		<span id="id" style="display:none">$!{blog.id}</span>
+	<div class="blog" data-id="$!{blog.id}">
 		<h3 class="title">${blog.title}</h3>
 		$!{userLabel(blog.author)}
 		发表于 $!{spanHumanTime(blog.whenCreated)}
@@ -39,10 +42,7 @@ $!{include("navbar.httl")}
 			$!{include("btn_like.httl", ["likes": blog.likes, "isLiked": isLiked])}
 		</div>
 	</div>
-	<h5>连接到的微博：</h5>
-	<div class="stream">
-	   <div class="slist"></div>
-	</div>
+	<div id="comment-container" class="background-silver"></div>
 </div>
 $!{alljs}
 <script type="text/javascript">
@@ -53,13 +53,13 @@ $!{alljs}
 			$this.html(marked($this.text()))
 		});
 
-		btnLike_init('/blogs/'+$('#id').text())
+		var id = $('.blog').data('id')
 
-		getStream('/read/connect/'+$('#id').text())
-				.done(function(){
-						$('.newfeed').remove();
-						$('.oldfeed').remove();
-				});
+		btnLike_init('/blogs/' + id)
+
+		var $box = createCommentsBox(1, id).appendTo('#comment-container')
+		$box.find('textarea').css({width: '600px', height: '40px', resize: 'none'})
+		$box.find('.btn_forw_and_comm').remove()
 	})
 </script>
 </body>

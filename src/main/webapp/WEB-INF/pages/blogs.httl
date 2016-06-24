@@ -24,11 +24,6 @@ $!{alljs}
     $('.summary').warnEmpty().each(function(){
       $(this).html(marked($(this).text()))
     })
-
-    getStream('/read/connect/'+$('#id').text()).done(function(){
-      $('.newfeed').remove()
-      $('.oldfeed').remove()
-    })
   })
 </script>
 </body>
