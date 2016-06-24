@@ -9,6 +9,11 @@ html, body{
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
+blockquote{
+  font-size: 14px;
+}
+
 .background-silver{
   background: #e5e5e5;
 }
