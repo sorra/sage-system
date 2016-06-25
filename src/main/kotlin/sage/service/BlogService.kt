@@ -63,6 +63,7 @@ class BlogService
 
     val comment = Comment(content, User.ref(userId), Comment.BLOG, blogId, replyUserId)
     comment.save()
+    BlogStat.incComments(blogId)
     
     notifService.commented(Blog.get(blogId).author.id, userId, comment.id)
     if (replyUserId != null) {

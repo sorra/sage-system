@@ -11,6 +11,9 @@
   <div class="metadata-row">
     $!{userLabel(blog.author)}
     $!{spanHumanTime(blog.whenCreated)}
+    #if(blog.commentCount > 0)
+      <span class="glyphicon glyphicon-comment" aria-hidden="true">${blog.commentCount}</span>
+    #end
     #if(blog.likes > 0)
       <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true">${blog.likes}</span>
     #end

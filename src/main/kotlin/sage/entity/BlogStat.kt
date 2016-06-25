@@ -22,7 +22,8 @@ class BlogStat (
     var floatUp: Double = 0.0,
     var tune: Int = 0,
     var likes: Int = 0,
-    var views: Int = 0
+    var views: Int = 0,
+    var comments: Int = 0
 ) : Model() {
   override fun save() {
     computeRank()
@@ -40,7 +41,7 @@ class BlogStat (
       if (days < 0) days = 0
       floatUp = Math.pow(1.2, days.toDouble())
     }
-    rank = (1 + tune + likes + views / 10) * floatUp
+    rank = (1 + tune + comments + likes + views / 10) * floatUp
   }
 
   companion object : Find<Long, BlogStat>() {
@@ -53,6 +54,12 @@ class BlogStat (
 
     fun unlike(id: Long, userId: Long) {
       Liking.unlike(userId, Liking.BLOG, id, BlogStat::class.java, "blogStat")
+      BlogStat.get(id).update()
+    }
+
+    fun incComments(id: Long) {
+      Ebean.createUpdate(BlogStat::class.java, "update blogStat set comments = comments+1 where id = :id")
+          .setParameter("id", id).execute()
       BlogStat.get(id).update()
     }
 

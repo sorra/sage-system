@@ -12,6 +12,7 @@ class BlogPreview {
   var whenCreated: Timestamp? = null
   var whenModified: Timestamp? = null
   var tags: List<TagLabel> = arrayListOf()
+  var commentCount: Int = 0
   var likes: Int = 0
 
   internal constructor() {
@@ -28,6 +29,7 @@ class BlogPreview {
 
     tags = blog.tags.map { TagLabel(it) }
     val stat = blog.stat()
+    commentCount = stat.comments
     likes = stat.likes
   }
 }
