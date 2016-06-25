@@ -39,5 +39,5 @@ uid="${uid}" href="/users/${uid}"
 
 <!-- tweet.httl cannot include itself directly, so we bypass with a macro -->
 #macro(renderOrigin(origin))
-$!{include("tweet.httl", ['tweet': origin, 'isOrigin': true])}
+$!{include("tweet.httl", ['tweet': origin, 'isForward': false, 'isOrigin': true])}
 #end

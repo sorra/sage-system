@@ -1,5 +1,6 @@
 #set(TweetView t = tweet)
 #set(UserSelf userSelf)
+#set(Boolean isForward, Boolean isOrigin)
 
 #if(isForward) #set(cls = 't-forward')
 #else(isOrigin) #set(cls = 't-origin')
