@@ -185,8 +185,10 @@ function loadComments(sourceType, sourceId, $box) {
   }
   $.get(source + sourceId + '/comments')
     .done(function(resp){
-      $list.replaceWith($(resp))
-      $loading.text('评论')
+      var $loadedList = $(resp)
+      $list.replaceWith($loadedList)
+      var totalCount = $loadedList.data('total-count')
+      $loading.text('评论(' + totalCount + ')')
     })
     .fail(function(){
       $loading.text('评论加载失败')

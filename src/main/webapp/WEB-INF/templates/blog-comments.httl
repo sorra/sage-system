@@ -1,7 +1,7 @@
 <!--
 #set(List<CommentView> comments)
 -->
-<div class="comment-list">
+<div class="comment-list" data-total-count="${totalCount}">
   #for(c : comments)
   <div class="blog-comment">
     <a class="avatar pull-left" $!{userLinkAttrs(c.authorId)} style="margin-right: 10px">

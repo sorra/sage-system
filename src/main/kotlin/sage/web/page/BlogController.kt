@@ -72,7 +72,8 @@ open class BlogController @Autowired constructor(
   @RequestMapping("/{id}/comments")
   open fun comments(@PathVariable id: Long) : ModelAndView {
     val comments = Comment.byBlog(id).map { CommentView(it) }
-    return ModelAndView("blog-comments").addObject("comments", comments)
+    val totalCount = BlogStat.get(id).comments
+    return ModelAndView("blog-comments").addObject("comments", comments).addObject("totalCount", totalCount)
   }
 
   @RequestMapping("/{id}/delete", method = arrayOf(POST))
