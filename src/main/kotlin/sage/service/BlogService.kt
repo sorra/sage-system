@@ -94,9 +94,9 @@ class BlogService
 
   companion object {
     private val BLOG_TITLE_MAX_LEN = 100
-    private val BLOG_CONTENT_MAX_LEN = 10000
+    private val BLOG_CONTENT_MAX_LEN = 30000
     private val BAD_INPUT_LENGTH = BadArgumentException(
-        "输入长度不正确(标题1~100字,内容1~10000字)")
+        "输入长度不正确(标题1~100字,内容1~30000字)")
     private val COMMENT_MAX_LEN = 1000
     private val BAD_COMMENT_LENGTH = BadArgumentException("评论应为1~1000字")
   }
