@@ -86,9 +86,9 @@ class BlogService
   }
 
   private fun processContent(content: String): Pair<String, HashSet<Long>> {
-//    var text = Markdown.addBlankRow(content)
+    var text = Markdown.addBlankRow(content)
     val mentionedIds = HashSet<Long>()
-    val text = ReplaceMention.with { User.byName(it) }.apply(content, mentionedIds)
+    text = ReplaceMention.with { User.byName(it) }.apply(text, mentionedIds)
     return Pair(text, mentionedIds)
   }
 
