@@ -2,6 +2,7 @@ package sage.transfer;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 
 import sage.entity.Follow;
@@ -12,6 +13,7 @@ public class UserCard {
   private String name;
   private String avatar;
   private String intro;
+  private Date whenCreated;
 
   private int followerCount;
   private int blogCount;
@@ -31,6 +33,7 @@ public class UserCard {
     name = user.getName();
     avatar = user.getAvatar();
     intro = user.getIntro();
+    whenCreated = user.getWhenCreated();
 
     followerCount = _followerCount;
     blogCount = _blogCount;
@@ -59,6 +62,10 @@ public class UserCard {
 
   public String getIntro() {
     return intro;
+  }
+
+  public Date getWhenCreated() {
+    return whenCreated;
   }
 
   public int getFollowerCount() {
