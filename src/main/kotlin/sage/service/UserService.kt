@@ -31,13 +31,13 @@ class UserService {
     return topTags(userId).filterNot { existingTagIds.contains(it.id) }
   }
 
-  fun getUserCard(cuid: Long, userId: Long): UserCard {
+  fun getUserCard(cuid: Long?, userId: Long): UserCard {
     return UserCard(User.get(userId),
         Follow.followersCount(userId),
         Blog.where().eq("author", User.ref(userId)).findRowCount(),
         Tweet.where().eq("author", User.ref(userId)).findRowCount(),
-        Follow.find(cuid, userId),
-        Follow.find(userId, cuid),
+        cuid?.run { Follow.find(this, userId) },
+        cuid?.run { Follow.find(userId, this) },
         userTags(userId))
   }
 
