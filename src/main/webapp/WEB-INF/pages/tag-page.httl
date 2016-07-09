@@ -100,7 +100,7 @@ $(document).ready(function(){
   })
 
 	var tagId = window.frontMap.id
-	getStream('/read/tag/' + tagId)
+	getStream('/stream/tag/' + tagId)
 	getTagChain(tagId, $('#chain'));
 });
 </script>

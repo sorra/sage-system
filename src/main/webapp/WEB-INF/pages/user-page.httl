@@ -51,7 +51,7 @@ $!{alljs}
       $thisUser.find('.btn_action, .btn_message').remove()
     }
 
-    getStream('/read/u/' + window.frontMap.id);
+    getStream('/stream/user/' + window.frontMap.id);
   });
 </script>
 </body>
