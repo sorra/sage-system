@@ -8,8 +8,6 @@ public class ReformMention {
   private static final Logger log = LoggerFactory.getLogger(ReformMention.class);
   public static String apply(String content) {
     if (content == null || content.isEmpty()) return content;
-    content = StringUtils.replace(content, "<", "&lt;");
-    content = StringUtils.replace(content, ">", "&gt;");
     try {
       return recur(content);
     } catch (Exception e) {
