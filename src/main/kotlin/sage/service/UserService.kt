@@ -105,6 +105,12 @@ class UserService {
     }
   }
 
+  fun resetPassword(userId: Long, newPassword: String) {
+    val user = User.get(userId)
+    user.password = encryptPassword(newPassword)
+    user.update()
+  }
+
   private fun checkPassword(plainPassword: String, encryptedPassword: String): Boolean {
     return StrongPasswordEncryptor().checkPassword(plainPassword, encryptedPassword)
   }

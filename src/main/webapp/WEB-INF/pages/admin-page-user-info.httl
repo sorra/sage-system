@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>管理用户信息</title>
+  $!{allcss}
+</head>
+<body>
+修改用户信息
+Id: <input id="userId">
+Key: <input id="key"/>
+Value: <input id="value"/>
+<button id="submit">提交</button>
+<a id="url" href=""></a>
+$!{alljs}
+<script>
+  setup()
+  $('#submit').click(function(){
+    var id = $('#userId').val()
+    var key = $('#key').val()
+    var value = $('#value').val()
+    var data = {}; data[key] = value
+    $.post('/admin/user-info?userId=' + id, data).done(function(url){
+      $('#url').text(url).attr('href', url)
+    }).fail(function(msg){
+      $('#url').text(msg)
+    })
+  })
+</script>
+</body>
+</html>

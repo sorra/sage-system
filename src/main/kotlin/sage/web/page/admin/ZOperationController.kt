@@ -1,4 +1,4 @@
-package sage.web
+package sage.web.page.admin
 
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Controller
