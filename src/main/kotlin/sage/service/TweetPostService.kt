@@ -79,7 +79,7 @@ class TweetPostService
     val comment = Comment(content, User.ref(userId), Comment.TWEET, sourceId, replyUserId)
     comment.save()
 
-    notifService.commented(Tweet.ref(sourceId).author.id, userId, comment.id)
+    notifService.commentedTweet(Tweet.ref(sourceId).author.id, userId, comment.id)
     if (replyUserId != null) {
       notifService.replied(replyUserId, userId, comment.id)
     }

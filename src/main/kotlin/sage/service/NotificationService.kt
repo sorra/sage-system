@@ -72,8 +72,12 @@ class NotificationService @Autowired constructor(
     send(Notification(toUser, fromUser, Type.FORWARDED, sourceId))
   }
 
-  fun commented(toUser: Long, fromUser: Long, sourceId: Long) {
-    send(Notification(toUser, fromUser, Type.COMMENTED, sourceId))
+  fun commentedTweet(toUser: Long, fromUser: Long, sourceId: Long) {
+    send(Notification(toUser, fromUser, Type.COMMENTED_TWEET, sourceId))
+  }
+
+  fun commentedBlog(toUser: Long, fromUser: Long, sourceId: Long) {
+    send(Notification(toUser, fromUser, Type.COMMENTED_BLOG, sourceId))
   }
 
   fun replied(toUser: Long, fromUser: Long, sourceId: Long) {

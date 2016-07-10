@@ -65,7 +65,7 @@ class BlogService
     comment.save()
     BlogStat.incComments(blogId)
     
-    notifService.commented(Blog.get(blogId).author.id, userId, comment.id)
+    notifService.commentedBlog(Blog.get(blogId).author.id, userId, comment.id)
     if (replyUserId != null) {
       notifService.replied(replyUserId, userId, comment.id)
     }
