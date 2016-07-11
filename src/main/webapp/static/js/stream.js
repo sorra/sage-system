@@ -24,6 +24,7 @@ function getStreamAfter(url, afterId, callback) {
     .done(function (resp) {
       if (resp) {
         $('.slist').prepend($(resp))
+        humanTime_show()
       }
       callback(resp)
     })
@@ -40,6 +41,7 @@ function getStreamBefore(url, beforeId, callback) {
     .done(function (resp) {
       if (resp) {
         $('.slist').append($(resp))
+        humanTime_show()
       }
       callback(resp)
     })
@@ -79,6 +81,7 @@ function funcLookEarlier(url, callback) {
 function createStream(resp, url) {
   var $stream = $('.stream')
   $('.slist').empty().append($(resp))
+  humanTime_show()
 
   $('<a class="newfeed btn">').text('看看新的').prependTo($stream).click(funcLookNewer(url, function(resp){
     if (!resp) {
@@ -189,6 +192,7 @@ function loadComments(sourceType, sourceId, $box) {
       $list.replaceWith($loadedList)
       var totalCount = $loadedList.data('total-count')
       $loading.text('评论(' + totalCount + ')')
+      humanTime_show()
     })
     .fail(function(){
       $loading.text('评论加载失败')
