@@ -32,10 +32,10 @@ open class AdminController @Autowired constructor(private val userService: UserS
     if (User.get(Auth.checkUid()).authority != Authority.SITE_ADMIN) {
       response.sendError(404)
     }
-    val email = request.getParameter("email") as String?
-    val password = request.getParameter("password") as String?
-    val name = request.getParameter("name") as String?
-    val intro = request.getParameter("intro") as String?
+    val email = request.getParameter("email")
+    val password = request.getParameter("password")
+    val name = request.getParameter("name")
+    val intro = request.getParameter("intro")
 
     if (email != null) {
       User.get(userId).run { this.email = email; update() }
