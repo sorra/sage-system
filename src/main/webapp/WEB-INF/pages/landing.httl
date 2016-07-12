@@ -7,14 +7,14 @@
 <head>
   <meta charset="UTF-8">
   $!{desc}
-  <title>轻境界</title>
+  <title>轻境界：轻装前往更高境界</title>
   $!{allcss}
   <style>
     #welcome-login{
       margin: 20px;
       padding: 5px;
       background-color: beige;
-      max-width: 220px;
+      max-width: 180px;
       border-radius: 5px;
     }
   </style>
@@ -24,7 +24,7 @@ $!{include("navbar.httl")}
 <div id="container" class="container">
   #if(userSelf == null)
   <div id="welcome-login">
-    加入这里，看更多内容 <a class="btn btn-default btn-success" href="/register">加入</a>
+    <a class="btn btn-default btn-success" href="/register">快速注册</a> 看更多内容
   </div>
   #end
   <div class="topic-list">
