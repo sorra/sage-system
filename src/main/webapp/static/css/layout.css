@@ -80,6 +80,10 @@ input[type=text]{
   margin-top: 0;
 }
 
+.summary *{
+  display: inline-block;
+}
+
 .summary h1, .summary h2, .summary h3, .summary h4{
   font-size: 16px;
 }
