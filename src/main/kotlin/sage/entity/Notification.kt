@@ -24,12 +24,12 @@ class Notification : BaseModel {
   }
 
   companion object : Find<Long, Notification>() {
-    fun byOwner(ownerId: Long) = where().eq("ownerId", ownerId).findList()
+    fun byOwner(ownerId: Long) = where().eq("ownerId", ownerId).orderBy("whenCreated desc").findList()
     fun byOwnerAndRead(ownerId: Long, isRead: Boolean) =
-        where().eq("ownerId", ownerId).eq("isRead", isRead)
+        where().eq("ownerId", ownerId).eq("isRead", isRead).orderBy("whenCreated desc")
   }
 
-  enum class Type private constructor(val sourceType: SourceType, val desc: String, val shortDesc: String) {
+  enum class Type constructor(val sourceType: SourceType, val desc: String, val shortDesc: String) {
     FOLLOWED(SourceType.USER, "关注了你", "新粉丝"),
     FORWARDED(SourceType.TWEET, "转发了你的微博", "转发"),
     COMMENTED_TWEET(SourceType.COMMENT, "评论了你的微博", "评论"),
