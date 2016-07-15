@@ -11,8 +11,8 @@ $!{allcss}
 	margin: 20px;
 }
 
-#title, #content {
-  overflow: scroll;
+#content {
+	overflow: auto;
   resize: none;
 }
 
@@ -25,14 +25,14 @@ $!{allcss}
 
 #content, #preview {
   width: 90%;
-	min-height: 30em;
+	min-height: 35em;
 }
 </style>
 </head>
 <body>
 $!{include("navbar.httl")}
 <div class="container background-silver" id="container">
-	<h3>撰写博客</h3>
+	<h3>撰写博客(Markdown语法)</h3>
 	#set(action = blog.id ? '/blogs/' + blog.id.toString + '/edit' : '/blogs/new')
 	<form id="blog" action="${action}" method="post">
 		<div>

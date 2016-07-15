@@ -154,7 +154,6 @@ function toggleTweetComments(){
 
 function createCommentsBox(sourceType, sourceId) {
   var $box = $('#tmpl-comments-box').children().clone()
-  var $input = $box.find('textarea').on('keyup', textareaAutoResize)
   function postComment(forward){
     $.post('/api/comments/new', {
       content: $input.val(), sourceType: sourceType, sourceId: sourceId, forward: forward

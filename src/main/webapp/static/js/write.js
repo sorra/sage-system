@@ -69,7 +69,6 @@ function write_contentArea() {
       $(this).setCursorPosition(pos+1);
     }
   }).keyup(function() {
-    textareaAutoResize.apply(this);
     write_contentRefresh();
   });
   $('#tabs a[href="#content"]').warnEmpty().tab('show');

@@ -11,8 +11,8 @@ $!{allcss}
 	margin: 20px;
 }
 
-#title, #content {
-  overflow: scroll;
+#content {
+  overflow: auto;
   resize: none;
 }
 
@@ -25,14 +25,14 @@ $!{allcss}
 
 #content, #preview {
   width: 90%;
-	min-height: 30em;
+	min-height: 35em;
 }
 </style>
 </head>
 <body>
 $!{include("navbar.httl")}
 <div class="container background-silver" id="container">
-  <h3>撰写帖子</h3>
+  <h3>撰写帖子(Markdown语法)</h3>
   #set(action = topic.id ? '/topics/' + topic.id.toString + '/edit' : '/topics/new')
   <form id="topic" action="${action}" method="post">
     <div>

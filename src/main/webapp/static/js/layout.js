@@ -151,10 +151,3 @@ function parseNotifCount(type, data, lines) {
     lines.push(entry.count + '个' + entry.desc)
   }
 }
-
-function textareaAutoResize() {
-  var height = Math.max(this.scrollHeight, this.clientHeight)
-  if (height > this.clientHeight) {
-    $(this).css('height', height+'px')
-  }
-}
