@@ -10,6 +10,12 @@
   <title>轻境界：轻装前往更高境界</title>
   $!{allcss}
   <style>
+    #site-whats{
+      font-size: 16px;
+    }
+    #site-whats a{
+      color: #256DAB;
+    }
     #welcome-login{
       margin: 20px;
       padding: 5px;
@@ -27,6 +33,7 @@ $!{include("navbar.httl")}
     <a class="btn btn-default btn-success" href="/register">快速注册</a> 看更多内容
   </div>
   #end
+  <h1 id="site-whats"><a href="/topics/1">轻境界是什么？</a></h1>
   <ul id="tabs" class="nav nav-tabs">
     <li class="active"><a href="#blogs" data-toggle="tab">博客</a></li>
     <li><a href="#topics" data-toggle="tab">帖子</a></li>
