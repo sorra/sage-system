@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- #set(Collection<Blog> blogs) -->
+<rss version="2.0">
+  <channel>
+    <title>轻境界最新博客</title>
+    <link>http://www.qingjingjie.com</link>
+    <description>轻境界 - 轻装前往更高境界</description>
+    <pubDate>${now()}</pubDate>
+    <language>zh-cn</language>
+    <copyright>@qingjingjie.com</copyright>
+    #for(each : blogs)
+    <item>
+      <title>${each.title}</title>
+      <link>http://www.qingjingjie.com/blogs/${each.id}</link>
+      <pubDate>${each.whenCreated}</pubDate>
+      <description>${each.content}</description>
+    </item>
+    #end
+  </channel></rss>

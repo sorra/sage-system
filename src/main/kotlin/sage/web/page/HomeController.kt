@@ -5,10 +5,13 @@ import org.springframework.stereotype.Controller
 import org.springframework.ui.ModelMap
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.servlet.ModelAndView
+import sage.entity.Blog
 import sage.service.BlogService
 import sage.service.RelationService
 import sage.service.TopicService
+import sage.util.Strings
 import sage.web.auth.Auth
+import javax.servlet.http.HttpServletResponse
 
 @Controller
 @RequestMapping
@@ -46,4 +49,12 @@ open class HomeController
 
   @RequestMapping("/register")
   open fun register(): String = "register"
+
+  @RequestMapping("/rss")
+  open fun rss(response: HttpServletResponse): ModelAndView {
+    val blogs = Blog.all().sortedByDescending { it.whenCreated }
+    blogs.forEach { it.content = Strings.omit(it.content, 500) }
+    response.contentType = "text/xml"
+    return ModelAndView("rss").addObject("blogs", blogs)
+  }
 }
