@@ -25,6 +25,7 @@ $!{include("navbar.httl")}
       $!{tagLabel(each)}
       #end
     </div>
+    <div id="loading-alert" class="alert alert-info" role="alert">Markdown正在加载...</div>
     <div class="content">${topic.content}</div>
     <div>
       <a class="btn_reply" href="javascript:;">回复</a>
@@ -60,6 +61,7 @@ $(document).ready(function() {
     var $this = $(this)
     $this.html(marked($this.text()))
   });
+  $('#loading-alert').hide()
 
   $(document).on('click', '.btn_reply', function(){
     var $rb = $('#reply_box')

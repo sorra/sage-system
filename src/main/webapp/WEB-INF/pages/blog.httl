@@ -37,6 +37,7 @@ $!{include("navbar.httl")}
 				$!{tagLabel(each)}
 			#end
 		</div>
+		<div id="loading-alert" class="alert alert-info" role="alert">Markdown正在加载...</div>
 		<div class="content">${blog.content}</div>
 		<div>
 			$!{include("btn_like.httl", ["likes": blog.likes, "isLiked": isLiked])}
@@ -52,6 +53,7 @@ $!{alljs}
 			var $this = $(this)
 			$this.html(marked($this.text()))
 		});
+		$('#loading-alert').hide()
 
 		var id = $('.blog').data('id')
 
