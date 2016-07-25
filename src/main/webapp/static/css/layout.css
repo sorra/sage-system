@@ -15,7 +15,7 @@ blockquote{
 }
 
 .background-silver{
-  background: #e5e5e5;
+  background: #e9e9e9;
 }
 body, .background-dark{
   background: radial-gradient(farthest-side ellipse at 100% 0, rgba(102,105,104,0.9),rgba(93,112,119,0.89),rgba(160,174,150,0.9));
@@ -23,6 +23,7 @@ body, .background-dark{
 
 #container{
   margin-top: 50px;
+  background: #e9e9e9;
 }
 
 .side{

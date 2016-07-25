@@ -9,9 +9,6 @@
 	<title>${blog.title}</title>
 	$!{allcss}
 	<style type="text/css">
-		.title, .content, .tweets{
-			border: 1px solid #eee;
-		}
 		#comment-container{
 			margin-top: 20px;
 			padding: 10px;
