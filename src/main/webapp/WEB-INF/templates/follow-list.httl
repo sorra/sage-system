@@ -11,7 +11,7 @@
   </div>
   #for(FollowInfo f : fs.list)
   <div class="finfo">
-    $!{include('user-label.httl', ['u': f.user])}
+    $!{userLabel(f.user)}
     <div class="finfo-tags">
       #for(each : f.tags)
       $!{tagLabel(each)}
