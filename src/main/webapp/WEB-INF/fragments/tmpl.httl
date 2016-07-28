@@ -3,7 +3,8 @@
     <textarea style="width: 400px; height: 43px; resize: none;"></textarea>
     <button class="btn_forw_and_comm btn btn-xs btn-success">转+评</button>
     <button class="btn_comment btn btn-xs btn-info">评论</button>
-    <div class="loading">评论加载中...</div>
+    <div class="loading" role="alert" style="text-align: center">评论加载中...</div>
+    <div class="comments-header" style="display: none">评论</div>
     <div class="comment-list"></div>
   </div>
 </div>

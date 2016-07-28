@@ -154,14 +154,37 @@ function toggleTweetComments(){
 
 function createCommentsBox(sourceType, sourceId) {
   var $box = $('#tmpl-comments-box').children().clone()
-  function postComment(forward){
+  var boxScope = {
+    $box: $box,
+    $loading: $box.find('.loading'),
+    $header: $box.find('.comments-header'),
+    $input: $box.find('textarea'),
+    fadeOutLoading: function(){this.$loading.fadeOut(2000)},
+    showMsgLoading: function(msg, type){
+      this.$loading.attr('class', 'alert-' + type).text(msg).stop().css('opacity', '1').show()
+    }
+  }
+
+  function postComment(doesForward){
+    boxScope.showMsgLoading('正在发送...', 'warning')
+    var value = boxScope.$input.val()
+    if (!value) {
+      boxScope.showMsgLoading('请输入内容', 'danger')
+      boxScope.fadeOutLoading()
+      return
+    }
     $.post('/api/comments/new', {
-      content: $input.val(), sourceType: sourceType, sourceId: sourceId, forward: forward
+      content: value, sourceType: sourceType, sourceId: sourceId, forward: doesForward
     }).success(function(){
-      console.info('Post comment success, retach the list.')
-      loadComments(sourceType, sourceId, $box)
+      boxScope.showMsgLoading('发送成功', 'success')
+      boxScope.fadeOutLoading()
+      loadComments(sourceType, sourceId, boxScope)
+    }).fail(function(msg){
+      boxScope.showMsgLoading('发送失败: ' + msg, 'danger')
+      boxScope.fadeOutLoading()
+      loadComments(sourceType, sourceId, boxScope)
     })
-    $input.val('')
+    boxScope.$input.val('')
   }
 
   $box.find('.btn_forw_and_comm').click(function(){
@@ -171,14 +194,11 @@ function createCommentsBox(sourceType, sourceId) {
     postComment(false)
   })
 
-  loadComments(sourceType, sourceId, $box)
+  loadComments(sourceType, sourceId, boxScope, true)
   return $box
 }
 
-function loadComments(sourceType, sourceId, $box) {
-  var $loading = $box.find('.loading')
-  var $list = $box.find('.comment-list')
-
+function loadComments(sourceType, sourceId, boxScope, doesShowMsg) {
   var source = '/unknown/'
   if (sourceType == 1) {
     source = '/blogs/'
@@ -188,13 +208,20 @@ function loadComments(sourceType, sourceId, $box) {
   $.get(source + sourceId + '/comments')
     .done(function(resp){
       var $loadedList = $(resp)
-      $list.replaceWith($loadedList)
-      var totalCount = $loadedList.data('total-count')
-      $loading.text('评论(' + totalCount + ')')
+      boxScope.$box.find('.comment-list').replaceWith($loadedList)
+      var totalCount = $loadedList.data('total-count') || 0
+      if (doesShowMsg){
+        boxScope.showMsgLoading('评论加载成功', 'info')
+        boxScope.fadeOutLoading()
+      }
+      boxScope.$header.text('评论(' + totalCount + ')').show()
       humanTime_show()
     })
     .fail(function(){
-      $loading.text('评论加载失败')
+      if(doesShowMsg){
+        boxScope.showMsgLoading('评论加载失败', 'danger')
+        boxScope.fadeOutLoading()
+      }
     })
 }
 
