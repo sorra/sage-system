@@ -1,5 +1,6 @@
 package sage.web.context
 
+import org.apache.commons.lang3.StringUtils
 import org.slf4j.LoggerFactory
 import sage.util.Utils
 import java.io.File
@@ -20,8 +21,19 @@ object VersionsMapper {
     return this
   }
 
-  fun getVersion(path: String): String {
-    if (!((path.endsWith(".css") || path.endsWith(".js")) && path.startsWith("/static/"))) {
+  fun getPath(uri: String): String {
+    val version = getVersion(uri)
+    if (version.isEmpty()) {
+      return uri
+    } else {
+      val idx = uri.lastIndexOf(".")
+      if (idx > 0) return "${uri.substring(0, idx)}_v_${version}${uri.substring(idx)}"
+      else return uri
+    }
+  }
+
+  private fun getVersion(path: String): String {
+    if (!Utils.isStaticResource(path)) {
       log.error("Path $path should be CSS or JS and under /static/ !")
       return ""
     }

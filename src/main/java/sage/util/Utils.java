@@ -11,4 +11,8 @@ public class Utils {
     }
     return r.toString();
   }
+
+  public static boolean isStaticResource(String uri) {
+    return (uri.endsWith(".css") || uri.endsWith(".js")) && uri.startsWith("/static/");
+  }
 }

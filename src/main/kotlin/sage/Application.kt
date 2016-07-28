@@ -27,6 +27,7 @@ import sage.service.FilesService
 import sage.web.context.VersionsMapper
 import sage.web.filter.CurrentRequestFilter
 import sage.web.filter.LoggingURLFilter
+import sage.web.filter.StaticResourceRefreshFilter
 import javax.servlet.*
 import javax.servlet.http.HttpServletRequest
 
@@ -74,6 +75,8 @@ open class Application : WebMvcAutoConfiguration.WebMvcAutoConfigurationAdapter(
   open fun loggingURLFilter() = LoggingURLFilter()
   @Bean
   open fun currentRequestFilter() = CurrentRequestFilter()
+  @Bean
+  open fun staticResourceRefreshFilter() = StaticResourceRefreshFilter()
 
   @Bean
   open fun versionsMapper(servletContext: ServletContext) = VersionsMapper.setup(servletContext)

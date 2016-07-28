@@ -4,11 +4,11 @@ import sage.domain.commons.ReformMention
 import sage.util.Settings
 
 object RenderUtil {
-  val CDN = Settings.props.getProperty("cdn") ?: ""
+  val CDN: String = Settings.props.getProperty("cdn") ?: ""
 
   @JvmStatic fun cdn() = CDN
 
-  @JvmStatic fun resLink(path: String) = "${CDN}${path}?version=${VersionsMapper.getVersion(path)}"
+  @JvmStatic fun resLink(path: String) = CDN + VersionsMapper.getPath(path)
 
   @JvmStatic fun reformMention(text: String) = ReformMention.apply(text)
 }
