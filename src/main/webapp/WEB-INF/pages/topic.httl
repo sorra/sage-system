@@ -87,8 +87,8 @@ $(document).ready(function() {
       toReplyId: toReplyId
     }).done(function(resp){
       tipover($('#reply_box').hide().prev('.btn_reply'), '发表回复成功', 1000)
-    }).fail(function(resp){
-      tipover($this, '发表回复遇到问题', 1000)
+    }).fail(function(msg){
+      tipover($this, '发表回复遇到问题: ' + msg, 1000)
     })
   })
 

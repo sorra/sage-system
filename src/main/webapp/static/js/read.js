@@ -1,6 +1,6 @@
 function btnLike_init(resUrl) {
 
-  function updateLikes($btn) {
+  function refreshLikes($btn) {
     return $.get(resUrl + '/likes').done(function(likes){
       $btn.find('.num-likes').text(likes)
     })
@@ -11,14 +11,14 @@ function btnLike_init(resUrl) {
     var classLiked = 'btn-success'
     if ($btn.hasClass(classLiked)) {
       $.post(resUrl + '/unlike').done(function(){
-        updateLikes($btn)
+        refreshLikes($btn)
         $btn.removeClass(classLiked)
       }).fail(function(msg){
         tipover($btn, msg)
       })
     } else {
       $.post(resUrl+'/like').done(function(){
-        updateLikes($btn)
+        refreshLikes($btn)
         $btn.addClass(classLiked)
       }).fail(function(msg){
         tipover($btn, msg)
