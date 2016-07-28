@@ -24,12 +24,10 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.ViewResolverRegistry
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView
 import sage.service.FilesService
+import sage.web.context.VersionsMapper
 import sage.web.filter.CurrentRequestFilter
 import sage.web.filter.LoggingURLFilter
-import javax.servlet.FilterChain
-import javax.servlet.FilterConfig
-import javax.servlet.ServletRequest
-import javax.servlet.ServletResponse
+import javax.servlet.*
 import javax.servlet.http.HttpServletRequest
 
 @SpringBootApplication
@@ -76,6 +74,9 @@ open class Application : WebMvcAutoConfiguration.WebMvcAutoConfigurationAdapter(
   open fun loggingURLFilter() = LoggingURLFilter()
   @Bean
   open fun currentRequestFilter() = CurrentRequestFilter()
+
+  @Bean
+  open fun versionsMapper(servletContext: ServletContext) = VersionsMapper.setup(servletContext)
 
   @Autowired
   private lateinit var filesService: FilesService
