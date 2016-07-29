@@ -19,9 +19,9 @@
             <a id="nav-tags" href="javascript:;">标签<span class="glyphicon glyphicon-tags"></span></a>
           </td>
           <td class="nav-links" width="570" align="right" style="padding-top: 2px;">
-            <a href="/home"><span class="glyphicon glyphicon-home" title="Home"></span></a>
-            <a href="/topics">帖子</a>
+            <a href="/home">流<span class="glyphicon glyphicon-home" title="Home"></span></a>
             <a href="/blogs">博客</a>
+            <a href="/topics">帖子</a>
             <a href="/people">人们</a>
             #if(userSelf != null)
             <a id="nav-user" href="/users/self" title="我的主页">${userSelf.name}</a>
