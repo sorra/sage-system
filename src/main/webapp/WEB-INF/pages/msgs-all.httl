@@ -32,7 +32,7 @@
 <body>
 $!{include("navbar.httl")}
 <div id="container" class="container">
-  <p>互相关注就可以发私信了！</p>
+  <p>私信按钮在对方的用户卡片上!</p>
   <div id="conversation-list" class="pull-left">
     #for(conv : conversations)
       <div class="conversation-preview rich-bg clearfix">
