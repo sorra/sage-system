@@ -83,7 +83,7 @@ combineCss {
 
 minifyCss {
   source = combineCss
-  dest = "${staticSrc}/css/all.min.css"
+  dest = "${staticSrc}/css/all.css"
 }
 
 javascript.source {
@@ -108,7 +108,7 @@ task combinejs(type: com.eriwen.gradle.js.tasks.CombineJsTask) {
 
 task minifyjs(type: com.eriwen.gradle.js.tasks.MinifyJsTask) {
   source = combinejs
-  dest = file("${staticSrc}/js/all.min.js")
+  dest = file("${staticSrc}/js/all.js")
   closure {
     warningLevel = 'QUIET'
   }
