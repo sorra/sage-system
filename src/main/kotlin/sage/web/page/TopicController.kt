@@ -108,9 +108,10 @@ open class TopicController @Autowired constructor(
   open fun likes(@PathVariable id: Long) = TopicStat.get(id).likes
 
   @RequestMapping
-  open fun all() : ModelAndView {
-    val topics = TopicPost.all().map { TopicPreview(it) }
-        .sortedByDescending { it.whenLastReplied ?: it.whenCreated ?: Timestamp(0) }
+  open fun all(@RequestParam(defaultValue = "1") page: Int,
+               @RequestParam(defaultValue = "20") size: Int) : ModelAndView {
+    val topics = TopicPost.orderBy("whenLastActive desc").findPagedList(page-1, size).list
+        .map { TopicPreview(it) }
     return ModelAndView("topics").addObject("topics", topics)
   }
 }

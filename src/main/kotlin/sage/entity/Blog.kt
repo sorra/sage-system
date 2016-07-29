@@ -35,7 +35,5 @@ class Blog : BaseModel {
     fun get(id: Long) = getNonNull(Blog::class, id)
 
     fun byAuthor(authorId: Long) = where().eq("author", User.ref(authorId)).findList()
-
-    fun recent(maxSize: Int) = query().orderBy("id desc").setMaxRows(maxSize).findList()
   }
 }

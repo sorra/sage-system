@@ -102,8 +102,10 @@ open class BlogController @Autowired constructor(
   open fun likes(@PathVariable id: Long) = BlogStat.get(id).likes
 
   @RequestMapping
-  open fun all(): ModelAndView {
-    val blogs = Blog.all().sortedByDescending { it.whenCreated }.map { BlogPreview(it) }
+  open fun all(@RequestParam(defaultValue = "1") page: Int,
+               @RequestParam(defaultValue = "20") size: Int): ModelAndView {
+    val blogs = Blog.orderBy("id desc").findPagedList(page-1, size).list
+        .map { BlogPreview(it) }
     return ModelAndView("blogs").addObject("blogs", blogs)
   }
 }

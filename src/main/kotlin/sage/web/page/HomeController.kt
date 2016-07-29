@@ -52,7 +52,7 @@ open class HomeController
 
   @RequestMapping("/rss")
   open fun rss(response: HttpServletResponse): ModelAndView {
-    val blogs = Blog.all().sortedByDescending { it.whenCreated }
+    val blogs = Blog.orderBy("id desc").findList()
     blogs.forEach { it.content = Strings.omit(it.content, 500) }
     response.contentType = "text/xml"
     return ModelAndView("rss").addObject("blogs", blogs)
