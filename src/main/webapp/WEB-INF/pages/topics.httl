@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html>
 <!--
-#set(components = ["bootstrap", "layout", "tag", "user"])
-#set(Collection<TopicPreview> topics)
+#set(List<TopicPreview> topics)
+#set(paginationLinks)
 -->
 <head>
   <meta charset="UTF-8">
@@ -17,6 +17,9 @@ $!{include("navbar.httl")}
     #for(topic : topics)
       $!{include("topic-preview.httl")}
     #end
+  </div>
+  <div class="pagination">
+    $!{paginationLinks}
   </div>
 </div>
 $!{alljs}

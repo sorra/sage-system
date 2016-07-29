@@ -46,4 +46,7 @@ fun <T: Any> load(beanType: KClass<T>, id: Long): T? =
 fun <T : Any> getNonNull(beanType: KClass<T>, id: Long): T = Model.db().find(beanType.java, id)
     ?: throw DomainException("${beanType.java.simpleName}[$id] does not exist")
 
+fun getRecordsCount(find: Model.Find<Long, *>): Long =
+    (find.orderBy("id desc").setMaxRows(1).findIds().firstOrNull() ?: 0L) as Long
+
 val siteLaunchTime = 1463989140000 // 2016 5/23 15:39

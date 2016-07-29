@@ -9,16 +9,15 @@ import org.springframework.web.bind.annotation.RequestMethod.POST
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.ResponseBody
 import org.springframework.web.servlet.ModelAndView
-import sage.entity.Blog
-import sage.entity.BlogStat
-import sage.entity.Comment
-import sage.entity.Liking
+import sage.entity.*
 import sage.service.BlogService
 import sage.service.UserService
 import sage.transfer.BlogPreview
 import sage.transfer.BlogView
 import sage.transfer.CommentView
+import sage.util.PaginationLogic
 import sage.web.auth.Auth
+import sage.web.context.RenderUtil
 
 @Controller
 @RequestMapping("/blogs")
@@ -102,10 +101,13 @@ open class BlogController @Autowired constructor(
   open fun likes(@PathVariable id: Long) = BlogStat.get(id).likes
 
   @RequestMapping
-  open fun all(@RequestParam(defaultValue = "1") page: Int,
-               @RequestParam(defaultValue = "20") size: Int): ModelAndView {
+  open fun all(@RequestParam(defaultValue = "1") page: Int): ModelAndView {
+    val size = 20
+    val recordsCount: Long = getRecordsCount(Blog)
+    val pagesCount: Int = PaginationLogic.pagesCount(size, recordsCount)
     val blogs = Blog.orderBy("id desc").findPagedList(page-1, size).list
         .map { BlogPreview(it) }
     return ModelAndView("blogs").addObject("blogs", blogs)
+        .addObject("paginationLinks", RenderUtil.paginationLinks("/blogs", pagesCount, page))
   }
 }

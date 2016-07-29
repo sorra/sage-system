@@ -10,17 +10,16 @@ import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.ResponseBody
 import org.springframework.web.servlet.ModelAndView
 import sage.domain.commons.ReformMention
-import sage.entity.Liking
-import sage.entity.TopicPost
-import sage.entity.TopicReply
-import sage.entity.TopicStat
+import sage.entity.*
 import sage.service.TopicService
 import sage.service.UserService
 import sage.transfer.TagLabel
 import sage.transfer.TopicPreview
 import sage.transfer.TopicReplyView
 import sage.transfer.TopicView
+import sage.util.PaginationLogic
 import sage.web.auth.Auth
+import sage.web.context.RenderUtil
 import java.sql.Timestamp
 
 @Controller
@@ -108,10 +107,13 @@ open class TopicController @Autowired constructor(
   open fun likes(@PathVariable id: Long) = TopicStat.get(id).likes
 
   @RequestMapping
-  open fun all(@RequestParam(defaultValue = "1") page: Int,
-               @RequestParam(defaultValue = "20") size: Int) : ModelAndView {
+  open fun all(@RequestParam(defaultValue = "1") page: Int) : ModelAndView {
+    val size = 20
+    val recordsCount: Long = getRecordsCount(TopicPost)
+    val pagesCount: Int = PaginationLogic.pagesCount(size, recordsCount)
     val topics = TopicPost.orderBy("whenLastActive desc").findPagedList(page-1, size).list
         .map { TopicPreview(it) }
     return ModelAndView("topics").addObject("topics", topics)
+        .addObject("paginationLinks", RenderUtil.paginationLinks("/topics", pagesCount, page))
   }
 }

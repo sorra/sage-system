@@ -2,9 +2,10 @@
 <html>
 <!--
 #set(List<BlogPreview> blogs)
+#set(paginationLinks)
 -->
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta charset="UTF-8">
   <title>博客列表</title>
   $!{allcss}
 </head>
@@ -15,6 +16,9 @@ $!{include("navbar.httl")}
     #for(blog : blogs)
       $!{include("blog-preview.httl")}
     #end
+  </div>
+  <div class="pagination">
+    $!{paginationLinks}
   </div>
 </div>
 $!{alljs}
