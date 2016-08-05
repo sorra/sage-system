@@ -28,6 +28,7 @@
 }
 
 .topic{
+  font-size: 15px;
   padding: 15px;
   background: #eee;
 }
@@ -38,6 +39,7 @@
 }
 
 .reply{
+  font-size: 15px;
   padding: 5px;
   border-bottom: 1px solid #aaa;
 }
