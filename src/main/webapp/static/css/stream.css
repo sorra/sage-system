@@ -6,10 +6,10 @@
 }
 .stream-item{
   width: 600px;
-	background: #f0f0f0;
-	border-radius: 5px;
-	padding: 5px;
-	margin-bottom: 5px;
+  background: #f0f0f0;
+  border-radius: 5px;
+  padding: 5px;
+  margin-bottom: 5px;
 }
 .tweet{
   display: table;
@@ -20,62 +20,59 @@
   clear: both;
 }
 .tweet-body{
-	width: 530px;
+  width: 530px;
   float: left;
-}
-.t-origin .tweet-body{
-	width: 500px;
 }
 .tweet-content .view-img{
-	display: block;
-	max-width: 200px;
-	max-height: 200px;
+  display: block;
+  max-width: 200px;
+  max-height: 200px;
 }
 .tweet-content .view-large{
-	max-width: 500px;
-	max-height: 500px;
+  max-width: 500px;
+  max-height: 500px;
 }
 .stream-item .t-origin{
-  margin-left: 10px;
+  margin-left: 50px;
   padding: 5px;
-	background: #e5e5e5;
-	border-radius: 10px;
+  background: #e5e5e5;
+  border-radius: 10px;
 }
 .stream-item .combine{
-	border-left: solid 1px #e5e5e5;
-	border-right: solid 1px #e5e5e5;
+  border-left: solid 1px #e5e5e5;
+  border-right: solid 1px #e5e5e5;
 }
 .stream-item .combine .t-forward{
-	margin-left: 0;
+  margin-left: 0;
 }
 .stream-item .combine .t-origin{
-	margin-left: 80px;
+  margin-left: 80px;
 }
 .stream-item .avatar{
-	display: block;
+  display: block;
   float: left;
-	padding-top: 5px;
+  padding-top: 5px;
 }
 .stream-item .author-name{
-	font-weight: bold;
-	color: black;
+  font-weight: bold;
+  color: black;
 }
 .stream-item .tags a{
-	margin-left: 0.5em;
+  margin-left: 0.5em;
 }
 
 #forward-dialog .modal-dialog{
-	width: 450px;
-	min-height: 100px;
-	border-radius: 10px;
+  width: 450px;
+  min-height: 100px;
+  border-radius: 10px;
 }
 
 #forward-dialog .mf-removed{
-	display: none;
+  display: none;
 }
 #forward-dialog textarea{
-	width: 400px;
-	min-height: 100px;
+  width: 400px;
+  min-height: 100px;
 }
 .comment-dialog textarea{
   overflow: hidden;
