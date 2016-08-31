@@ -38,6 +38,9 @@ open class AdminController @Autowired constructor(private val userService: UserS
     val intro = request.getParameter("intro")
 
     if (email != null) {
+      if (User.byEmail(email) != null) {
+        return "Email duplicate: $email"
+      }
       User.get(userId).run { this.email = email; update() }
     }
     if (password != null) {
