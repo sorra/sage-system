@@ -86,8 +86,7 @@ function cancelUcCloser() {
 }
 
 function setupFollowDialog(){
-  var $dia = $('#follow-dialog')
-  $dia.on('show.bs.modal', function(){
+  $('#follow-dialog').on('show.bs.modal', function(){
     var $this = $(this)
     var $body = $this.find('.modal-body').empty()
     var uc = $this.data('usercard')
@@ -95,20 +94,20 @@ function setupFollowDialog(){
     uc.tags.forEach(function(item){
       var $tagBtn = $('<button>').text(item.name).attr('tag-id', item.id).addClass('btn').appendTo($body)
         .click(function(){
-          $(this).toggleClass('btn-success');
+          $(this).toggleClass('btn-success')
         });
       if (uc.follow) {
-        console.info('followed tag ids: '+uc.follow.tagIds);
+        console.info('followed tag ids: '+uc.follow.tagIds)
         if (uc.follow.tagIds.indexOf(item.id) >= 0) {
-          $tagBtn.addClass('btn-success');
+          $tagBtn.addClass('btn-success')
         }
       }
     })
-    var $inew = $('<div><input name="includeNew" type="checkbox"/>自动订阅新标签</div>')
-    if (uc.follow && uc.follow.includeNew) $inew.find('input').prop('checked', true)
+    var $inew = $('<div><input name="includeNew" type="checkbox" checked/>自动订阅新标签</div>')
+    if (uc.follow && uc.follow.includeNew) $inew.find('input').prop('checked', uc.follow.includeNew)
     $inew.appendTo($body)
     var $iall = $('<div><input name="includeAll" type="checkbox"/>全订阅，不过滤</div>')
-    if (uc.follow && uc.follow.includeAll) $iall.find('input').prop('checked', true)
+    if (uc.follow && uc.follow.includeAll) $iall.find('input').prop('checked', uc.follow.includeAll)
     $iall.appendTo($body)
   })
 }
