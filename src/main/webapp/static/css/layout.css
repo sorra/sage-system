@@ -96,3 +96,18 @@ input[type=text]{
 .current-page-link{
   color: #000000;
 }
+
+#back-to-top{
+    position: fixed;
+    z-index: 5;
+    bottom: 30px;
+    right: 60px;
+    width: 30px;
+    height: 30px;
+    padding: 5px;
+    border-radius: 10%;
+    background: #fff;
+    cursor: pointer;
+    text-align: center;
+    display: none;
+}

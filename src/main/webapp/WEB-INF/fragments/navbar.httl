@@ -113,3 +113,6 @@
     </div>
   </div>
 </div>
+<div id="back-to-top">
+  <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>
+</div>

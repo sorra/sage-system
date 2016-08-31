@@ -51,6 +51,21 @@ $(document).ready(function(){
       });
     buildNavTagTree($lnk, window.tagTree);
   }
+
+  var isBackToTopHidden = true
+  window.onscroll = function(){
+        var toTop = document.body.scrollTop || document.documentElement.scrollTop
+        if (toTop > 0 && isBackToTopHidden) {
+            $('#back-to-top').css('display', 'block')
+            isBackToTopHidden = false
+        } else if (toTop == 0 && !isBackToTopHidden) {
+            $('#back-to-top').css('display', 'none')
+            isBackToTopHidden = true
+        };
+    }
+  $('#back-to-top').click(function(){
+    document.documentElement.scrollTop = document.body.scrollTop = 0
+  })
 });
 
 function buildNavTagTree($lnk, tagTree) {
