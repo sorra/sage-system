@@ -24,9 +24,12 @@ $!{include("navbar.httl")}
 
 <div class="container" id="container">
 	<div id="chain"></div>
-	<div class="row" style="margin-top:50px">
+	<div style="margin-top: 50px">
 		<div class="side">
       <div class="parallel-links">
+        <div>
+          <a id="heed-the-tag" class="btn btn-success" href="javascript:;" style="display: none">+关注</a>
+        </div>
         <div>
           <a href="/tag-changes/${tag.id}/scope">修改申请(范围内)</a>
           #if(countPendingRequestsOfTagScope > 0)[${countPendingRequestsOfTagScope}]#end
@@ -69,7 +72,7 @@ $!{include("navbar.httl")}
       #end
 		</div>
 		<div class="main">
-		  <div id="bkg-intro" class="row" style="text-align:center;padding:10px">${tag.intro == null ? "没有背景介绍" : tag.intro}</div>
+		  <div id="bkg-intro" style="text-align: center; padding: 10px">${tag.intro == null ? "没有背景介绍" : tag.intro}</div>
       <div class="topic-list">
         <h2 class="heading-hot">帖子精选</h2>
         <a class="btn-write-topic btn btn-primary btn-sm" href="/topics/new?belongTagId=${tag.id}">发帖!</a>
@@ -101,8 +104,37 @@ $(document).ready(function(){
 
 	var tagId = window.frontMap.id
 	getStream('/stream/tag/' + tagId)
-	getTagChain(tagId, $('#chain'));
-});
+	getTagChain(tagId, $('#chain'))
+
+  $('#heed-the-tag').click(function(){
+    var $this = $(this)
+    if ($this.hasClass('btn-success')) {
+      $.post('/heed/tag/'+tagId).done(function(){
+        $this.text('已关注')
+        $this.attr('class', 'btn btn-default')
+      }).fail(function(msg){
+        tipover($this, '操作失败' + msg)
+      })
+    } else {
+      $.post('/unheed/tag/'+tagId).done(function(){
+        $this.text('+关注')
+        $this.attr('class', 'btn btn-success')
+      }).fail(function(msg){
+        tipover($this, '操作失败' + msg)
+      })
+    }
+  })
+  $.get('/heeding/tag/'+tagId).done(function(resp){
+    var $btn = $('#heed-the-tag')
+    if (resp === true) {
+      $btn.text('已关注')
+      $btn.attr('class', 'btn btn-default')
+    }
+    $btn.show()
+  }).fail(function(msg){
+    console.error(msg)
+  })
+})
 </script>
 </body>
 </html>

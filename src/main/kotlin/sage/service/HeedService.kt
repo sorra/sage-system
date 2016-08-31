@@ -10,6 +10,10 @@ class HeedService {
     return TagHeed.byUser(userId)
   }
 
+  fun existsTagHeed(userId: Long, tagId: Long): Boolean {
+    return TagHeed.find(userId, tagId) != null
+  }
+
   fun heedTag(userId: Long, tagId: Long) {
     if (TagHeed.find(userId, tagId) == null) {
       TagHeed(User.ref(userId), Tag.ref(tagId)).save()
