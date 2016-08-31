@@ -15,7 +15,7 @@ class StreamService
 @Autowired constructor(
     private val tweetRead: TweetReadService,
     private val transfers: TransferService,
-    private val heed: HeedService) {
+    private val heedService: HeedService) {
 
   @JvmOverloads fun istream(userId: Long, edge: Edge = Edge.none()): Stream {
     // Deduplicate
@@ -23,7 +23,6 @@ class StreamService
     // TweetsByFollowings must be added first, they are prior
     mergedSet.addAll(transfers.toTweetViews(tweetRead.byFollowings(userId, edge)))
     mergedSet.addAll(tcsByTagHeeds(userId, edge))
-    // TODO Receive from group heeds
     mergedSet.addAll(tcsByFollowListHeeds(userId, edge))
 
     return Stream(higherSort(naiveSortViews(mergedSet)))
@@ -52,7 +51,7 @@ class StreamService
 
   private fun tcsByTagHeeds(userId: Long, edge: Edge): List<TweetView> {
     val tcsByTags = ArrayList<TweetView>()
-    for (hd in heed.tagHeeds(userId)) {
+    for (hd in heedService.tagHeeds(userId)) {
       val tagId = hd.tag.id
       val tagTcs = transfers.toTweetViews(tweetRead.byTag(tagId, edge))
       for (t in tagTcs) {
@@ -65,7 +64,7 @@ class StreamService
 
   private fun tcsByFollowListHeeds(userId: Long, edge: Edge): List<TweetView> {
     val tcsByFollowLists = ArrayList<TweetView>()
-    for (hd in heed.followListHeeds(userId)) {
+    for (hd in heedService.followListHeeds(userId)) {
       val followList = FollowListLite.fromEntity(hd.list)
       tcsByFollowLists.addAll(transfers.toTweetViews(tweetRead.byFollowListLite(followList, edge)))
     }
