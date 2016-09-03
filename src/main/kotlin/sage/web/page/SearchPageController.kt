@@ -21,7 +21,8 @@ open class SearchPageController @Autowired constructor(private val searchService
     if (q.isEmpty()) {
       return "forward:/"
     }
-    logger.info("/search uid=${Auth.uid()}, query=$q")
+    val uid = Auth.checkUid()
+    logger.info("/search uid=$uid, query=$q")
     val (types, results) = searchService.search(q)
     model.addAttribute("types", types).addAttribute("results", results)
     return "search-result"

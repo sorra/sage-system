@@ -33,16 +33,16 @@ class SearchService @Autowired constructor(private val searchBase: SearchBase) {
   }
 
   fun search(q: String): Pair<List<String>, List<Any>> {
-    val query = StringUtils.replaceEach(q, reservedSyms, escapedSyms)
-    val words = q.split(" ")
+    val query = StringUtils.replaceEach(q.toLowerCase(), reservedSyms, escapedSyms)
+    val words = query.split(" ")
 
     val hits = searchBase.search(query).hits.hits.filter { hit ->
       val match = hit.sourceAsMap().any { entry ->
         (entry.key == "title" || entry.key == "content")
-            && entry.value.toString().indexOfAny(words) >= 0
+            && entry.value.toString().toLowerCase().indexOfAny(words) >= 0
       }
       if (!match) {
-        log.info("Doc type={} id={} cannot match words={} in query={}", hit.type, hit.id, words, q)
+        log.info("Doc type={} id={} cannot match words={} in query={}", hit.type, hit.id, words, query)
       }
       match
     }

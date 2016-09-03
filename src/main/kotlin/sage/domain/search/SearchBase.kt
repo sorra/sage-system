@@ -39,10 +39,8 @@ class SearchBase {
   }
 
   fun setupMappings() {
-    for ((cls, name) in typeMap) {
-      val source = String(Files.readAllBytes(Paths.get(javaClass.classLoader.getResource("search/$name.json")!!.toURI())))
-      client?.run {admin().indices().preparePutMapping(INDEX).setType(name).setSource(source).execute()}
-    }
+      val source = String(Files.readAllBytes(Paths.get(javaClass.classLoader.getResource("search/mappings.json")!!.toURI())))
+      client?.run {admin().indices().preparePutMapping(INDEX).setSource(source).setUpdateAllTypes(true).execute()}
   }
 
   /**
@@ -68,9 +66,7 @@ class SearchBase {
   }
 
   fun search(query: String): SearchResponse {
-    var types = arrayOf(BLOG, TOPIC, TOPIC_REPLY)
-    if (Auth.uid() != null) types += TWEET
-    return client!!.prepareSearch(INDEX).setTypes(*types)
+    return client!!.prepareSearch(INDEX).setTypes(BLOG, TOPIC, TOPIC_REPLY, TWEET)
         .setSearchType(SearchType.DFS_QUERY_THEN_FETCH).setQuery(queryStringQuery(query))
         .setFrom(0).setSize(60).setExplain(true)
         .execute().actionGet()

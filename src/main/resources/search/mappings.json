@@ -1,11 +1,5 @@
 {
     "blog": {
-        "_all": {
-            "analyzer": "ik_max_word",
-            "search_analyzer": "ik_smart",
-            "term_vector": "no",
-            "store": "false"
-        },
         "properties": {
             "content": {
                 "type": "string",
@@ -26,5 +20,21 @@
                 "boost": 10
             }
         }
+    },
+  "topic": {
+    "properties": {
+      "content": {"type": "string"},
+      "title": {"type": "string"}
     }
+  },
+  "topic_reply": {
+    "properties": {
+      "content": {"type": "string"}
+    }
+  },
+  "tweet": {
+    "properties": {
+      "content": {"type": "string"}
+    }
+  }
 }
