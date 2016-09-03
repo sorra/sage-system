@@ -1,8 +1,8 @@
 {
-    "tc": {
+    "tweet": {
         "_all": {
-            "indexAnalyzer": "ik",
-            "searchAnalyzer": "ik",
+            "analyzer": "ik_max_word",
+            "search_analyzer": "ik_smart",
             "term_vector": "no",
             "store": "false"
         },
@@ -11,8 +11,8 @@
                 "type": "string",
                 "store": "no",
                 "term_vector": "with_positions_offsets",
-                "indexAnalyzer": "ik",
-                "searchAnalyzer": "ik",
+                "analyzer": "ik_max_word",
+                "search_analyzer": "ik_smart",
                 "include_in_all": "true",
                 "boost": 8
             }

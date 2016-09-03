@@ -1,0 +1,30 @@
+{
+  "topic": {
+    "_all": {
+      "analyzer": "ik_max_word",
+      "search_analyzer": "ik_smart",
+      "term_vector": "no",
+      "store": "false"
+    },
+    "properties": {
+      "content": {
+        "type": "string",
+        "store": "no",
+        "term_vector": "with_positions_offsets",
+        "analyzer": "ik_max_word",
+        "search_analyzer": "ik_smart",
+        "include_in_all": "true",
+        "boost": 8
+      },
+      "title": {
+        "type": "string",
+        "store": "no",
+        "term_vector": "with_positions_offsets",
+        "analyzer": "ik_max_word",
+        "search_analyzer": "ik_smart",
+        "include_in_all": "true",
+        "boost": 10
+      }
+    }
+  }
+}

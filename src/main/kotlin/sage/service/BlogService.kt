@@ -15,7 +15,7 @@ import java.util.*
 @Service
 @Suppress("NAME_SHADOWING")
 class BlogService
-@Autowired constructor(private val searchBase: SearchBase, private val notifService: NotificationService) {
+@Autowired constructor(private val searchService: SearchService, private val notifService: NotificationService) {
 
   fun post(userId: Long, title: String, content: String, tagIds: Set<Long>): Blog {
     checkLength(title, content)
@@ -26,7 +26,7 @@ class BlogService
     BlogStat(id = blog.id, whenCreated =  blog.whenCreated).save()
 
     mentionedIds.forEach { atId -> notifService.mentionedByBlog(atId, userId, blog.id) }
-    searchBase.index(blog.id, BlogView(blog))
+    searchService.index(blog.id, BlogView(blog))
     return blog
   }
 
@@ -42,7 +42,7 @@ class BlogService
     blog.content = content
     blog.tags = Tag.multiGet(tagIds)
     blog.update()
-    searchBase.index(blog.id, BlogView(blog))
+    searchService.index(blog.id, BlogView(blog))
     return blog
   }
 
@@ -52,7 +52,7 @@ class BlogService
       throw DomainException("User[%d] is not the author of Blog[%d]", userId, blogId)
     }
     blog.delete()
-    searchBase.delete(BlogView::class.java, blog.id)
+    searchService.delete(BlogView::class.java, blog.id)
   }
 
   fun comment(userId: Long, content: String, blogId: Long, replyUserId: Long?): Comment {

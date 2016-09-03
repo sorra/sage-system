@@ -1,0 +1,63 @@
+package sage.service
+
+import org.apache.commons.lang3.StringUtils
+import org.slf4j.LoggerFactory
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.stereotype.Service
+import sage.domain.search.SearchBase
+import sage.entity.Blog
+import sage.entity.TopicPost
+import sage.entity.TopicReply
+import sage.entity.Tweet
+import sage.transfer.BlogPreview
+import sage.transfer.TopicPreview
+import sage.transfer.TopicReplyView
+import sage.transfer.TweetView
+import sage.util.Strings
+
+@Service
+class SearchService @Autowired constructor(private val searchBase: SearchBase) {
+  private val log = LoggerFactory.getLogger(javaClass)
+
+  val reservedSyms = arrayOf("+", "-", "=", "&&", "||", ">", "<", "!", "(", ")", "{", "}", "[", "]", "^", "\"", "~", "*", "?", ":", "\\", "/")
+  val escapedSyms = reservedSyms.map { "\\" + it }.toTypedArray()
+
+  fun setupMappings() = searchBase.setupMappings()
+
+  fun index(id: Long, obj: Any) {
+    searchBase.index(id, obj)
+  }
+
+  fun delete(clazz: Class<*>, id: Long) {
+    searchBase.delete(clazz, id)
+  }
+
+  fun search(q: String): Pair<List<String>, List<Any>> {
+    val query = StringUtils.replaceEach(q, reservedSyms, escapedSyms)
+    val words = q.split(" ")
+
+    val hits = searchBase.search(query).hits.hits.filter { hit ->
+      val match = hit.sourceAsMap().any { entry ->
+        (entry.key == "title" || entry.key == "content")
+            && entry.value.toString().indexOfAny(words) >= 0
+      }
+      if (!match) {
+        log.info("Doc type={} id={} cannot match words={} in query={}", hit.type, hit.id, words, q)
+      }
+      match
+    }
+    @Suppress("IMPLICIT_CAST_TO_ANY")
+    val results = hits.map { hit ->
+      fun findById(f: (Long) -> Any?) = hit.sourceAsMap()["id"]?.run{ f(toString().toLong()) }
+      when (hit.type) {
+        SearchBase.BLOG -> findById { BlogPreview(Blog.get(it)) }
+        SearchBase.TOPIC -> findById { TopicPreview(TopicPost.get(it)) }
+        SearchBase.TOPIC_REPLY -> findById { TopicReplyView(TopicReply.get(it), null).apply { content = Strings.omit(content, 103) } }
+        SearchBase.TWEET -> findById { val twt = Tweet.byId(it)!!; TweetView(twt, Tweet.getOrigin(twt), 0, 0) }
+        else -> null
+      }
+    }.filterNotNull()
+    val types = results.map { it.javaClass.simpleName }
+    return types to results
+  }
+}

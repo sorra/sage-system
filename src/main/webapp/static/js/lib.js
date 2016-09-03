@@ -31,9 +31,7 @@ function common_setup() {
     event.preventDefault()
     var q = $('#search input[name=q]').val()
     if(q) {
-      console.log(encodeURI(q))
-      //window.open('/search?q='+encodeURI(q))
-      window.open('https://www.google.com/?q=site:qingjingjie.com+' + encodeURI(q))
+      window.open(this.getAttribute('action') + '?q=' + encodeURI(q))
     }
   });
 }

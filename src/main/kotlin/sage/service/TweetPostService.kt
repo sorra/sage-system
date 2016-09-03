@@ -15,7 +15,7 @@ import java.util.*
 @Service
 class TweetPostService
 @Autowired constructor(
-    private val searchBase: SearchBase,
+    private val searchService: SearchService,
     private val userService: UserService,
     private val transfers: TransferService,
     private val notifService: NotificationService) {
@@ -34,7 +34,7 @@ class TweetPostService
 
     parsedContent.mentionedIds.forEach { atId -> notifService.mentionedByTweet(atId, userId, tweet.id) }
 
-    searchBase.index(tweet.id, transfers.toTweetViewNoCount(tweet))
+    searchService.index(tweet.id, transfers.toTweetViewNoCount(tweet))
     return tweet
   }
 
@@ -64,7 +64,7 @@ class TweetPostService
     origins.forEach { origin -> notifService.forwarded(origin.author.id, userId, tweet.id) }
     parsedContent.mentionedIds.forEach { atId -> notifService.mentionedByTweet(atId, userId, tweet.id) }
 
-    searchBase.index(tweet.id, transfers.toTweetViewNoCount(tweet))
+    searchService.index(tweet.id, transfers.toTweetViewNoCount(tweet))
     return tweet
   }
 
@@ -96,7 +96,7 @@ class TweetPostService
         User.ref(userId), blog)
     tweet.save()
 
-    searchBase.index(tweet.id, transfers.toTweetViewNoCount(tweet))
+    searchService.index(tweet.id, transfers.toTweetViewNoCount(tweet))
   }
 
   fun delete(userId: Long, tweetId: Long) {
@@ -106,7 +106,7 @@ class TweetPostService
     }
     tweet.deleted = true
     tweet.update()
-    searchBase.delete(TweetView::class.java, tweetId)
+    searchService.delete(TweetView::class.java, tweetId)
   }
 
   private fun blogRef(blog: Blog): String {

@@ -8,14 +8,16 @@ import sage.domain.commons.Markdown
 import sage.domain.commons.ReplaceMention
 import sage.entity.*
 import sage.transfer.TopicPreview
+import sage.transfer.TopicReplyView
+import sage.transfer.TopicView
 import java.time.Instant
 import java.time.temporal.ChronoUnit
 import java.util.*
 
 @Service
 @Suppress("NAME_SHADOWING")
-class TopicService
-@Autowired constructor(private val notificationService: NotificationService) {
+class TopicService @Autowired constructor(
+    private val notificationService: NotificationService, private val searchService: SearchService) {
 
   fun post(userId: Long, title: String, content: String, reference: String, tagIds: Collection<Long>): TopicPost {
     if (title.isEmpty() || title.length > MAX_TITLE_LENGTH) throw BAD_TITLE_LENGTH
@@ -34,6 +36,7 @@ class TopicService
     mentionedIds.forEach { atId ->
       notificationService.mentionedByTopicPost(atId, userId, tp.id)
     }
+    searchService.index(tp.id, TopicView(tp))
     return tp
   }
 
@@ -53,6 +56,7 @@ class TopicService
     tp.belongTag = Tag.get(belongTagId ?: Tag.ROOT_ID)
     tp.tags = Tag.multiGet(tagIds)
     tp.update()
+    searchService.index(tp.id, TopicView(tp))
   }
 
   fun reply(userId: Long, content: String, topicPostId: Long, toReplyId: Long?): TopicReply {
@@ -77,6 +81,7 @@ class TopicService
     if (toUserId != null) {
       notificationService.repliedInTopic(toUserId, userId, reply.id)
     }
+    searchService.index(reply.id, TopicReplyView(reply, null))
     return reply
   }
 

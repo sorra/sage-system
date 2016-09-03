@@ -1,7 +1,10 @@
 <!DOCTYPE html>
 <html>
+<!--
 #set(components = ["bootstrap", "layout", "stream", "tag", "user", "search-result"])
-#set(List<String> hits)
+#set(List<String> types)
+#set(List results)
+-->
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<title>搜索结果</title>
@@ -10,12 +13,22 @@
 <body>
 $!{include("navbar.httl")}
 <div class="data-holder" style="display:none;">
-	#for(hit : hits)
-	<span class="hit-json">$!{hit}</span>
+	#for(result : results)
+	<span class="hit-json">$!{json(result)}</span>
 	#end
 </div>
 <div id="container" class="container">
-	<div id="result-list"></div>
+	<div id="result-list">
+		#for(result : results)
+			#set(type = types[for.index])
+			#if(type == "BlogPreview") $!{include("blog-preview.httl", ["blog": result])}
+			#else(type == "TopicPreview") $!{include("topic-preview.httl", ["topic": result])}
+			#else(type == "TopicReplyView") $!{include("topic-reply-in-search.httl", ["reply": result])}
+			#else(type == "TweetView") $!{include("tweet.httl", ["tweet": result])}
+			#else ${type}
+			#end
+		#end
+	</div>
 </div>
 
 $!{alljs}
