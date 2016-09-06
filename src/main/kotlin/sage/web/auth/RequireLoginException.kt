@@ -19,7 +19,7 @@ class RequireLoginException : RuntimeException {
   }
 
   companion object {
-    private val serialVersionUID = -7612510838405643774L
+    @JvmStatic private val serialVersionUID = -7612510838405643774L
   }
 
 }
