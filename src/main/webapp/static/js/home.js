@@ -5,7 +5,7 @@ function home_setup() {
   $(document).on('mouseenter', 'a[uid]', launchUcOpener).on('mouseleave', 'a[uid]', launchUcCloser)
 
   var $postBox = $($('.post-box')[0]).attr('id', 'the-post-box')
-  $postBox.find('.file-upload').ajaxfileupload({
+  $postBox.find('.pic-upload input[type=file]').ajaxfileupload({
     action: '/pic-upload',
     onComplete: function (resp) {
       var $postBox = $('#the-post-box')
@@ -82,7 +82,8 @@ function home_setup() {
 
 function postTweetDone() {
   var $submit = $('form.post-tweet .btn[type="submit"]')
-  $('form.post-tweet .input').val('')
+  $('.post-box .input').val('')
+  $('.post-box .pic-preview img').attr('src', '')
   hideTagTreeInput($('.tag-plus'))
   tipover($submit, '发表成功')
   funcLookNewer('/stream/i')()

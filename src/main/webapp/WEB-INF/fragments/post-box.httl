@@ -10,7 +10,10 @@
 		</div>
 	</form>
 	<form class="pic-upload">
-		<input type="file" name="picFile" class="file-upload" />
+		<a class="pic-upload-btn btn btn-default btn-xs" style="position: relative; display: inline-block; overflow: hidden;">
+			<span class="glyphicon glyphicon-picture"></span>图片
+			<input type="file" name="picFile" style="position: absolute; top: 0; right: 0; opacity: 0; -ms-filter: 'alpha(opacity=0)'; max-width: 52px;"/>
+		</a>
 		<a class="pic-preview" href="javascript:;" style="display: none">
 			预览<img src=""/>
 		</a>
