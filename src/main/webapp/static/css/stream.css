@@ -11,6 +11,7 @@
   padding: 5px;
   margin-bottom: 5px;
 }
+
 .tweet{
   display: table;
 }
@@ -32,21 +33,17 @@
   max-width: 500px;
   max-height: 500px;
 }
+
 .stream-item .t-origin{
-  margin-left: 50px;
   padding: 5px;
   background: #e5e5e5;
   border-radius: 10px;
 }
-.stream-item .combine{
-  border-left: solid 1px #e5e5e5;
-  border-right: solid 1px #e5e5e5;
-}
-.stream-item .combine .t-forward{
+.stream-item.combine .t-forward{
   margin-left: 0;
 }
-.stream-item .combine .t-origin{
-  margin-left: 80px;
+.stream-item.combine .t-origin{
+  margin-left: 50px;
 }
 .stream-item .avatar{
   display: block;
