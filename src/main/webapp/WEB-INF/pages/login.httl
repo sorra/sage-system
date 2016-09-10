@@ -38,6 +38,10 @@
       background-color: rgba(51,51,51,0.25);
       text-align: center;
     }
+    #login-action a{
+      color: skyblue;
+      margin-top: 10px;
+    }
     .validation-alert{
       color: red;
     }
