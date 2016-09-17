@@ -1,5 +1,7 @@
 'use strict';
 
+var stream = {}
+
 function stream_setup() {
   setupForwardDialog()
   stream_setupListeners()
@@ -20,9 +22,11 @@ function getStreamAfter(url, afterId, callback) {
   if (!afterId) {
     console.error('afterId is ' + afterId)
   }
+  var ajaxMark = new Object
+  window.stream.ajaxMark = ajaxMark
   return $.get(url, {after: afterId})
     .done(function (resp) {
-      if (resp) {
+      if (resp && ajaxMark == window.stream.ajaxMark) {
         $('.slist').prepend($(resp))
         humanTime_show()
       }
@@ -37,9 +41,11 @@ function getStreamBefore(url, beforeId, callback) {
   if (!beforeId) {
     console.error('beforeId is ' + beforeId)
   }
+  var ajaxMark = new Object
+  window.stream.ajaxMark = ajaxMark
   return $.get(url, {before: beforeId})
     .done(function (resp) {
-      if (resp) {
+      if (resp && ajaxMark == window.stream.ajaxMark) {
         $('.slist').append($(resp))
         humanTime_show()
       }
