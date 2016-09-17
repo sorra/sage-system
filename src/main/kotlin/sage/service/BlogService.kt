@@ -2,14 +2,11 @@ package sage.service
 
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
-import sage.domain.commons.BadArgumentException
-import sage.domain.commons.DomainException
-import sage.domain.commons.Markdown
-import sage.domain.commons.ReplaceMention
-import sage.domain.search.SearchBase
+import sage.domain.commons.*
 import sage.entity.*
 import sage.transfer.BlogPreview
 import sage.transfer.BlogView
+import sage.util.Strings
 import java.util.*
 
 @Service
@@ -19,7 +16,7 @@ class BlogService
 
   fun post(userId: Long, title: String, content: String, tagIds: Set<Long>): Blog {
     checkLength(title, content)
-    val (content, mentionedIds) = processContent(content)
+    val (content, mentionedIds) = processMarkdownContent(content)
 
     val blog = Blog(title, content, User.ref(userId), Tag.multiGet(tagIds))
     blog.save()
@@ -36,7 +33,7 @@ class BlogService
     if (userId != blog.author.id) {
       throw DomainException("User[%s] is not the author of Blog[%s]", userId, blogId)
     }
-    val (content, mentionedIds) = processContent(content)
+    val (content, mentionedIds) = processMarkdownContent(content)
 
     blog.title = title
     blog.content = content
@@ -59,7 +56,7 @@ class BlogService
     if (content.isEmpty() || content.length > COMMENT_MAX_LEN) {
       throw BAD_COMMENT_LENGTH
     }
-    val (content, mentionedIds) = processContent(content)
+    val (content, mentionedIds) = processPlainContent(content)
 
     val comment = Comment(content, User.ref(userId), Comment.BLOG, blogId, replyUserId)
     comment.save()
@@ -85,11 +82,19 @@ class BlogService
     }
   }
 
-  private fun processContent(content: String): Pair<String, HashSet<Long>> {
-    var text = Markdown.addBlankRow(content)
+  private fun processMarkdownContent(content: String): Pair<String, HashSet<Long>> {
+    var content = Strings.escapeHtmlTag(content)
     val mentionedIds = HashSet<Long>()
-    text = ReplaceMention.with { User.byName(it) }.apply(text, mentionedIds)
-    return Pair(text, mentionedIds)
+    content = ReplaceMention.with {User.byName(it)}.apply(content, mentionedIds)
+    return Pair(content, mentionedIds)
+  }
+
+  private fun processPlainContent(content: String): Pair<String, HashSet<Long>> {
+    var content = Markdown.addBlankRow(content)
+    val mentionedIds = HashSet<Long>()
+    content = ReplaceMention.with { User.byName(it) }.apply(content, mentionedIds)
+    content = Links.linksToHtml(content)
+    return Pair(content, mentionedIds)
   }
 
   companion object {

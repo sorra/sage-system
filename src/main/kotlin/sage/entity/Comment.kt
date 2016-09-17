@@ -1,21 +1,22 @@
 package sage.entity
 
-import javax.persistence.Entity
-import javax.persistence.ManyToOne
+import javax.persistence.*
 
 @Entity
 class Comment : BaseModel {
 
-  var content: String = ""
+  @Column(columnDefinition = "TEXT", length = 65535)
+  @Lob @Basic
+  val content: String
 
   @ManyToOne(optional = false)
-  var author: User
+  val author: User
 
-  var sourceType: Short = 0
+  val sourceType: Short
 
-  var sourceId: Long = 0
+  val sourceId: Long
 
-  var replyUserId: Long? = null
+  val replyUserId: Long?
 
   constructor(content: String, author: User, sourceType: Short, sourceId: Long, replyUserId: Long?) {
     this.content = content

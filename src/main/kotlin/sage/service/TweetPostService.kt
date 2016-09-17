@@ -1,10 +1,8 @@
 package sage.service
 
-import httl.util.StringUtils
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import sage.domain.commons.*
-import sage.domain.search.SearchBase
 import sage.entity.*
 import sage.transfer.MidForwards
 import sage.transfer.TweetView
@@ -24,15 +22,14 @@ class TweetPostService
     if (content.isEmpty() || content.length > TWEET_MAX_LEN) {
       throw BAD_TWEET_LENGTH
     }
-    val parsedContent = processContent(content)
-    val content = parsedContent.content
+    val (content, mentionedIds) = processPlainContent(content)
     val tweet = Tweet(content, User.ref(userId),
         Tag.multiGet(tagIds))
     tweet.save()
 
     userService.updateUserTag(userId, tagIds)
 
-    parsedContent.mentionedIds.forEach { atId -> notifService.mentionedByTweet(atId, userId, tweet.id) }
+    mentionedIds.forEach { atId -> notifService.mentionedByTweet(atId, userId, tweet.id) }
 
     searchService.index(tweet.id, transfers.toTweetViewNoCount(tweet))
     return tweet
@@ -42,8 +39,7 @@ class TweetPostService
     if (content.length > TWEET_MAX_LEN) {
       throw BAD_TWEET_LENGTH
     }
-    val parsedContent = processContent(content)
-    var content = parsedContent.content
+    var (content, mentionedIds) = processPlainContent(content)
     if (content.isEmpty()) content = " "
 
     val directOrigin = Tweet.ref(originId)
@@ -62,19 +58,17 @@ class TweetPostService
     userService.updateUserTag(userId, tweet.tags.map { it.id })
 
     origins.forEach { origin -> notifService.forwarded(origin.author.id, userId, tweet.id) }
-    parsedContent.mentionedIds.forEach { atId -> notifService.mentionedByTweet(atId, userId, tweet.id) }
+    mentionedIds.forEach { atId -> notifService.mentionedByTweet(atId, userId, tweet.id) }
 
     searchService.index(tweet.id, transfers.toTweetViewNoCount(tweet))
     return tweet
   }
 
   fun comment(userId: Long, content: String, sourceId: Long, replyUserId: Long?): Comment {
-    var content = content
     if (content.isEmpty() || content.length > COMMENT_MAX_LEN) {
       throw BAD_COMMENT_LENGTH
     }
-    val parsedContent = processContent(content)
-    content = parsedContent.content
+    val (content, mentionedIds) = processPlainContent(content)
 
     val comment = Comment(content, User.ref(userId), Comment.TWEET, sourceId, replyUserId)
     comment.save()
@@ -83,7 +77,7 @@ class TweetPostService
     if (replyUserId != null) {
       notifService.replied(replyUserId, userId, comment.id)
     }
-    parsedContent.mentionedIds.forEach { atId -> notifService.mentionedByComment(atId, userId, comment.id) }
+    mentionedIds.forEach { atId -> notifService.mentionedByComment(atId, userId, comment.id) }
     return comment
   }
 
@@ -130,16 +124,14 @@ class TweetPostService
   /*
    * Escape HTML and replace mentions
    */
-  private fun processContent(content: String): ParsedContent {
+  private fun processPlainContent(content: String): Pair<String, HashSet<Long>> {
     var content = Strings.escapeHtmlTag(content)
     val mentionedIds = HashSet<Long>()
     content = ReplaceMention.with {User.byName(it)}.apply(content, mentionedIds)
     content = Links.linksToHtml(content)
 
-    return ParsedContent(content, mentionedIds)
+    return Pair(content, mentionedIds)
   }
-
-  private class ParsedContent internal constructor(internal val content: String, internal val mentionedIds: Set<Long>)
 
   companion object {
     private val TWEET_MAX_LEN = 1000
