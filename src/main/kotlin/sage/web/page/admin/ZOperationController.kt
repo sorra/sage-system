@@ -13,7 +13,9 @@ import sage.transfer.BlogView
 import sage.transfer.TopicReplyView
 import sage.transfer.TopicView
 import sage.transfer.TweetView
+import sage.web.auth.Auth
 import sage.web.context.DataInitializer
+import java.util.*
 
 @Controller
 open class ZOperationController @Autowired constructor(
@@ -23,6 +25,9 @@ open class ZOperationController @Autowired constructor(
   @RequestMapping("/z-init")
   @ResponseBody
   open fun initData(): String {
+    if (User.byId(1) != null) {
+      return "Already inited."
+    }
     si.init()
     di.init()
     return "Done."
@@ -31,6 +36,9 @@ open class ZOperationController @Autowired constructor(
   @RequestMapping("/z-reindex")
   @ResponseBody
   open fun reindex(): String {
+    if (Auth.checkUid() != 1L) {
+      return "Page not found."
+    }
     searchService.setupMappings()
     Blog.findEach {
       searchService.index(it.id, BlogView(it))
@@ -53,6 +61,9 @@ open class ZOperationController @Autowired constructor(
   @RequestMapping("z-genstats")
   @ResponseBody
   open fun genstats(): String {
+    if (Auth.checkUid() != 1L) {
+      return "Page not found."
+    }
     val blogIds = arrayListOf<Long>()
     val topicIds = arrayListOf<Long>()
 
@@ -76,5 +87,22 @@ open class ZOperationController @Autowired constructor(
     }
 
     return "Done:\nblogs:$blogIds topics:$topicIds"
+  }
+
+  @RequestMapping("/z-genavatars")
+  @ResponseBody
+  open fun genavatars(): String {
+    if (Auth.checkUid() != 1L) {
+      return "Page not found."
+    }
+    val random = Random()
+    User.findEach { user ->
+      if (user.avatar.isNullOrEmpty()) {
+        val num = random.nextInt(6) + 2 // 0~5 + 2 = 2~7
+        user.avatar = "/files/avatar/color${num}.png"
+        user.update()
+      }
+    }
+    return "Done."
   }
 }
