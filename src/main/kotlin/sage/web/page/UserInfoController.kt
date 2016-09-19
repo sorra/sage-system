@@ -35,13 +35,15 @@ open class UserInfoController
 
   @RequestMapping("/user-info", method = arrayOf(POST))
   open fun changeInfo(@RequestParam(required = false) name: String?,
-                          @RequestParam(required = false) intro: String?,
-                          @RequestParam(required = false) avatar: MultipartFile?,
-                          @RequestParam(required = false) next: String?): String {
+                      @RequestParam(required = false) intro: String?,
+                      @RequestParam(required = false) avatar: MultipartFile?,
+                      @RequestParam(required = false) colorAvatar: String?,
+                      @RequestParam(required = false) next: String?): String {
     val cuid = Auth.checkUid()
     val path =
-        if (avatar == null || avatar.isEmpty) null
-        else filesService.upload(cuid, avatar, FilesService.Folder.AVATAR)
+        if (!colorAvatar.isNullOrEmpty()) colorAvatar
+        else if (avatar != null && !avatar.isEmpty) filesService.upload(cuid, avatar, FilesService.Folder.AVATAR)
+        else null
     userService.changeInfo(cuid, name, intro, path)
     if (StringUtils.isNotBlank(next)) {
       return "redirect:" + Auth.decodeLink(next!!)

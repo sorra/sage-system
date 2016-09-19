@@ -6,6 +6,16 @@
   <meta charset="UTF-8">
   <title>用户信息 - 轻境界</title>
   $!{allcss}
+  <style type="text/css">
+    #color-avatars img, #color-avatars-label{
+      border: 2px solid transparent;
+      margin: 5px;
+    }
+    #color-avatars .selected, #color-avatars .enabled{
+      border-color: orange;
+      border-radius: 3px;
+    }
+  </style>
 </head>
 <body>
 $!{include("navbar.httl")}
@@ -13,18 +23,48 @@ $!{include("navbar.httl")}
   <form id="user-info" action="${action}" method="post" enctype="multipart/form-data">
     <span>昵称：</span>
     <input name="name" type="text" value="${user.name}" />
-    <br />
-    <span>个性签名: </span>
+    <br/>
+    <span>个性签名：</span>
     <input name="intro" type="text" value="${user.intro}" />
-    <br />
-    <span>头像: </span>
+    <br/>
+    <br/>
+    选择颜色或上传头像，否则系统会随机选一个颜色。
+    <br/>
+    <span id="color-avatars">
+      <span id="color-avatars-label">纯色头像：</span>
+      #for(i in 1..7)
+      <img src="/files/avatar/color${i}.png"/>
+      #end
+      <input type="text" name="colorAvatar" style="display: none">
+    </span>
+    <br/>
+    <span>上传头像：</span>
     <img src="${user.avatar}" />
     <input name="avatar" type="file" />
+    <br/>
     <input type="submit" />
   </form>
   <a href="/change-password">修改密码</a>
 </div>
 
 $!{alljs}
+<script type="text/javascript">
+  var $colorAvatars = $('#color-avatars img')
+  var $colorInput = $('#color-avatars input')
+  var $colorLabel = $('#color-avatars-label')
+  $colorAvatars.click(function(){
+    var $this = $(this)
+    var alreadySelected = $this.hasClass('selected')
+    $colorAvatars.removeClass('selected')
+    if (!alreadySelected) {
+      $this.addClass('selected')
+      $colorInput.val($this.attr('src'))
+      $colorLabel.addClass('enabled')
+    } else {
+      $colorInput.val('')
+      $colorLabel.removeClass('enabled')
+    }
+  })
+</script>
 </body>
 </html>

@@ -45,8 +45,13 @@ class UserService {
     return UserLabel(User.get(userId))
   }
 
-  fun changeInfo(userId: Long, name: String?, intro: String?, avatar: String?) {
+  fun changeInfo(userId: Long, name: String?, intro: String?, avatarPath: String?) {
     val user = User.get(userId)
+    val avatar = if (user.avatar.isNullOrEmpty()) {
+      val num = Random().nextInt(7) + 1
+      "/files/avatar/color${num}.png"
+    } else avatarPath
+
     if (name == user.name && intro == user.intro && avatar == null) {
       return
     }

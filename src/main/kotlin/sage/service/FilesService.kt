@@ -101,6 +101,9 @@ class FilesService {
       // Find the largest existing number in files
       var max: Long = 0
       for (name in dir.list()) {
+        if (name.startsWith(".") || name.startsWith("color")) {
+          continue
+        }
         try {
           val current = java.lang.Long.parseLong(name.substring(0, name.length - SUFFIX.length))
           if (current > max) {
@@ -109,7 +112,6 @@ class FilesService {
         } catch (e: NumberFormatException) {
           log.warn("Non-number named file detected: " + name)
         }
-
       }
       maxNumber.set(max)
     }
