@@ -56,7 +56,7 @@ function tag_tree(tagTree, params) {
 
 function tag_node($tree, tag, depth, params) {
 	if (depth >= 0) {
-		var $tag = $('<a class="tag-label btn btn-default">').appendTo($tree)
+		var $tag = $('<a class="tag-label btn btn-default btn-sm">').appendTo($tree)
 			.attr({title: tag.chainStr, 'tag-id': tag.id, 'href': '/tags/'+tag.id})
 			.text(tag.name)
 			.css('margin-left', (30*depth) + 'px')
