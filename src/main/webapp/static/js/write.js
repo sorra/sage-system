@@ -1,4 +1,3 @@
-'use strict'
 function writeBlog_setup() {
   $('.btn-submit').tooltip({
     placement: 'top',

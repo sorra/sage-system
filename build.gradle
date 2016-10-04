@@ -93,9 +93,7 @@ javascript.source {
       include "*.js"
       exclude "*.min.js"
       exclude "all.js"
-      exclude "jquery-*.js"
-      exclude "vue*.js"
-      exclude "bootstrap.js"
+      exclude "libs.js"
       exclude "plugins.js"
     }
   }

@@ -1,4 +1,3 @@
-"use strict";
 function register_setup() {
   $('form').submit(function(event) {
     try {

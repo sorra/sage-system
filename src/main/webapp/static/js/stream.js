@@ -1,5 +1,3 @@
-'use strict';
-
 var stream = {}
 
 function stream_setup() {

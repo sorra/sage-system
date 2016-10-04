@@ -1,5 +1,3 @@
-'use strict';
-
 function tag_setup() {
   tag_input_init()
 }

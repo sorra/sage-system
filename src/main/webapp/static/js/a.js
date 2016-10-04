@@ -1,5 +1,4 @@
-'use strict';
-
+'use strict'
 function setup(/*functions*/) {
   var args = arguments
   $(document).ready(function() {
@@ -51,6 +50,45 @@ function redirect(url) {
 
 function formSubmitError(msg) {
   tipover($(this).find('*[type=submit]', msg))
+}
+
+/*
+ * common tip function
+ */
+function tipover($node, text, duration) {
+    if (!duration) duration = 1000;
+    
+    if (!$node.data('bs.tooltip')) {
+        $node.tooltip({placement: 'top', trigger: 'manual'});
+    }
+    $node.data('bs.tooltip').options.title = text;
+    $node.tooltip('show');
+    window.setTimeout(function(){$node.tooltip('hide');}, duration);
+}
+
+function commonConfirmPopover($node, action, message, placement) {
+    var $block = $('<div>')
+    $('<button class="btn">').text('是').appendTo($block).click(function(){
+        action.apply($node)
+        $node.popover('hide')
+    })
+    $('<button class="btn">').text('否').appendTo($block).click(function(){
+        $node.popover('hide')
+    })
+    $node.popover({
+        html: true,
+        title: message,
+        placement: placement,
+        content: $block
+    })
+}
+
+function limitStrLen(str, maxLen) {
+  if (str.length > maxLen+3) {
+    return str.substr(0, maxLen) + '...'
+  } else {
+    return str
+  }
 }
 
 $.fn.warnEmpty = function() {

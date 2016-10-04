@@ -1,5 +1,3 @@
-'use strict';
-
 function user_setup() {
   window.ucOpener = null
   window.ucCloser = null

@@ -1,5 +1,3 @@
-'use strict';
-
 function home_setup() {
   $('#nav-home').addClass('active');
   $(document).on('mouseenter', 'a[uid]', launchUcOpener).on('mouseleave', 'a[uid]', launchUcCloser)
