@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RestController
 import sage.entity.Comment
 import sage.service.BlogService
 import sage.service.TweetPostService
+import sage.transfer.CommentView
 import sage.web.auth.Auth
 
 @RestController
@@ -14,6 +15,7 @@ import sage.web.auth.Auth
 open class CommentApi @Autowired constructor(
     private val tweetPostService: TweetPostService,
     private val blogService: BlogService) {
+
   @RequestMapping("/new")
   open fun create(@RequestParam content: String, @RequestParam sourceType: Short, @RequestParam sourceId: Long,
                   @RequestParam(required = false) replyUserId: Long?,
@@ -28,4 +30,8 @@ open class CommentApi @Autowired constructor(
       blogService.comment(uid, content, sourceId, replyUserId)
     }
   }
+
+  @RequestMapping
+  open fun comments(@RequestParam sourceType: Short, @RequestParam sourceId: Long) =
+      Comment.list(sourceType, sourceId).map { CommentView(it) }
 }

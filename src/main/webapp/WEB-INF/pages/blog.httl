@@ -40,7 +40,7 @@ $!{include("navbar.httl")}
 			$!{include("btn_like.httl", ["likes": blog.likes, "isLiked": isLiked])}
 		</div>
 	</div>
-	<div id="comment-container" class="background-silver"></div>
+	<div id="comments-container" class="background-silver"></div>
 </div>
 $!{alljs}
 <script type="text/javascript">
@@ -56,9 +56,7 @@ $!{alljs}
 
 		btnLike_init('/blogs/' + id)
 
-		var $box = createCommentsBox(1, id).appendTo('#comment-container')
-		$box.find('textarea').css({width: '600px', height: '40px', resize: 'none'})
-		$box.find('.btn_forw_and_comm').remove()
+		comments_render('#comments-container', 1, id)
 	})
 </script>
 </body>

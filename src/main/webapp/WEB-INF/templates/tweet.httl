@@ -38,5 +38,6 @@
         <a class="comment" href="javascript:;">评论${showCount(t.commentCount)}</a>
       </span>
     </div>
+    <div class="comments-container"></div>
   </div>
 </div>

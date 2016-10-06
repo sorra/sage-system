@@ -30,9 +30,11 @@ class Comment : BaseModel {
     val BLOG: Short = 1
     val TWEET: Short = 2
 
-    fun byBlog(id: Long) = where().eq("sourceType", BLOG).eq("sourceId", id).findList()
-    fun countByBlog(id: Long) = where().eq("sourceType", BLOG).eq("sourceId", id).findRowCount()
+    fun list(sourceType: Short, sourceId: Long) =
+        if (sourceType >= 1 && sourceType <= 2) where().eq("sourceType", sourceType).eq("sourceId", sourceId).findList()
+        else emptyList()
 
+    fun byBlog(id: Long) = where().eq("sourceType", BLOG).eq("sourceId", id).findList()
     fun byTweet(id: Long) = where().eq("sourceType", TWEET).eq("sourceId", id).findList()
     fun countByTweet(id: Long) = where().eq("sourceType", TWEET).eq("sourceId", id).findRowCount()
   }

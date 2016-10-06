@@ -1,4 +1,14 @@
 'use strict'
+Vue.component('human-time', {
+  template: '<span class="human-time" :data-time="time">{{compute()}}</span>',
+  props: ['time'],
+  methods: {
+    compute: function () {
+      return humanTime_compute(this.time)
+    }
+  }
+})
+
 function setup(/*functions*/) {
   var args = arguments
   $(document).ready(function() {
@@ -16,6 +26,7 @@ function common_setup() {
       return hljs.highlightAuto(code).value;
     }
   })
+
   // Setup all simple tooltips
   $('[data-toggle="tooltip"]').tooltip()
   // Prevent form submitting on enter
@@ -57,7 +68,7 @@ function formSubmitError(msg) {
  */
 function tipover($node, text, duration) {
     if (!duration) duration = 1000;
-    
+
     if (!$node.data('bs.tooltip')) {
         $node.tooltip({placement: 'top', trigger: 'manual'});
     }

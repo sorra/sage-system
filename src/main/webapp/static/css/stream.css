@@ -71,9 +71,3 @@
   width: 400px;
   min-height: 100px;
 }
-.comment-dialog textarea{
-  overflow: hidden;
-  resize: none;
-  width: 400px;
-  height: 1.5em;
-}
