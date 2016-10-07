@@ -32,10 +32,10 @@
       </span>
       <span class="tweet-ops pull-right">
         #if(userSelf && userSelf.id == t.authorId)
-        <a class="delete" href="javascript:;" style="margin-left: 0.5em; margin-right: 0.5em">删除</a>
+        <a class="delete-btn" href="javascript:;" style="margin-left: 0.5em; margin-right: 0.5em">删除</a>
         #end
-        <a class="forward" href="javascript:;">转发${showCount(t.forwardCount)}</a>
-        <a class="comment" href="javascript:;">评论${showCount(t.commentCount)}</a>
+        <a class="forward-btn" href="javascript:;">转发${showCount(t.forwardCount)}</a>
+        <a class="comment-btn" href="javascript:;">评论${showCount(t.commentCount)}</a>
       </span>
     </div>
     <div class="comments-container"></div>

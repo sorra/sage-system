@@ -155,13 +155,13 @@ function setupForwardDialog() {
 function stream_setupListeners() {
   var $doc = $(document)
   $doc.delegate('a[uid]', 'mouseenter', launchUcOpener).delegate('a[uid]', 'mouseleave', launchUcCloser)
-  $doc.delegate('.tweet-ops .forward', 'click', function() {
+  $doc.delegate('.tweet-ops .forward-btn', 'click', function() {
     var $tweet = $(this).parents('.tweet').warnEmpty()
     $('#forward-dialog').data('tweet', $tweet).modal({backdrop: false})
   })
-  $doc.delegate('.tweet-ops .comment', 'click', toggleTweetComments)
+  $doc.delegate('.tweet-ops .comment-btn', 'click', toggleTweetComments)
   //TODO deleteDialogEach is not done yet
-  $doc.delegate('.tweet-ops .delete', 'click', deleteDialogEach)
+  $doc.delegate('.tweet-ops .delete-btn', 'click', deleteDialogEach)
 
 
   $doc.delegate('#forward-dialog .mf-x', 'click', function() {
