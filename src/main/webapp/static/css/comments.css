@@ -1,7 +1,12 @@
+.comments-box .action-alert{
+  text-align: center;
+}
+
 .comment{
   border-bottom: 1px solid #e0e0e0;
   margin-bottom: 5px;
 }
+
 .comment .avatar{
   display: block;
   float: left;

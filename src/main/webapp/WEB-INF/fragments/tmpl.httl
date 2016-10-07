@@ -1,14 +1,14 @@
 <script id="tmpl-comment-list" type="text/html">
   <div class="comments-box" v-show="visible">
-    <div>
+    <div class="main-comment-editor">
+      <div class="action-alert" role="alert"></div>
       <textarea v-model="editorContent" placeholder="写点评论吧" style="width: 400px; height: 43px; resize: none;"></textarea>
       <button class="btn btn-xs btn-success" @click="postComment(true)">转+评</button>
       <button class="btn btn-xs btn-info" @click="postComment(false)">评论</button>
     </div>
-    <div class="action-alert {{alertClass}}" role="alert" style="text-align: center">{{alertMsg}}</div>
     <div class="comments-header">评论</div>
     <div class="comment-list">
-      <div class="comment" v-for="c in comments">
+      <div class="comment" v-for="c in comments" data-id="{{c.id}}">
         <a class="avatar" uid="{{c.authorId}}" href="/users/{{c.authorId}}" style="margin-right: 10px">
           <img :src="c.avatar" style="width: 30px; height: 30px"/>
         </a>
@@ -22,6 +22,7 @@
           </div>
         </div>
         <div v-show="commentBeingReplied == c">
+          <div class="action-alert" role="alert"></div>
           <textarea v-model="c.replyEditorContent" placeholder="回复" style="width: 400px; height: 43px; resize: none;"></textarea>
           <button class="btn btn-xs btn-success" @click="postReply(c, true)">转+评</button>
           <button class="btn btn-xs btn-info" @click="postReply(c, false)">评论</button>

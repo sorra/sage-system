@@ -53,10 +53,10 @@ function comments_render(el, sourceType, sourceId) {
       postReply: function (c, alsoForward) {
         var self = this
         if (!c.replyEditorContent || c.replyEditorContent.trim() == '') {
-          self.alert('alert-danger', '请输入内容')
+          self.alert('alert-danger', '请输入内容', true)
           return
         }
-        self.showAlert('alert-warning', '正在发送...')
+        self.showAlert('alert-warning', '正在发送...', true)
         $.post('/api/comments/new', {
           content: c.replyEditorContent,
           sourceType: this.sourceType,
@@ -66,9 +66,9 @@ function comments_render(el, sourceType, sourceId) {
         }).done(function () {
           c.replyEditorContent = ''
           self.commentBeingReplied = null
-          self.alert('alert-success', '发送成功')
+          self.alert('alert-success', '发送成功', true)
         }).fail(function () {
-          self.alert('alert-danger', '发送失败')
+          self.alert('alert-danger', '发送失败', true)
         })
       },
 
@@ -80,12 +80,13 @@ function comments_render(el, sourceType, sourceId) {
         }
       },
 
-      showAlert: function (cls, msg) {
-        return $(this.$el).find('.action-alert').attr('class', 'action-alert ' + cls).text(msg).stop().css('opacity', '1').show()
+      showAlert: function (cls, msg, isReply) {
+        var queryPrefix = isReply ? '.comment[data-id=' + this.commentBeingReplied.id + '] ' : '.main-comment-editor '
+        return $(this.$el).find(queryPrefix + '.action-alert').attr('class', 'action-alert ' + cls).text(msg).stop().css('opacity', '1').show()
       },
 
-      alert: function (cls, msg) {
-        return this.showAlert(cls, msg).fadeOut(2000)
+      alert: function (cls, msg, isReply) {
+        return this.showAlert(cls, msg, isReply).fadeOut(2000)
       },
     }
   })
