@@ -68,13 +68,6 @@ open class BlogController @Autowired constructor(
     return ModelAndView("blog").addObject("blog", blog).addObject("isLiked", isLiked)
   }
 
-  @RequestMapping("/{id}/comments")
-  open fun comments(@PathVariable id: Long) : ModelAndView {
-    val comments = Comment.byBlog(id).map { CommentView(it) }
-    val totalCount = BlogStat.get(id).comments
-    return ModelAndView("blog-comments").addObject("comments", comments).addObject("totalCount", totalCount)
-  }
-
   @RequestMapping("/{id}/delete", method = arrayOf(POST))
   open fun delete(@PathVariable id: Long): String {
     val uid = Auth.checkUid()

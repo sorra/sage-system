@@ -32,12 +32,6 @@ open class PageController @Autowired constructor(
     return ModelAndView("tweet-page").addObject("tweet", tweet)
   }
 
-  @RequestMapping("/tweets/{id}/comments")
-  open fun comments(@PathVariable id: Long) : ModelAndView {
-    val comments = tweetReadService.getComments(id).map { CommentView(it) }
-    return ModelAndView("comment-list").addObject("comments", comments)
-  }
-
   @RequestMapping("/test")
   open fun test(): String {
     return "test"

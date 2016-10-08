@@ -33,5 +33,5 @@ open class CommentApi @Autowired constructor(
 
   @RequestMapping
   open fun comments(@RequestParam sourceType: Short, @RequestParam sourceId: Long) =
-      Comment.list(sourceType, sourceId).map { CommentView(it) }
+      Comment.list(sourceType, sourceId).map(::CommentView)
 }
