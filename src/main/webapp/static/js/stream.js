@@ -28,7 +28,7 @@ function getStreamAfter(url, afterId, callback) {
         $('.slist').prepend($(resp))
         humanTime_show()
       }
-      callback(resp)
+      if (callback) callback(resp)
     })
     .fail(function (resp) {
       tipover($('.slist'), '信息流向后加载失败: ' + resp)
@@ -47,7 +47,7 @@ function getStreamBefore(url, beforeId, callback) {
         $('.slist').append($(resp))
         humanTime_show()
       }
-      callback(resp)
+      if (callback) callback(resp)
     })
     .fail(function (resp) {
       tipover($('.slist'), '信息流向前加载失败: ' + resp)
