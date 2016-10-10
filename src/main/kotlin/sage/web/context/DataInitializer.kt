@@ -66,7 +66,7 @@ open class DataInitializer {
     }.toSet()
     val uid = Math.abs(Random().nextLong()) % 3 + 1
     logger.info("###{} ###author: {}", title, uid)
-    val blog = blogService!!.post(uid, title, content, tagIds)
-    tweetPostService!!.share(uid, blog)
+    blogService!!.post(uid, title, content, tagIds)
+//    tweetPostService!!.share(uid, blog)
   }
 }

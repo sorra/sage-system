@@ -10,6 +10,6 @@ class Fav(
     @ManyToOne
     var owner: User) : BaseModel() {
   companion object : Find<Long, Fav>() {
-    fun ofOwner(ownerId: Long) = where().eq("owner", User.ref(ownerId)).findList()
+    fun ofOwner(ownerId: Long): List<Fav> = where().eq("owner", User.ref(ownerId)).findList()
   }
 }

@@ -99,7 +99,7 @@ open class BlogController @Autowired constructor(
     val recordsCount: Long = getRecordsCount(Blog)
     val pagesCount: Int = PaginationLogic.pagesCount(size, recordsCount)
     val blogs = Blog.orderBy("id desc").findPagedList(page-1, size).list
-        .map { BlogPreview(it) }
+        .map(::BlogPreview)
     return ModelAndView("blogs").addObject("blogs", blogs)
         .addObject("paginationLinks", RenderUtil.paginationLinks("/blogs", pagesCount, page))
   }

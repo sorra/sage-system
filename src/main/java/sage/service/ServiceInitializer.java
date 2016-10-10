@@ -115,7 +115,7 @@ public class ServiceInitializer {
             + "因此这些旁门左道本文章就不去详细讨论了。这篇文章讲针对重要的那三个类型和两个修饰"
             + "进行讨论，并解释他们之间互相换算的方法。",
         Collections.singleton(tech));
-    tweetPostService.share(admin, posted);
+//    tweetPostService.share(admin, posted);
     posted = blogService.post(bethia, "潜行吧！奈亚子",
         "点击:296,371 收藏:2,245 关注人数:2,672 "
             + "同义词:這いよる! ニャルアニ！潜行吧！"
@@ -125,7 +125,7 @@ public class ServiceInitializer {
             + "第1回GA文库大赏优秀奖。由XEBEC制作的动画版，"
             + "与此前的FLASH动画不同，本作将回归主线。",
         Collections.singleton(culture));
-    tweetPostService.share(bethia, posted);
+//    tweetPostService.share(bethia, posted);
     posted = blogService.post(centos, "群体对人的影响",
         "群体对人的影响，主要是极化，即群体愚蠢或群体智慧。"
             + "理论上，有一个共同的目标，分工互补，就可形成紧密的群。"
@@ -140,7 +140,7 @@ public class ServiceInitializer {
             + "但在自然界涌现有很多范例，比如水分子朝一个方向运动会形成漩涡，"
             + "白蚁可以构筑相当于人类数千层楼高的蚁巢，且通风卫生情况良好。",
         Collections.singleton(society));
-    tweetPostService.share(centos, posted);
+//    tweetPostService.share(centos, posted);
     long a1 = tweetPostService.post(admin, "Post at root.", Arrays.asList(root)).getId();
     long a2 = tweetPostService.post(admin, "HUUSF View age.", Arrays.asList(view)).getId();
     long b1 = tweetPostService.post(bethia, "Music better!", Arrays.asList(music)).getId();

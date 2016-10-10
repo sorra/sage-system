@@ -81,18 +81,6 @@ class TweetPostService
     return comment
   }
 
-  fun share(userId: Long, blog: Blog) {
-    val SUM_LEN = 100
-    val content = blog.content
-    val summary = if (content.length > SUM_LEN) content.substring(0, SUM_LEN) else content
-    val tweet = Tweet(
-        "发表了博客：[" + blogRef(blog) + "] " + summary,
-        User.ref(userId), blog)
-    tweet.save()
-
-    searchService.index(tweet.id, transfers.toTweetViewNoCount(tweet))
-  }
-
   fun delete(userId: Long, tweetId: Long) {
     val tweet = Tweet.ref(tweetId)
     if (!IdCommons.equal(userId, tweet.author.id)) {
@@ -101,10 +89,6 @@ class TweetPostService
     tweet.deleted = true
     tweet.update()
     searchService.delete(TweetView::class.java, tweetId)
-  }
-
-  private fun blogRef(blog: Blog): String {
-    return String.format("<a href=\"%s\">%s</a>", "/blogs/" + blog.id, blog.title)
   }
 
   /*

@@ -27,7 +27,7 @@ class BlogPreview {
     whenCreated = blog.whenCreated
     whenModified = actualWhenModified(blog.whenCreated, blog.whenModified)
 
-    tags = blog.tags.map { TagLabel(it) }
+    tags = blog.tags.map(::TagLabel)
     val stat = blog.stat()
     commentCount = stat.comments
     likes = stat.likes
