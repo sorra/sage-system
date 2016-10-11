@@ -1,6 +1,7 @@
 package sage.web.context
 
-import sage.domain.commons.ReformMention
+import sage.domain.commons.ContentParser
+import sage.transfer.MidForward
 import sage.util.Settings
 
 object RenderUtil {
@@ -27,5 +28,5 @@ object RenderUtil {
     return sb.toString()
   }
 
-  @JvmStatic fun reformMention(text: String) = ReformMention.apply(text)
+  @JvmStatic fun userLinkForMidForward(mf: MidForward) = ContentParser.userLinkForMidForward(mf)
 }

@@ -13,11 +13,10 @@
   <div class="tweet-body">
     <a class="author-name" $!{userLinkAttrs(t.authorId)}>${t.authorName}</a>
     <div>
-      #set(reformedContent = t.content.reformMention())
-      <span class="tweet-content">$!{reformedContent}</span>
-      <span mf-id="${t.id}" style="display: none"> ||<a>@${t.authorName}</a>: $!{reformedContent}</span>
+      <span class="tweet-content">$!{t.content}</span>
+      <span mf-id="${t.id}" style="display: none"> ||<a>@${t.authorName}</a>：$!{t.content}</span>
       #if(t.midForwards)#for(MidForward x : t.midForwards.xs)
-      <span mf-id="${x.id}"> ||$!{('@'+x.authorName+'#'+x.authorId.toString+' : '+x.content).reformMention()}</span>
+      <span mf-id="${x.id}"> ||$!{userLinkForMidForward(x)}：</span>
       #end#end
     </div>
     #if(t.origin)

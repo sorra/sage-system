@@ -6,10 +6,8 @@ import sage.domain.commons.*
 import sage.entity.*
 import sage.transfer.MidForwards
 import sage.transfer.TweetView
-import sage.util.Strings
 import java.util.*
 
-@Suppress("NAME_SHADOWING")
 @Service
 class TweetPostService
 @Autowired constructor(
@@ -22,8 +20,9 @@ class TweetPostService
     if (content.isEmpty() || content.length > TWEET_MAX_LEN) {
       throw BAD_TWEET_LENGTH
     }
-    val (content, mentionedIds) = processPlainContent(content)
-    val tweet = Tweet(content, User.ref(userId),
+    val (richContent, mentionedIds) = ContentParser.tweet(content) { name -> User.byName(name) }
+
+    val tweet = Tweet(richContent, User.ref(userId),
         Tag.multiGet(tagIds))
     tweet.save()
 
@@ -39,19 +38,18 @@ class TweetPostService
     if (content.length > TWEET_MAX_LEN) {
       throw BAD_TWEET_LENGTH
     }
-    var (content, mentionedIds) = processPlainContent(content)
-    if (content.isEmpty()) content = " "
+    val (richContent, mentionedIds) = ContentParser.tweet(content) { name -> User.byName(name) }
 
     val directOrigin = Tweet.ref(originId)
     val origins = fromDirectToInitialOrigin(directOrigin)
     val initialOrigin = origins.last
     val tweet: Tweet
     if (initialOrigin == directOrigin) {
-      tweet = Tweet(content, User.ref(userId), initialOrigin)
+      tweet = Tweet(richContent, User.ref(userId), initialOrigin)
     } else {
       val midForwards = MidForwards(directOrigin)
       removedForwardIds.forEach { midForwards.removeById(it) }
-      tweet = Tweet(content, User.ref(userId), initialOrigin, midForwards)
+      tweet = Tweet(richContent, User.ref(userId), initialOrigin, midForwards)
     }
     tweet.save()
 
@@ -68,9 +66,9 @@ class TweetPostService
     if (content.isEmpty() || content.length > COMMENT_MAX_LEN) {
       throw BAD_COMMENT_LENGTH
     }
-    val (content, mentionedIds) = processPlainContent(content)
+    val (richContent, mentionedIds) = ContentParser.tweet(content) { name -> User.byName(name) }
 
-    val comment = Comment(content, User.ref(userId), Comment.TWEET, sourceId, replyUserId)
+    val comment = Comment(richContent, User.ref(userId), Comment.TWEET, sourceId, replyUserId)
     comment.save()
 
     notifService.commentedTweet(Tweet.ref(sourceId).author.id, userId, comment.id)
@@ -103,18 +101,6 @@ class TweetPostService
       origin = Tweet.getOrigin(origin)
     }
     return origins
-  }
-
-  /*
-   * Escape HTML and replace mentions
-   */
-  private fun processPlainContent(content: String): Pair<String, HashSet<Long>> {
-    var content = Strings.escapeHtmlTag(content)
-    val mentionedIds = HashSet<Long>()
-    content = ReplaceMention.with {User.byName(it)}.apply(content, mentionedIds)
-    content = Links.linksToHtml(content)
-
-    return Pair(content, mentionedIds)
   }
 
   companion object {
