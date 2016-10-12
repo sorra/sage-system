@@ -20,9 +20,9 @@ class TweetPostService
     if (content.isEmpty() || content.length > TWEET_MAX_LEN) {
       throw BAD_TWEET_LENGTH
     }
-    val (richContent, mentionedIds) = ContentParser.tweet(content) { name -> User.byName(name) }
+    val (hyperContent, mentionedIds) = ContentParser.tweet(content) { name -> User.byName(name) }
 
-    val tweet = Tweet(richContent, User.ref(userId),
+    val tweet = Tweet(hyperContent, User.ref(userId),
         Tag.multiGet(tagIds))
     tweet.save()
 
@@ -38,18 +38,18 @@ class TweetPostService
     if (content.length > TWEET_MAX_LEN) {
       throw BAD_TWEET_LENGTH
     }
-    val (richContent, mentionedIds) = ContentParser.tweet(content) { name -> User.byName(name) }
+    val (hyperContent, mentionedIds) = ContentParser.tweet(content) { name -> User.byName(name) }
 
     val directOrigin = Tweet.ref(originId)
     val origins = fromDirectToInitialOrigin(directOrigin)
     val initialOrigin = origins.last
     val tweet: Tweet
     if (initialOrigin == directOrigin) {
-      tweet = Tweet(richContent, User.ref(userId), initialOrigin)
+      tweet = Tweet(hyperContent, User.ref(userId), initialOrigin)
     } else {
       val midForwards = MidForwards(directOrigin)
       removedForwardIds.forEach { midForwards.removeById(it) }
-      tweet = Tweet(richContent, User.ref(userId), initialOrigin, midForwards)
+      tweet = Tweet(hyperContent, User.ref(userId), initialOrigin, midForwards)
     }
     tweet.save()
 
@@ -66,9 +66,9 @@ class TweetPostService
     if (content.isEmpty() || content.length > COMMENT_MAX_LEN) {
       throw BAD_COMMENT_LENGTH
     }
-    val (richContent, mentionedIds) = ContentParser.tweet(content) { name -> User.byName(name) }
+    val (hyperContent, mentionedIds) = ContentParser.tweet(content) { name -> User.byName(name) }
 
-    val comment = Comment(richContent, User.ref(userId), Comment.TWEET, sourceId, replyUserId)
+    val comment = Comment(hyperContent, User.ref(userId), Comment.TWEET, sourceId, replyUserId)
     comment.save()
 
     notifService.commentedTweet(Tweet.ref(sourceId).author.id, userId, comment.id)

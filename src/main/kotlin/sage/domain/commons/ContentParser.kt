@@ -57,5 +57,7 @@ object ContentParser {
     return Pair(rewritten, mentionedIds)
   }
 
+  fun comment(content: String, userFinder: (String) -> User?): Pair<String, Set<Long>> = tweet(content, userFinder)
+
   fun userLinkForMidForward(mf: MidForward) = "<a uid=\"${mf.authorId}\" href=\"/user/${mf.authorId}\">@${mf.authorName}</a> "
 }

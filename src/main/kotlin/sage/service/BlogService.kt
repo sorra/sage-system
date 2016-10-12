@@ -56,9 +56,9 @@ class BlogService
     if (content.isEmpty() || content.length > COMMENT_MAX_LEN) {
       throw BAD_COMMENT_LENGTH
     }
-    val (content, mentionedIds) = processPlainContent(content)
+    val (hyperContent, mentionedIds) = ContentParser.comment(content) { name -> User.byName(name) }
 
-    val comment = Comment(content, User.ref(userId), Comment.BLOG, blogId, replyUserId)
+    val comment = Comment(hyperContent, User.ref(userId), Comment.BLOG, blogId, replyUserId)
     comment.save()
     BlogStat.incComments(blogId)
     
@@ -86,14 +86,6 @@ class BlogService
     var content = Strings.escapeHtmlTag(content)
     val mentionedIds = HashSet<Long>()
     content = ReplaceMention.with {User.byName(it)}.apply(content, mentionedIds)
-    return Pair(content, mentionedIds)
-  }
-
-  private fun processPlainContent(content: String): Pair<String, HashSet<Long>> {
-    var content = Markdown.addBlankRow(content)
-    val mentionedIds = HashSet<Long>()
-    content = ReplaceMention.with { User.byName(it) }.apply(content, mentionedIds)
-    content = Links.linksToHtml(content)
     return Pair(content, mentionedIds)
   }
 
