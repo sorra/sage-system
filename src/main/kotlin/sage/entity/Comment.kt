@@ -5,7 +5,7 @@ import javax.persistence.*
 @Entity
 class Comment : BaseModel {
 
-  @Column(columnDefinition = "TEXT", length = 65535)
+  @Column(columnDefinition = "TEXT")
   @Lob @Basic
   val content: String
 

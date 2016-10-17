@@ -12,17 +12,17 @@ import javax.persistence.*
 @Entity
 class Tweet : BaseModel {
 
-  @Column(columnDefinition = "TEXT", length = 65535)
+  @Column(columnDefinition = "TEXT")
   @Lob @Basic
   val content: String
     get() = if (deleted) "" else field
 
-  @Column(columnDefinition = "TEXT", length = 65535)
+  @Column(columnDefinition = "TEXT")
   @Lob @Basic
   var richElementsJson: String?
     get() = if (deleted) null else field
 
-  @Column(columnDefinition = "TEXT", length = 65535)
+  @Column(columnDefinition = "TEXT")
   @Lob @Basic
   var midForwardsJson: String? = null
     get() = if (deleted) null else field

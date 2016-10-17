@@ -16,7 +16,7 @@ import javax.persistence.*
 class TopicPost(
     var title: String,
 
-    @Column(columnDefinition = "TEXT", length = 65535)
+    @Column(columnDefinition = "TEXT")
     @Lob @Basic
     var content: String = "",
 
@@ -56,7 +56,7 @@ class TopicPost(
 
 @Entity
 class TopicReply(
-    @Column(columnDefinition = "TEXT", length = 65535)
+    @Column(columnDefinition = "TEXT")
     @Lob @Basic
     var content: String,
 
