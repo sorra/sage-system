@@ -25,7 +25,7 @@ open class UserController @Autowired constructor(
   open fun userPage(@PathVariable id: Long): ModelAndView {
     val uid = Auth.uid()
     val thisUser = userService.getUserCard(uid, id)
-    val blogs = Blog.byAuthor(id).sortedByDescending { it.whenCreated }.map { BlogPreview(it) }
+    val blogs = Blog.byAuthor(id).sortedByDescending { it.whenCreated }.map(::BlogPreview)
     return ModelAndView("user-page").addObject("thisUser", thisUser)
         .addObject("blogs", blogs)
         .include(FrontMap().attr("id", id).attr("isSelfPage", uid == id))

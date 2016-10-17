@@ -20,8 +20,9 @@ open class PageController @Autowired constructor(
 
   @RequestMapping("/people")
   open fun people(): ModelAndView {
-    val recomms = userService.recommendByTag(Auth.checkUid())
-    val people = userService.people(Auth.checkUid())
+    val uid = Auth.uid()
+    val recomms = if (uid != null) userService.recommendByTag(uid) else emptyList()
+    val people = userService.people(uid)
     return ModelAndView("people").addObject("recomms", recomms).addObject("people", people)
   }
 

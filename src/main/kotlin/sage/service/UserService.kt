@@ -136,7 +136,7 @@ class UserService {
     }
   }
 
-  fun people(selfId: Long): Collection<UserCard> {
+  fun people(selfId: Long?): Collection<UserCard> {
     return User.all().filter { it.id != selfId }.map { getUserCard(selfId, it.id) }
   }
 
