@@ -256,6 +256,7 @@ create table topic_stat (
 create table tweet (
   id                            bigint auto_increment not null,
   content                       TEXT,
+  rich_elements_json            TEXT,
   mid_forwards_json             TEXT,
   author_id                     bigint not null,
   origin_id                     bigint not null,

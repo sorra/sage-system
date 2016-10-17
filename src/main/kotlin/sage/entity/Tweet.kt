@@ -2,8 +2,10 @@ package sage.entity
 
 import org.slf4j.LoggerFactory
 import sage.domain.commons.Edge
+import sage.domain.commons.RichElement
 import sage.transfer.MidForward
 import sage.transfer.MidForwards
+import sage.web.context.Json
 import java.util.*
 import javax.persistence.*
 
@@ -12,20 +14,25 @@ class Tweet : BaseModel {
 
   @Column(columnDefinition = "TEXT", length = 65535)
   @Lob @Basic
-  var content: String = ""
+  val content: String
     get() = if (deleted) "" else field
 
-  @ManyToOne(optional = false)
-  var author: User
-
-  var originId: Long = 0
-    @Column(nullable = false)
-    get() = if (deleted) -1 else field
+  @Column(columnDefinition = "TEXT", length = 65535)
+  @Lob @Basic
+  var richElementsJson: String?
+    get() = if (deleted) null else field
 
   @Column(columnDefinition = "TEXT", length = 65535)
   @Lob @Basic
   var midForwardsJson: String? = null
     get() = if (deleted) null else field
+
+  @ManyToOne(optional = false)
+  val author: User
+
+  var originId: Long = 0
+    @Column(nullable = false)
+    get() = if (deleted) -1 else field
 
   var blogId: Long = 0
 
@@ -34,13 +41,14 @@ class Tweet : BaseModel {
 
   var deleted: Boolean = false
 
-  constructor(content: String, author: User, tags: Set<Tag>) {
+  constructor(content: String, richElements: Collection<RichElement>, author: User, tags: Set<Tag>) {
     this.content = content
     this.author = author
+    this.richElementsJson = Json.json(richElements)
     this.tags = HashSet(tags)
   }
 
-  constructor(content: String, author: User, initialOrigin: Tweet) : this(content, author, initialOrigin.tags) {
+  constructor(content: String, richElements: Collection<RichElement>, author: User, initialOrigin: Tweet) : this(content, richElements, author, initialOrigin.tags) {
     originId = initialOrigin.id
     if (initialOrigin.hasOrigin()) {
       throw IllegalArgumentException(String.format(
@@ -49,15 +57,23 @@ class Tweet : BaseModel {
     }
   }
 
-  constructor(content: String, author: User, origin: Tweet, midForwards: MidForwards) : this(content, author, origin) {
+  constructor(content: String, richElements: Collection<RichElement>, midForwards: MidForwards, author: User, origin: Tweet) : this(content, richElements, author, origin) {
     midForwardsJson = midForwards.toJson()
   }
 
-  constructor(content: String, author: User, sourceBlog: Blog) : this(content, author, sourceBlog.tags) {
+  constructor(content: String, richElements: Collection<RichElement>, author: User, sourceBlog: Blog) : this(content, richElements, author, sourceBlog.tags) {
     blogId = sourceBlog.id
   }
 
   fun hasOrigin() = originId > 0
+
+  fun richElements(): Collection<RichElement> =
+      try {
+        richElementsJson?.run { RichElement.fromJsonToList(this) } ?: emptyList()
+      } catch (e: Exception) {
+        log.error("richElements cannot be deserialized from JSON", e)
+        emptyList<RichElement>()
+      }
 
   fun midForwards(): MidForwards? =
     try {
@@ -67,7 +83,6 @@ class Tweet : BaseModel {
       MidForwards().apply { xs.add(MidForward(0, 0, "", "")) }
     }
 
-  @Suppress("NAME_SHADOWING")
   companion object : Find<Long, Tweet>() {
     private val log = LoggerFactory.getLogger(Tweet::class.java)
 
@@ -75,8 +90,7 @@ class Tweet : BaseModel {
       if (tags.isEmpty()) {
         return LinkedList()
       }
-      val tags = Tag.getQueryTags(tags)
-      return ranged(edge).`in`("tags.id", tags.map { it.id }).findList()
+      return ranged(edge).`in`("tags.id", Tag.getQueryTags(tags).map { it.id }).findList()
     }
 
     fun byAuthor(authorId: Long, edge: Edge = Edge.none()) =
@@ -89,8 +103,7 @@ class Tweet : BaseModel {
       if (hasRoot(tags)) {
         return byAuthor(authorId, edge)
       }
-      val tags = Tag.getQueryTags(tags)
-      return ranged(edge).eq("author", User.ref(authorId)).`in`("tags.id", tags.map { it.id }).findList()
+      return ranged(edge).eq("author", User.ref(authorId)).`in`("tags.id", Tag.getQueryTags(tags).map { it.id }).findList()
     }
 
     fun connectTweets(blogId: Long): List<Tweet> {

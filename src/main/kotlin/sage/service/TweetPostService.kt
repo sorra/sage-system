@@ -16,13 +16,13 @@ class TweetPostService
     private val transfers: TransferService,
     private val notifService: NotificationService) {
 
-  fun post(userId: Long, content: String, tagIds: Collection<Long>): Tweet {
+  fun post(userId: Long, content: String, richElements: Collection<RichElement>, tagIds: Collection<Long>): Tweet {
     if (content.isEmpty() || content.length > TWEET_MAX_LEN) {
       throw BAD_TWEET_LENGTH
     }
     val (hyperContent, mentionedIds) = ContentParser.tweet(content) { name -> User.byName(name) }
 
-    val tweet = Tweet(hyperContent, User.ref(userId),
+    val tweet = Tweet(hyperContent, richElements, User.ref(userId),
         Tag.multiGet(tagIds))
     tweet.save()
 
@@ -45,11 +45,11 @@ class TweetPostService
     val initialOrigin = origins.last
     val tweet: Tweet
     if (initialOrigin == directOrigin) {
-      tweet = Tweet(hyperContent, User.ref(userId), initialOrigin)
+      tweet = Tweet(hyperContent, emptyList(), User.ref(userId), initialOrigin)
     } else {
       val midForwards = MidForwards(directOrigin)
       removedForwardIds.forEach { midForwards.removeById(it) }
-      tweet = Tweet(hyperContent, User.ref(userId), initialOrigin, midForwards)
+      tweet = Tweet(hyperContent, emptyList(), midForwards, User.ref(userId), initialOrigin)
     }
     tweet.save()
 

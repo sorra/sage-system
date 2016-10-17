@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestMethod
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
+import sage.domain.commons.RichElement
 import sage.service.TweetPostService
 import sage.web.auth.Auth
 
@@ -24,8 +25,8 @@ open class PostController {
       @RequestParam("tagIds[]", defaultValue = "") tagIds: Collection<Long>): Boolean {
     val uid = Auth.checkUid()
     logger.info("Got picture: " + pictureRefs)
-    val tail = pictureRefs.map { "img://$it" }.joinToString(" ")
-    val tweet = tweetPostService!!.post(uid, "$content $tail", tagIds)
+    val richElements = pictureRefs.map { RichElement("picture", it) }
+    val tweet = tweetPostService!!.post(uid, content, richElements, tagIds)
     logger.info("post tweet {} success", tweet.id)
     return true
   }

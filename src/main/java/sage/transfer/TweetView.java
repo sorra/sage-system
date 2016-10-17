@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import org.apache.commons.lang3.StringUtils;
 import sage.domain.commons.IdCommons;
 import sage.entity.Tag;
 import sage.entity.Tweet;
@@ -36,7 +35,7 @@ public class TweetView implements Item {
       authorName = tweet.getAuthor().getName();
       avatar = tweet.getAuthor().getAvatar();
     }
-    content = convertImgLinks(tweet.getContent());
+    content = convertRichElements(tweet);
     time = tweet.getWhenCreated();
     if (origin != null) {
       this.origin = new TweetView(origin, null, 0, 0);
@@ -138,16 +137,14 @@ public class TweetView implements Item {
   public String toString() {
     return authorName + ": " + content + tags;
   }
-  
-  private String convertImgLinks(String text) {
-    int idxFirst = text.indexOf("img://");
-    if (idxFirst < 0) return text;
-    String body = text.substring(0, idxFirst);
-    String[] links = text.substring(idxFirst).split(" ");
-    for (int i = 0; i < links.length; i++) {
-      String neo = "<img class=\"view-img\" src=\"" + links[i].replace("img://", "") + "\"/>";
-      links[i] = neo;
-    }
-    return body + String.join(" ", links);
+
+  private String convertRichElements(Tweet tweet) {
+    StringBuilder sb = new StringBuilder(tweet.getContent());
+    tweet.richElements().forEach(elem -> {
+      if (elem.getType().equals("picture")) {
+        sb.append("<img class=\"view-img\" src=\"").append(elem.getValue()).append("\"/>");
+      }
+    });
+    return sb.toString();
   }
 }

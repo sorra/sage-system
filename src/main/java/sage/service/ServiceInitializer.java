@@ -12,6 +12,8 @@ import sage.entity.User;
 import sage.transfer.Stream;
 
 import static java.lang.System.out;
+import static java.util.Collections.emptyList;
+import static java.util.Collections.singletonList;
 
 @Component
 public class ServiceInitializer {
@@ -67,8 +69,7 @@ public class ServiceInitializer {
   }
 
   private long createTag(String name, long parentId) {
-    long tagId = tagService.create(1, name, parentId, true, "").getId();
-    return tagId;
+    return tagService.create(1, name, parentId, true, "").getId();
   }
 
   private void user() {
@@ -86,10 +87,10 @@ public class ServiceInitializer {
     relationService.follow(admin, centos, Arrays.asList(society, culture));
 
     relationService.follow(bethia, admin, Arrays.asList(music, view));
-    relationService.follow(bethia, centos, Arrays.asList(music));
+    relationService.follow(bethia, centos, singletonList(music));
 
     relationService.follow(centos, admin, Arrays.asList(tech, view));
-    relationService.follow(centos, bethia, Arrays.asList(art));
+    relationService.follow(centos, bethia, singletonList(art));
   }
 
   private void post() {
@@ -141,15 +142,15 @@ public class ServiceInitializer {
             + "白蚁可以构筑相当于人类数千层楼高的蚁巢，且通风卫生情况良好。",
         Collections.singleton(society));
 //    tweetPostService.share(centos, posted);
-    long a1 = tweetPostService.post(admin, "Post at root.", Arrays.asList(root)).getId();
-    long a2 = tweetPostService.post(admin, "HUUSF View age.", Arrays.asList(view)).getId();
-    long b1 = tweetPostService.post(bethia, "Music better!", Arrays.asList(music)).getId();
-    long c1 = tweetPostService.post(centos, "Tech status", Arrays.asList(tech)).getId();
+    long a1 = tweetPostService.post(admin, "Post at root.", emptyList(), singletonList(root)).getId();
+    long a2 = tweetPostService.post(admin, "HUUSF View age.", emptyList(), singletonList(view)).getId();
+    long b1 = tweetPostService.post(bethia, "Music better!", emptyList(), singletonList(music)).getId();
+    long c1 = tweetPostService.post(centos, "Tech status", emptyList(), singletonList(tech)).getId();
 
-    tweetPostService.forward(admin, "forward", a1, Collections.emptyList());
-    tweetPostService.forward(bethia, "OK, good", a2, Collections.emptyList());
-    tweetPostService.forward(admin, "Oh, yeah", b1, Collections.emptyList());
-    tweetPostService.forward(admin, "See it!", c1, Collections.emptyList());
+    tweetPostService.forward(admin, "forward", a1, emptyList());
+    tweetPostService.forward(bethia, "OK, good", a2, emptyList());
+    tweetPostService.forward(admin, "Oh, yeah", b1, emptyList());
+    tweetPostService.forward(admin, "See it!", c1, emptyList());
   }
 
   private void fav() {
