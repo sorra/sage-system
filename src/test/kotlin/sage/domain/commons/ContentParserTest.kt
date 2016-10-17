@@ -9,7 +9,7 @@ class ContentParserTest {
   fun test() {
     runs("", "", emptySet())
     runs("http://a/#id #@Some @Nobody#\"Em\"#",
-        "<a class=\"content-link\" href=\"http://a/#id\">http://a/#id</a> #<a class=\"mention\" uid=\"1\" href=\"/user/1\">@Some</a>@Nobody<strong>\"Em\"</strong>",
+        "<a class=\"link\" href=\"http://a/#id\">http://a/#id</a> #<a class=\"mention\" uid=\"1\" href=\"/user/1\">@Some</a> @Nobody<strong>\"Em\"</strong>",
         setOf(1))
   }
 

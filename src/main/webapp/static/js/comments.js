@@ -87,7 +87,7 @@ function comments_render(el, sourceType, sourceId) {
 
       alert: function (cls, msg, isReply) {
         return this.showAlert(cls, msg, isReply).fadeOut(2000)
-      },
+      }
     }
   })
 }
