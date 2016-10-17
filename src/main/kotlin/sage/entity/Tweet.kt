@@ -69,7 +69,8 @@ class Tweet : BaseModel {
 
   fun richElements(): Collection<RichElement> =
       try {
-        richElementsJson?.run { RichElement.fromJsonToList(this) } ?: emptyList()
+        if (richElementsJson != null && richElementsJson != "[]") RichElement.fromJsonToList(richElementsJson!!)
+        else emptyList()
       } catch (e: Exception) {
         log.error("richElements cannot be deserialized from JSON", e)
         emptyList<RichElement>()
