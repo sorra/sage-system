@@ -47,9 +47,14 @@ class NotificationService @Autowired constructor(
       Notification.SourceType.USER -> source = ""
       Notification.SourceType.TWEET -> source = "/tweets/" + sourceId
       Notification.SourceType.COMMENT -> {
-        val tweetId = Comment.byId(sourceId)?.sourceId
-        if (tweetId != null) {
-          source = "/tweets/$tweetId?commentId=$sourceId"
+        val comment = Comment.byId(sourceId)
+        if (comment != null) {
+          val sourceName = when (comment.sourceType) {
+            Comment.BLOG -> "blogs"
+            Comment.TWEET -> "/tweets"
+            else -> "null"
+          }
+          source = "/$sourceName/${comment.sourceId}?commentId=$sourceId"
         } else
           return null
       }
