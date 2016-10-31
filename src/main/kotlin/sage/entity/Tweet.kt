@@ -87,7 +87,7 @@ class Tweet : BaseModel {
   companion object : Find<Long, Tweet>() {
     private val log = LoggerFactory.getLogger(Tweet::class.java)
 
-    fun recent(size: Int) = where().orderBy("id desc").setMaxRows(size).findList()
+    fun recent(size: Int) = default().orderBy("id desc").setMaxRows(size).findList()
 
     fun byTags(tags: Collection<Tag>, edge: Edge): List<Tweet> {
       if (tags.isEmpty()) {
@@ -109,29 +109,31 @@ class Tweet : BaseModel {
     }
 
     fun connectTweets(blogId: Long): List<Tweet> {
-      val shares = where().eq("blogId", blogId).findList()
+      val shares = default().eq("blogId", blogId).findList()
       val connected = ArrayList(shares)
       if (!shares.isEmpty()) {
-        val reshares = where().`in`("originId", shares.map { it.id }.toHashSet()).findList()
+        val reshares = default().`in`("originId", shares.map { it.id }.toHashSet()).findList()
         connected.addAll(reshares)
       }
       return connected
     }
 
-    fun forwards(originId: Long) = where().eq("originId", originId).findList()
-    fun forwardCount(originId: Long) = where().eq("originId", originId).findRowCount()
+    fun forwards(originId: Long) = default().eq("originId", originId).findList()
+    fun forwardCount(originId: Long) = default().eq("originId", originId).findRowCount()
 
     fun getOrigin(tweet: Tweet) = if (tweet.hasOrigin()) byId(tweet.originId) else null
 
-    private fun ranged(edge: Edge) = where().apply {
+    private fun ranged(edge: Edge) = default().apply {
       when (edge.type) {
         Edge.EdgeType.NONE -> {}
         Edge.EdgeType.BEFORE -> lt("id", edge.edgeId)
         Edge.EdgeType.AFTER -> gt("id", edge.edgeId)
         else -> throw UnsupportedOperationException()
       }
-      eq("deleted", false).orderBy("id desc").maxRows = Edge.FETCH_SIZE
+      orderBy("id desc").maxRows = Edge.FETCH_SIZE
     }
+
+    private fun default() = where().eq("deleted", false)
 
     private fun hasRoot(tags: Collection<Tag>) = tags.find { it.id == Tag.ROOT_ID } != null
   }
