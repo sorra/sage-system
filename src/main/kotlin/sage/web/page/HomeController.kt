@@ -6,9 +6,8 @@ import org.springframework.ui.ModelMap
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.servlet.ModelAndView
 import sage.entity.Blog
-import sage.service.BlogService
-import sage.service.RelationService
-import sage.service.TopicService
+import sage.entity.Tweet
+import sage.service.*
 import sage.util.Strings
 import sage.web.auth.Auth
 import javax.servlet.http.HttpServletResponse
@@ -19,7 +18,8 @@ open class HomeController
 @Autowired constructor(
     private val relationService: RelationService,
     private val topicService: TopicService,
-    private val blogService: BlogService) {
+    private val blogService: BlogService,
+    private val transferService: TransferService) {
 
   @RequestMapping("/")
   open fun index(model: ModelMap): ModelAndView {
@@ -38,7 +38,8 @@ open class HomeController
     val uid = Auth.uid()
     val topics = topicService.hotTopics().apply { if(uid == null) take(10) }
     val blogs = blogService.hotBlogs().apply { if(uid == null) take(10) }
-    return ModelAndView("landing").addObject("topics", topics).addObject("blogs", blogs)
+    val tweets = Tweet.recent(10).map { transferService.toTweetView(it) }
+    return ModelAndView("landing").addObject("topics", topics).addObject("blogs", blogs).addObject("tweets", tweets)
   }
 
   @RequestMapping("/login")

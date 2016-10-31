@@ -3,6 +3,7 @@
 <!--
 #set(List<TopicPreview> topics)
 #set(List<BlogPreview> blogs)
+#set(List<TweetView> tweets)
 -->
 <head>
   <meta charset="UTF-8">
@@ -37,6 +38,7 @@ $!{include("navbar.httl")}
   <ul id="tabs" class="nav nav-tabs">
     <li class="active"><a href="#blogs" data-toggle="tab">博客</a></li>
     <li><a href="#topics" data-toggle="tab">帖子</a></li>
+    <li><a href="#tweets" data-toggle="tab">微博</a></li>
   </ul>
   <div class="tab-content">
     <div id="blogs" class="blog-list tab-pane active">
@@ -52,13 +54,19 @@ $!{include("navbar.httl")}
         $!{include("topic-preview.httl")}
       #end
     </div>
+    <div id="tweets" class="tweet-list tab-pane">
+      <h2 class="heading-hot">最新微博</h2>
+      #for(tweet : tweets)
+        $!{include("tweet.httl")}
+      #end
+    </div>
   </div>
   $!{include("footer.httl")}
 </div>
 
 $!{alljs}
 <script>
-  setup(humanTime_setup)
+  setup(humanTime_setup, stream_setup)
   $(document).ready(function() {
     $('.summary').warnEmpty().each(function(){
       $(this).html(marked($(this).text()))
