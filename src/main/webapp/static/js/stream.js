@@ -144,7 +144,7 @@ function setupForwardDialog() {
   $dia.on('show.bs.modal', function(){
     var $tweet = $dia.data('tweet')
     var $midForwards = $dia.find('.mid-forwards').empty()
-    $tweet.find("*[mf-id]").clone().appendTo($midForwards).show()
+    $tweet.find('.tweet-self-body[data-id='+$tweet.attr('tweet-id')+'] *[mf-id]').clone().appendTo($midForwards).show()
     $midForwards.children().each(function(){
       $(this).append('<a class="mf-x" href="javascript:;">&times;</a>')
     }).find('a[uid]').removeAttr('href')

@@ -1,6 +1,6 @@
 #set(TweetView t = tweet)
 #set(UserSelf userSelf)
-#set(Boolean isForward, Boolean isOrigin)
+#set(boolean isForward, boolean isOrigin)
 
 #if(isForward) #set(cls = 't-forward')
 #else(isOrigin) #set(cls = 't-origin')
@@ -12,9 +12,12 @@
   #end
   <div class="tweet-body">
     <a class="author-name" $!{userLinkAttrs(t.authorId)}>${t.authorName}</a>
-    <div>
+    <div class="tweet-self-body" data-id="${t.id}">
       <span class="tweet-content">$!{t.content}</span>
+      #if(t.origin != null) #set(isForward = true) #end
+      #if(isForward)
       <span mf-id="${t.id}" style="display: none"> ||<a>@${t.authorName}</a>：$!{t.content}</span>
+      #end
       #if(t.midForwards)#for(MidForward x : t.midForwards.xs)
       <span mf-id="${x.id}"> ||$!{userLinkForMidForward(x)}：</span>
       #end#end
