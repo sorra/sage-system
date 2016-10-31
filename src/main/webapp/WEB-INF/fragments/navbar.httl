@@ -103,7 +103,7 @@
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal">&times;</button>
         <h4 class="modal-title">转发</h4>
-        <div class=""></div>
+        <div class="mid-forwards"></div>
       </div>
       <div class="modal-body">
         <textarea class="input"></textarea>
