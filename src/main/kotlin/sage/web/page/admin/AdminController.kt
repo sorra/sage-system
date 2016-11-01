@@ -1,11 +1,13 @@
 package sage.web.page.admin
 
+import com.avaje.ebean.Ebean
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestMethod
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.ResponseBody
+import org.springframework.web.servlet.ModelAndView
 import sage.domain.commons.DomainException
 import sage.domain.concept.Authority
 import sage.entity.User
@@ -31,6 +33,7 @@ open class AdminController @Autowired constructor(private val userService: UserS
   open fun changeUserInfo(@RequestParam userId: Long, request: HttpServletRequest, response: HttpServletResponse): String {
     if (User.get(Auth.checkUid()).authority != Authority.SITE_ADMIN) {
       response.sendError(404)
+      return ""
     }
     val email = request.getParameter("email")
     val password = request.getParameter("password")
@@ -50,5 +53,24 @@ open class AdminController @Autowired constructor(private val userService: UserS
       userService.changeInfo(userId, name, intro, null)
     }
     return "/users/$userId"
+  }
+
+  @RequestMapping("/sql", method = arrayOf(RequestMethod.GET))
+  open fun sql(response: HttpServletResponse): String {
+    if (User.get(Auth.checkUid()).authority != Authority.SITE_ADMIN) {
+      response.sendError(404)
+      return ""
+    }
+    return "admin-page-sql"
+  }
+
+  @RequestMapping("/sql", method = arrayOf(RequestMethod.POST))
+  open fun submitSql(@RequestParam statement: String): ModelAndView {
+    val result = if (statement.trim().toLowerCase().startsWith("select")) {
+      Ebean.getDefaultServer().createSqlQuery(statement).findList().joinToString("<br>")
+    } else {
+      "Updated: " + Ebean.getDefaultServer().createSqlUpdate(statement).execute()
+    }
+    return ModelAndView("admin-page-sql").addObject("result", result)
   }
 }

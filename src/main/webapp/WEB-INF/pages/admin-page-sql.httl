@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>SQL Console</title>
+  $!{allcss}
+  <style>
+    textarea{
+      margin: 1em;
+      width: 50em;
+    }
+  </style>
+</head>
+<body>
+<form action="/admin/sql" method="post">
+  <textarea name="statement"></textarea>
+  <button type="submit">执行</button>
+</form>
+<div>
+  $!{result}
+</div>
+</body>
+</html>
