@@ -48,7 +48,7 @@
   </style>
 </head>
 <body class="background-dark">
-  <form action="/auth/login" method="post">
+  <form id="login" action="/auth/login" method="post">
     <h3 class="heading">轻境界</h3>
     <div class="input-group">
       <label for="email">邮箱</label>

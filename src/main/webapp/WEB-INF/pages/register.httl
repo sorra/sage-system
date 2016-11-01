@@ -45,7 +45,7 @@
   </style>
 </head>
 <body class="background-dark">
-  <form action="/auth/register" method="post">
+  <form id="register" action="/auth/register" method="post">
     <h4 class="heading">注册一个账号</h4>
     <div class="input-group">
       <label for="email">邮箱</label>

@@ -30,7 +30,7 @@ function common_setup() {
   // Setup all simple tooltips
   $('[data-toggle="tooltip"]').tooltip()
   // Prevent form submitting on enter
-  $(document).on('keypress keydown keyup', 'form:not(#search) input:not(textarea)', function(e) {
+  $(document).on('keypress keydown keyup', 'form:not(#search):not(#login):not(#register) input:not(textarea)', function(e) {
     if(e.which == 13) {
       e.preventDefault()
       return false
