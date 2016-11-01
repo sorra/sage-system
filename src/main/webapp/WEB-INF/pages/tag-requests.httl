@@ -7,6 +7,11 @@
   <meta charset="UTF-8">
   <title>${tag.name} - 的修改申请</title>
   $!{allcss}
+  <style type="text/css">
+    #container{
+      padding: 20px;
+    }
+  </style>
 </head>
 <body>
 $!{include("navbar.httl")}
