@@ -2,7 +2,7 @@
 <div class="blog-preview">
   <span id="id" style="display:none">$!{blog.id}</span>
   <a class="title" href="/blogs/${blog.id}">${blog.title}</a>
-  <p class="summary">${blog.summary}</p>
+  <p class="summary">$!{blog.summary}</p>
   <div class="tags">
     #for(each : blog.tags)
     $!{tagLabel(each)}

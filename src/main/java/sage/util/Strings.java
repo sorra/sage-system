@@ -30,6 +30,6 @@ public class Strings {
   }
 
   public static String escapeHtmlTag(String text) {
-    return StringUtils.replaceEach(text, new String[]{"<", ">"}, new String[]{"&lt;", "&gt;"});
+    return StringUtils.replaceEach(text, new String[]{"&", "<", ">"}, new String[]{"&amp;", "&lt;", "&gt;"});
   }
 }
