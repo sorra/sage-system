@@ -66,11 +66,11 @@ open class AdminController @Autowired constructor(private val userService: UserS
 
   @RequestMapping("/sql", method = arrayOf(RequestMethod.POST))
   open fun submitSql(@RequestParam statement: String): ModelAndView {
-    val result = if (statement.trim().toLowerCase().startsWith("select")) {
-      Ebean.getDefaultServer().createSqlQuery(statement).findList().joinToString("<br>")
+    val results = if (statement.trim().toLowerCase().startsWith("select")) {
+      Ebean.getDefaultServer().createSqlQuery(statement).findList().map { it.toString() }
     } else {
-      "Updated: " + Ebean.getDefaultServer().createSqlUpdate(statement).execute()
+      listOf("Updated: " + Ebean.getDefaultServer().createSqlUpdate(statement).execute())
     }
-    return ModelAndView("admin-page-sql").addObject("result", result)
+    return ModelAndView("admin-page-sql").addObject("results", results)
   }
 }

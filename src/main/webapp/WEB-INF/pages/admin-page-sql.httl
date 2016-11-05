@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+#set(Collection results)
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   <title>SQL Console</title>
@@ -16,8 +17,10 @@
   <textarea name="statement"></textarea>
   <button type="submit">执行</button>
 </form>
-<div>
-  $!{result}
+<div class="results background-silver" style="padding: 1em">
+#for(each : results)
+  <div style="margin-top: 0.5em">${each}</div>
+#end
 </div>
 </body>
 </html>
