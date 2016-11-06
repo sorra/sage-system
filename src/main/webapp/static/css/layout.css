@@ -38,6 +38,8 @@ body, .background-dark{
   margin-right: 20px;
 }
 footer{
+  margin-top: 10px;
+  padding: 5px;
   clear: both;
 }
 footer hr{
