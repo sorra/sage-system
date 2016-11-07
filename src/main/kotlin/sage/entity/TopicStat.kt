@@ -58,12 +58,12 @@ class TopicStat (
 
     fun like(id: Long, userId: Long) {
       Liking.like(userId, Liking.TOPIC, id, TopicStat::class.java, "topicStat")
-      TopicStat.get(id).update()
+      get(id).update()
     }
 
     fun unlike(id: Long, userId: Long) {
       Liking.unlike(userId, Liking.TOPIC, id, TopicStat::class.java, "topicStat")
-      TopicStat.get(id).update()
+      get(id).update()
     }
 
     fun incViews(id: Long) {

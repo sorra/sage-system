@@ -49,18 +49,18 @@ class BlogStat (
 
     fun like(id: Long, userId: Long) {
       Liking.like(userId, Liking.BLOG, id, BlogStat::class.java, "blogStat")
-      BlogStat.get(id).update()
+      get(id).update()
     }
 
     fun unlike(id: Long, userId: Long) {
       Liking.unlike(userId, Liking.BLOG, id, BlogStat::class.java, "blogStat")
-      BlogStat.get(id).update()
+      get(id).update()
     }
 
     fun incComments(id: Long) {
       Ebean.createUpdate(BlogStat::class.java, "update blogStat set comments = comments+1 where id = :id")
           .setParameter("id", id).execute()
-      BlogStat.get(id).update()
+      get(id).update()
     }
 
     fun incViews(id: Long) {
