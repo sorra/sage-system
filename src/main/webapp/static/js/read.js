@@ -1,24 +1,25 @@
-function btnLike_init(resUrl) {
+function btnLike_init() {
 
-  function refreshLikes($btn) {
-    return $.get(resUrl + '/likes').done(function(likes){
+  function refreshLikes($btn, prefix) {
+    return $.get(prefix + '/likes').done(function(likes){
       $btn.find('.num-likes').text(likes)
     })
   }
 
-  $('.btn_like').click(function(){
+  $(document).on('click', '.btn_like', function(){
     var $btn = $(this)
+    var prefix = $btn.data('prefix')
     var classLiked = 'btn-success'
     if ($btn.hasClass(classLiked)) {
-      $.post(resUrl + '/unlike').done(function(){
-        refreshLikes($btn)
+      $.post(prefix + '/unlike').done(function(){
+        refreshLikes($btn, prefix)
         $btn.removeClass(classLiked)
       }).fail(function(msg){
         tipover($btn, msg)
       })
     } else {
-      $.post(resUrl+'/like').done(function(){
-        refreshLikes($btn)
+      $.post(prefix+'/like').done(function(){
+        refreshLikes($btn, prefix)
         $btn.addClass(classLiked)
       }).fail(function(msg){
         tipover($btn, msg)

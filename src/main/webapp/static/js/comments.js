@@ -5,6 +5,7 @@ function comments_render(el, sourceType, sourceId) {
     data: {
       sourceType: sourceType,
       sourceId: sourceId,
+      count: 0,
       comments: [],
       visible: true,
       editorContent: '',
@@ -19,8 +20,9 @@ function comments_render(el, sourceType, sourceId) {
       fetch: function () {
         var self = this
         $.get('/api/comments', {sourceType: this.sourceType, sourceId: this.sourceId})
-          .done(function (comments) {
-            self.comments = comments
+          .done(function (object) {
+            self.count = object.count
+            self.comments = object.list
             self.alert('alert-info', '评论加载成功')
           })
           .fail(function (msg) {

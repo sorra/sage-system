@@ -24,6 +24,8 @@ class Liking(
   companion object : Find<Long, Liking>() {
     val BLOG: Short = 1
     val TOPIC: Short = 2
+    val TWEET: Short = 3
+    val COMMENT: Short = 4
 
     fun find(userId: Long, likeType: Short, likeId: Long) =
         where().eq("userId", userId).eq("likeType", likeType).eq("likeId", likeId).findUnique()

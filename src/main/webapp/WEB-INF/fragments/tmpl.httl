@@ -6,7 +6,7 @@
       <button class="btn btn-xs btn-success" @click="postComment(true)">转+评</button>
       <button class="btn btn-xs btn-info" @click="postComment(false)">评论</button>
     </div>
-    <div class="comments-header">评论</div>
+    <div class="comments-header">评论({{count}})</div>
     <div class="comment-list">
       <div class="comment" v-for="c in comments" data-id="{{c.id}}">
         <a class="avatar" uid="{{c.authorId}}" href="/users/{{c.authorId}}" style="margin-right: 10px">

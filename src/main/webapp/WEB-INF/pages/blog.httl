@@ -37,7 +37,7 @@ $!{include("navbar.httl")}
 		<div id="loading-alert" class="alert alert-info" role="alert">Markdown正在加载...</div>
 		<div class="content">$!{blog.content}</div>
 		<div>
-			$!{include("btn_like.httl", ["likes": blog.likes, "isLiked": isLiked])}
+			$!{include("btn_like.httl", ["likes": blog.likes, "isLiked": isLiked, "prefix": "/blogs/"+blog.id])}
 		</div>
 	</div>
 	<div id="comments-container" class="background-silver"></div>

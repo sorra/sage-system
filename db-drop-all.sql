@@ -121,6 +121,8 @@ drop table if exists tweet;
 
 drop table if exists tweet_tag;
 
+drop table if exists tweet_stat;
+
 drop table if exists user;
 
 drop table if exists user_tag;
@@ -128,3 +130,4 @@ drop table if exists user_tag;
 drop index ix_blog_stat_rank on blog_stat;
 drop index ix_topic_post_when_last_active on topic_post;
 drop index ix_topic_stat_rank on topic_stat;
+drop index ix_tweet_stat_rank on tweet_stat;

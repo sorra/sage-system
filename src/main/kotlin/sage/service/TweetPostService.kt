@@ -52,6 +52,7 @@ class TweetPostService
       tweet = Tweet(hyperContent, emptyList(), midForwards, User.ref(userId), initialOrigin)
     }
     tweet.save()
+    TweetStat.incForwards(originId)
 
     userService.updateUserTag(userId, tweet.tags.map { it.id })
 
@@ -70,6 +71,7 @@ class TweetPostService
 
     val comment = Comment(hyperContent, User.ref(userId), Comment.TWEET, sourceId, replyUserId)
     comment.save()
+    TweetStat.incComments(sourceId)
 
     notifService.commentedTweet(Tweet.ref(sourceId).author.id, userId, comment.id)
     if (replyUserId != null) {

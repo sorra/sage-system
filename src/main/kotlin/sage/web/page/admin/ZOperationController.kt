@@ -50,23 +50,22 @@ open class ZOperationController @Autowired constructor(
       searchService.index(it.id, TopicReplyView(it, it.toUserId?.run { userService.getUserLabel(this) }))
     }
     Tweet.findEach {
-      searchService.index(it.id, TweetView(it, Tweet.getOrigin(it), 0, 0))
+      searchService.index(it.id, TweetView(it, Tweet.getOrigin(it)))
     }
     return "Done."
   }
 
-  @RequestMapping("z-reload")
+  @RequestMapping("/z-reload")
   open fun reloadHttl(@RequestParam name: String) = name
 
-  @RequestMapping("z-genstats")
+  @RequestMapping("/z-genstats")
   @ResponseBody
   open fun genstats(): String {
     if (Auth.checkUid() != 1L) {
       return "Page not found."
     }
-    val blogIds = arrayListOf<Long>()
-    val topicIds = arrayListOf<Long>()
 
+    val blogIds = arrayListOf<Long>()
     Blog.findEachWhile {
       if (BlogStat.byId(it.id) == null) {
         BlogStat(id = it.id, whenCreated = it.whenCreated).save()
@@ -75,6 +74,7 @@ open class ZOperationController @Autowired constructor(
       } else return@findEachWhile false
     }
 
+    val topicIds = arrayListOf<Long>()
     TopicPost.findEachWhile {
       if (TopicStat.byId(it.id) == null) {
         val replies = TopicReply.byPostId(it.id)
@@ -86,7 +86,16 @@ open class ZOperationController @Autowired constructor(
       } else return@findEachWhile false
     }
 
-    return "Done:\nblogs:$blogIds topics:$topicIds"
+    val tweetIds = arrayListOf<Long>()
+    Tweet.findEachWhile {
+      if (TweetStat.byId(it.id) == null) {
+        TweetStat(id = it.id, whenCreated = it.whenCreated).save()
+        tweetIds += it.id
+        return@findEachWhile true
+      } else return@findEachWhile false
+    }
+
+    return "Done:\nblogs:$blogIds topics:$topicIds, tweets:$tweetIds"
   }
 
   @RequestMapping("/z-genavatars")

@@ -38,6 +38,10 @@
         #end
         <a class="forward-btn" href="javascript:;">转发${showCount(t.forwardCount)}</a>
         <a class="comment-btn" href="javascript:;">评论${showCount(t.commentCount)}</a>
+        <a class="btn_like #if(t.isLiked)btn-success#end" href="javascript:;" data-prefix="/tweets/${t.id}">
+          <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>
+          <span class="num-likes">${t.likes == 0 ? '' : t.likes}</span>
+        </a>
       </span>
     </div>
     <div class="comments-container"></div>

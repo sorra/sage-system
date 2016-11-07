@@ -274,6 +274,20 @@ create table tweet_tag (
   constraint pk_tweet_tag primary key (tweet_id,tag_id)
 );
 
+create table tweet_stat (
+  id                            bigint auto_increment not null,
+  when_created                  datetime(6),
+  rank                          double,
+  float_up                      double,
+  tune                          integer,
+  likes                         integer,
+  views                         integer,
+  forwards                      integer,
+  comments                      integer,
+  when_modified                 datetime(6) not null,
+  constraint pk_tweet_stat primary key (id)
+);
+
 create table user (
   id                            bigint auto_increment not null,
   email                         varchar(255),
@@ -303,6 +317,7 @@ create table user_tag (
 create index ix_blog_stat_rank on blog_stat (rank);
 create index ix_topic_post_when_last_active on topic_post (when_last_active);
 create index ix_topic_stat_rank on topic_stat (rank);
+create index ix_tweet_stat_rank on tweet_stat (rank);
 alter table blog add constraint fk_blog_author_id foreign key (author_id) references user (id) on delete restrict on update restrict;
 create index ix_blog_author_id on blog (author_id);
 

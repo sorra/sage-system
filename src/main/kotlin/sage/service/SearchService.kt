@@ -53,7 +53,7 @@ class SearchService @Autowired constructor(private val searchBase: SearchBase) {
         SearchBase.BLOG -> findById { BlogPreview(Blog.get(it)) }
         SearchBase.TOPIC -> findById { TopicPreview(TopicPost.get(it)) }
         SearchBase.TOPIC_REPLY -> findById { TopicReplyView(TopicReply.get(it), null).apply { content = Strings.omit(content, 103) } }
-        SearchBase.TWEET -> findById { val twt = Tweet.byId(it)!!; TweetView(twt, Tweet.getOrigin(twt), 0, 0) }
+        SearchBase.TWEET -> findById { val twt = Tweet.byId(it)!!; TweetView(twt, Tweet.getOrigin(twt)) }
         else -> null
       }
     }.filterNotNull()

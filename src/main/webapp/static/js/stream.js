@@ -3,6 +3,7 @@ var stream = {}
 function stream_setup() {
   setupForwardDialog()
   stream_setupListeners()
+  btnLike_init()
 }
 
 function getStream(url) {

@@ -94,7 +94,7 @@ class StreamService
     val groupSeq = ArrayList<CombineGroup>()
     for (tc in tcs) {
       if (tc.origin != null) {
-        val originId = tc.origin.id!!
+        val originId = tc.origin!!.id
         val foundGroup = findInSeq(originId, groupSeq)
         if (foundGroup != null) {
           foundGroup.addForward(tc)
@@ -102,7 +102,7 @@ class StreamService
           groupSeq.add(CombineGroup.newByFirst(tc))
         }
       } else {
-        val foundGroup = findInSeq(tc.id!!, groupSeq)
+        val foundGroup = findInSeq(tc.id, groupSeq)
         if (foundGroup != null) {
           foundGroup.addOrigin(tc)
         } else {
