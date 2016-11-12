@@ -29,7 +29,7 @@ $!{include("navbar.httl")}
     <div class="content">${topic.content}</div>
     <div>
       <a class="btn_reply" href="javascript:;">回复</a>
-      $!{include("btn_like.httl", ["likes": topic.likes, "isLiked": isLiked, "prefix": "/topics/"+topic.id])}
+      $!{include("btn_like.httl", ["likes": topic.likes, "isLiked": isLiked, "prefix": "/topics/"+topic.id.toString])}
     </div>
   </div>
   <div class="replies">
