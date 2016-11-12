@@ -60,7 +60,7 @@ open class ZOperationController @Autowired constructor(
 
   @RequestMapping("/z-genstats")
   @ResponseBody
-  open fun genstats(): String {
+  open fun genstats(@RequestParam(defaultValue = "false") loopAll: Boolean): String {
     if (Auth.checkUid() != 1L) {
       return "Page not found."
     }
@@ -71,7 +71,7 @@ open class ZOperationController @Autowired constructor(
         BlogStat(id = it.id, whenCreated = it.whenCreated).save()
         blogIds += it.id
         return@findEachWhile true
-      } else return@findEachWhile false
+      } else return@findEachWhile loopAll
     }
 
     val topicIds = arrayListOf<Long>()
@@ -83,7 +83,7 @@ open class ZOperationController @Autowired constructor(
             whenLastReplied = replies.firstOrNull()?.whenCreated, replies = replies.size).save()
         topicIds += it.id
         return@findEachWhile true
-      } else return@findEachWhile false
+      } else return@findEachWhile loopAll
     }
 
     val tweetIds = arrayListOf<Long>()
@@ -92,7 +92,7 @@ open class ZOperationController @Autowired constructor(
         TweetStat(id = it.id, whenCreated = it.whenCreated).save()
         tweetIds += it.id
         return@findEachWhile true
-      } else return@findEachWhile false
+      } else return@findEachWhile loopAll
     }
 
     return "Done:\nblogs:$blogIds topics:$topicIds, tweets:$tweetIds"

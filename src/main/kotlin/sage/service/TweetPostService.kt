@@ -26,6 +26,7 @@ class TweetPostService
     val tweet = Tweet(hyperContent, richElements, User.ref(userId),
         Tag.multiGet(tagIds))
     tweet.save()
+    TweetStat(id = tweet.id, whenCreated = tweet.whenCreated).save()
 
     userService.updateUserTag(userId, tagIds)
 
@@ -54,6 +55,7 @@ class TweetPostService
       tweet = Tweet(hyperContent, emptyList(), midForwards, User.ref(userId), initialOrigin)
     }
     tweet.save()
+    TweetStat(id = tweet.id, whenCreated = tweet.whenCreated).save()
     TweetStat.incForwards(originId)
 
     userService.updateUserTag(userId, tweet.tags.map { it.id })
