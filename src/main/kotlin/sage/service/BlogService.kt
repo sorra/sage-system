@@ -2,6 +2,7 @@ package sage.service
 
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
+import sage.domain.cache.GlobalCaches
 import sage.domain.commons.*
 import sage.entity.*
 import sage.transfer.BlogPreview
@@ -23,7 +24,9 @@ class BlogService
     BlogStat(id = blog.id, whenCreated =  blog.whenCreated).save()
 
     mentionedIds.forEach { atId -> notifService.mentionedByBlog(atId, userId, blog.id) }
+
     searchService.index(blog.id, BlogView(blog))
+    GlobalCaches.blogsCache.invalidateAll()
     return blog
   }
 
@@ -39,6 +42,7 @@ class BlogService
     blog.content = content
     blog.tags = Tag.multiGet(tagIds)
     blog.update()
+
     searchService.index(blog.id, BlogView(blog))
     return blog
   }
@@ -49,6 +53,7 @@ class BlogService
       throw DomainException("User[%d] is not the author of Blog[%d]", userId, blogId)
     }
     blog.delete()
+
     searchService.delete(BlogView::class.java, blog.id)
   }
 

@@ -2,6 +2,7 @@ package sage.service
 
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
+import sage.domain.cache.GlobalCaches
 import sage.domain.commons.*
 import sage.entity.*
 import sage.transfer.MidForwards
@@ -31,6 +32,7 @@ class TweetPostService
     mentionedIds.forEach { atId -> notifService.mentionedByTweet(atId, userId, tweet.id) }
 
     searchService.index(tweet.id, transfers.toTweetViewNoCount(tweet))
+    GlobalCaches.tweetsCache.invalidateAll()
     return tweet
   }
 
@@ -60,6 +62,7 @@ class TweetPostService
     mentionedIds.forEach { atId -> notifService.mentionedByTweet(atId, userId, tweet.id) }
 
     searchService.index(tweet.id, transfers.toTweetViewNoCount(tweet))
+    GlobalCaches.tweetsCache.invalidateAll()
     return tweet
   }
 
@@ -88,6 +91,7 @@ class TweetPostService
     }
     tweet.deleted = true
     tweet.update()
+
     searchService.delete(TweetView::class.java, tweetId)
   }
 

@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMethod.POST
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.ResponseBody
 import org.springframework.web.servlet.ModelAndView
+import sage.domain.cache.GlobalCaches
 import sage.entity.*
 import sage.service.BlogService
 import sage.service.UserService
@@ -96,11 +97,12 @@ open class BlogController @Autowired constructor(
   @RequestMapping
   open fun all(@RequestParam(defaultValue = "1") page: Int): ModelAndView {
     val size = 20
-    val recordsCount: Long = getRecordsCount(Blog)
-    val pagesCount: Int = PaginationLogic.pagesCount(size, recordsCount)
-    val blogs = Blog.orderBy("id desc").findPagedList(page-1, size).list
-        .map(::BlogPreview)
+    val (blogs, pagesCount) = GlobalCaches.blogsCache["/blogs?page=$page&size=$size", {
+      val blogs = Blog.orderBy("id desc").findPagedList(page-1, size).list.map(::BlogPreview)
+      val pagesCount: Int = PaginationLogic.pagesCount(size, getRecordsCount(Blog))
+      blogs to pagesCount
+    }] as Pair<*, *>
     return ModelAndView("blogs").addObject("blogs", blogs)
-        .addObject("paginationLinks", RenderUtil.paginationLinks("/blogs", pagesCount, page))
+        .addObject("paginationLinks", RenderUtil.paginationLinks("/blogs", pagesCount as Int, page))
   }
 }

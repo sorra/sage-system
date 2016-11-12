@@ -2,6 +2,7 @@ package sage.service
 
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
+import sage.domain.cache.GlobalCaches
 import sage.domain.commons.BadArgumentException
 import sage.domain.commons.DomainException
 import sage.domain.commons.Markdown
@@ -36,7 +37,9 @@ class TopicService @Autowired constructor(
     mentionedIds.forEach { atId ->
       notificationService.mentionedByTopicPost(atId, userId, tp.id)
     }
+
     searchService.index(tp.id, TopicView(tp))
+    GlobalCaches.topicsCache.invalidateAll()
     return tp
   }
 
@@ -56,6 +59,7 @@ class TopicService @Autowired constructor(
     tp.belongTag = Tag.get(belongTagId ?: Tag.ROOT_ID)
     tp.tags = Tag.multiGet(tagIds)
     tp.update()
+
     searchService.index(tp.id, TopicView(tp))
   }
 
@@ -81,6 +85,7 @@ class TopicService @Autowired constructor(
     if (toUserId != null) {
       notificationService.repliedInTopic(toUserId, userId, reply.id)
     }
+
     searchService.index(reply.id, TopicReplyView(reply, null))
     return reply
   }

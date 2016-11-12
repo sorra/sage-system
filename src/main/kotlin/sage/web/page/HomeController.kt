@@ -5,6 +5,7 @@ import org.springframework.stereotype.Controller
 import org.springframework.ui.ModelMap
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.servlet.ModelAndView
+import sage.domain.cache.GlobalCaches
 import sage.entity.Blog
 import sage.entity.Tweet
 import sage.service.*
@@ -36,9 +37,15 @@ open class HomeController
   @RequestMapping("/landing")
   open fun landing(): ModelAndView {
     val uid = Auth.uid()
-    val topics = topicService.hotTopics().apply { if(uid == null) take(10) }
-    val blogs = blogService.hotBlogs().apply { if(uid == null) take(10) }
-    val tweets = Tweet.recent(10).map { transferService.toTweetView(it) }
+    val topics = GlobalCaches.topicsCache["/landing#topics", {
+      topicService.hotTopics().apply { if(uid == null) take(10) }
+    }]
+    val blogs = GlobalCaches.blogsCache["/landing#blogs", {
+      blogService.hotBlogs().apply { if (uid == null) take(10) }
+    }]
+    val tweets = GlobalCaches.tweetsCache["/landing#tweets", {
+      Tweet.recent(10).map { transferService.toTweetView(it) }
+    }]
     return ModelAndView("landing").addObject("topics", topics).addObject("blogs", blogs).addObject("tweets", tweets)
   }
 
