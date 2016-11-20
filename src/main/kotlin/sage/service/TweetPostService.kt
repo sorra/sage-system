@@ -33,7 +33,7 @@ class TweetPostService
     mentionedIds.forEach { atId -> notifService.mentionedByTweet(atId, userId, tweet.id) }
 
     searchService.index(tweet.id, transfers.toTweetViewNoCount(tweet))
-    GlobalCaches.tweetsCache.invalidateAll()
+    GlobalCaches.tweetsCache.clear()
     return tweet
   }
 
@@ -64,7 +64,7 @@ class TweetPostService
     mentionedIds.forEach { atId -> notifService.mentionedByTweet(atId, userId, tweet.id) }
 
     searchService.index(tweet.id, transfers.toTweetViewNoCount(tweet))
-    GlobalCaches.tweetsCache.invalidateAll()
+    GlobalCaches.tweetsCache.clear()
     return tweet
   }
 

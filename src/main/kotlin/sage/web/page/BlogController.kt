@@ -97,12 +97,9 @@ open class BlogController @Autowired constructor(
   @RequestMapping
   open fun all(@RequestParam(defaultValue = "1") page: Int): ModelAndView {
     val size = 20
-    val (blogs, pagesCount) = GlobalCaches.blogsCache["/blogs?page=$page&size=$size", {
-      val blogs = Blog.orderBy("id desc").findPagedList(page-1, size).list.map(::BlogPreview)
-      val pagesCount: Int = PaginationLogic.pagesCount(size, getRecordsCount(Blog))
-      blogs to pagesCount
-    }] as Pair<*, *>
-    return ModelAndView("blogs").addObject("blogs", blogs)
-        .addObject("paginationLinks", RenderUtil.paginationLinks("/blogs", pagesCount as Int, page))
+    val (blogs, pagesCount) = GlobalCaches.blogsCache["/blogs", page, size]
+
+    return ModelAndView("blogs").addObject("blogs", blogs.map(::BlogPreview))
+        .addObject("paginationLinks", RenderUtil.paginationLinks("/blogs", pagesCount, page))
   }
 }

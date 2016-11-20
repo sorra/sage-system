@@ -26,7 +26,7 @@ class BlogService
     mentionedIds.forEach { atId -> notifService.mentionedByBlog(atId, userId, blog.id) }
 
     searchService.index(blog.id, BlogView(blog))
-    GlobalCaches.blogsCache.invalidateAll()
+    GlobalCaches.blogsCache.clear()
     return blog
   }
 
@@ -75,9 +75,9 @@ class BlogService
     return comment
   }
 
-  fun hotBlogs() : List<BlogPreview> {
+  fun hotBlogs() : List<Blog> {
     val stats = BlogStat.where().orderBy("rank desc, id desc").setMaxRows(20).findList()
-    return stats.map { BlogPreview(Blog.get(it.id)) }
+    return stats.map { Blog.get(it.id) }
   }
 
   private fun checkLength(title: String, content: String) {

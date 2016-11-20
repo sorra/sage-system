@@ -110,12 +110,9 @@ open class TopicController @Autowired constructor(
   @RequestMapping
   open fun all(@RequestParam(defaultValue = "1") page: Int) : ModelAndView {
     val size = 20
-    val (topics, pagesCount) = GlobalCaches.topicsCache["/topics?page=$page&size=$size", {
-      val topics = TopicPost.orderBy("whenLastActive desc").findPagedList(page-1, size).list.map(::TopicPreview)
-      val pagesCount: Int = PaginationLogic.pagesCount(size, getRecordsCount(TopicPost))
-      topics to pagesCount
-    }] as Pair<*, *>
-    return ModelAndView("topics").addObject("topics", topics)
-        .addObject("paginationLinks", RenderUtil.paginationLinks("/topics", pagesCount as Int, page))
+    val (topics, pagesCount) = GlobalCaches.topicsCache["/topics", page, size]
+
+    return ModelAndView("topics").addObject("topics", topics.map(::TopicPreview))
+        .addObject("paginationLinks", RenderUtil.paginationLinks("/topics", pagesCount, page))
   }
 }

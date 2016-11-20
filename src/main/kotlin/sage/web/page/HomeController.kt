@@ -9,6 +9,8 @@ import sage.domain.cache.GlobalCaches
 import sage.entity.Blog
 import sage.entity.Tweet
 import sage.service.*
+import sage.transfer.BlogPreview
+import sage.transfer.TopicPreview
 import sage.util.Strings
 import sage.web.auth.Auth
 import javax.servlet.http.HttpServletResponse
@@ -37,15 +39,19 @@ open class HomeController
   @RequestMapping("/landing")
   open fun landing(): ModelAndView {
     val uid = Auth.uid()
+
     val topics = GlobalCaches.topicsCache["/landing#topics", {
       topicService.hotTopics().apply { if(uid == null) take(10) }
-    }]
+    }].map(::TopicPreview)
+
     val blogs = GlobalCaches.blogsCache["/landing#blogs", {
       blogService.hotBlogs().apply { if (uid == null) take(10) }
-    }]
+    }].map(::BlogPreview)
+
     val tweets = GlobalCaches.tweetsCache["/landing#tweets", {
-      Tweet.recent(10).map { transferService.toTweetView(it) }
-    }]
+      Tweet.recent(10)
+    }].map { transferService.toTweetView(it) }
+
     return ModelAndView("landing").addObject("topics", topics).addObject("blogs", blogs).addObject("tweets", tweets)
   }
 

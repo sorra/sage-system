@@ -39,7 +39,7 @@ class TopicService @Autowired constructor(
     }
 
     searchService.index(tp.id, TopicView(tp))
-    GlobalCaches.topicsCache.invalidateAll()
+    GlobalCaches.topicsCache.clear()
     return tp
   }
 
@@ -103,9 +103,9 @@ class TopicService @Autowired constructor(
   fun byTags(tagIds: List<Long>) = TopicPost.where()
       .`in`("tags", Tag.multiGet(tagIds)).orderBy("id desc").setMaxRows(20).findList()
 
-  fun hotTopics(): List<TopicPreview> {
+  fun hotTopics(): List<TopicPost> {
     val stats = TopicStat.where().orderBy("rank desc, id desc").setMaxRows(20).findList()
-    return stats.map { TopicPreview(TopicPost.get(it.id)) }
+    return stats.map { TopicPost.get(it.id) }
   }
 
   private fun computeFallDown(time: Date): Double {
