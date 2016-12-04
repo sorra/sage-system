@@ -31,7 +31,7 @@ $!{include("navbar.httl")}
 <div id="container" class="container">
   #if(userSelf == null)
   <div id="welcome-login">
-    <a class="btn btn-default btn-success" href="/register">快速注册</a> 看更多内容
+    <a class="btn btn-default btn-success" href="/register">快速注册</a> 与作者互动
   </div>
   #end
   <h1 id="site-whats"><a href="/topics/1">轻境界是什么？</a></h1>
