@@ -70,7 +70,7 @@ object Auth {
     LoginPass.deleteById(cookie.value)
   }
 
-  internal fun getRedirectGoto(requestLink: String): String {
+  fun getRedirectGoto(requestLink: String): String {
     return "goto=" + encodeLink(requestLink)
   }
 

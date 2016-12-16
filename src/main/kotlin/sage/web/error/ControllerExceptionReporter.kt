@@ -1,4 +1,4 @@
-package sage.web.context
+package sage.web.error
 
 import org.slf4j.LoggerFactory
 import org.springframework.beans.TypeMismatchException
@@ -18,7 +18,7 @@ import java.io.StringWriter
 import javax.servlet.http.HttpServletRequest
 
 @ControllerAdvice
-@Order(Ordered.LOWEST_PRECEDENCE)
+@Order(org.springframework.core.Ordered.LOWEST_PRECEDENCE)
 open class ControllerExceptionReporter {
   private val log = LoggerFactory.getLogger(javaClass)
 
