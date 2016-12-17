@@ -70,11 +70,17 @@ function tipover($node, text, duration) {
     if (!duration) duration = 1000;
 
     if (!$node.data('bs.tooltip')) {
-        $node.tooltip({placement: 'top', trigger: 'manual'});
+        $node.tooltip({placement: 'top', trigger: 'manual'})
     }
-    $node.data('bs.tooltip').options.title = text;
-    $node.tooltip('show');
-    window.setTimeout(function(){$node.tooltip('hide');}, duration);
+    $node.data('bs.tooltip').options.title = text
+    $node.tooltip('show')
+    if (duration > 0) {
+      window.setTimeout(function(){$node.tooltip('hide');}, duration)
+    }
+}
+
+$.prototype.tipover = function (text, duration) {
+  tipover(this, text, duration)
 }
 
 function commonConfirmPopover($node, action, message, placement) {

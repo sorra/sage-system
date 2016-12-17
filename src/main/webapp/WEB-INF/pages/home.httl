@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html>
 <!--
-#set(components = ["bootstrap", "layout", "stream", "tag", "user", "home", "jq.ajaxfileupload"])
 #set(UserSelf self = userSelf)
 #set(List<UserLabel> friends)
 -->
@@ -41,7 +40,9 @@ $!{include("navbar.httl")}
 	<div class="main">
 		$!{include("post-box.httl")}
 		<div class="stream">
-			<div class="slist"></div>
+			<a class="newfeed btn">看看新的</a>
+			<div class="stream-items"></div>
+			<a class="oldfeed btn">看看更早的</a>
 		</div>
 	</div>
 	$!{include("footer.httl")}

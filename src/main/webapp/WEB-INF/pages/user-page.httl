@@ -30,7 +30,7 @@ $!{include("navbar.httl")}
 				#end
 			</div>
 			<div class="stream">
-				<div class="slist"></div>
+				<div class="stream-items"></div>
 			</div>
 		</div>
 	</div>

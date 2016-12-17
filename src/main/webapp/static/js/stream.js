@@ -1,106 +1,17 @@
-var stream = {}
+var streamModel = {
+  url: '',
+  ajaxMark: null
+}
 
 function stream_setup() {
   setupForwardDialog()
   stream_setupListeners()
   btnLike_init()
-}
 
-function getStream(url) {
-  return $.get(url)
-    .done(function (resp) {
-      if (resp) createStream(resp, url)
-      else tipover($('.slist'), '信息流为空')
-    })
-    .fail(function (resp) {
-      tipover($('.slist'), '信息流加载失败: ' + resp);
-    });
-}
-
-function getStreamAfter(url, afterId, callback) {
-  if (!afterId) {
-    console.error('afterId is ' + afterId)
-  }
-  var ajaxMark = new Object
-  window.stream.ajaxMark = ajaxMark
-  return $.get(url, {after: afterId})
-    .done(function (resp) {
-      if (resp && ajaxMark == window.stream.ajaxMark) {
-        $('.slist').prepend($(resp))
-        humanTime_show()
-      }
-      if (callback) callback(resp)
-    })
-    .fail(function (resp) {
-      tipover($('.slist'), '信息流向后加载失败: ' + resp)
-    });
-}
-
-function getStreamBefore(url, beforeId, callback) {
-  if (!beforeId) {
-    console.error('beforeId is ' + beforeId)
-  }
-  var ajaxMark = new Object
-  window.stream.ajaxMark = ajaxMark
-  return $.get(url, {before: beforeId})
-    .done(function (resp) {
-      if (resp && ajaxMark == window.stream.ajaxMark) {
-        $('.slist').append($(resp))
-        humanTime_show()
-      }
-      if (callback) callback(resp)
-    })
-    .fail(function (resp) {
-      tipover($('.slist'), '信息流向前加载失败: ' + resp)
-    });
-}
-
-function funcLookNewer(url, callback) {
-  return function() {
-    var largest = null
-    $('.slist .tweet').each(function () {
-      var id = parseInt($(this).attr('tweet-id'))
-      if (id && (largest == null || id > largest)) {
-        largest = id
-      }
-    })
-    console.info("largest " + largest)
-    getStreamAfter(url, largest, callback)
-  }
-}
-
-function funcLookEarlier(url, callback) {
-  return function() {
-    var smallest = null
-    $('.slist .tweet').each(function () {
-      var id = parseInt($(this).attr('tweet-id'))
-      if (id && (smallest == null || id < smallest)) {
-        smallest = id
-      }
-    })
-    console.info("smallest " + smallest)
-    getStreamBefore(url, smallest, callback)
-  }
-}
-
-function createStream(resp, url) {
-  var $stream = $('.stream')
-  $('.slist').empty().append($(resp))
-  humanTime_show()
-
-  $('<a class="newfeed btn">').text('看看新的').prependTo($stream).click(funcLookNewer(url, function(resp){
-    if (!resp) {
-      tipover($('.stream .newfeed').warnEmpty(), '还没有新的')
-    }
-  }))
-
-  var lookEarlier = funcLookEarlier(url, function(resp){
-    if (!resp) {
-      tipover($('.stream .oldfeed').warnEmpty(), '没有更早的了')
-    }
-  })
-  $('<a class="oldfeed btn">').text('看看更早的').appendTo($stream).click(lookEarlier)
-  $(window).scroll(function(){
+  $('.stream .newfeed').click(funcLookNewer())
+  var lookEarlier = funcLookEarlier()
+  $('.stream .oldfeed').click(lookEarlier)
+  $(window).scroll(function () {
     var scrollTop = $(window).scrollTop()
     var winHeight = $(window).height()
     var docuHeight = $(document).height()
@@ -109,6 +20,77 @@ function createStream(resp, url) {
       console.info(scrollTop + ' ' + winHeight + ' ' +docuHeight)
     }
   })
+}
+
+function getStream() {
+  $('.stream-items').tipover('获取中···', 3000)
+  return $.get(window.streamModel.url)
+    .done(function (resp) {
+      if (resp) {
+        $('.stream-items').empty().append($(resp))
+        humanTime_show()
+        $('.stream-items').tipover('获取了' + $('.stream-item').length + '条信息')
+      } else {
+        $('.stream-items').tipover('信息流为空')
+      }
+    })
+    .fail(function (resp) {
+      $('.stream-items').tipover(resp.errorMsg || '未知错误');
+    });
+}
+
+function funcLookNewer() {
+  return function() {
+    var largest = null
+    $('.stream-items .tweet').each(function () {
+      var id = parseInt($(this).attr('tweet-id'))
+      if (id && (largest == null || id > largest)) {
+        largest = id
+      }
+    })
+    console.info("largest " + largest)
+
+    var ajaxMark = new Object
+    window.streamModel.ajaxMark = ajaxMark
+    return $.get(window.streamModel.url, {after: largest}).done(function (resp) {
+      if (resp && ajaxMark == window.streamModel.ajaxMark) {
+        $('.stream-items').prepend($(resp))
+        humanTime_show()
+      }
+      if (!resp) {
+        $('.stream .newfeed').tipover('还没有新的')
+      }
+    }).fail(function (resp) {
+      $('.stream .newfeed').tipover(resp.errorMsg || '未知错误')
+    });
+  }
+}
+
+function funcLookEarlier() {
+  return function() {
+    var smallest = null
+    $('.stream-items .tweet').each(function () {
+      var id = parseInt($(this).attr('tweet-id'))
+      if (id && (smallest == null || id < smallest)) {
+        smallest = id
+      }
+    })
+    console.info("smallest " + smallest)
+
+    var ajaxMark = new Object
+    window.streamModel.ajaxMark = ajaxMark
+    return $.get(window.streamModel.url, {before: smallest}).done(function (resp) {
+      if (resp && ajaxMark == window.streamModel.ajaxMark) {
+        $('.stream-items').append($(resp))
+        humanTime_show()
+      }
+      if (!resp) {
+        $('.stream .oldfeed').tipover('没有更早的了')
+      }
+    }).fail(function (resp) {
+      $('.stream .old-feed').tipover(resp.errorMsg || '未知错误')
+    })
+  }
 }
 
 function deleteDialogEach() {
