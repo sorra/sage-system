@@ -41,16 +41,22 @@ open class HomeController
     val uid = Auth.uid()
 
     val topics = GlobalCaches.topicsCache["/landing#topics", {
-      topicService.hotTopics().apply { if(uid == null) take(10) }
-    }].map(::TopicPreview)
+      topicService.hotTopics()
+    }].run {
+      if(uid != null) this else take(10)
+    }.map(::TopicPreview)
 
     val blogs = GlobalCaches.blogsCache["/landing#blogs", {
-      blogService.hotBlogs().apply { if (uid == null) take(10) }
-    }].map(::BlogPreview)
+      blogService.hotBlogs()
+    }].run {
+      if (uid != null) this else take(10)
+    }.map(::BlogPreview)
 
     val tweets = GlobalCaches.tweetsCache["/landing#tweets", {
-      Tweet.recent(10)
-    }].map { transferService.toTweetView(it) }
+      Tweet.recent(20)
+    }].run {
+      if (uid != null) this else take(10)
+    }.map { transferService.toTweetView(it) }
 
     return ModelAndView("landing").addObject("topics", topics).addObject("blogs", blogs).addObject("tweets", tweets)
   }
