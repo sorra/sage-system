@@ -34,7 +34,9 @@
       </span>
       <span class="tweet-ops pull-right">
         #if(userSelf && userSelf.id == t.authorId)
-        <a class="delete-btn" href="javascript:;" style="margin-left: 0.5em; margin-right: 0.5em">删除</a>
+        <a class="delete-btn" href="javascript:;" style="margin-left: 0.5em; margin-right: 0.5em">
+          <span class="glyphicon glyphicon-trash"></span>
+        </a>
         #end
         <a class="forward-btn" href="javascript:;">
           <span class="glyphicon glyphicon-share">${t.forwardCount == 0 ? '' : t.forwardCount}</span>
@@ -42,7 +44,7 @@
         <a class="comment-btn" href="javascript:;">
           <span class="glyphicon glyphicon-comment">${t.commentCount == 0 ? '' : t.commentCount}</span>
         </a>
-        <a class="btn_like #if(t.isLiked)btn-success#end" href="javascript:;" data-prefix="/tweets/${t.id}">
+        <a class="like-btn #if(t.isLiked)like-btn-liked#end" href="javascript:;" data-prefix="/tweets/${t.id}">
           <span class="glyphicon glyphicon-thumbs-up"><span class="num-likes">${t.likes == 0 ? '' : t.likes}</span></span>
         </a>
       </span>

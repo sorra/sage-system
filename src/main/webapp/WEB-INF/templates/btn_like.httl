@@ -1,7 +1,7 @@
 #set(Number likes)
 #set(Boolean isLiked)
 #set(prefix)
-<button type="button" class="btn_like btn btn-default #if(isLiked)btn-success#end" data-prefix="${prefix}">
+<button type="button" class="like-btn btn btn-default #if(isLiked)like-btn-liked#end" data-prefix="${prefix}">
   <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>
   <span class="num-likes">${likes}</span>
 </button>

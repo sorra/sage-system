@@ -113,3 +113,11 @@ input[type=text]{
     text-align: center;
     display: none;
 }
+
+.tweet .like-btn-liked{
+  color: #5cb85c;
+}
+.btn-default.like-btn-liked{
+  color: #fff;
+  background-color: #5cb85c;
+}

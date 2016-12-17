@@ -33,6 +33,9 @@
   max-width: 500px;
   max-height: 500px;
 }
+.tweet-ops a{
+  color: gray;
+}
 
 .stream-item .t-origin{
   padding: 5px;
