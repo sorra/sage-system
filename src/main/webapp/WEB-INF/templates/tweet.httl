@@ -19,7 +19,7 @@
       <span mf-id="${t.id}" style="display: none"> ||<a>@${t.authorName}</a>：$!{t.content}</span>
       #end
       #if(t.midForwards)#for(MidForward x : t.midForwards.xs)
-      <span mf-id="${x.id}"> ||$!{userLinkForMidForward(x)}：</span>
+      <span mf-id="${x.id}"> ||$!{userLinkForMidForward(x)}：$!{x.content}</span>
       #end#end
     </div>
     #if(t.origin)
