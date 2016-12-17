@@ -35,7 +35,7 @@ function getStream() {
       }
     })
     .fail(function (resp) {
-      $('.stream-items').tipover(resp.errorMsg || '未知错误');
+      $('.stream-items').tipover(resp.errorMsg || '网络错误');
     })
 }
 
@@ -63,7 +63,7 @@ function funcLookNewer(ignoreEmpty) {
         humanTime_show()
       }
     }).fail(function (resp) {
-      $('.stream .newfeed').tipover(resp.errorMsg || '未知错误')
+      $('.stream .newfeed').tipover(resp.errorMsg || '网络错误')
     })
   }
 }
@@ -92,7 +92,7 @@ function funcLookEarlier(ignoreEmpty) {
         humanTime_show()
       }
     }).fail(function (resp) {
-      $('.stream .old-feed').tipover(resp.errorMsg || '未知错误')
+      $('.stream .old-feed').tipover(resp.errorMsg || '网络错误')
     })
   }
 }
