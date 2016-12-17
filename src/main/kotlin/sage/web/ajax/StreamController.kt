@@ -1,4 +1,4 @@
-package sage.web.page
+package sage.web.ajax
 
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Controller
@@ -38,8 +38,8 @@ open class StreamController @Autowired constructor(
 
   @RequestMapping("/user/{id}")
   open fun userStream(@PathVariable id: Long,
-                          @RequestParam(required = false) before: Long?,
-                          @RequestParam(required = false) after: Long?): ModelAndView {
+                      @RequestParam(required = false) before: Long?,
+                      @RequestParam(required = false) after: Long?): ModelAndView {
     val stream = streamService.personalStream(id, getEdge(before, after))
     return ModelAndView("stream").addObject("stream", stream)
   }
