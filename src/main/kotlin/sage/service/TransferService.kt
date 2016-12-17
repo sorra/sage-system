@@ -10,11 +10,11 @@ import sage.web.auth.Auth
 @Service
 class TransferService {
 
-  fun toTweetView(tweet: Tweet) = TweetView(tweet, Tweet.getOrigin(tweet), tweetStatFinder = tweetStatFinder)
+  fun toTweetView(tweet: Tweet) = TweetView(tweet, Tweet.getOrigin(tweet), isLikedChecker, tweetStatFinder = tweetStatFinder)
 
-  fun toTweetViewNoCount(tweet: Tweet) = TweetView(tweet, Tweet.getOrigin(tweet))
+  fun toTweetViewNoCount(tweet: Tweet) = TweetView(tweet, Tweet.getOrigin(tweet), {false})
 
-  @JvmOverloads fun toTweetViews(tweets: Collection<Tweet>, showOrigin: Boolean = true, showCounts: Boolean = true): List<TweetView> {
+  fun toTweetViews(tweets: Collection<Tweet>, showOrigin: Boolean = true, showCounts: Boolean = true): List<TweetView> {
     return tweets.map { t ->
       val origin = if (showOrigin) Tweet.getOrigin(t) else null
       val finder = if (showCounts) tweetStatFinder else {id -> null}

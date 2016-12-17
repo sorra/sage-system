@@ -54,8 +54,6 @@ $!{alljs}
 
 		var id = $('.blog').data('id')
 
-		btnLike_init('/blogs/' + id)
-
 		comments_render('#comments-container', 1, id)
 	})
 </script>

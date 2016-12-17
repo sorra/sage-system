@@ -29,7 +29,7 @@ class TweetView : Item {
   internal constructor() {
   }
 
-  constructor(tweet: Tweet, origin: Tweet?, isLikedChecker: (Long) -> Boolean = {false}, tweetStatFinder: (Long) -> TweetStat? = {null}) {
+  constructor(tweet: Tweet, origin: Tweet?, isLikedChecker: (Long) -> Boolean, tweetStatFinder: (Long) -> TweetStat? = {null}) {
     id = tweet.id
     if (!tweet.deleted) {
       authorId = tweet.author.id
