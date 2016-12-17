@@ -1,5 +1,7 @@
 var streamModel = {
   url: '',
+  $container: null,
+  $items: null,
   ajaxMark: null
 }
 
@@ -22,16 +24,19 @@ function stream_setup() {
   })
 }
 
-function getStream() {
+function getStream(url) {
+  window.streamModel.url = url
+  window.streamModel.$container = $('.stream')
+  window.streamModel.$items = $('.stream-items')
   $('.stream-items').tipover('获取中···', 3000)
-  return $.get(window.streamModel.url)
+  return $.get(url)
     .done(function (resp) {
       if (resp) {
         $('.stream-items').empty().append($(resp))
         humanTime_show()
         $('.stream-items').tipover('获取了' + $('.stream-item').length + '条信息')
       } else {
-        $('.stream-items').tipover('信息流为空')
+        $('.stream-items').tipover('没有信息哦，快去关注几个人吧')
       }
     })
     .fail(function (resp) {
@@ -56,7 +61,7 @@ function funcLookNewer(ignoreEmpty) {
       if (ajaxMark == window.streamModel.ajaxMark) {
         var $items = resp ? $(resp) : $()
         if ($items.length > 0) {
-          $('.stream-items').prepend($(resp))
+          $('.stream-items').prepend($items)
         } else if (!ignoreEmpty) {
           $('.stream .newfeed').tipover('还没有新的')
         }
@@ -85,7 +90,7 @@ function funcLookEarlier(ignoreEmpty) {
       if (ajaxMark == window.streamModel.ajaxMark) {
         var $items = resp ? $(resp) : $()
         if ($items.length > 0) {
-          $('.stream-items').append($(resp))
+          $('.stream-items').append($items)
         } else if (!ignoreEmpty) {
           $('.stream .oldfeed').tipover('没有更早的了')
         }

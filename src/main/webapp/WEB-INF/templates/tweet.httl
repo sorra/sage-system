@@ -36,11 +36,14 @@
         #if(userSelf && userSelf.id == t.authorId)
         <a class="delete-btn" href="javascript:;" style="margin-left: 0.5em; margin-right: 0.5em">删除</a>
         #end
-        <a class="forward-btn" href="javascript:;">转发${showCount(t.forwardCount)}</a>
-        <a class="comment-btn" href="javascript:;">评论${showCount(t.commentCount)}</a>
+        <a class="forward-btn" href="javascript:;">
+          <span class="glyphicon glyphicon-share">${t.forwardCount == 0 ? '' : t.forwardCount}</span>
+        </a>
+        <a class="comment-btn" href="javascript:;">
+          <span class="glyphicon glyphicon-comment">${t.commentCount == 0 ? '' : t.commentCount}</span>
+        </a>
         <a class="btn_like #if(t.isLiked)btn-success#end" href="javascript:;" data-prefix="/tweets/${t.id}">
-          <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>
-          <span class="num-likes">${t.likes == 0 ? '' : t.likes}</span>
+          <span class="glyphicon glyphicon-thumbs-up"><span class="num-likes">${t.likes == 0 ? '' : t.likes}</span></span>
         </a>
       </span>
     </div>

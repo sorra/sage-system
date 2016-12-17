@@ -68,9 +68,7 @@ function home_setup() {
         })
     })
 
-  window.streamModel.url = '/stream/i'
-  // load istream
-  getStream()
+  getStream('/stream/i')
 
   setInterval(funcLookNewer(true), 10000)
 }
