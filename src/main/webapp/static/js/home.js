@@ -72,11 +72,7 @@ function home_setup() {
   // load istream
   getStream()
 
-  setInterval(funcLookNewer('/stream/i', function (resp) {
-    if (resp) {
-      tipover($('.stream .newfeed').warnEmpty(), '又出现了' + stream.items.length + '组新信息')
-    }
-  }), 5000)
+  setInterval(funcLookNewer(true), 10000)
 }
 
 function postTweetDone() {
@@ -85,7 +81,7 @@ function postTweetDone() {
   $('.post-box .pic-preview img').attr('src', '')
   hideTagTreeInput($('.tag-plus'))
   tipover($submit, '发表成功')
-  funcLookNewer('/stream/i')()
+  funcLookNewer(true)()
 }
 
 function postTweetFail() {

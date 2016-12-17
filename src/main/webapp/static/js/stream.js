@@ -36,10 +36,10 @@ function getStream() {
     })
     .fail(function (resp) {
       $('.stream-items').tipover(resp.errorMsg || '未知错误');
-    });
+    })
 }
 
-function funcLookNewer() {
+function funcLookNewer(ignoreEmpty) {
   return function() {
     var largest = null
     $('.stream-items .tweet').each(function () {
@@ -53,20 +53,22 @@ function funcLookNewer() {
     var ajaxMark = new Object
     window.streamModel.ajaxMark = ajaxMark
     return $.get(window.streamModel.url, {after: largest}).done(function (resp) {
-      if (resp && ajaxMark == window.streamModel.ajaxMark) {
-        $('.stream-items').prepend($(resp))
+      if (ajaxMark == window.streamModel.ajaxMark) {
+        var $items = resp ? $(resp) : $()
+        if ($items.length > 0) {
+          $('.stream-items').prepend($(resp))
+        } else if (!ignoreEmpty) {
+          $('.stream .newfeed').tipover('还没有新的')
+        }
         humanTime_show()
-      }
-      if (!resp) {
-        $('.stream .newfeed').tipover('还没有新的')
       }
     }).fail(function (resp) {
       $('.stream .newfeed').tipover(resp.errorMsg || '未知错误')
-    });
+    })
   }
 }
 
-function funcLookEarlier() {
+function funcLookEarlier(ignoreEmpty) {
   return function() {
     var smallest = null
     $('.stream-items .tweet').each(function () {
@@ -80,12 +82,14 @@ function funcLookEarlier() {
     var ajaxMark = new Object
     window.streamModel.ajaxMark = ajaxMark
     return $.get(window.streamModel.url, {before: smallest}).done(function (resp) {
-      if (resp && ajaxMark == window.streamModel.ajaxMark) {
-        $('.stream-items').append($(resp))
+      if (ajaxMark == window.streamModel.ajaxMark) {
+        var $items = resp ? $(resp) : $()
+        if ($items.length > 0) {
+          $('.stream-items').append($(resp))
+        } else if (!ignoreEmpty) {
+          $('.stream .oldfeed').tipover('没有更早的了')
+        }
         humanTime_show()
-      }
-      if (!resp) {
-        $('.stream .oldfeed').tipover('没有更早的了')
       }
     }).fail(function (resp) {
       $('.stream .old-feed').tipover(resp.errorMsg || '未知错误')
