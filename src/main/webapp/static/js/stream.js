@@ -95,7 +95,7 @@ function funcLookEarlier(ignoreEmpty) {
         humanTime_show()
       }
     }).fail(function (resp) {
-      $('.stream .old-feed').tipover(resp.errorMsg || '网络错误')
+      $('.stream .oldfeed').tipover(resp.errorMsg || '网络错误')
     })
   }
 }
