@@ -1,8 +1,8 @@
-var streamModel = {
-  url: '',
-  $container: null,
-  $items: null,
-  ajaxMark: null
+function StreamModel(url) {
+  this.url = url
+  this.$container = $('.stream')
+  this.$items = $('.stream-items')
+  this.ajaxMark = null
 }
 
 function stream_setup() {
@@ -25,9 +25,7 @@ function stream_setup() {
 }
 
 function getStream(url) {
-  window.streamModel.url = url
-  window.streamModel.$container = $('.stream')
-  window.streamModel.$items = $('.stream-items')
+  window.streamModel = new StreamModel(url)
   $('.stream-items').tipover('获取中···', 3000)
   return $.get(url)
     .done(function (resp) {
