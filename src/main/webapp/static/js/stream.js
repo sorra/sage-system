@@ -3,6 +3,7 @@ function StreamModel(url) {
   this.$container = $('.stream')
   this.$items = $('.stream-items')
   this.ajaxMark = null
+  this.emptyStreamMsg = (url === '/stream/i' ? '没有信息哦，快去关注几个人吧' : '这里没有信息')
 }
 
 function stream_setup() {
@@ -34,7 +35,7 @@ function getStream(url) {
         humanTime_show()
         $('.stream-items').tipover('获取了' + $('.stream-item').length + '条信息')
       } else {
-        $('.stream-items').tipover('没有信息哦，快去关注几个人吧')
+        $('.stream-items').tipover(window.streamModel.emptyStreamMsg)
       }
     })
     .fail(function (resp) {
