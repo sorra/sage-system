@@ -56,9 +56,9 @@ class TweetPostService
     }
     tweet.save()
     TweetStat(id = tweet.id, whenCreated = tweet.whenCreated).save()
-    TweetStat.incForwards(originId)
+    origins.forEach { TweetStat.incForwards(it.id) }
 
-    userService.updateUserTag(userId, tweet.tags.map { it.id })
+    userService.updateUserTag(userId, tweet.tags.map(Tag::id))
 
     origins.forEach { origin -> notifService.forwarded(origin.author.id, userId, tweet.id) }
     mentionedIds.forEach { atId -> notifService.mentionedByTweet(atId, userId, tweet.id) }
