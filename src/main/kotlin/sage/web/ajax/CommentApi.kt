@@ -1,4 +1,4 @@
-package sage.web.api
+package sage.web.ajax
 
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.RequestMapping
@@ -11,7 +11,7 @@ import sage.transfer.CommentView
 import sage.web.auth.Auth
 
 @RestController
-@RequestMapping("/api/comments")
+@RequestMapping("/comments")
 open class CommentApi @Autowired constructor(
     private val tweetPostService: TweetPostService,
     private val blogService: BlogService) {

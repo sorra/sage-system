@@ -19,14 +19,14 @@ function comments_render(el, sourceType, sourceId) {
     events: {
       fetch: function () {
         var self = this
-        $.get('/api/comments', {sourceType: this.sourceType, sourceId: this.sourceId})
+        $.get('/comments', {sourceType: this.sourceType, sourceId: this.sourceId})
           .done(function (object) {
             self.count = object.count
             self.comments = object.list
             self.alert('alert-info', '评论加载成功')
           })
-          .fail(function (msg) {
-            self.alert('alert-danger', '评论加载失败: ' + msg)
+          .fail(function (resp) {
+            self.alert('alert-danger', errorMsg(resp))
           })
       }
     },
@@ -39,7 +39,7 @@ function comments_render(el, sourceType, sourceId) {
           return
         }
         self.showAlert('alert-warning', '正在发送...')
-        $.post('/api/comments/new', {
+        $.post('/comments/new', {
           content: this.editorContent,
           sourceType: this.sourceType,
           sourceId: this.sourceId,
@@ -47,8 +47,8 @@ function comments_render(el, sourceType, sourceId) {
         }).done(function () {
           self.editorContent = ''
           self.alert('alert-success', '发送成功')
-        }).fail(function () {
-          self.alert('alert-danger', '发送失败')
+        }).fail(function (resp) {
+          self.alert('alert-danger', '发送失败: ' + errorMsg(resp))
         })
       },
 
@@ -59,7 +59,7 @@ function comments_render(el, sourceType, sourceId) {
           return
         }
         self.showAlert('alert-warning', '正在发送...', true)
-        $.post('/api/comments/new', {
+        $.post('/comments/new', {
           content: c.replyEditorContent,
           sourceType: this.sourceType,
           sourceId: this.sourceId,
@@ -69,8 +69,8 @@ function comments_render(el, sourceType, sourceId) {
           c.replyEditorContent = ''
           self.commentBeingReplied = null
           self.alert('alert-success', '发送成功', true)
-        }).fail(function () {
-          self.alert('alert-danger', '发送失败', true)
+        }).fail(function (resp) {
+          self.alert('alert-danger', '发送失败: ' + errorMsg(resp), true)
         })
       },
 
