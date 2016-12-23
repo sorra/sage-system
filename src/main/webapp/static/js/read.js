@@ -17,15 +17,15 @@ function btnLike_init() {
       $.post(prefix + '/unlike').done(function(){
         refreshLikes($btn, prefix)
         $btn.removeClass(classLiked)
-      }).fail(function(msg){
-        tipover($btn, msg)
+      }).fail(function(resp){
+        $btn.tipover(errorMsg(resp))
       })
     } else {
       $.post(prefix+'/like').done(function(){
         refreshLikes($btn, prefix)
         $btn.addClass(classLiked)
-      }).fail(function(msg){
-        tipover($btn, msg)
+      }).fail(function(resp){
+        $btn.tipover(errorMsg(resp))
       })
     }
   })

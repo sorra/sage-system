@@ -63,6 +63,14 @@ function formSubmitError(msg) {
   tipover($(this).find('*[type=submit]', msg))
 }
 
+function errorMsg(resp) {
+  try {
+    return (resp.responseText && JSON.parse(resp.responseText).errorMsg) || '网络错误'
+  } catch (exception) {
+    return '异常: ' + exception.message
+  }
+}
+
 /*
  * common tip function
  */

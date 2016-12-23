@@ -76,24 +76,6 @@ open class BlogController @Autowired constructor(
     return "redirect:/"
   }
 
-  @RequestMapping("/{id}/like")
-  @ResponseBody
-  open fun like(@PathVariable id: Long) {
-    val uid = Auth.checkUid()
-    BlogStat.like(id, uid)
-  }
-
-  @RequestMapping("/{id}/unlike")
-  @ResponseBody
-  open fun unlike(@PathVariable id: Long) {
-    val uid = Auth.checkUid()
-    BlogStat.unlike(id, uid)
-  }
-
-  @RequestMapping("/{id}/likes")
-  @ResponseBody
-  open fun likes(@PathVariable id: Long) = BlogStat.get(id).likes
-
   @RequestMapping
   open fun all(@RequestParam(defaultValue = "1") page: Int): ModelAndView {
     val size = 20

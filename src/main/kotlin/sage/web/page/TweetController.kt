@@ -5,15 +5,12 @@ import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
-import org.springframework.web.bind.annotation.ResponseBody
 import org.springframework.web.servlet.ModelAndView
 import sage.entity.Tweet
-import sage.entity.TweetStat
 import sage.entity.getRecordsCount
 import sage.service.TransferService
 import sage.service.TweetReadService
 import sage.util.PaginationLogic
-import sage.web.auth.Auth
 import sage.web.context.RenderUtil
 
 @Controller
@@ -40,22 +37,4 @@ open class TweetController @Autowired constructor(
     return ModelAndView("tweets").addObject("tweets", tweets)
         .addObject("paginationLinks", RenderUtil.paginationLinks("/tweets", pagesCount, page))
   }
-
-  @RequestMapping("/{id}/like")
-  @ResponseBody
-  open fun like(@PathVariable id: Long) {
-    val uid = Auth.checkUid()
-    TweetStat.like(id, uid)
-  }
-
-  @RequestMapping("/{id}/unlike")
-  @ResponseBody
-  open fun unlike(@PathVariable id: Long) {
-    val uid = Auth.checkUid()
-    TweetStat.unlike(id, uid)
-  }
-
-  @RequestMapping("/{id}/likes")
-  @ResponseBody
-  open fun likes(@PathVariable id: Long) = TweetStat.get(id).likes
 }
