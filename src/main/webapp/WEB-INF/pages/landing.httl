@@ -21,7 +21,7 @@
       margin: 20px;
       padding: 5px;
       background-color: beige;
-      max-width: 180px;
+      max-width: 181px;
       border-radius: 5px;
     }
   </style>
