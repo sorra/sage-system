@@ -33,7 +33,6 @@ open class CommentApi @Autowired constructor(
 
   @RequestMapping
   open fun comments(@RequestParam sourceType: Short, @RequestParam sourceId: Long): Map<String, Any> {
-    Auth.checkUid()
     return mapOf("count" to Comment.count(sourceType, sourceId),
         "list" to Comment.list(sourceType, sourceId).map(::CommentView))
   }
