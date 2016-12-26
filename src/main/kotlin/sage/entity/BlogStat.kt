@@ -41,7 +41,7 @@ class BlogStat (
       if (days < 0) days = 0
       floatUp = Math.pow(1.2, days.toDouble())
     }
-    rank = (1 + tune + comments + likes + views / 10) * floatUp
+    rank = (1 + comments + likes + views / 10) * (1 + tune) * floatUp
   }
 
   companion object : Find<Long, BlogStat>() {

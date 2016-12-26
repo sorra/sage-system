@@ -50,7 +50,7 @@ class TopicStat (
         }
       floatUp = Math.pow(1.25, days)
     }
-    rank = (1 + tune + replies + likes + views / 10) * floatUp
+    rank = (1 + replies + likes + views / 10) * (1 + tune) * floatUp
   }
 
   companion object : Find<Long, TopicStat>() {
