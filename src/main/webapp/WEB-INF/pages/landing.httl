@@ -71,6 +71,7 @@ $!{alljs}
     $('.summary').warnEmpty().each(function(){
       $(this).html(marked($(this).text()))
     })
+    window.streamModel = {} // stub
   })
 </script>
 </body>
