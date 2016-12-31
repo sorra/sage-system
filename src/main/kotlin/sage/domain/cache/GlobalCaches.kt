@@ -28,7 +28,7 @@ object GlobalCaches {
       val key = "$name?page=$page&size=$size"
       return cache.getIfPresent(key)?.run {
         val (ids, pagesCount) = this
-        find.where().`in`("id", ids).findList() to pagesCount
+        find.where().`in`("id", ids).findList().sortedByDescending { it.id } to pagesCount
       } ?: run {
         val entities = find.orderBy("id desc").findPagedList(page - 1, size).list
         val pagesCount = PaginationLogic.pagesCount(size, getRecordsCount(Blog))
