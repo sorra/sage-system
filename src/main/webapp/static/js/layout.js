@@ -14,29 +14,7 @@ $(document).ready(function(){
     var idxOfQueMark = uri.indexOf('?')
     if(idxOfQueMark >= 0) uri = uri.substring(0, idxOfQueMark)
     if (uri.indexOf('/notifications') < 0) {
-      $.get("/notifications/unread-counts").done(function (data) {
-        var notifCountLines = []
-        parseNotifCount('FORWARDED', data, notifCountLines)
-        parseNotifCount('COMMENTED', data, notifCountLines)
-        parseNotifCount('REPLIED', data, notifCountLines)
-        parseNotifCount('MENTIONED_TWEET', data, notifCountLines)
-        parseNotifCount('MENTIONED_COMMENT', data, notifCountLines)
-        parseNotifCount('FOLLOWED', data, notifCountLines)
-        var notifCountHtml = ''
-        for (var i in notifCountLines) {
-          notifCountHtml += '<a href="/notifications/unread" style="display: block">' + notifCountLines[i] + '</a>'
-        }
-        if (notifCountHtml.length > 0) {
-          $('#nav-user').popover({
-            html: true,
-            placement: 'bottom',
-            trigger: 'manual',
-            selector: '#notif-count-popover',
-            container: 'body',
-            content: notifCountHtml
-          }).popover('show')
-        }
-      })
+      fetchNotifications()
     }
   }
 
@@ -119,9 +97,34 @@ function nodesCopy(selector, from, to){
   from.find(selector).children().clone().appendTo(to.find(selector).empty())
 }
 
-function parseNotifCount(type, data, lines) {
-  var entry = data[type]
-  if (entry) {
+function fetchNotifications() {
+  $.get("/notifications/unread-counts").done(function (data) {
+    var notifCountLines = []
+    parseNotifCounts(data, notifCountLines)
+    var notifCountHtml = ''
+    for (var i in notifCountLines) {
+      notifCountHtml += '<a href="/notifications/unread" style="display: block">' + notifCountLines[i] + '</a>'
+    }
+    if (notifCountHtml.length > 0) {
+      $('#nav-user').popover({
+        html: true,
+        placement: 'bottom',
+        trigger: 'manual',
+        selector: '#notif-count-popover',
+        container: 'body',
+        content: notifCountHtml
+      }).popover('show')
+    }
+  }).always(function () {
+    setTimeout(fetchNotifications, 3000)
+  })
+}
+
+function parseNotifCounts(data, lines) {
+  for (var attr in data) {
+    var entry = data[attr]
+    if (data.hasOwnProperty(attr) && entry.count && entry.desc) {
     lines.push(entry.count + '个' + entry.desc)
+    }
   }
 }
