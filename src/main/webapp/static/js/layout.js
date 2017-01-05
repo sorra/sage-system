@@ -75,6 +75,7 @@ function buildNavTagTree($lnk, tagTree) {
     if (window.userSelf) {
       $('#new-tag-dialog').modal('show')
     } else {
+      //TODO check login via AJAX
       tipover($(this), '需要登录')
     }
   })
@@ -89,6 +90,7 @@ function buildNavTagTree($lnk, tagTree) {
     placement: 'bottom',
     trigger: 'manual',
     selector: '#tag-tree-popover',
+    container: 'body',
     content: $navTagTree
   })
 }
