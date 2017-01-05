@@ -77,6 +77,10 @@ input[name=q]{
   width: 100%;
 }
 
+#new-tag-dialog{
+  z-index: 2000;
+}
+
 #new-tag-dialog .modal-dialog{
   width: 300px;
   min-height: 100px;
