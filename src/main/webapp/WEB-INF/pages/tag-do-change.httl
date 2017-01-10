@@ -39,7 +39,7 @@ $!{alljs}
     $('form').submit(function(){
       $(this).ajaxSubmit({
         success: redirect,
-        error: formSubmitError
+        error: funcFormSubmitError($(this))
       })
       return false
     })

@@ -1,5 +1,6 @@
 package sage.entity
 
+import sage.domain.commons.DomainException
 import java.util.*
 import javax.persistence.*
 
@@ -59,6 +60,19 @@ class Tag : BaseModel {
   }
 
   fun getQueryTags(): Set<Tag> = descendants() + this
+
+  @PrePersist @PreUpdate
+  fun nameMustBeUnique() {
+    siblingsCannotHaveThatName(name)
+  }
+
+  fun siblingsCannotHaveThatName(name: String) {
+    parent?.let { parent ->
+      if (parent.descendants().find { it.name == name } != null) {
+        throw DomainException("标签\"${parent.name}\"之下有同名标签: \"$name\"")
+      }
+    }
+  }
 
   companion object : Find<Long, Tag>() {
     val ROOT_ID: Long = 1

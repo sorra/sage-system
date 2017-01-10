@@ -59,8 +59,10 @@ function redirect(url) {
   window.location = url
 }
 
-function formSubmitError(msg) {
-  tipover($(this).find('*[type=submit]', msg))
+function funcFormSubmitError($parent) {
+  return function (resp) {
+    $parent.find('*[type=submit]').tipover(errorMsg(resp))
+  }
 }
 
 function errorMsg(resp) {
@@ -76,6 +78,10 @@ function errorMsg(resp) {
  */
 function tipover($node, text, duration) {
     if (!duration) duration = 1000;
+    if ($node.length == 0) {
+      console.error($node.selector + ' matches no element!')
+      return
+    }
 
     if (!$node.data('bs.tooltip')) {
         $node.tooltip({placement: 'top', trigger: 'manual'})

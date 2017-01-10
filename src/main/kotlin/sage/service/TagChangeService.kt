@@ -18,21 +18,22 @@ import sage.transfer.UserLabel
 @Service
 class TagChangeService {
 
-  fun requestMove(userId: Long?, tagId: Long?, parentId: Long): TagChangeRequest {
+  fun requestMove(userId: Long, tagId: Long, parentId: Long): TagChangeRequest {
     if (Tag.byId(parentId) == null) {
       throw IllegalArgumentException("parentId $parentId is wrong!")
     }
     return saveRequest(TagChangeRequest.forMove(Tag.ref(tagId), User.ref(userId), parentId))
   }
 
-  fun requestRename(userId: Long?, tagId: Long?, name: String): TagChangeRequest {
+  fun requestRename(userId: Long?, tagId: Long, name: String): TagChangeRequest {
     if (StringUtils.isBlank(name)) {
       throw IllegalArgumentException("name is empty!")
     }
+    Tag.get(tagId).siblingsCannotHaveThatName(name)
     return saveRequest(TagChangeRequest.forRename(Tag.ref(tagId), User.ref(userId), name))
   }
 
-  fun requestSetIntro(userId: Long?, tagId: Long?, intro: String): TagChangeRequest {
+  fun requestSetIntro(userId: Long, tagId: Long, intro: String): TagChangeRequest {
     if (StringUtils.isBlank(intro)) {
       throw IllegalArgumentException("intro is empty!")
     }
@@ -120,11 +121,11 @@ class TagChangeService {
     if (status === Status.ACCEPTED) {
       val tagId = req.tag.id
       if (req.type === Type.MOVE) {
-        doTransact(tagId, { tag -> tag.parent = Tag.ref(req.parentId) })
+        doTransact(tagId) { tag -> tag.parent = Tag.ref(req.parentId) }
       } else if (req.type === Type.RENAME) {
-        doTransact(tagId, { tag -> tag.name = req.name })
+        doTransact(tagId) { tag -> tag.name = req.name }
       } else if (req.type === Type.SET_INTRO) {
-        doTransact(tagId, { tag -> tag.intro = req.intro })
+        doTransact(tagId) { tag -> tag.intro = req.intro }
       }
       log.info("transactRequest done: {}", req)
     }
