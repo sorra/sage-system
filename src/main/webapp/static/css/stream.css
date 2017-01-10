@@ -28,10 +28,12 @@
   display: block;
   max-width: 200px;
   max-height: 200px;
+  cursor: zoom-in;
 }
 .tweet-content .view-large{
   max-width: 500px;
   max-height: 500px;
+  cursor: zoom-out;
 }
 .tweet-ops a{
   color: gray;
