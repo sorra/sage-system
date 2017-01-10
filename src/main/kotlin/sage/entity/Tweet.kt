@@ -87,7 +87,7 @@ class Tweet : BaseModel {
   companion object : Find<Long, Tweet>() {
     private val log = LoggerFactory.getLogger(Tweet::class.java)
 
-    fun recent(size: Int) = default().orderBy("id desc").setMaxRows(size).findList()
+    fun recent(size: Int): List<Tweet> = default().orderBy("id desc").setMaxRows(size).findList()
 
     fun byTags(tags: Collection<Tag>, edge: Edge): List<Tweet> {
       if (tags.isEmpty()) {
@@ -96,7 +96,7 @@ class Tweet : BaseModel {
       return ranged(edge).`in`("tags.id", Tag.getQueryTags(tags).map { it.id }).findList()
     }
 
-    fun byAuthor(authorId: Long, edge: Edge = Edge.none()) = ranged(edge).eq("author", User.ref(authorId)).findList()
+    fun byAuthor(authorId: Long, edge: Edge = Edge.none()): MutableList<Tweet> = ranged(edge).eq("author", User.ref(authorId)).findList()
 
     fun byAuthorAndTags(authorId: Long, tags: Collection<Tag>, edge: Edge = Edge.none()): List<Tweet> {
       if (tags.isEmpty()) {
@@ -118,8 +118,7 @@ class Tweet : BaseModel {
       return connected
     }
 
-    fun forwards(originId: Long) = default().eq("originId", originId).findList()
-    fun forwardCount(originId: Long) = default().eq("originId", originId).findRowCount()
+    fun forwards(originId: Long): List<Tweet> = default().eq("originId", originId).findList()
 
     fun getOrigin(tweet: Tweet) = if (tweet.hasOrigin()) byId(tweet.originId) else null
 

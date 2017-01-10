@@ -34,6 +34,6 @@ class Blog : BaseModel {
   companion object : Find<Long, Blog>() {
     fun get(id: Long) = getNonNull(Blog::class, id)
 
-    fun byAuthor(authorId: Long) = where().eq("author", User.ref(authorId)).findList()
+    fun byAuthor(authorId: Long): List<Blog> = where().eq("author", User.ref(authorId)).findList()
   }
 }
