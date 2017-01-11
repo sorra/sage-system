@@ -37,6 +37,14 @@ class TweetPostService
     return tweet
   }
 
+  fun postForBlog(blog: Blog) {
+    val tweet = Tweet("", emptyList(), User.ref(blog.author.id), blog)
+    tweet.save()
+    TweetStat(id = tweet.id, whenCreated = tweet.whenCreated).save()
+    blog.tweetId = tweet.id
+    blog.update()
+  }
+
   fun forward(userId: Long, content: String, originId: Long, removedForwardIds: Collection<Long>): Tweet {
     if (content.length > TWEET_MAX_LEN) {
       throw BAD_TWEET_LENGTH

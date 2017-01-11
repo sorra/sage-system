@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.ResponseBody
 import sage.entity.*
 import sage.service.SearchService
 import sage.service.ServiceInitializer
+import sage.service.TweetPostService
 import sage.service.UserService
 import sage.transfer.BlogView
 import sage.transfer.TopicReplyView
@@ -20,7 +21,8 @@ import java.util.*
 @Controller
 open class ZOperationController @Autowired constructor(
     private val si: ServiceInitializer, private val di: DataInitializer,
-    private val userService: UserService, private val searchService: SearchService) {
+    private val userService: UserService, private val searchService: SearchService,
+    private val tweetPostService: TweetPostService) {
 
   @RequestMapping("/z-init")
   @ResponseBody
@@ -113,5 +115,16 @@ open class ZOperationController @Autowired constructor(
       }
     }
     return "Done."
+  }
+
+  @RequestMapping("/z-comptweets")
+  @ResponseBody
+  open fun compTweets(): Any {
+    val actedBlogIds = HashSet<Long>()
+    Blog.where().eq("tweetId", 0).orderBy("id").findEach { blog ->
+      tweetPostService.postForBlog(blog)
+      actedBlogIds += blog.id
+    }
+    return actedBlogIds
   }
 }

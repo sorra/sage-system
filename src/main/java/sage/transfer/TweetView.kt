@@ -1,6 +1,7 @@
 package sage.transfer
 
 import sage.domain.commons.IdCommons
+import sage.entity.Blog
 import sage.entity.Tweet
 import sage.entity.TweetStat
 import java.util.*
@@ -37,6 +38,12 @@ class TweetView : Item {
       avatar = tweet.author.avatar
     }
     content = convertRichElements(tweet)
+    if (tweet.blogId > 0) {
+      Blog.byId(tweet.blogId)?.let {
+        val titleLink = "<a class=\"tweet-blog-title\" href=\"/blogs/${it.id}\">${it.title}</a>"
+        content = "发表了[$titleLink] $content"
+      }
+    }
     time = tweet.whenCreated
     if (origin != null) {
       this.origin = TweetView(origin, null, isLikedChecker, tweetStatFinder)

@@ -13,7 +13,11 @@ import java.util.*
 @Service
 @Suppress("NAME_SHADOWING")
 class BlogService
-@Autowired constructor(private val searchService: SearchService, private val notifService: NotificationService) {
+@Autowired constructor(
+    private val tweetPostService: TweetPostService,
+    private val userService: UserService,
+    private val searchService: SearchService,
+    private val notifService: NotificationService) {
 
   fun post(userId: Long, title: String, content: String, tagIds: Set<Long>): Blog {
     checkLength(title, content)
@@ -22,6 +26,9 @@ class BlogService
     val blog = Blog(title, content, User.ref(userId), Tag.multiGet(tagIds))
     blog.save()
     BlogStat(id = blog.id, whenCreated =  blog.whenCreated).save()
+
+    tweetPostService.postForBlog(blog);
+    userService.updateUserTag(userId, tagIds)
 
     mentionedIds.forEach { atId -> notifService.mentionedByBlog(atId, userId, blog.id) }
 
@@ -42,6 +49,8 @@ class BlogService
     blog.content = content
     blog.tags = Tag.multiGet(tagIds)
     blog.update()
+
+    userService.updateUserTag(userId, tagIds)
 
     if (mentionedIds.isNotEmpty()) {
       val (oldContent, oldMentionedIds) = processMarkdownContent(blog.content)

@@ -61,8 +61,8 @@ class Tweet : BaseModel {
     midForwardsJson = midForwards.toJson()
   }
 
-  constructor(content: String, richElements: Collection<RichElement>, author: User, sourceBlog: Blog) : this(content, richElements, author, sourceBlog.tags) {
-    blogId = sourceBlog.id
+  constructor(content: String, richElements: Collection<RichElement>, author: User, blog: Blog) : this(content, richElements, author, blog.tags) {
+    blogId = blog.id
   }
 
   fun hasOrigin() = originId > 0

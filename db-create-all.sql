@@ -3,6 +3,7 @@ create table blog (
   title                         varchar(255),
   content                       TEXT,
   author_id                     bigint not null,
+  tweet_id                      bigint,
   version                       bigint not null,
   when_created                  datetime(6) not null,
   when_modified                 datetime(6) not null,
