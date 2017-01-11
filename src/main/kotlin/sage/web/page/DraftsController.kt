@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.servlet.ModelAndView
 import sage.domain.commons.DomainException
 import sage.entity.Blog
@@ -12,7 +11,6 @@ import sage.entity.Draft
 import sage.entity.User
 import sage.service.UserService
 import sage.transfer.BlogView
-import sage.transfer.DraftView
 import sage.web.auth.Auth
 import javax.servlet.http.HttpServletRequest
 
@@ -22,7 +20,7 @@ open class DraftsController @Autowired constructor(private val userService: User
   @RequestMapping
   open fun show(): ModelAndView {
     val uid = Auth.checkUid()
-    val drafts = Draft.where().eq("owner", User.ref(uid)).findList().map(::DraftView)
+    val drafts = Draft.where().eq("owner", User.ref(uid)).findList()
     return ModelAndView("drafts").addObject("drafts", drafts)
   }
 
