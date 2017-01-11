@@ -43,6 +43,11 @@ class BlogService
     blog.tags = Tag.multiGet(tagIds)
     blog.update()
 
+    if (mentionedIds.isNotEmpty()) {
+      val (oldContent, oldMentionedIds) = processMarkdownContent(blog.content)
+      (mentionedIds - oldMentionedIds).forEach { atId -> notifService.mentionedByBlog(atId, userId, blogId) }
+    }
+
     searchService.index(blog.id, BlogView(blog))
     return blog
   }
