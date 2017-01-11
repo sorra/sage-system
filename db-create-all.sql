@@ -42,6 +42,18 @@ create table comment (
   constraint pk_comment primary key (id)
 );
 
+create table draft (
+  id                            bigint auto_increment not null,
+  target_id                     bigint,
+  title                         varchar(255),
+  content                       TEXT,
+  owner_id                      bigint,
+  version                       bigint not null,
+  when_created                  datetime(6) not null,
+  when_modified                 datetime(6) not null,
+  constraint pk_draft primary key (id)
+);
+
 create table fav (
   id                            bigint auto_increment not null,
   link                          varchar(255),
@@ -329,6 +341,9 @@ create index ix_blog_tag_tag on blog_tag (tag_id);
 
 alter table comment add constraint fk_comment_author_id foreign key (author_id) references user (id) on delete restrict on update restrict;
 create index ix_comment_author_id on comment (author_id);
+
+alter table draft add constraint fk_draft_owner_id foreign key (owner_id) references user (id) on delete restrict on update restrict;
+create index ix_draft_owner_id on draft (owner_id);
 
 alter table fav add constraint fk_fav_owner_id foreign key (owner_id) references user (id) on delete restrict on update restrict;
 create index ix_fav_owner_id on fav (owner_id);

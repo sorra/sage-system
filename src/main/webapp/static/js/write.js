@@ -41,7 +41,7 @@ function write_formSubmit() {
 
     $submit.prop('disabled', true)
     $form.ajaxSubmit({
-      data: {tagIds: selectedTagIds},
+      data: {tagIds: selectedTagIds, draftId: window.draftId},
       success: redirect,
       error: function (msg) {
         var $submit = $form.find('.btn-submit')

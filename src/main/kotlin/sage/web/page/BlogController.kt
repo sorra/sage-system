@@ -35,9 +35,11 @@ open class BlogController @Autowired constructor(
   @RequestMapping("/new", method = arrayOf(POST))
   @ResponseBody
   open fun create(@RequestParam title: String, @RequestParam content: String,
-                  @RequestParam("tagIds[]", defaultValue = "") tagIds: Set<Long>): String {
+                  @RequestParam("tagIds[]", defaultValue = "") tagIds: Set<Long>,
+                  @RequestParam(required = false) draftId: Long?): String {
     val uid = Auth.checkUid()
     val blog = blogService.post(uid, title, content, tagIds).run { BlogView(this) }
+    draftId?.let { Draft.deleteById(it) }
     return "/blogs/${blog.id}"
   }
 
@@ -54,9 +56,11 @@ open class BlogController @Autowired constructor(
   @RequestMapping("/{id}/edit", method = arrayOf(POST))
   @ResponseBody
   open fun edit(@PathVariable id: Long, @RequestParam title: String, @RequestParam content: String,
-                @RequestParam("tagIds[]", defaultValue = "") tagIds: Set<Long>): String {
+                @RequestParam("tagIds[]", defaultValue = "") tagIds: Set<Long>,
+                @RequestParam(required = false) draftId: Long?): String {
     val uid = Auth.checkUid()
     blogService.edit(uid, id, title, content, tagIds)
+    draftId?.let { Draft.deleteById(it) }
     return "/blogs/$id"
   }
 

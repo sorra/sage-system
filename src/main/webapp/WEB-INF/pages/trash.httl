@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<!--
+#set(List<BlogPreview> blogs)
+#set(List<TweetView> tweets)
+-->
+<head>
+  <meta charset="UTF-8">
+  $!{desc}
+  <title>轻境界 - 回收站</title>
+  $!{allcss}
+</head>
+<body>
+$!{include("navbar.httl")}
+<div id="container" class="container">
+  <h1>回收站</h1>
+  <div id="trash-blogs">
+    <div>博客：</div>
+    #for(blog : blogs)
+      ${blog.id}
+      $!{include("blog-preview.httl")}
+    #end
+  </div>
+  <div id="trash-tweets">
+    <div>微言：</div>
+    #for(tweet : tweets)
+      $!{include("tweet.httl")}
+    #end
+  </div>
+</div>
+
+$!{alljs}
+<script>
+  setup(humanTime_setup)
+</script>
+</body>
+</html>

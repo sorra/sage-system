@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<!--
+#set(List<DraftView> drafts)
+-->
+<head>
+  <meta charset="UTF-8">
+  $!{desc}
+  <title>轻境界 - 草稿箱</title>
+  $!{allcss}
+</head>
+<body>
+$!{include("navbar.httl")}
+<div id="container" class="container">
+  <h1>草稿箱</h1>
+  <div id="drafts">
+    #for(draft : drafts)
+    <div class="draft">
+      <a href="/drafts/${draft.id}">${draft.title}</a>
+      $!{spanHumanTime(draft.whenCreated)}
+    </div>
+    #end
+  </div>
+</div>
+
+$!{alljs}
+<script>
+  setup(humanTime_setup)
+</script>
+</body>
+</html>

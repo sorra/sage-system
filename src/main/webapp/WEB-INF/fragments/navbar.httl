@@ -33,6 +33,8 @@
                 <li><a href="/blogs/new">写博客</a></li>
                 <li><a href="/topics/new">发帖</a></li>
                 <li><a href="/notifications">通知</a></li>
+                <li><a href="/drafts">草稿箱</a></li>
+                <li><a href="/trash">回收站</a></li>
                 <li><a href="/user-info">设置</a></li>
                 <li><a href="/logout">退出</a></li>
               </ul>

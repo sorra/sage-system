@@ -10,6 +10,9 @@ drop index ix_blog_tag_tag on blog_tag;
 alter table comment drop foreign key fk_comment_author_id;
 drop index ix_comment_author_id on comment;
 
+alter table draft drop foreign key fk_draft_owner_id;
+drop index ix_draft_owner_id on draft;
+
 alter table fav drop foreign key fk_fav_owner_id;
 drop index ix_fav_owner_id on fav;
 
@@ -80,6 +83,8 @@ drop table if exists blog_tag;
 drop table if exists blog_stat;
 
 drop table if exists comment;
+
+drop table if exists draft;
 
 drop table if exists fav;
 

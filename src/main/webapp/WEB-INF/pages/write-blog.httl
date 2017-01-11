@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 #set(BlogView blog)
+#set(Long draftId)
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <title>写博客</title>
@@ -33,7 +34,7 @@ $!{allcss}
 $!{include("navbar.httl")}
 <div class="container background-silver" id="container">
 	<h3>撰写博客(Markdown语法)</h3>
-	#set(action = blog.id ? '/blogs/' + blog.id.toString + '/edit' : '/blogs/new')
+	#set(action = (blog.id && blog.id > 0) ? '/blogs/' + blog.id.toString + '/edit' : '/blogs/new')
 	<form id="blog" action="${action}" method="post">
 		<div>
 			<input id="title" name="title" placeholder="这里是标题" value="${blog.title}"/>
@@ -56,7 +57,36 @@ $!{include("navbar.httl")}
 
 $!{alljs}
 <script>
-	setup(tag_setup, writeBlog_setup)
+	var draftId = ${draftId ? draftId : 'null'}
+	var blogId = ${blog.id ? blog.id : 'null'}
+	var savedTitle = $('#title').val()
+	var savedContent = $('#content').val()
+	setup(tag_setup, writeBlog_setup, function () {
+		function saveDraft() {
+			var title = $('#title').val()
+			var content = $('#content').val()
+			if (title === savedTitle && content === savedContent) {
+				setTimeout(saveDraft, 3000)
+				return
+			}
+			var params = {draftId: draftId, targetId: blogId, title: title, content: content}
+			$.post("/drafts/save", params).done(function (resp) {
+				var savedDraftId = parseInt(resp)
+				if (savedDraftId) {
+					draftId = savedDraftId
+				}
+				savedTitle = title
+				savedContent = content
+				$('.btn-submit').tipover('草稿已保存', 2000)
+			}).fail(function (resp) {
+				$('.btn-submit').tipover('草稿保存失败：'+errorMsg(resp), 2000)
+			}).always(function () {
+				setTimeout(saveDraft, 3000)
+			})
+		}
+
+		setTimeout(saveDraft, 3000)
+	})
 </script>
 </body>
 </html>
