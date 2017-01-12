@@ -1,5 +1,6 @@
 package sage.service
 
+import com.avaje.ebean.Ebean
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import sage.domain.cache.GlobalCaches
@@ -24,10 +25,12 @@ class BlogService
     val (content, mentionedIds) = processMarkdownContent(content)
 
     val blog = Blog(title, content, User.ref(userId), Tag.multiGet(tagIds))
-    blog.save()
-    BlogStat(id = blog.id, whenCreated =  blog.whenCreated).save()
+    Ebean.execute {
+      blog.save()
+      BlogStat(id = blog.id, whenCreated = blog.whenCreated).save()
+      tweetPostService.postForBlog(blog)
+    }
 
-    tweetPostService.postForBlog(blog);
     userService.updateUserTag(userId, tagIds)
 
     mentionedIds.forEach { atId -> notifService.mentionedByBlog(atId, userId, blog.id) }

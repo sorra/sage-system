@@ -1,5 +1,6 @@
 package sage.service
 
+import com.avaje.ebean.Ebean
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import sage.domain.cache.GlobalCaches
@@ -25,8 +26,10 @@ class TweetPostService
 
     val tweet = Tweet(hyperContent, richElements, User.ref(userId),
         Tag.multiGet(tagIds))
-    tweet.save()
-    TweetStat(id = tweet.id, whenCreated = tweet.whenCreated).save()
+    Ebean.execute {
+      tweet.save()
+      TweetStat(id = tweet.id, whenCreated = tweet.whenCreated).save()
+    }
 
     userService.updateUserTag(userId, tagIds)
 
@@ -37,6 +40,7 @@ class TweetPostService
     return tweet
   }
 
+  /** Should be called in a transaction */
   fun postForBlog(blog: Blog) {
     val tweet = Tweet("", emptyList(), User.ref(blog.author.id), blog)
     tweet.save()
@@ -62,8 +66,10 @@ class TweetPostService
       removedForwardIds.forEach { midForwards.removeById(it) }
       tweet = Tweet(hyperContent, emptyList(), midForwards, User.ref(userId), initialOrigin)
     }
-    tweet.save()
-    TweetStat(id = tweet.id, whenCreated = tweet.whenCreated).save()
+    Ebean.execute {
+      tweet.save()
+      TweetStat(id = tweet.id, whenCreated = tweet.whenCreated).save()
+    }
     origins.forEach { TweetStat.incForwards(it.id) }
 
     userService.updateUserTag(userId, tweet.tags.map(Tag::id))
