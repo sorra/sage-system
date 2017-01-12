@@ -30,8 +30,9 @@ class BlogView {
 
     tags = blog.tags.map(::TagLabel)
 
-    val stat = blog.stat()
-    likes = stat.likes
-    views = stat.views
+    blog.stat()?.let {
+      likes = it.likes
+      views = it.views
+    }
   }
 }

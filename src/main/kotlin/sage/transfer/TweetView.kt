@@ -52,10 +52,11 @@ class TweetView : Item {
       tags.add(TagLabel(tag))
     }
 
-    val stat = tweet.stat()
-    this.forwardCount = stat.forwards
-    this.commentCount = stat.comments
-    this.likes = stat.likes
+    tweet.stat()?.let {
+      this.forwardCount = it.forwards
+      this.commentCount = it.comments
+      this.likes = it.likes
+    }
 
     isLiked = isLikedChecker(id)
   }
