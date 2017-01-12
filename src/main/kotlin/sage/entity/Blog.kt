@@ -19,6 +19,7 @@ class Blog : BaseModel {
   @ManyToMany(cascade = arrayOf(CascadeType.ALL))
   var tags: MutableSet<Tag> = HashSet()
 
+  @Column(nullable = false)
   var tweetId: Long = 0
 
   @SoftDelete

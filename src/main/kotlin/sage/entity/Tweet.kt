@@ -34,6 +34,7 @@ class Tweet : BaseModel {
     @Column(nullable = false)
     get() = if (deleted) -1 else field
 
+  @Column(nullable = false)
   var blogId: Long = 0
 
   @ManyToMany(cascade = arrayOf(CascadeType.ALL))
