@@ -120,11 +120,45 @@ open class ZOperationController @Autowired constructor(
   @RequestMapping("/z-comptweets")
   @ResponseBody
   open fun compTweets(): Any {
-    val actedBlogIds = HashSet<Long>()
+    val actedBlogIds = arrayListOf<Long>()
     Blog.where().eq("tweetId", 0).orderBy("id").findEach { blog ->
       tweetPostService.postForBlog(blog)
       actedBlogIds += blog.id
     }
     return actedBlogIds
+  }
+
+  @RequestMapping("/z-movetocomp")
+  @ResponseBody
+  open fun moveToComp(): Any {
+    val cDoneBlogIds = arrayListOf<Long>()
+    val lDoneBlogIds = arrayListOf<Long>()
+    Blog.orderBy("id").findEach { blog ->
+      Comment.list(Comment.BLOG, blog.id).apply {
+        if (isNotEmpty()) cDoneBlogIds += blog.id
+      }.forEach { c ->
+        c.sourceType = Comment.TWEET
+        c.sourceId = blog.tweetId
+        c.update()
+      }
+      // 赞过一个blog的人，也要赞相应的tweet
+      Liking.where().eq("likeType", Liking.BLOG).eq("likeId", blog.id).findList().filter { l ->
+        Liking.find(l.userId, Liking.TWEET, blog.tweetId) == null
+      }.map { l ->
+        val newl = Liking(l.userId, Liking.TWEET, blog.tweetId)
+        newl.whenCreated = l.whenCreated
+        newl.save()
+        newl
+      }.apply {
+        if (isNotEmpty()) lDoneBlogIds += blog.id
+      }
+      blog.stat()!!.let { bs ->
+        val ts = TweetStat.get(blog.tweetId)
+        ts.comments = bs.comments
+        ts.likes = bs.likes
+        ts.update()
+      }
+    }
+    return arrayOf(cDoneBlogIds, lDoneBlogIds)
   }
 }

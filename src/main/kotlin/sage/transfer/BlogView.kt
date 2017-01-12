@@ -13,6 +13,7 @@ class BlogView {
   var whenCreated: Timestamp? = null
   var whenModified: Timestamp? = null
   var tags: List<TagLabel> = arrayListOf()
+  var tweetId: Long = 0
 
   var likes: Int = 0
   var views: Int = 0
@@ -29,6 +30,7 @@ class BlogView {
     whenModified = actualWhenModified(blog.whenCreated, blog.whenModified)
 
     tags = blog.tags.map(::TagLabel)
+    tweetId = blog.tweetId
 
     blog.stat()?.let {
       likes = it.likes

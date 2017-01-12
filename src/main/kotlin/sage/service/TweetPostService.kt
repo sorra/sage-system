@@ -82,17 +82,17 @@ class TweetPostService
     return tweet
   }
 
-  fun comment(userId: Long, content: String, sourceId: Long, replyUserId: Long?): Comment {
+  fun comment(userId: Long, content: String, tweetId: Long, replyUserId: Long?): Comment {
     if (content.isEmpty() || content.length > COMMENT_MAX_LEN) {
       throw BAD_COMMENT_LENGTH
     }
-    val (hyperContent, mentionedIds) = ContentParser.tweet(content) { name -> User.byName(name) }
+    val (hyperContent, mentionedIds) = ContentParser.comment(content) { name -> User.byName(name) }
 
-    val comment = Comment(hyperContent, User.ref(userId), Comment.TWEET, sourceId, replyUserId)
+    val comment = Comment(hyperContent, User.ref(userId), Comment.TWEET, tweetId, replyUserId)
     comment.save()
-    TweetStat.incComments(sourceId)
+    TweetStat.incComments(tweetId)
 
-    notifService.commentedTweet(Tweet.ref(sourceId).author.id, userId, comment.id)
+    notifService.commentedTweet(Tweet.ref(tweetId).author.id, userId, comment.id)
     if (replyUserId != null) {
       notifService.replied(replyUserId, userId, comment.id)
     }

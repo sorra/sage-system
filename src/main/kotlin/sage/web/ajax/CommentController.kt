@@ -4,17 +4,16 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
+import sage.entity.Blog
 import sage.entity.Comment
-import sage.service.BlogService
 import sage.service.TweetPostService
 import sage.transfer.CommentView
 import sage.web.auth.Auth
 
 @RestController
 @RequestMapping("/comments")
-open class CommentApi @Autowired constructor(
-    private val tweetPostService: TweetPostService,
-    private val blogService: BlogService) {
+open class CommentController @Autowired constructor(
+    private val tweetPostService: TweetPostService) {
 
   @RequestMapping("/new")
   open fun create(@RequestParam content: String, @RequestParam sourceType: Short, @RequestParam sourceId: Long,
@@ -27,7 +26,8 @@ open class CommentApi @Autowired constructor(
         tweetPostService.forward(uid, content, sourceId, emptyList())
       }
     } else if (sourceType == Comment.BLOG) {
-      blogService.comment(uid, content, sourceId, replyUserId)
+      val tweetId = Blog.get(sourceId).tweetId
+      tweetPostService.comment(uid, content, tweetId, replyUserId)
     }
   }
 

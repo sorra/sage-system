@@ -9,7 +9,7 @@
 	<title>${blog.title}</title>
 	$!{allcss}
 	<style type="text/css">
-		#comment-container{
+		#comments-container{
 			margin-top: 20px;
 			padding: 10px;
 		}
@@ -40,11 +40,11 @@ $!{include("navbar.httl")}
 			$!{include("btn_like.httl", ["likes": blog.likes, "isLiked": isLiked, "prefix": "/blogs/"+blog.id.toString])}
 		</div>
 	</div>
-	<div id="comments-container" class="background-silver"></div>
+	<div id="comments-container" data-tweetid="${blog.tweetId}" class="background-silver"></div>
 </div>
 $!{alljs}
 <script type="text/javascript">
-	setup(stream_setup, humanTime_setup, tag_setup, user_setup)
+	setup(humanTime_setup, tag_setup, user_setup)
 	$(document).ready(function() {
 		$('.content').warnEmpty().each(function(){
 			var $this = $(this)
@@ -53,8 +53,7 @@ $!{alljs}
 		$('#loading-alert').hide()
 
 		var id = $('.blog').data('id')
-
-		comments_render('#comments-container', 1, id)
+		comments_render('#comments-container', 2, $('#comments-container').data('tweetid'))
 	})
 </script>
 </body>

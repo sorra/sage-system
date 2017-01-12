@@ -14,6 +14,7 @@ class BlogPreview {
   var whenCreated: Timestamp? = null
   var whenModified: Timestamp? = null
   var tags: List<TagLabel> = arrayListOf()
+  var tweetId: Long = 0
   var commentCount: Int = 0
   var likes: Int = 0
 
@@ -27,6 +28,7 @@ class BlogPreview {
     whenModified = actualWhenModified(blog.whenCreated, blog.whenModified)
 
     tags = blog.tags.map(::TagLabel)
+    tweetId = blog.tweetId
     blog.stat()?.let {
       commentCount = it.comments
       likes = it.likes

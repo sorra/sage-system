@@ -12,9 +12,9 @@ class Comment : BaseModel {
   @ManyToOne(optional = false)
   val author: User
 
-  val sourceType: Short
+  var sourceType: Short
 
-  val sourceId: Long
+  var sourceId: Long
 
   val replyUserId: Long?
 
