@@ -30,10 +30,10 @@ open class ControllerExceptionReporter {
   }
 
   @ExceptionHandler(BadArgumentException::class)
-  @ResponseStatus(HttpStatus.BAD_REQUEST)
+  @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
   open fun badArgument(e: BadArgumentException, request: HttpServletRequest): ModelAndView {
     log.error("URI: {} Exception: {}", request.requestURI, e.toString())
-    return errorPage(HttpStatus.BAD_REQUEST, e.message)
+    return errorPage(HttpStatus.UNPROCESSABLE_ENTITY, e.message)
   }
 
   @ExceptionHandler(HttpRequestMethodNotSupportedException::class)
