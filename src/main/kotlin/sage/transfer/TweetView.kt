@@ -29,7 +29,7 @@ class TweetView : Item {
 
   var fromTag: Long? = null
 
-  constructor(tweet: Tweet, origin: Tweet?, isLikedChecker: (Long) -> Boolean, tweetStatFinder: (Long) -> TweetStat? = {null}) {
+  constructor(tweet: Tweet, origin: Tweet?, showsStat: Boolean, isLikedChecker: (Long) -> Boolean) {
     id = tweet.id
     if (!tweet.deleted) {
       authorId = tweet.author.id
@@ -45,19 +45,17 @@ class TweetView : Item {
     }
     time = tweet.whenCreated
     if (origin != null) {
-      this.origin = TweetView(origin, null, isLikedChecker, tweetStatFinder)
+      this.origin = TweetView(origin, null, showsStat, isLikedChecker)
     }
     midForwards = tweet.midForwards()
     for (tag in tweet.tags) {
       tags.add(TagLabel(tag))
     }
 
-    val tweetStat = tweetStatFinder(id)
-    if (tweetStat != null) {
-      this.forwardCount = tweetStat.forwards
-      this.commentCount = tweetStat.comments
-      this.likes = tweetStat.likes
-    }
+    val stat = tweet.stat()
+    this.forwardCount = stat.forwards
+    this.commentCount = stat.comments
+    this.likes = stat.likes
 
     isLiked = isLikedChecker(id)
   }

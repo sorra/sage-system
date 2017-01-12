@@ -85,6 +85,8 @@ class Tweet : BaseModel {
       MidForwards().apply { xs.add(MidForward(0, 0, "", "")) }
     }
 
+  fun stat() = TweetStat.get(id)
+
   companion object : Find<Long, Tweet>() {
     private val log = LoggerFactory.getLogger(Tweet::class.java)
 

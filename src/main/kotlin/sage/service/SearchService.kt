@@ -50,10 +50,20 @@ class SearchService @Autowired constructor(private val searchBase: SearchBase) {
     val results = hits.map { hit ->
       fun findById(f: (Long) -> Any?) = hit.sourceAsMap()["id"]?.run{ f(toString().toLong()) }
       when (hit.type) {
-        SearchBase.BLOG -> findById { BlogPreview(Blog.get(it)) }
-        SearchBase.TOPIC -> findById { TopicPreview(TopicPost.get(it)) }
-        SearchBase.TOPIC_REPLY -> findById { TopicReplyView(TopicReply.get(it), null).apply { content = Strings.omit(content, 103) } }
-        SearchBase.TWEET -> findById { val twt = Tweet.byId(it)!!; TweetView(twt, Tweet.getOrigin(twt), {false}) }
+        SearchBase.BLOG -> findById {
+          BlogPreview(Blog.get(it))
+        }
+        SearchBase.TOPIC -> findById {
+          TopicPreview(TopicPost.get(it))
+        }
+        SearchBase.TOPIC_REPLY -> findById { id ->
+          TopicReplyView(TopicReply.get(id), null).apply { content = Strings.omit(content, 103) }
+        }
+        SearchBase.TWEET -> findById { id ->
+          Tweet.byId(id)?.let { t ->
+            TweetView(t, Tweet.getOrigin(t), false, {false})
+          }
+        }
         else -> null
       }
     }.filterNotNull()

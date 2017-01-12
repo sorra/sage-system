@@ -10,23 +10,18 @@ import sage.web.auth.Auth
 @Service
 class TransferService {
 
-  fun toTweetView(tweet: Tweet) = TweetView(tweet, Tweet.getOrigin(tweet), isLikedChecker, tweetStatFinder = tweetStatFinder)
+  fun toTweetView(tweet: Tweet) = TweetView(tweet, Tweet.getOrigin(tweet), showsStat = true, isLikedChecker = isLikedChecker)
 
-  fun toTweetViewNoCount(tweet: Tweet) = TweetView(tweet, Tweet.getOrigin(tweet), {false})
+  fun toTweetViewNoCount(tweet: Tweet) = TweetView(tweet, Tweet.getOrigin(tweet), showsStat = false, isLikedChecker = {false})
 
   fun toTweetViews(tweets: Collection<Tweet>, showOrigin: Boolean = true, showCounts: Boolean = true): List<TweetView> {
     return tweets.map { t ->
       val origin = if (showOrigin) Tweet.getOrigin(t) else null
-      val finder = if (showCounts) tweetStatFinder else {id -> null}
-      TweetView(t, origin, isLikedChecker, finder)
+      TweetView(t, origin, showsStat = showCounts, isLikedChecker = isLikedChecker)
     }
   }
 
   val isLikedChecker = { id: Long ->
-    Auth.uid()?.run { Liking.find(this, Liking.TWEET, id) } != null
-  }
-
-  val tweetStatFinder = { id: Long ->
-    TweetStat.get(id)
+    Auth.uid()?.let { Liking.find(it, Liking.TWEET, id) } != null
   }
 }

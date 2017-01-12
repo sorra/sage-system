@@ -52,7 +52,7 @@ open class ZOperationController @Autowired constructor(
       searchService.index(it.id, TopicReplyView(it, it.toUserId?.run { userService.getUserLabel(this) }))
     }
     Tweet.findEach {
-      searchService.index(it.id, TweetView(it, Tweet.getOrigin(it), {false}))
+      searchService.index(it.id, TweetView(it, Tweet.getOrigin(it), false, {false}))
     }
     return "Done."
   }
