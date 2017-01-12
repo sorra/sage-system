@@ -1,9 +1,11 @@
 package sage.transfer
 
+import sage.annotation.KotlinNoArg
 import sage.entity.TopicPost
 import sage.entity.TopicStat
 import java.sql.Timestamp
 
+@KotlinNoArg
 class TopicView {
   var id: Long = 0
   var title: String = ""
@@ -21,9 +23,6 @@ class TopicView {
 
   var likes: Int = 0
   var views: Int = 0
-
-  internal constructor() {
-  }
 
   constructor(topic: TopicPost) {
     id = topic.id

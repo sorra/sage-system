@@ -13,37 +13,35 @@ import java.util.*
 
 @Controller
 @RequestMapping("/lists")
-open class ListPageController {
-  @Autowired
-  private val listService: ListService? = null
-  @Autowired
-  private val userService: UserService? = null
-  @Autowired
-  private val heedService: HeedService? = null
+open class ListPageController @Autowired constructor(
+    private val listService: ListService,
+    private val userService: UserService,
+    private val heedService: HeedService
+    ) {
 
   @RequestMapping
   open fun lists(@RequestParam(required = false) type: String?,
                   @RequestParam(required = false) uid: Long?, model: ModelMap): String {
     val cuid = Auth.checkUid()
     val ownerId = uid ?: cuid
-    model.put("self", userService!!.getSelf(cuid))
+    model.put("self", userService.getSelf(cuid))
     model.put("owner", userService.getUserLabel(ownerId))
 
     if (type == null || type == "follow") {
-      val followLists = listService!!.followListsOfOwner(ownerId)
+      val followLists = listService.followListsOfOwner(ownerId)
       model.put("followLists", followLists)
 
       val followListHeedStatuses = HashMap<Long, Boolean>()
       if (ownerId != cuid) {
         for (list in followLists) {
-          followListHeedStatuses.put(list.id, heedService!!.existsFollowListHeed(cuid, list.id!!))
+          followListHeedStatuses.put(list.id, heedService.existsFollowListHeed(cuid, list.id!!))
         }
       }
       model.put("followListHeedStatuses", followListHeedStatuses)
     }
 
     if (type == null || type == "resource") {
-      model.put("resourceLists", listService!!.resourceListsOfOwner(ownerId))
+      model.put("resourceLists", listService.resourceListsOfOwner(ownerId))
     }
 
     return "lists"

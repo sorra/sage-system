@@ -1,9 +1,11 @@
 package sage.transfer
 
+import sage.annotation.KotlinNoArg
 import sage.entity.Comment
 import sage.entity.User
 import java.util.*
 
+@KotlinNoArg
 class CommentView {
   var id: Long = 0
   var content: String = ""
@@ -14,9 +16,6 @@ class CommentView {
   var sourceType: Short = 0
   var sourceId: Long = 0
   var replyToUser: UserLabel? = null
-
-  internal constructor() {
-  }
 
   constructor(comment: Comment) {
     id = comment.id

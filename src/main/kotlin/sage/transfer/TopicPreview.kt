@@ -1,10 +1,12 @@
 package sage.transfer
 
+import sage.annotation.KotlinNoArg
 import sage.entity.TopicPost
 import sage.entity.TopicStat
 import sage.util.Strings
 import java.sql.Timestamp
 
+@KotlinNoArg
 class TopicPreview {
   var id: Long = 0
   var title: String = ""
@@ -20,9 +22,6 @@ class TopicPreview {
   var whenLastReplied: Timestamp? = null
   var replyCount: Int = 0
   var likes: Int = 0
-
-  internal constructor() {
-  }
 
   constructor(topic: TopicPost) {
     id = topic.id

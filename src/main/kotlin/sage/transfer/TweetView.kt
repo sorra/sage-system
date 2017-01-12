@@ -1,11 +1,13 @@
 package sage.transfer
 
+import sage.annotation.KotlinNoArg
 import sage.domain.commons.IdCommons
 import sage.entity.Blog
 import sage.entity.Tweet
 import sage.entity.TweetStat
 import java.util.*
 
+@KotlinNoArg
 class TweetView : Item {
   private val type = "TweetView"
 
@@ -26,9 +28,6 @@ class TweetView : Item {
   var isLiked: Boolean = false
 
   var fromTag: Long? = null
-
-  internal constructor() {
-  }
 
   constructor(tweet: Tweet, origin: Tweet?, isLikedChecker: (Long) -> Boolean, tweetStatFinder: (Long) -> TweetStat? = {null}) {
     id = tweet.id

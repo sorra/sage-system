@@ -1,15 +1,14 @@
 package sage.transfer
 
+import sage.annotation.KotlinNoArg
 import sage.entity.Follow
 
+@KotlinNoArg
 class UserCardFollow {
   var reason: String? = null
   var tagIds: Collection<Long> = emptyList()
   var includeNew: Boolean = false
   var includeAll: Boolean = false
-
-  internal constructor() {
-  }
 
   constructor(follow: Follow) {
     reason = follow.reason

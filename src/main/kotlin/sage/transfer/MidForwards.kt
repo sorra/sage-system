@@ -1,15 +1,16 @@
 package sage.transfer
 
+import sage.annotation.KotlinNoArg
 import java.util.LinkedList
 
 import sage.entity.Tweet
 import sage.web.context.Json
 
+@KotlinNoArg
 class MidForwards {
   var xs: MutableList<MidForward> = LinkedList()
 
-  internal constructor() {
-  }
+  constructor()
 
   constructor(directForward: Tweet) {
     addForward(directForward)

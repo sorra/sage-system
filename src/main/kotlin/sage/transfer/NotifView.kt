@@ -1,9 +1,11 @@
 package sage.transfer
 
+import sage.annotation.KotlinNoArg
 import java.util.Date
 
 import sage.entity.Notification
 
+@KotlinNoArg
 class NotifView {
   var id: Long = 0
   var ownerId: Long = 0
@@ -13,9 +15,6 @@ class NotifView {
   var desc: String = ""
   var source: String = ""
   var read = false
-
-  internal constructor() {
-  }
 
   constructor(notification: Notification, sender: UserLabel, source: String) {
     id = notification.id

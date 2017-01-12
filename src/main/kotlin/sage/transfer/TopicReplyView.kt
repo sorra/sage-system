@@ -1,9 +1,11 @@
 package sage.transfer
 
+import sage.annotation.KotlinNoArg
 import java.sql.Timestamp
 
 import sage.entity.TopicReply
 
+@KotlinNoArg
 class TopicReplyView {
   var id: Long = 0
   var content: String = ""
@@ -14,9 +16,6 @@ class TopicReplyView {
 
   var toUser: UserLabel? = null
   var toReplyId: Long? = null
-
-  internal constructor() {
-  }
 
   constructor(reply: TopicReply, toUserLabel: UserLabel?) {
     id = reply.id

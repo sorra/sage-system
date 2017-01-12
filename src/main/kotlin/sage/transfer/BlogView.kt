@@ -1,9 +1,10 @@
 package sage.transfer
 
+import sage.annotation.KotlinNoArg
 import sage.entity.Blog
-import sage.entity.BlogStat
 import java.sql.Timestamp
 
+@KotlinNoArg
 class BlogView {
   var id: Long = 0
   var author: UserLabel? = null
@@ -16,8 +17,7 @@ class BlogView {
   var likes: Int = 0
   var views: Int = 0
 
-  internal constructor() {
-  }
+  constructor()
 
   constructor(blog: Blog) {
     id = blog.id
@@ -28,7 +28,7 @@ class BlogView {
     whenCreated = blog.whenCreated
     whenModified = actualWhenModified(blog.whenCreated, blog.whenModified)
 
-    tags = blog.tags.map { TagLabel(it) }
+    tags = blog.tags.map(::TagLabel)
 
     val stat = blog.stat()
     likes = stat.likes

@@ -1,15 +1,14 @@
 package sage.transfer
 
+import sage.annotation.KotlinNoArg
 import sage.entity.Tag
 
+@KotlinNoArg
 class TagLabel {
   var id: Long = 0
   var name: String = ""
   var isCore: Boolean = false
   var chainStr: String = name
-
-  internal constructor() {
-  }
 
   constructor(tag: Tag) {
     id = tag.id

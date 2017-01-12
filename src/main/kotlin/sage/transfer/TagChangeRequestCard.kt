@@ -1,5 +1,8 @@
 package sage.transfer
 
+import sage.annotation.KotlinNoArg
+
+@KotlinNoArg
 class TagChangeRequestCard {
   var id: Long = 0
   var tag: TagLabel? = null
@@ -9,7 +12,4 @@ class TagChangeRequestCard {
   var status: String = ""
   var type: String = ""
   var desc: String = ""
-
-  internal constructor() {
-  }
 }
