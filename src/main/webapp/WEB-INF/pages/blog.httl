@@ -51,6 +51,7 @@ $!{alljs}
 			$this.html(marked($this.text()))
 		});
 		$('#loading-alert').hide()
+		btnLike_init()
 
 		var id = $('.blog').data('id')
 		comments_render('#comments-container', 2, $('#comments-container').data('tweetid'))
