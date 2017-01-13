@@ -161,4 +161,16 @@ open class ZOperationController @Autowired constructor(
     }
     return arrayOf(cDoneBlogIds, lDoneBlogIds)
   }
+
+  @RequestMapping("/z-movenotif")
+  @ResponseBody
+  open fun moveNotif(): Any {
+    val actedNotifIds = arrayListOf<Long>()
+    Notification.where().eq("type", Notification.Type.COMMENTED_BLOG).findEach { n ->
+      n.type = Notification.Type.COMMENTED
+      n.update()
+      actedNotifIds += n.id
+    }
+    return actedNotifIds
+  }
 }

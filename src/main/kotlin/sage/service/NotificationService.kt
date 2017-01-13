@@ -19,7 +19,7 @@ class NotificationService @Autowired constructor(
   fun all(userId: Long) = Notification.byOwner(userId).mapNotNull { toView(it) }
 
   fun unread(userId: Long) =
-      Notification.byOwnerAndRead(userId, false).findList().mapNotNull { toView(it) }
+      Notification.byOwnerAndIsRead(userId, false).findList().mapNotNull { toView(it) }
 
   fun unreadCounts(userId: Long): Map<String, NotifCounter> {
     val counts = HashMap<String, NotifCounter>()
@@ -51,7 +51,7 @@ class NotificationService @Autowired constructor(
         if (comment != null) {
           val sourceName = when (comment.sourceType) {
             Comment.BLOG -> "blogs"
-            Comment.TWEET -> "/tweets"
+            Comment.TWEET -> "tweets"
             else -> "null"
           }
           source = "/$sourceName/${comment.sourceId}?commentId=$sourceId"
@@ -77,12 +77,8 @@ class NotificationService @Autowired constructor(
     send(Notification(toUser, fromUser, Type.FORWARDED, sourceId))
   }
 
-  fun commentedTweet(toUser: Long, fromUser: Long, sourceId: Long) {
-    send(Notification(toUser, fromUser, Type.COMMENTED_TWEET, sourceId))
-  }
-
-  fun commentedBlog(toUser: Long, fromUser: Long, sourceId: Long) {
-    send(Notification(toUser, fromUser, Type.COMMENTED_BLOG, sourceId))
+  fun commented(toUser: Long, fromUser: Long, sourceId: Long) {
+    send(Notification(toUser, fromUser, Type.COMMENTED, sourceId))
   }
 
   fun replied(toUser: Long, fromUser: Long, sourceId: Long) {

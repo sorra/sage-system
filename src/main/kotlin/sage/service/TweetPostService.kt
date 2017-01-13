@@ -92,7 +92,7 @@ class TweetPostService
     comment.save()
     TweetStat.incComments(tweetId)
 
-    notifService.commentedTweet(Tweet.ref(tweetId).author.id, userId, comment.id)
+    notifService.commented(Tweet.ref(tweetId).author.id, userId, comment.id)
     if (replyUserId != null) {
       notifService.replied(replyUserId, userId, comment.id)
     }

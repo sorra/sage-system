@@ -10,7 +10,7 @@ class Notification : BaseModel {
   var senderId: Long? = null
     private set
   var type: Type? = null
-    private set
+//    private set
   var sourceId: Long? = null
     private set
   // 'read' is SQL keyword
@@ -25,14 +25,14 @@ class Notification : BaseModel {
 
   companion object : Find<Long, Notification>() {
     fun byOwner(ownerId: Long) = where().eq("ownerId", ownerId).orderBy("whenCreated desc").findList()
-    fun byOwnerAndRead(ownerId: Long, isRead: Boolean) =
+    fun byOwnerAndIsRead(ownerId: Long, isRead: Boolean) =
         where().eq("ownerId", ownerId).eq("isRead", isRead).orderBy("whenCreated desc")
   }
 
   enum class Type constructor(val sourceType: SourceType, val desc: String, val shortDesc: String) {
     FOLLOWED(SourceType.USER, "关注了你", "新粉丝"),
-    FORWARDED(SourceType.TWEET, "转发了你的微博", "转发"),
-    COMMENTED_TWEET(SourceType.COMMENT, "评论了你的微博", "评论"),
+    FORWARDED(SourceType.TWEET, "转发了", "转发"),
+    COMMENTED(SourceType.COMMENT, "评论了", "评论"),
     REPLIED_IN_COMMENT(SourceType.COMMENT, "回复了你", "回复"),
     MENTIONED_TWEET(SourceType.TWEET, "在微博中提到了你", "微博@"),
     MENTIONED_COMMENT(SourceType.COMMENT, "在评论中提到了你", "评论@"),
@@ -40,6 +40,7 @@ class Notification : BaseModel {
     MENTIONED_TOPIC_REPLY(SourceType.TOPIC_REPLY, "在帖子中提到了你", "帖子@"),
     REPIED_IN_TOPIC(SourceType.TOPIC_REPLY, "在帖子中回复了你", "帖子回复"),
     MENTIONED_BLOG(SourceType.BLOG, "在博客中提到了你", "博客@"),
+    @Deprecated("not used")
     COMMENTED_BLOG(SourceType.COMMENT, "评论了你的博客", "评论")
   }
 
