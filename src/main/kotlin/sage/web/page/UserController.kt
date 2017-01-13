@@ -10,7 +10,6 @@ import sage.service.UserService
 import sage.transfer.BlogPreview
 import sage.web.auth.Auth
 import sage.web.context.FrontMap
-import sage.web.context.Json
 
 @Controller
 @RequestMapping("/users")

@@ -13,7 +13,6 @@ import org.springframework.web.multipart.MultipartFile
 import sage.service.FilesService
 import sage.service.UserService
 import sage.web.auth.Auth
-import java.io.IOException
 
 @Controller
 open class UserInfoController

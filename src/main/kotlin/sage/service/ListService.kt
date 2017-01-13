@@ -1,6 +1,5 @@
 package sage.service
 
-import httl.util.StringUtils
 import org.springframework.stereotype.Service
 import org.springframework.util.Assert
 import sage.entity.FollowListEntity

@@ -3,7 +3,6 @@ package sage.service
 import org.springframework.stereotype.Service
 import sage.entity.Liking
 import sage.entity.Tweet
-import sage.entity.TweetStat
 import sage.transfer.TweetView
 import sage.web.auth.Auth
 

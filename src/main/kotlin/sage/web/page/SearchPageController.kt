@@ -8,15 +8,12 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import sage.service.SearchService
 import sage.web.auth.Auth
-import java.io.UnsupportedEncodingException
-import java.nio.charset.StandardCharsets
 
 @Controller
 open class SearchPageController @Autowired constructor(private val searchService: SearchService) {
   private val logger = LoggerFactory.getLogger(javaClass)
 
   @RequestMapping("/search")
-  @Throws(UnsupportedEncodingException::class)
   open fun search(@RequestParam q: String, model: ModelMap): String {
     if (q.isEmpty()) {
       return "forward:/"

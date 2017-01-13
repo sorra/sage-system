@@ -8,8 +8,6 @@ import org.springframework.web.bind.annotation.ResponseBody
 import sage.entity.*
 import sage.service.SearchService
 import sage.service.ServiceInitializer
-import sage.service.TweetPostService
-import sage.service.UserService
 import sage.transfer.BlogView
 import sage.transfer.TweetView
 import sage.web.auth.Auth
@@ -19,8 +17,8 @@ import java.util.*
 @Controller
 open class ZOperationController @Autowired constructor(
     private val si: ServiceInitializer, private val di: DataInitializer,
-    private val userService: UserService, private val searchService: SearchService,
-    private val tweetPostService: TweetPostService) {
+    private val searchService: SearchService
+) {
 
   @RequestMapping("/z-init")
   @ResponseBody

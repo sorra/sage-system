@@ -8,7 +8,6 @@ import httl.web.springmvc.HttlViewResolver
 import org.apache.commons.lang3.builder.ToStringBuilder
 import org.apache.commons.lang3.builder.ToStringStyle
 import org.avaje.agentloader.AgentLoader
-import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowire
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.config.ConfigurableBeanFactory.SCOPE_SINGLETON
@@ -30,8 +29,7 @@ import sage.web.context.VersionsMapper
 import sage.web.filter.CurrentRequestFilter
 import sage.web.filter.LoggingURLFilter
 import sage.web.filter.StaticResourceRefreshFilter
-import javax.servlet.*
-import javax.servlet.http.HttpServletRequest
+import javax.servlet.ServletContext
 
 @SpringBootApplication
 open class Application : WebMvcAutoConfiguration.WebMvcAutoConfigurationAdapter() {

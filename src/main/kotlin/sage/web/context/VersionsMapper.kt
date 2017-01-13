@@ -1,6 +1,5 @@
 package sage.web.context
 
-import org.apache.commons.lang3.StringUtils
 import org.slf4j.LoggerFactory
 import sage.util.Utils
 import java.io.File

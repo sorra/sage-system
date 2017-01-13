@@ -6,7 +6,6 @@ import org.springframework.stereotype.Service
 import sage.domain.cache.GlobalCaches
 import sage.domain.commons.*
 import sage.entity.*
-import sage.transfer.BlogPreview
 import sage.transfer.BlogView
 import sage.util.Strings
 import java.util.*

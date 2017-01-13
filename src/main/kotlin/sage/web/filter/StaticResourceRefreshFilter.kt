@@ -6,7 +6,6 @@ import javax.servlet.FilterConfig
 import javax.servlet.ServletRequest
 import javax.servlet.ServletResponse
 import javax.servlet.http.HttpServletRequest
-import javax.servlet.http.HttpServletRequestWrapper
 
 
 class StaticResourceRefreshFilter : javax.servlet.Filter {

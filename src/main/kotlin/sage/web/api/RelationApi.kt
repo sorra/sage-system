@@ -2,7 +2,6 @@ package sage.web.api
 
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.*
-import sage.service.HeedService
 import sage.service.NotificationService
 import sage.service.RelationService
 import sage.web.auth.Auth

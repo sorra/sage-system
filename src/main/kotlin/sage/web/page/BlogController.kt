@@ -15,8 +15,6 @@ import sage.service.BlogService
 import sage.service.UserService
 import sage.transfer.BlogPreview
 import sage.transfer.BlogView
-import sage.transfer.CommentView
-import sage.util.PaginationLogic
 import sage.web.auth.Auth
 import sage.web.context.RenderUtil
 
