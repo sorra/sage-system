@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html>
 <!--
-#set(List<TopicPreview> topics)
 #set(List<BlogPreview> blogs)
 #set(List<TweetView> tweets)
 -->
@@ -37,8 +36,7 @@ $!{include("navbar.httl")}
   <h1 id="site-whats"><a href="/blogs/1">轻境界是什么？</a></h1>
   <ul id="tabs" class="nav nav-tabs">
     <li class="active"><a href="#blogs" data-toggle="tab">博客</a></li>
-    <li><a href="#tweets" data-toggle="tab">碎博</a></li>
-    <li><a href="#topics" data-toggle="tab">帖子</a></li>
+    <li><a href="#tweets" data-toggle="tab">微言</a></li>
   </ul>
   <div class="tab-content">
     <div id="blogs" class="blog-list tab-pane active">
@@ -48,14 +46,8 @@ $!{include("navbar.httl")}
         $!{include("blog-preview.httl")}
       #end
     </div>
-    <div id="topics" class="topic-list tab-pane">
-      <h2 class="heading-hot">帖子精选</h2>
-      #for(topic : topics)
-        $!{include("topic-preview.httl")}
-      #end
-    </div>
     <div id="tweets" class="tweet-list tab-pane">
-      <h2 class="heading-hot">最新碎博</h2>
+      <h2 class="heading-hot">最新微言</h2>
       #for(tweet : tweets)
         $!{include("tweet.httl")}
       #end

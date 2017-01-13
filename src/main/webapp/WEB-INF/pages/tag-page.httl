@@ -3,7 +3,7 @@
 <!--
 #set(Tag tag)
 #set(Integer countPendingRequestsOfTag, Integer countPendingRequestsOfTagScope)
-#set(Collection<TopicPreview> topics, Collection<BlogPreview> blogs)
+#set(Collection<BlogPreview> blogs)
 #set(Collection coreTags, Collection nonCoreTags, Collection relatedTags, Collection sameNameTags)
 -->
 <head>
@@ -73,13 +73,6 @@ $!{include("navbar.httl")}
 		</div>
 		<div class="main">
 		  <div id="bkg-intro" style="text-align: center; padding: 10px">${tag.intro == null ? "没有背景介绍" : tag.intro}</div>
-      <div class="topic-list">
-        <h2 class="heading-hot">帖子精选</h2>
-        <a class="btn-write-topic btn btn-primary btn-sm" href="/topics/new?belongTagId=${tag.id}">发帖!</a>
-        #for(topic : topics)
-          $!{include("topic-preview.httl")}
-        #end
-      </div>
       <div class="blog-list">
         <h2 class="heading-hot">博客精选</h2>
         #for(blog : blogs)

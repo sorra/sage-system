@@ -215,57 +215,6 @@ create table tag_heed (
   constraint pk_tag_heed primary key (id)
 );
 
-create table topic_post (
-  id                            bigint auto_increment not null,
-  title                         varchar(255),
-  content                       TEXT,
-  reference                     varchar(255),
-  author_id                     bigint not null,
-  belong_tag_id                 bigint,
-  max_floor_number              integer,
-  version                       bigint not null,
-  when_created                  datetime(6) not null,
-  when_modified                 datetime(6) not null,
-  deleted                       tinyint(1) default 0 not null,
-  when_last_active              datetime(6) not null,
-  constraint pk_topic_post primary key (id)
-);
-
-create table topic_post_tag (
-  topic_post_id                 bigint not null,
-  tag_id                        bigint not null,
-  constraint pk_topic_post_tag primary key (topic_post_id,tag_id)
-);
-
-create table topic_reply (
-  id                            bigint auto_increment not null,
-  content                       TEXT,
-  author_id                     bigint not null,
-  topic_post_id                 bigint,
-  to_user_id                    bigint,
-  to_reply_id                   bigint,
-  floor_number                  integer,
-  version                       bigint not null,
-  when_created                  datetime(6) not null,
-  when_modified                 datetime(6) not null,
-  deleted                       tinyint(1) default 0 not null,
-  constraint pk_topic_reply primary key (id)
-);
-
-create table topic_stat (
-  id                            bigint auto_increment not null,
-  when_created                  datetime(6),
-  rank                          double,
-  float_up                      double,
-  tune                          integer,
-  likes                         integer,
-  views                         integer,
-  when_last_replied             datetime(6),
-  replies                       integer,
-  when_modified                 datetime(6) not null,
-  constraint pk_topic_stat primary key (id)
-);
-
 create table tweet (
   id                            bigint auto_increment not null,
   content                       TEXT,
@@ -328,8 +277,6 @@ create table user_tag (
 );
 
 create index ix_blog_stat_rank on blog_stat (rank);
-create index ix_topic_post_when_last_active on topic_post (when_last_active);
-create index ix_topic_stat_rank on topic_stat (rank);
 create index ix_tweet_stat_rank on tweet_stat (rank);
 alter table blog add constraint fk_blog_author_id foreign key (author_id) references user (id) on delete restrict on update restrict;
 create index ix_blog_author_id on blog (author_id);
@@ -384,21 +331,6 @@ create index ix_tag_heed_user_id on tag_heed (user_id);
 
 alter table tag_heed add constraint fk_tag_heed_tag_id foreign key (tag_id) references tag (id) on delete restrict on update restrict;
 create index ix_tag_heed_tag_id on tag_heed (tag_id);
-
-alter table topic_post add constraint fk_topic_post_author_id foreign key (author_id) references user (id) on delete restrict on update restrict;
-create index ix_topic_post_author_id on topic_post (author_id);
-
-alter table topic_post add constraint fk_topic_post_belong_tag_id foreign key (belong_tag_id) references tag (id) on delete restrict on update restrict;
-create index ix_topic_post_belong_tag_id on topic_post (belong_tag_id);
-
-alter table topic_post_tag add constraint fk_topic_post_tag_topic_post foreign key (topic_post_id) references topic_post (id) on delete restrict on update restrict;
-create index ix_topic_post_tag_topic_post on topic_post_tag (topic_post_id);
-
-alter table topic_post_tag add constraint fk_topic_post_tag_tag foreign key (tag_id) references tag (id) on delete restrict on update restrict;
-create index ix_topic_post_tag_tag on topic_post_tag (tag_id);
-
-alter table topic_reply add constraint fk_topic_reply_author_id foreign key (author_id) references user (id) on delete restrict on update restrict;
-create index ix_topic_reply_author_id on topic_reply (author_id);
 
 alter table tweet add constraint fk_tweet_author_id foreign key (author_id) references user (id) on delete restrict on update restrict;
 create index ix_tweet_author_id on tweet (author_id);

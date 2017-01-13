@@ -1,6 +1,0 @@
-#set(TopicReplyView reply)
-<a href="/topics/${reply.topicPostId}">原帖</a>
-<div class="content">$!{reply.content}</div>
-$!{userLabel(reply.author)}
-$!{spanHumanTime(reply.whenCreated)}
-<span>&nbsp;${reply.floorNumber}楼</span>

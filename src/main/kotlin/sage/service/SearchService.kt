@@ -6,21 +6,16 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import sage.domain.search.SearchBase
 import sage.entity.Blog
-import sage.entity.TopicPost
-import sage.entity.TopicReply
 import sage.entity.Tweet
 import sage.transfer.BlogPreview
-import sage.transfer.TopicPreview
-import sage.transfer.TopicReplyView
 import sage.transfer.TweetView
-import sage.util.Strings
 
 @Service
 class SearchService @Autowired constructor(private val searchBase: SearchBase) {
   private val log = LoggerFactory.getLogger(javaClass)
 
-  val reservedSyms = arrayOf("+", "-", "=", "&&", "||", ">", "<", "!", "(", ")", "{", "}", "[", "]", "^", "\"", "~", "*", "?", ":", "\\", "/")
-  val escapedSyms = reservedSyms.map { "\\" + it }.toTypedArray()
+  final val reservedSyms = arrayOf("+", "-", "=", "&&", "||", ">", "<", "!", "(", ")", "{", "}", "[", "]", "^", "\"", "~", "*", "?", ":", "\\", "/")
+  final val escapedSyms = reservedSyms.map { "\\" + it }.toTypedArray()
 
   fun setupMappings() = searchBase.setupMappings()
 
@@ -52,12 +47,6 @@ class SearchService @Autowired constructor(private val searchBase: SearchBase) {
       when (hit.type) {
         SearchBase.BLOG -> findById {
           BlogPreview(Blog.get(it))
-        }
-        SearchBase.TOPIC -> findById {
-          TopicPreview(TopicPost.get(it))
-        }
-        SearchBase.TOPIC_REPLY -> findById { id ->
-          TopicReplyView(TopicReply.get(id), null).apply { content = Strings.omit(content, 103) }
         }
         SearchBase.TWEET -> findById { id ->
           Tweet.byId(id)?.let { t ->

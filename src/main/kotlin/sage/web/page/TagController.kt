@@ -8,10 +8,8 @@ import sage.entity.Blog
 import sage.entity.Tag
 import sage.service.TagChangeService
 import sage.service.TagService
-import sage.service.TopicService
 import sage.transfer.BlogPreview
 import sage.transfer.TagLabel
-import sage.transfer.TopicPreview
 import sage.web.auth.Auth
 import sage.web.context.FrontMap
 
@@ -19,7 +17,6 @@ import sage.web.context.FrontMap
 @RequestMapping("/tags")
 open class TagController @Autowired constructor(
     private val tagService: TagService,
-    private val topicService: TopicService,
     private val tagChangeService: TagChangeService
 ) {
 
@@ -37,15 +34,14 @@ open class TagController @Autowired constructor(
   @RequestMapping("/{id}")
   open fun get(@PathVariable id: Long): ModelAndView {
     val tag = Tag.get(id)
-    val topics = topicService.byTags(listOf(id)).map { TopicPreview(it) }
     val blogs = Blog.where().`in`("tags.id", tag.getQueryTags().map { it.id }).findList()
-        .sortedByDescending { it.whenCreated }.map { BlogPreview(it) }
+        .sortedByDescending { it.whenCreated }.map(::BlogPreview)
 
-    val (coreTags, nonCoreTags) = tag.children.map { TagLabel(it) }.partition { it.isCore }
+    val (coreTags, nonCoreTags) = tag.children.map(::TagLabel).partition { it.isCore }
     val relatedTags = null
-    val sameNameTags = tagService.getSameNameTags(id).map { TagLabel(it) }
+    val sameNameTags = tagService.getSameNameTags(id).map(::TagLabel)
 
-    return ModelAndView("tag-page").addObject("tag", tag).addObject("topics", topics).addObject("blogs", blogs)
+    return ModelAndView("tag-page").addObject("tag", tag).addObject("blogs", blogs)
         .addObject("coreTags", coreTags).addObject("nonCoreTags", nonCoreTags)
         .addObject("relatedTags", relatedTags).addObject("sameNameTags", sameNameTags)
         .addObject("countPendingRequestsOfTagScope", tagChangeService.countPendingRequestsOfTagScope(id))

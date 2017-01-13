@@ -1,12 +1,12 @@
 package sage.service
 
 import com.avaje.ebean.Ebean
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import sage.entity.Comment
 import sage.entity.Notification
 import sage.entity.Notification.Type
-import sage.entity.TopicReply
 import sage.transfer.NotifCounter
 import sage.transfer.NotifView
 import java.util.*
@@ -15,6 +15,7 @@ import java.util.*
 class NotificationService @Autowired constructor(
     private val userService: UserService
 ) {
+  private val log = LoggerFactory.getLogger(javaClass)
 
   fun all(userId: Long) = Notification.byOwner(userId).mapNotNull { toView(it) }
 
@@ -58,15 +59,10 @@ class NotificationService @Autowired constructor(
         } else
           return null
       }
-      Notification.SourceType.TOPIC_POST -> source = "/topic/" + sourceId
-      Notification.SourceType.TOPIC_REPLY -> {
-        val topicPostId = TopicReply.byId(sourceId)?.topicPost()?.id
-        if (topicPostId != null) {
-          source = "/topics/$topicPostId?replyId=$sourceId"
-        } else
-          return null
+      else -> {
+        log.error("Wrong sourceType: " + notif.type?.sourceType)
+        return null
       }
-      else -> throw IllegalArgumentException("Wrong sourceType: " + notif.type!!.sourceType)
     }
     return NotifView(notif, userService.getUserLabel(notif.senderId!!), source)
   }
@@ -93,20 +89,8 @@ class NotificationService @Autowired constructor(
     send(Notification(toUser, fromUser, Type.MENTIONED_COMMENT, sourceId))
   }
 
-  fun mentionedByTopicPost(toUser: Long, fromUser: Long, postId: Long) {
-    send(Notification(toUser, fromUser, Type.MENTIONED_TOPIC_POST, postId))
-  }
-
-  fun mentionedByTopicReply(toUser: Long, fromUser: Long, replyId: Long) {
-    send(Notification(toUser, fromUser, Type.MENTIONED_TOPIC_REPLY, replyId))
-  }
-
   fun mentionedByBlog(toUser: Long, fromUser: Long, blogId: Long) {
     send(Notification(toUser, fromUser, Type.MENTIONED_BLOG, blogId))
-  }
-
-  fun repliedInTopic(toUser: Long, fromUser: Long, replyId: Long) {
-    send(Notification(toUser, fromUser, Type.REPIED_IN_TOPIC, replyId))
   }
 
   fun followed(toUser: Long, fromUser: Long) {

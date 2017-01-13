@@ -7,15 +7,6 @@ function writeBlog_setup() {
   write_contentArea()
 }
 
-function writeTopic_setup() {
-  $('.btn-submit').tooltip({
-    placement: 'top',
-    trigger: 'manual'
-  })
-  $('#topic').submit(write_formSubmit)
-  write_contentArea()
-}
-
 function write_formSubmit() {
   try {
     var $form = $(this)

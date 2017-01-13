@@ -26,7 +26,7 @@ $!{include("navbar.httl")}
 					<a href="/followings/${self.id}">关注</a>: ${self.followingCount}
 					<a href="/followers/${self.id}">粉丝</a>: ${self.followerCount}
 					博客: ${self.blogCount}
-					微博: ${self.tweetCount}
+					微言: ${self.tweetCount}
 				</div>
 			</div>
 		</div>

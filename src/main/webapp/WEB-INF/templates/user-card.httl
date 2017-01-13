@@ -11,7 +11,7 @@
     <div>
       <a href="/followers/${u.id}">粉丝</a>: ${u.followerCount}
       博客: ${u.blogCount}
-      微博: ${u.tweetCount}
+      微言: ${u.tweetCount}
     </div>
   </div>
   #set(isSelf = userSelf && userSelf.id == u.id)

@@ -8,7 +8,6 @@ import java.util.concurrent.TimeUnit
 
 object GlobalCaches {
   val blogsCache = ListCache(Blog)
-  val topicsCache = ListCache(TopicPost)
   val tweetsCache = ListCache(Tweet)
 
   class ListCache<V : BaseModel>(val find: Model.Find<Long, V>) {

@@ -52,21 +52,6 @@ drop index ix_tag_heed_user_id on tag_heed;
 alter table tag_heed drop foreign key fk_tag_heed_tag_id;
 drop index ix_tag_heed_tag_id on tag_heed;
 
-alter table topic_post drop foreign key fk_topic_post_author_id;
-drop index ix_topic_post_author_id on topic_post;
-
-alter table topic_post drop foreign key fk_topic_post_belong_tag_id;
-drop index ix_topic_post_belong_tag_id on topic_post;
-
-alter table topic_post_tag drop foreign key fk_topic_post_tag_topic_post;
-drop index ix_topic_post_tag_topic_post on topic_post_tag;
-
-alter table topic_post_tag drop foreign key fk_topic_post_tag_tag;
-drop index ix_topic_post_tag_tag on topic_post_tag;
-
-alter table topic_reply drop foreign key fk_topic_reply_author_id;
-drop index ix_topic_reply_author_id on topic_reply;
-
 alter table tweet drop foreign key fk_tweet_author_id;
 drop index ix_tweet_author_id on tweet;
 
@@ -114,14 +99,6 @@ drop table if exists tag_change_request;
 
 drop table if exists tag_heed;
 
-drop table if exists topic_post;
-
-drop table if exists topic_post_tag;
-
-drop table if exists topic_reply;
-
-drop table if exists topic_stat;
-
 drop table if exists tweet;
 
 drop table if exists tweet_tag;
@@ -133,6 +110,4 @@ drop table if exists user;
 drop table if exists user_tag;
 
 drop index ix_blog_stat_rank on blog_stat;
-drop index ix_topic_post_when_last_active on topic_post;
-drop index ix_topic_stat_rank on topic_stat;
 drop index ix_tweet_stat_rank on tweet_stat;

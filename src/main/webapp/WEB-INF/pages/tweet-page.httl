@@ -3,7 +3,7 @@
 #set(TweetView tweet)
 <head>
 <meta charset="UTF-8">
-<title>微博 - 轻境界</title>
+<title>微言 - 轻境界</title>
 $!{allcss}
 </head>
 <body>

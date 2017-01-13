@@ -8,10 +8,7 @@ import org.elasticsearch.index.query.QueryBuilders.*
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
 import sage.transfer.BlogView
-import sage.transfer.TopicReplyView
-import sage.transfer.TopicView
 import sage.transfer.TweetView
-import sage.web.auth.Auth
 import sage.web.context.Json
 import java.net.InetAddress
 import java.nio.file.Files
@@ -66,7 +63,7 @@ class SearchBase {
   }
 
   fun search(query: String): SearchResponse {
-    return client!!.prepareSearch(INDEX).setTypes(BLOG, TOPIC, TOPIC_REPLY, TWEET)
+    return client!!.prepareSearch(INDEX).setTypes(BLOG, TWEET)
         .setSearchType(SearchType.DFS_QUERY_THEN_FETCH).setQuery(queryStringQuery(query))
         .setFrom(0).setSize(60).setExplain(true)
         .execute().actionGet()
@@ -75,14 +72,10 @@ class SearchBase {
   companion object {
     val INDEX = "sage"
     val BLOG = "blog"
-    val TOPIC = "topic"
-    val TOPIC_REPLY = "topic_reply"
     val TWEET = "tweet"
 
     private val typeMap = mapOf(
         BlogView::class.java to BLOG,
-        TopicView::class.java to TOPIC,
-        TopicReplyView::class.java to TOPIC_REPLY,
         TweetView::class.java to TWEET)
 
     private fun mapType(clazz: Class<*>): String {

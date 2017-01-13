@@ -11,12 +11,9 @@ import sage.service.ServiceInitializer
 import sage.service.TweetPostService
 import sage.service.UserService
 import sage.transfer.BlogView
-import sage.transfer.TopicReplyView
-import sage.transfer.TopicView
 import sage.transfer.TweetView
 import sage.web.auth.Auth
 import sage.web.context.DataInitializer
-import java.sql.Timestamp
 import java.util.*
 
 @Controller
@@ -46,12 +43,6 @@ open class ZOperationController @Autowired constructor(
     Blog.findEach {
       searchService.index(it.id, BlogView(it))
     }
-    TopicPost.findEach {
-      searchService.index(it.id, TopicView(it))
-    }
-    TopicReply.findEach {
-      searchService.index(it.id, TopicReplyView(it, it.toUserId?.run { userService.getUserLabel(this) }))
-    }
     Tweet.findEach {
       searchService.index(it.id, TweetView(it, Tweet.getOrigin(it), false, {false}))
     }
@@ -77,18 +68,6 @@ open class ZOperationController @Autowired constructor(
       } else return@findEachWhile loopAll
     }
 
-    val topicIds = arrayListOf<Long>()
-    TopicPost.findEachWhile {
-      if (TopicStat.byId(it.id) == null) {
-        val replies = TopicReply.byPostId(it.id)
-        replies.sortByDescending { it.whenCreated }
-        TopicStat(id = it.id, whenCreated = it.whenCreated,
-            whenLastReplied = replies.firstOrNull()?.whenCreated, replies = replies.size).save()
-        topicIds += it.id
-        return@findEachWhile true
-      } else return@findEachWhile loopAll
-    }
-
     val tweetIds = arrayListOf<Long>()
     Tweet.findEachWhile {
       if (TweetStat.byId(it.id) == null) {
@@ -98,7 +77,7 @@ open class ZOperationController @Autowired constructor(
       } else return@findEachWhile loopAll
     }
 
-    return "Done:\nblogs:$blogIds topics:$topicIds, tweets:$tweetIds"
+    return "Done:\nblogs:$blogIds , tweets:$tweetIds"
   }
 
   @RequestMapping("/z-genavatars")
@@ -115,19 +94,6 @@ open class ZOperationController @Autowired constructor(
         user.update()
       }
     }
-    return "Done."
-  }
-
-  @RequestMapping("/z-notopic")
-  @ResponseBody
-  open fun noTopic(): Any {
-    val blog = Blog.get(1)
-    val tp = TopicPost.get(1)
-    blog.whenCreated = tp.whenCreated
-    blog.whenModified = tp.whenModified
-    val stat = blog.stat()!!
-    stat.floatUp = 0.0
-    stat.save()
     return "Done."
   }
 }

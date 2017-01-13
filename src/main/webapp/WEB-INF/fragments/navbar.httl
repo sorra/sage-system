@@ -21,7 +21,6 @@
           <td class="nav-links" width="570" align="right" style="padding-top: 2px;">
             <a href="/home">流<span class="glyphicon glyphicon-home" title="Home"></span></a>
             <a href="/blogs">博客</a>
-            <a href="/topics">帖子</a>
             <a href="/people">人们</a>
             #if(userSelf != null)
             <a id="nav-user" href="/users/self" title="我的主页">${userSelf.name}</a>
@@ -31,14 +30,13 @@
               </a>
               <ul class="dropdown-menu" aria-labelledby="userDropdownMenu">
                 <li><a href="/blogs/new">写博客</a></li>
-                <li><a href="/topics/new">发帖</a></li>
-                <li><a href="/notifications">通知</a></li>
                 <li><a href="/drafts">草稿箱</a></li>
                 <li><a href="/trash">回收站</a></li>
                 <li><a href="/user-info">设置</a></li>
                 <li><a href="/logout">退出</a></li>
               </ul>
             </span>
+            <a href="/notifications"><span class="glyphicon glyphicon-bell" title="通知"></span></a>
             <a href="/messages"><span class="glyphicon glyphicon-envelope" title="私信"></span></a>
             #else
             <a href="/login" style="color: lightgreen">登录</a>

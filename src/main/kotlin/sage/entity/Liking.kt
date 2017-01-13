@@ -23,6 +23,7 @@ class Liking(
 
   companion object : Find<Long, Liking>() {
     val BLOG: Short = 1
+    @Deprecated("deleted")
     val TOPIC: Short = 2
     val TWEET: Short = 3
     val COMMENT: Short = 4
