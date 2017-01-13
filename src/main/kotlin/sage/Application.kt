@@ -2,6 +2,7 @@ package sage
 
 import com.avaje.ebean.EbeanServer
 import com.avaje.ebean.EbeanServerFactory
+import com.avaje.ebean.config.PropertyMap
 import com.avaje.ebean.config.ServerConfig
 import httl.web.springmvc.HttlViewResolver
 import org.apache.commons.lang3.builder.ToStringBuilder
@@ -24,6 +25,7 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.ViewResolverRegistry
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView
 import sage.service.FilesService
+import sage.util.Settings
 import sage.web.context.VersionsMapper
 import sage.web.filter.CurrentRequestFilter
 import sage.web.filter.LoggingURLFilter
@@ -38,7 +40,11 @@ open class Application : WebMvcAutoConfiguration.WebMvcAutoConfigurationAdapter(
   open fun getEbeanServer(): EbeanServer {
     val config = ServerConfig()
     config.name = "db"
-    config.loadFromProperties()
+    val ebeanProps = PropertyMap.defaultProperties()
+    Settings.props.getProperty("pass")?.let { pass ->
+      if (pass.isNotEmpty()) ebeanProps.setProperty("pass", pass)
+    }
+    config.loadFromProperties(ebeanProps)
     config.isDefaultServer = true
 
     return EbeanServerFactory.create(config)
