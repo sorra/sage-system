@@ -91,6 +91,9 @@ class TweetPostService
     val comment = Comment(hyperContent, User.ref(userId), Comment.TWEET, tweetId, replyUserId)
     comment.save()
     TweetStat.incComments(tweetId)
+    Tweet.byId(tweetId)?.let(Tweet::blogId)?.let { if (it > 0) {
+      BlogStat.incComments(it)
+    }}
 
     notifService.commented(Tweet.ref(tweetId).author.id, userId, comment.id)
     if (replyUserId != null) {

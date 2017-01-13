@@ -83,6 +83,7 @@ class BlogService
     val comment = Comment(hyperContent, User.ref(userId), Comment.BLOG, blogId, replyUserId)
     comment.save()
     BlogStat.incComments(blogId)
+    TweetStat.incComments(Blog.get(blogId).tweetId)
     
     notifService.commented(Blog.get(blogId).author.id, userId, comment.id)
     if (replyUserId != null) {

@@ -159,7 +159,7 @@ create table notification (
   version                       bigint not null,
   when_created                  datetime(6) not null,
   when_modified                 datetime(6) not null,
-  constraint ck_notification_type check (type in (0,1,2,3,4,5,6,7,8,9,10)),
+  constraint ck_notification_type check (type in (0,1,2,3,4,5,6,7,8,9)),
   constraint pk_notification primary key (id)
 );
 
