@@ -10,10 +10,10 @@ class Notification : BaseModel {
   var senderId: Long? = null
     private set
   var type: Type? = null
-//    private set
+    private set
   var sourceId: Long? = null
     private set
-  // 'read' is SQL keyword
+  // 'read' is SQL keyword, don't use
   var isRead: Boolean = false
 
   constructor(ownerId: Long?, senderId: Long?, type: Type, sourceId: Long?) {
@@ -39,9 +39,7 @@ class Notification : BaseModel {
     MENTIONED_TOPIC_POST(SourceType.TOPIC_POST, "在帖子中提到了你", "帖子@"),
     MENTIONED_TOPIC_REPLY(SourceType.TOPIC_REPLY, "在帖子中提到了你", "帖子@"),
     REPIED_IN_TOPIC(SourceType.TOPIC_REPLY, "在帖子中回复了你", "帖子回复"),
-    MENTIONED_BLOG(SourceType.BLOG, "在博客中提到了你", "博客@"),
-    @Deprecated("not used")
-    COMMENTED_BLOG(SourceType.COMMENT, "评论了你的博客", "评论")
+    MENTIONED_BLOG(SourceType.BLOG, "在博客中提到了你", "博客@")
   }
 
   enum class SourceType {
