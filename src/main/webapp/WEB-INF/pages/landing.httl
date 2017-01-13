@@ -34,7 +34,7 @@ $!{include("navbar.httl")}
     <a class="btn btn-default btn-success" href="/register">快速注册</a> 参与社区互动
   </div>
   #end
-  <h1 id="site-whats"><a href="/topics/1">轻境界是什么？</a></h1>
+  <h1 id="site-whats"><a href="/blogs/1">轻境界是什么？</a></h1>
   <ul id="tabs" class="nav nav-tabs">
     <li class="active"><a href="#blogs" data-toggle="tab">博客</a></li>
     <li><a href="#tweets" data-toggle="tab">碎博</a></li>

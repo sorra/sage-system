@@ -16,6 +16,7 @@ import sage.transfer.TopicView
 import sage.transfer.TweetView
 import sage.web.auth.Auth
 import sage.web.context.DataInitializer
+import java.sql.Timestamp
 import java.util.*
 
 @Controller
@@ -114,6 +115,19 @@ open class ZOperationController @Autowired constructor(
         user.update()
       }
     }
+    return "Done."
+  }
+
+  @RequestMapping("/z-notopic")
+  @ResponseBody
+  open fun noTopic(): Any {
+    val blog = Blog.get(1)
+    val tp = TopicPost.get(1)
+    blog.whenCreated = tp.whenCreated
+    blog.whenModified = tp.whenModified
+    val stat = blog.stat()!!
+    stat.floatUp = 0.0
+    stat.save()
     return "Done."
   }
 }
