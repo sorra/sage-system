@@ -9,6 +9,7 @@ import java.util.concurrent.TimeUnit
 object GlobalCaches {
   val blogsCache = ListCache(Blog)
   val tweetsCache = ListCache(Tweet)
+  val tagsCache = ListCache(Tag)
 
   class ListCache<V : BaseModel>(val find: Model.Find<Long, V>) {
     private val cache = CacheBuilder.newBuilder().maximumSize(100).expireAfterWrite(5, TimeUnit.MINUTES).build<String, Pair<List<Long>, Int>>()

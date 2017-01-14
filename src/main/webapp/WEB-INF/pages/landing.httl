@@ -3,6 +3,7 @@
 <!--
 #set(List<BlogPreview> blogs)
 #set(List<TweetView> tweets)
+#set(List<TagLabel> tags)
 -->
 <head>
   <meta charset="UTF-8">
@@ -34,6 +35,12 @@ $!{include("navbar.httl")}
   </div>
   #end
   <h1 id="site-whats"><a href="/blogs/1">轻境界是什么？</a></h1>
+  <div id="tags">
+    热门标签：
+    #for(each : tags)
+      $!{tagLabel(each)}
+    #end
+  </div>
   <ul id="tabs" class="nav nav-tabs">
     <li class="active"><a href="#blogs" data-toggle="tab">博客</a></li>
     <li><a href="#tweets" data-toggle="tab">微言</a></li>

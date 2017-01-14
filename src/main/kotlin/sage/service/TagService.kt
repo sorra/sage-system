@@ -5,11 +5,13 @@ import org.apache.commons.lang3.StringUtils
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import sage.domain.commons.DomainException
+import sage.entity.Blog
 import sage.entity.Tag
 import sage.transfer.TagCard
 import sage.transfer.TagLabel
 import sage.transfer.TagNode
 import sage.web.context.Json
+import java.util.*
 import javax.annotation.PostConstruct
 
 @Service
@@ -42,6 +44,42 @@ class TagService {
   fun getTagTree() = TagNode(Tag.byId(Tag.ROOT_ID))
 
   fun getTagTreeJson() = Json.json(getTagTree())
+
+  private val powers = arrayOf(1, 10, 100, 1000, 10000)
+  private val maxPower = 10000
+
+  fun hotTags(hotK: Int): List<Tag> {
+    val counters = HashMap<Long, Int>()
+    fun countTagHeats(tags: Iterable<Tag>, factor: Int) {
+      tags.flatMap(Tag::chainUp).forEach { tag ->
+        val plus = tag.chainUp().size.let {
+          if (it <= 0) 0
+          else if (it > powers.size) maxPower
+          else powers[it-1]
+        }
+        val count = counters[tag.id] ?: 0
+        counters[tag.id] = count + factor * plus
+      }
+    }
+
+    Blog.findEach { countTagHeats(it.tags, 1) }
+
+    val topKs = arrayOfNulls<Pair<Long, Int>>(hotK)
+    var minOfK = Pair<Int, Int>(0, 0)
+    counters.forEach { id, count ->
+      if (count > minOfK.second) {
+        topKs[minOfK.first] = Pair(id, count)
+        topKs.forEachIndexed { idx, p ->
+            if (p == null) minOfK = Pair(idx, 0)
+            else if (p.second < minOfK.second) minOfK = Pair(idx, p.second)
+        }
+        return@forEach
+      }
+    }
+    return topKs.mapNotNull { p ->
+      p?.let { Tag.get(it.first) }
+    }.asReversed()
+  }
 
   fun getTagsByName(name: String): MutableCollection<Tag> {
     return Tag.where().eq("name", name).findList()

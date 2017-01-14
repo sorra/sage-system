@@ -10,6 +10,7 @@ import sage.entity.Blog
 import sage.entity.Tweet
 import sage.service.*
 import sage.transfer.BlogPreview
+import sage.transfer.TagLabel
 import sage.util.Strings
 import sage.web.auth.Auth
 import javax.servlet.http.HttpServletResponse
@@ -20,7 +21,8 @@ open class HomeController
 @Autowired constructor(
     private val relationService: RelationService,
     private val blogService: BlogService,
-    private val transferService: TransferService) {
+    private val transferService: TransferService,
+    private val tagService: TagService) {
 
   @RequestMapping("/")
   open fun index(model: ModelMap): ModelAndView {
@@ -50,7 +52,11 @@ open class HomeController
       if (uid != null) this else take(10)
     }.map { transferService.toTweetView(it) }
 
-    return ModelAndView("landing").addObject("blogs", blogs).addObject("tweets", tweets)
+    val tags = GlobalCaches.tagsCache["hotTags", {
+      tagService.hotTags(5)
+    }].map(::TagLabel)
+
+    return ModelAndView("landing").addObject("blogs", blogs).addObject("tweets", tweets).addObject("tags", tags)
   }
 
   @RequestMapping("/login")
