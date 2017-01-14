@@ -48,7 +48,7 @@ class TagService {
   private val powers = arrayOf(1, 10, 100, 1000, 10000)
   private val maxPower = 10000
 
-  fun hotTags(hotK: Int): List<Tag> {
+  fun hotTags(k: Int): List<Tag> {
     val counters = HashMap<Long, Int>()
     fun countTagHeats(tags: Iterable<Tag>, factor: Int) {
       tags.flatMap(Tag::chainUp).forEach { tag ->
@@ -64,21 +64,23 @@ class TagService {
 
     Blog.findEach { countTagHeats(it.tags, 1) }
 
-    val topKs = arrayOfNulls<Pair<Long, Int>>(hotK)
-    var minOfK = Pair<Int, Int>(0, 0)
+    val topKs = sortedSetOf(java.util.Comparator.comparing(Pair<Long, Int>::second).reversed())
     counters.forEach { id, count ->
-      if (count > minOfK.second) {
-        topKs[minOfK.first] = Pair(id, count)
-        topKs.forEachIndexed { idx, p ->
-            if (p == null) minOfK = Pair(idx, 0)
-            else if (p.second < minOfK.second) minOfK = Pair(idx, p.second)
+      if (topKs.size <= k) { // Why <= ?
+        topKs += Pair(id, count)
+      } else {
+        if (count >= topKs.last().second) {
+          topKs.pollLast()
+          topKs += Pair(id, count)
         }
-        return@forEach
       }
+      // Another implementation:
+      // topKs += Pair(id, count)
+      // if (topKs.size > k) topKs.pollLast()
     }
     return topKs.mapNotNull { p ->
       p?.let { Tag.get(it.first) }
-    }.asReversed()
+    }
   }
 
   fun getTagsByName(name: String): MutableCollection<Tag> {
