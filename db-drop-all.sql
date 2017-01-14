@@ -73,6 +73,8 @@ drop table if exists draft;
 
 drop table if exists fav;
 
+drop table if exists feedback;
+
 drop table if exists file_item;
 
 drop table if exists follow;

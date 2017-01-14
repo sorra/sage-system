@@ -65,6 +65,18 @@ create table fav (
   constraint pk_fav primary key (id)
 );
 
+create table feedback (
+  id                            bigint auto_increment not null,
+  content                       TEXT,
+  name                          varchar(255),
+  email                         varchar(255),
+  ip                            varchar(255),
+  version                       bigint not null,
+  when_created                  datetime(6) not null,
+  when_modified                 datetime(6) not null,
+  constraint pk_feedback primary key (id)
+);
+
 create table file_item (
   id                            bigint auto_increment not null,
   name                          varchar(255),

@@ -44,6 +44,7 @@ $!{include("navbar.httl")}
   <ul id="tabs" class="nav nav-tabs">
     <li class="active"><a href="#blogs" data-toggle="tab">博客</a></li>
     <li><a href="#tweets" data-toggle="tab">微言</a></li>
+    <li><a href="/feedbacks">反馈</a></li>
   </ul>
   <div class="tab-content">
     <div id="blogs" class="blog-list tab-pane active">

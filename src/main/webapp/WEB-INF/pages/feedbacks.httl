@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<!--
+#set(List<Feedback> feedbacks)
+#set(Long uid)
+-->
+<head>
+  <meta charset="UTF-8">
+  $!{desc}
+  <title>反馈 - 轻境界</title>
+  $!{allcss}
+  <style>
+    #container{
+      padding: 1em;
+    }
+    form textarea{
+      min-width: 30em;
+      min-height: 10em;
+    }
+    .form-row{
+      margin-top: 0.5em;
+    }
+    .feedback{
+      margin-top: 1em;
+      padding: 5px;
+      border-radius: 5px; 
+      background: #f3f3f3;
+    }
+  </style>
+</head>
+<body>
+$!{include("navbar.httl")}
+
+<div id="container" class="container">
+  <form action="/feedbacks/new" method="post">
+    <div class="form-row">
+      名字：<input type="text" name="name">（可选）
+    </div>
+    <div class="form-row">
+      邮箱：<input type="text" name="email">（可选，不显示）
+    </div>
+    <div class="form-row">
+      <textarea name="content"></textarea>
+    </div>
+    <div class="form-row">
+      <button class="btn btn-success" type="submit">发送</button>
+    </div>
+  </form>
+
+  #for(fk : feedbacks)
+  <div class="feedback">
+    <div>${fk.content}</div>
+    名字：${fk.name}
+
+    #if(uid != null && uid == 1L)
+    邮箱：${fk.email}
+    IP：${fk.ip}
+    #end
+
+    <div>时间：${fk.whenCreated}</div>
+  </div>
+  #end
+</div>
+
+$!{alljs}
+<script>
+setup()
+</script>
+</body>
+</html>
