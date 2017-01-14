@@ -68,7 +68,7 @@ class Tag : BaseModel {
 
   fun siblingsCannotHaveThatName(name: String) {
     parent?.let { parent ->
-      if (parent.descendants().find { it.name == name } != null) {
+      if (parent.descendants().find { it.id != id && it.name == name } != null) {
         throw DomainException("标签\"${parent.name}\"之下有同名标签: \"$name\"")
       }
     }
