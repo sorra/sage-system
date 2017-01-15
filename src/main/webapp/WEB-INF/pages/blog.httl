@@ -40,7 +40,7 @@ $!{include("navbar.httl")}
 			$!{include("btn_like.httl", ["likes": blog.likes, "isLiked": isLiked, "prefix": "/blogs/"+blog.id.toString])}
 		</div>
 	</div>
-	<div id="comments-container" data-tweetid="${blog.tweetId}" class="background-silver"></div>
+	<div id="comments-container" data-tweet-id="${blog.tweetId}" class="background-silver"></div>
 </div>
 $!{alljs}
 <script type="text/javascript">
@@ -54,7 +54,7 @@ $!{alljs}
 		btnLike_init()
 
 		var id = $('.blog').data('id')
-		comments_render('#comments-container', 2, $('#comments-container').data('tweetid'))
+		comments_render('#comments-container', 2, $('#comments-container').data('tweet-id'))
 	})
 </script>
 </body>
