@@ -10,25 +10,35 @@ import sage.entity.Tweet
 import sage.entity.getRecordsCount
 import sage.service.TransferService
 import sage.service.TweetReadService
+import sage.transfer.TweetGroup
 import sage.util.PaginationLogic
 import sage.web.context.RenderUtil
 
 @Controller
 @RequestMapping("/tweets")
-open class TweetController @Autowired constructor(
+class TweetController @Autowired constructor(
     private val tweetReadService: TweetReadService,
     private val transferService: TransferService
 ) {
   @RequestMapping("/{id}")
-  open fun tweetPage(@PathVariable id: Long): ModelAndView {
-    val tweet = tweetReadService.getTweetView(id)
-        ?: return ModelAndView("forward:/not-found")
-    return ModelAndView("tweet-page").addObject("tweet", tweet)
+  fun tweetPage(@PathVariable id: Long): ModelAndView {
+    val tweetGroup = tweetReadService.getTweetView(id)?.let {
+      if (it.origin != null) TweetGroup.createByForward(it)
+      else TweetGroup.createByOrigin(it)
+    } ?: return ModelAndView("forward:/not-found")
+    return ModelAndView("tweet-page").addObject("group", tweetGroup)
+  }
+
+  // TODO no page yet
+  @RequestMapping("/{id}/forwards")
+  fun forwards(@PathVariable id: Long): ModelAndView {
+    val forwards = transferService.toTweetViews(tweetReadService.getForwards(id), false, false)
+    return ModelAndView("tweet-forwards").addObject("forwards", forwards)
   }
 
   // TODO no page yet
   @RequestMapping
-  open fun tweets(@RequestParam(defaultValue = "1") page: Int): ModelAndView {
+  fun tweets(@RequestParam(defaultValue = "1") page: Int): ModelAndView {
     val size = 20
     val recordsCount: Long = getRecordsCount(Tweet)
     val pagesCount: Int = PaginationLogic.pagesCount(size, recordsCount)

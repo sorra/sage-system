@@ -44,10 +44,10 @@
   background: #e5e5e5;
   border-radius: 10px;
 }
-.stream-item.combine .t-forward{
+.stream-item .t-forward{
   margin-left: 0;
 }
-.stream-item.combine .t-origin{
+.stream-item .t-origin{
   margin-left: 50px;
 }
 .stream-item .avatar{

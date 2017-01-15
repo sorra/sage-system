@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-#set(TweetView tweet)
+#set(TweetGroup group)
 <head>
 <meta charset="UTF-8">
 <title>微言 - 轻境界</title>
@@ -9,7 +9,7 @@ $!{allcss}
 <body>
 $!{include("navbar.httl")}
 <div id="container" class="container">
-  $!{include("tweet.httl")}
+  $!{include("tweet-group.httl")}
 </div>
 $!{alljs}
 

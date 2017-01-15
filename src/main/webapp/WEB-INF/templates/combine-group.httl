@@ -1,7 +1,0 @@
-#set(CombineGroup cg)
-<div class="combine stream-item" data-contains-origin="${cg.containsOrigin}">
-  #for(TweetView forward : cg.forwards)
-    $!{include("tweet.httl", ['tweet': forward, 'isForward': true, 'isOrigin': false])}
-  #end
-  $!{include("tweet.httl", ['tweet': cg.origin, 'isForward': false, 'isOrigin': true])}
-</div>

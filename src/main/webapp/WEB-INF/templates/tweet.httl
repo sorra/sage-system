@@ -4,7 +4,6 @@
 
 #if(isForward) #set(cls = 't-forward')
 #else(isOrigin) #set(cls = 't-origin')
-#else #set(cls = 'stream-item')
 #end
 <div class="tweet ${cls}" tweet-id="${t.id}" author-id="${t.authorId}">
   #if(!isOrigin)
@@ -14,7 +13,7 @@
     <a class="author-name" $!{userLinkAttrs(t.authorId)}>${t.authorName}</a>
     <div class="tweet-self-body" data-id="${t.id}">
       <span class="tweet-content">$!{t.content}</span>
-      #if(t.origin != null) #set(isForward = true) #end
+      <!-- #if(t.origin != null) #set(isForward = true) #end -->
       #if(isForward)
       <span mf-id="${t.id}" style="display: none"> ||<a>@${t.authorName}</a>：$!{t.content}</span>
       #end
@@ -22,9 +21,6 @@
       <span mf-id="${x.id}"> ||$!{userLinkForMidForward(x)}：$!{x.content}</span>
       #end#end
     </div>
-    #if(t.origin)
-      $!{renderOrigin(t.origin)}
-    #end
     <div>
       <a href="/tweets/${t.id}">$!{spanHumanTime(t.time)}</a>
       <span class="tags">
@@ -33,11 +29,11 @@
         #end
       </span>
       <span class="tweet-ops pull-right">
-        #if(userSelf && userSelf.id == t.authorId)
+        <!-- #if(userSelf != null && userSelf.id == t.authorId) -->
         <a class="delete-btn" href="javascript:;" style="margin-left: 0.5em; margin-right: 0.5em">
           <span class="glyphicon glyphicon-trash"></span>
         </a>
-        #end
+        <!-- #end -->
         <a class="forward-btn" href="javascript:;">
           <span class="glyphicon glyphicon-share">${t.forwardCount == 0 ? '' : t.forwardCount}</span>
         </a>

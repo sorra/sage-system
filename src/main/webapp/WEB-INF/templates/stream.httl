@@ -1,8 +1,4 @@
 #set(Stream stream)
-#for(Item item : stream.items)
-  #if(item.type == 'TweetView')
-    $!{include("tweet.httl", ['tweet': item])}
-  #else(item.type == 'CombineGroup')
-    $!{include("combine-group.httl", ['cg': item])}
-  #end
+#for(item : stream.items)
+  $!{include("tweet-group.httl", ['group': item])}
 #end

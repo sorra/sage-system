@@ -33,7 +33,7 @@ function getStream(url) {
       if (resp) {
         $('.stream-items').empty().append($(resp))
         humanTime_show()
-        $('.stream-items').tipover('获取了' + $('.stream-item').length + '条信息')
+        $('.stream-items').tipover('获取了' + $('.stream-items .tweet').length + '条信息')
       } else {
         $('.stream-items').tipover(window.streamModel.emptyStreamMsg)
       }
@@ -113,10 +113,10 @@ function deleteDialogEach() {
       .done(function(resp){
         if(resp == true) {
           if ($tweet.hasClass('t-forward')) {
-            var $combine = $tweet.parents('.combine')
             $tweet.remove()
-            if (!$combine.data('containsOrigin') && $combine.find('.t-forward').length == 0) {
-              $combine.remove()
+            var $tweetGroup = $tweet.parents('.stream-item')
+            if (!$tweetGroup.data('containsOrigin') && $tweetGroup.find('.t-forward').length == 0) {
+              $tweetGroup.remove()
             }
           } else {
             $tweet.remove()

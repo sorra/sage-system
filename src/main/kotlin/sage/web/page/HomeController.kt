@@ -10,6 +10,7 @@ import sage.entity.Blog
 import sage.entity.Tweet
 import sage.service.*
 import sage.transfer.BlogPreview
+import sage.transfer.Stream
 import sage.transfer.TagLabel
 import sage.util.Strings
 import sage.web.auth.Auth
@@ -21,6 +22,7 @@ open class HomeController
 @Autowired constructor(
     private val relationService: RelationService,
     private val blogService: BlogService,
+    private val streamService: StreamService,
     private val transferService: TransferService,
     private val tagService: TagService) {
 
@@ -46,17 +48,17 @@ open class HomeController
       if (uid != null) this else take(10)
     }.map(::BlogPreview)
 
-    val tweets = GlobalCaches.tweetsCache["/landing#tweets", {
+    val stream = GlobalCaches.tweetsCache["/landing#stream", {
       Tweet.recent(20)
     }].run {
       if (uid != null) this else take(10)
-    }.map { transferService.toTweetView(it) }
+    }.let { Stream(streamService.higherSort(transferService.toTweetViews(it))) }
 
     val tags = GlobalCaches.tagsCache["hotTags", {
       tagService.hotTags(5)
     }].map(::TagLabel)
 
-    return ModelAndView("landing").addObject("blogs", blogs).addObject("tweets", tweets).addObject("tags", tags)
+    return ModelAndView("landing").addObject("blogs", blogs).addObject("stream", stream).addObject("tags", tags)
   }
 
   @RequestMapping("/login")

@@ -2,7 +2,6 @@ package sage.service
 
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
-import org.springframework.util.Assert
 import sage.domain.commons.Edge
 import sage.domain.commons.IdCommons
 import sage.entity.Tag
@@ -24,7 +23,7 @@ class StreamService
     mergedSet.addAll(tcsByTagHeeds(userId, edge))
     mergedSet.addAll(tcsByFollowListHeeds(userId, edge))
 
-    return Stream(higherSort(naiveSort(mergedSet)))
+    return Stream(higherSort(mergedSet))
   }
 
   fun istreamByTag(userId: Long, tagId: Long, edge: Edge): Stream {
@@ -72,53 +71,35 @@ class StreamService
 
   fun tagStream(tagId: Long, edge: Edge): Stream {
     val tweets = tweetRead.byTag(tagId, edge)
-    return Stream(naiveSort(transfers.toTweetViews(tweets)))
+    return Stream(higherSort(transfers.toTweetViews(tweets)))
   }
 
   fun personalStream(userId: Long, edge: Edge): Stream {
     val tweets = tweetRead.byAuthor(userId, edge)
-    return Stream(naiveSort(transfers.toTweetViews(tweets)))
+    return Stream(higherSort(transfers.toTweetViews(tweets)))
   }
 
-  private fun naiveSort(tcs: Collection<TweetView>) = tcs.sortedByDescending { it.time }
-
-  private fun higherSort(tcs: List<TweetView>): List<Item> {
+  fun higherSort(tweets: Collection<TweetView>): List<Item> {
     // TODO Pull-near
-    return combine(tcs)
+    return combineToGroups(tweets.sortedByDescending { it.time })
   }
 
-  private fun combine(tweets: List<TweetView>): List<Item> {
-    val groupSeq = ArrayList<CombineGroup>()
+  private fun combineToGroups(tweets: List<TweetView>): List<TweetGroup> {
+    val groups = arrayListOf<TweetGroup>()
+    fun findExistingGroup(id: Long) = groups.firstOrNull { IdCommons.equal(it.origin?.id, id) }
+
     for (t in tweets) {
       if (t.origin != null) {
-        val foundGroup = findInSeq(t.origin!!.id, groupSeq)
-        if (foundGroup != null) {
-          foundGroup.addForward(t)
-        } else {
-          groupSeq.add(CombineGroup.newByFirst(t))
-        }
+        val existing = findExistingGroup(t.origin!!.id)
+        if (existing != null) existing.addForward(t)
+        else groups += TweetGroup.createByForward(t)
       } else {
-        val foundGroup = findInSeq(t.id, groupSeq)
-        if (foundGroup != null) {
-          foundGroup.addOrigin(t)
-        } else {
-          groupSeq.add(CombineGroup.newByOrigin(t))
-        }
+        val existing = findExistingGroup(t.id)
+        if (existing != null) existing.addOrigin(t)
+        else groups += TweetGroup.createByOrigin(t)
       }
     }
 
-    val sequence = ArrayList<Item>(groupSeq.size)
-    for (group in groupSeq) {
-      if (group.forwards.isEmpty()) {
-        Assert.notNull(group.origin)
-        sequence.add(group.origin)
-      } else
-        sequence.add(group)
-    }
-    return sequence
-  }
-
-  private fun findInSeq(id: Long, groupSequence: List<CombineGroup>): CombineGroup? {
-    return groupSequence.firstOrNull { IdCommons.equal(it.origin.id, id) }
+    return groups
   }
 }

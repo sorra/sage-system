@@ -1,0 +1,7 @@
+#set(TweetGroup group)
+<div class="stream-item" data-contains-origin="${group.containsOrigin}">
+  #for(TweetView forward : group.forwards)
+    $!{include("tweet.httl", ['tweet': forward, 'isForward': true, 'isOrigin': false])}
+  #end
+  $!{include("tweet.httl", ['tweet': group.origin, 'isForward': false, 'isOrigin': group.forwards.size > 0])}
+</div>

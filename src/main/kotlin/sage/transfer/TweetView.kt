@@ -7,18 +7,18 @@ import sage.entity.Tweet
 import java.util.*
 
 @KotlinNoArg
-class TweetView : Item {
-  private val type = "TweetView"
-
+class TweetView {
   var id: Long = 0
   var authorId: Long = 0
   var authorName: String = ""
   var avatar: String = ""
   var content: String = ""
   var time: Date? = null
-  private var origin: TweetView? = null
+
+  var origin: TweetView? = null
+
   var midForwards: MidForwards? = null
-  private val tags = ArrayList<TagLabel>()
+  val tags = ArrayList<TagLabel>()
 
   var forwardCount: Int = 0
   var commentCount: Int = 0
@@ -67,17 +67,12 @@ class TweetView : Item {
   }
 
   /**
-   * used by CombineGroup
+   * used by StreamService#combineToGroups()
    */
   fun clearOrigin() {
     origin = null
   }
 
-  override fun getType(): String = type
-
-  override fun getTags(): List<TagLabel> = tags
-
-  override fun getOrigin(): TweetView? = origin
 
   override fun hashCode(): Int {
     return IdCommons.hashCode(id)
