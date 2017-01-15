@@ -26,7 +26,8 @@ class TweetView : Item {
 
   var isLiked: Boolean = false
 
-  var fromTag: Long? = null
+  var from: String = ""
+  var fromTagId: Long = 0
 
   constructor(tweet: Tweet, origin: Tweet?, showsStat: Boolean, isLikedChecker: (Long) -> Boolean) {
     id = tweet.id
@@ -60,8 +61,8 @@ class TweetView : Item {
     isLiked = isLikedChecker(id)
   }
 
-  fun beFromTag(tagId: Long?): TweetView {
-    fromTag = tagId
+  fun beFromTag(tagId: Long): TweetView {
+    fromTagId = tagId
     return this
   }
 

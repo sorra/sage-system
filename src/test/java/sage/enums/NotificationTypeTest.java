@@ -7,6 +7,7 @@ import static org.junit.Assert.assertArrayEquals;
 import static sage.entity.Notification.Type.*;
 
 public class NotificationTypeTest {
+  @SuppressWarnings("deprecation")
   @Test
   public void type() {
     assertArrayEquals(new Type[]{
