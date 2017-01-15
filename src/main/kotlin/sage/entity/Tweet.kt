@@ -96,7 +96,7 @@ class Tweet : BaseModel {
       if (tags.isEmpty()) {
         return LinkedList()
       }
-      return ranged(edge).`in`("tags.id", Tag.getQueryTags(tags).map { it.id }).findList()
+      return ranged(edge).`in`("tags.id", Tag.getQueryTags(tags).map(Tag::id)).findList()
     }
 
     fun byAuthor(authorId: Long, edge: Edge = Edge.none()): MutableList<Tweet> = ranged(edge).eq("author", User.ref(authorId)).findList()
@@ -108,17 +108,7 @@ class Tweet : BaseModel {
       if (hasRoot(tags)) {
         return byAuthor(authorId, edge)
       }
-      return ranged(edge).eq("author", User.ref(authorId)).`in`("tags.id", Tag.getQueryTags(tags).map { it.id }).findList()
-    }
-
-    fun connectTweets(blogId: Long): List<Tweet> {
-      val shares = default().eq("blogId", blogId).findList()
-      val connected = ArrayList(shares)
-      if (!shares.isEmpty()) {
-        val reshares = default().`in`("originId", shares.map { it.id }.toHashSet()).findList()
-        connected.addAll(reshares)
-      }
-      return connected
+      return ranged(edge).eq("author", User.ref(authorId)).`in`("tags.id", Tag.getQueryTags(tags).map(Tag::id)).findList()
     }
 
     fun forwards(originId: Long): List<Tweet> = default().eq("originId", originId).findList()

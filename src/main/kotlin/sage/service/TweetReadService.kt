@@ -17,9 +17,9 @@ class TweetReadService
 
     // Find and merge tweets from followings
     val followings = Follow.followings(userId)
-    followings.forEach { f -> tweets.addAll(byFollow(f, edge)) }
-    tweets.sortByDescending { it.whenCreated }
+    followings.flatMapTo(tweets) { f -> byFollow(f, edge) }
 
+    tweets.sortByDescending { it.whenCreated }
     // Select the top items, for later's higher sort
     return tweets.take(Edge.FETCH_SIZE)
   }
@@ -76,21 +76,6 @@ class TweetReadService
     }
     return Tweet.forwards(originId)
   }
-
-  fun getComments(sourceId: Long): Collection<Comment> {
-    val tweet = Tweet.byId(sourceId)
-    if (tweet == null || tweet.deleted) {
-      return emptyList()
-    }
-    return Comment.list(Comment.TWEET, sourceId)
-  }
-
-  /**
-   * Experimental
-
-   * @return a sequential list of connected tweets
-   */
-  fun connectTweets(blogId: Long) = Tweet.connectTweets(blogId).map { transfers.toTweetView(it) }
 
   companion object {
     private val log = LoggerFactory.getLogger(TweetReadService::class.java)
