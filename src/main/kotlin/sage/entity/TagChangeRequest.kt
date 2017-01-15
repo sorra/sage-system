@@ -50,15 +50,15 @@ class TagChangeRequest : BaseModel {
 
   companion object : Find<Long, TagChangeRequest>() {
 
-    fun byTag(tagId: Long) = where().eq("tag", Tag.ref(tagId)).findList()
+    fun byTag(tagId: Long) = where().eq("tag", Tag.ref(tagId)).orderBy("id desc").findList()
 
     fun byTagAndStatus(tagId: Long, status: Status) =
-        where().eq("tag", Tag.ref(tagId)).eq("status", status.ordinal).findList()
+        where().eq("tag", Tag.ref(tagId)).eq("status", status.ordinal).orderBy("id desc").findRowCount()
 
-    fun byTagScope(tag: Tag) = where().`in`("tag", tag.getQueryTags()).findList()
+    fun countByTagScope(tag: Tag) = where().`in`("tag", tag.getQueryTags()).orderBy("id desc").findList()
 
-    fun byTagScopeAndStatus(tag: Tag, status: Status) =
-        where().`in`("tag", tag.getQueryTags()).eq("status", status.ordinal).findList()
+    fun countByTagScopeAndStatus(tag: Tag, status: Status) =
+        where().`in`("tag", tag.getQueryTags()).eq("status", status.ordinal).orderBy("id desc").findRowCount()
 
     fun forMove(tag: Tag, submitter: User, parentId: Long): TagChangeRequest {
       val request = TagChangeRequest(tag, submitter, Type.MOVE)

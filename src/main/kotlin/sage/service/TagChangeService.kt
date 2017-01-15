@@ -58,15 +58,15 @@ class TagChangeService {
   }
 
   fun countPendingRequestsOfTag(tagId: Long): Int {
-    return TagChangeRequest.byTagAndStatus(tagId, Status.PENDING).size
+    return TagChangeRequest.byTagAndStatus(tagId, Status.PENDING)
   }
 
   fun getRequestsOfTagScope(tagId: Long): Collection<TagChangeRequestCard> {
-    return TagChangeRequest.byTagScope(Tag.get(tagId)).map(asTagChangeRequestCard)
+    return TagChangeRequest.countByTagScope(Tag.get(tagId)).map(asTagChangeRequestCard)
   }
 
   fun countPendingRequestsOfTagScope(tagId: Long): Int {
-    return TagChangeRequest.byTagScopeAndStatus(Tag.get(tagId), Status.PENDING).size
+    return TagChangeRequest.countByTagScopeAndStatus(Tag.get(tagId), Status.PENDING)
   }
 
   private val asTagChangeRequestCard = {req: TagChangeRequest ->
