@@ -6,7 +6,6 @@ import org.springframework.util.Assert
 import sage.domain.commons.Edge
 import sage.domain.commons.IdCommons
 import sage.entity.Tag
-import sage.entity.Tweet
 import sage.transfer.*
 import java.util.*
 
@@ -25,12 +24,12 @@ class StreamService
     mergedSet.addAll(tcsByTagHeeds(userId, edge))
     mergedSet.addAll(tcsByFollowListHeeds(userId, edge))
 
-    return Stream(higherSort(naiveSortViews(mergedSet)))
+    return Stream(higherSort(naiveSort(mergedSet)))
   }
 
   fun istreamByTag(userId: Long, tagId: Long, edge: Edge): Stream {
     val tag = Tag.get(tagId)
-    val qtagIds = tag.descendants().map { it.id }.toSet()
+    val qtagIds = tag.descendants().map(Tag::id).toSet()
 
     val pageSize = edge.limitCount * 2
     edge.limitCount = pageSize
@@ -73,40 +72,37 @@ class StreamService
 
   fun tagStream(tagId: Long, edge: Edge): Stream {
     val tweets = tweetRead.byTag(tagId, edge)
-    return Stream(naiveSort(tweets))
+    return Stream(naiveSort(transfers.toTweetViews(tweets)))
   }
 
   fun personalStream(userId: Long, edge: Edge): Stream {
     val tweets = tweetRead.byAuthor(userId, edge)
-    return Stream(naiveSort(tweets))
+    return Stream(naiveSort(transfers.toTweetViews(tweets)))
   }
 
-  private fun naiveSort(tweets: Collection<Tweet>) = naiveSortViews(transfers.toTweetViews(tweets))
-
-  private fun naiveSortViews(tcs: Collection<TweetView>) = tcs.sortedByDescending { it.time }
+  private fun naiveSort(tcs: Collection<TweetView>) = tcs.sortedByDescending { it.time }
 
   private fun higherSort(tcs: List<TweetView>): List<Item> {
     // TODO Pull-near
     return combine(tcs)
   }
 
-  private fun combine(tcs: List<TweetView>): List<Item> {
+  private fun combine(tweets: List<TweetView>): List<Item> {
     val groupSeq = ArrayList<CombineGroup>()
-    for (tc in tcs) {
-      if (tc.origin != null) {
-        val originId = tc.origin!!.id
-        val foundGroup = findInSeq(originId, groupSeq)
+    for (t in tweets) {
+      if (t.origin != null) {
+        val foundGroup = findInSeq(t.origin!!.id, groupSeq)
         if (foundGroup != null) {
-          foundGroup.addForward(tc)
+          foundGroup.addForward(t)
         } else {
-          groupSeq.add(CombineGroup.newByFirst(tc))
+          groupSeq.add(CombineGroup.newByFirst(t))
         }
       } else {
-        val foundGroup = findInSeq(tc.id, groupSeq)
+        val foundGroup = findInSeq(t.id, groupSeq)
         if (foundGroup != null) {
-          foundGroup.addOrigin(tc)
+          foundGroup.addOrigin(t)
         } else {
-          groupSeq.add(CombineGroup.newByOrigin(tc))
+          groupSeq.add(CombineGroup.newByOrigin(t))
         }
       }
     }
@@ -123,11 +119,6 @@ class StreamService
   }
 
   private fun findInSeq(id: Long, groupSequence: List<CombineGroup>): CombineGroup? {
-    for (group in groupSequence) {
-      if (IdCommons.equal(group.origin.id, id)) {
-        return group
-      }
-    }
-    return null
+    return groupSequence.firstOrNull { IdCommons.equal(it.origin.id, id) }
   }
 }
