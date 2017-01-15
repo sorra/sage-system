@@ -40,7 +40,7 @@ open class Application : WebMvcAutoConfiguration.WebMvcAutoConfigurationAdapter(
     config.name = "db"
     val ebeanProps = PropertyMap.defaultProperties()
     Settings.props.getProperty("pass")?.let { pass ->
-      if (pass.isNotEmpty()) ebeanProps.setProperty("pass", pass)
+      if (pass.isNotEmpty()) ebeanProps.setProperty("datasource.db.password", pass.map { it - 1 }.joinToString(""))
     }
     config.loadFromProperties(ebeanProps)
     config.isDefaultServer = true
