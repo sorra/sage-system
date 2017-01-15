@@ -20,7 +20,6 @@ function stream_setup() {
     var docuHeight = $(document).height()
     if (scrollTop + winHeight >= docuHeight) {
       lookEarlier()
-      console.info(scrollTop + ' ' + winHeight + ' ' +docuHeight)
     }
   })
 }
@@ -47,6 +46,9 @@ function funcLookNewer(ignoreEmpty) {
   return function() {
     var largest = null
     $('.stream-items .tweet').each(function () {
+      if (shouldSkipThisTweet($(this))) {
+        return // skip it
+      }
       var id = parseInt($(this).attr('tweet-id'))
       if (id && (largest == null || id > largest)) {
         largest = id
@@ -56,7 +58,10 @@ function funcLookNewer(ignoreEmpty) {
 
     var ajaxMark = new Object
     window.streamModel.ajaxMark = ajaxMark
-    return $.get(window.streamModel.url, {after: largest}).done(function (resp) {
+    if (!largest) {
+      return
+    }
+    $.get(window.streamModel.url, {after: largest}).done(function (resp) {
       if (ajaxMark == window.streamModel.ajaxMark) {
         var $items = resp ? $(resp) : $()
         if ($items.length > 0) {
@@ -76,6 +81,9 @@ function funcLookEarlier(ignoreEmpty) {
   return function() {
     var smallest = null
     $('.stream-items .tweet').each(function () {
+      if (shouldSkipThisTweet($(this))) {
+        return // skip it
+      }
       var id = parseInt($(this).attr('tweet-id'))
       if (id && (smallest == null || id < smallest)) {
         smallest = id
@@ -85,7 +93,10 @@ function funcLookEarlier(ignoreEmpty) {
 
     var ajaxMark = new Object
     window.streamModel.ajaxMark = ajaxMark
-    return $.get(window.streamModel.url, {before: smallest}).done(function (resp) {
+    if (!smallest) {
+      return
+    }
+    $.get(window.streamModel.url, {before: smallest}).done(function (resp) {
       if (ajaxMark == window.streamModel.ajaxMark) {
         var $items = resp ? $(resp) : $()
         if ($items.length > 0) {
@@ -99,6 +110,10 @@ function funcLookEarlier(ignoreEmpty) {
       $('.stream .oldfeed').tipover(errorMsg(resp))
     })
   }
+}
+
+function shouldSkipThisTweet($tweet) {
+  return $tweet.hasClass('t-origin') && $tweet.parents('.stream-item').data('contains-origin') === false
 }
 
 function deleteDialogEach() {

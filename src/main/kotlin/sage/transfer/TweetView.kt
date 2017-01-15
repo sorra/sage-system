@@ -89,7 +89,7 @@ class TweetView {
   }
 
   override fun toString(): String {
-    return authorName + ": " + content + tags
+    return "id=$id $authorName: $content$tags"
   }
 
   private fun convertRichElements(tweet: Tweet): String {

@@ -22,6 +22,9 @@ class StreamService
     mergedSet.addAll(transfers.toTweetViews(tweetRead.byFollowings(userId, edge)))
     mergedSet.addAll(tcsByTagHeeds(userId, edge))
     mergedSet.addAll(tcsByFollowListHeeds(userId, edge))
+    // Multi-source may break the edge assumption:
+    // e.g. from followings ends at 33, from heeds ends at 29.
+    // Next time should be before 33 or before 29?
 
     return Stream(higherSort(mergedSet))
   }
@@ -80,8 +83,9 @@ class StreamService
   }
 
   fun higherSort(tweets: Collection<TweetView>): List<Item> {
+    val simpleSorted = tweets.sortedByDescending { it.time }.take(Edge.FETCH_SIZE)
+    return combineToGroups(simpleSorted)
     // TODO Pull-near
-    return combineToGroups(tweets.sortedByDescending { it.time })
   }
 
   private fun combineToGroups(tweets: List<TweetView>): List<TweetGroup> {
