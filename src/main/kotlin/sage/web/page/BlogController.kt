@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.ResponseBody
 import org.springframework.web.servlet.ModelAndView
 import sage.domain.cache.GlobalCaches
+import sage.domain.commons.DomainException
 import sage.entity.*
 import sage.service.BlogService
 import sage.service.UserService
@@ -45,6 +46,9 @@ open class BlogController @Autowired constructor(
   open fun editPage(@PathVariable id: Long): ModelAndView {
     val uid = Auth.checkUid()
     val blog = Blog.get(id).run { BlogView(this) }
+    if (uid != blog.author?.id) {
+      throw DomainException("无权编辑: User[$uid] cannot edit Blog[${blog.id}]")
+    }
     val topTags = userService.filterNewTags(uid, blog.tags)
     return ModelAndView("write-blog")
         .addObject("blog", blog)
