@@ -3,6 +3,7 @@
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   <title>错误页</title>
+  $!{allcss}
   <style>
     #main{
       text-align: center;
@@ -10,13 +11,12 @@
   </style>
 </head>
 <body>
-  <div id="main">
-    <p>HTTP错误${errorCode}</p>
-    <p>${reason}</p>
-    <a href="/">回到首页</a> (5秒后自动前往, 如无变化请点击)
+  <div id="container" class="container">
+    <div id="main">
+      <p>HTTP错误${errorCode}</p>
+      <p>${reason}</p>
+      <a href="/">回到首页</a>
+    </div>
   </div>
-  <script>
-    window.setTimeout('window.location="/"', 5000)
-  </script>
 </body>
 </html>
