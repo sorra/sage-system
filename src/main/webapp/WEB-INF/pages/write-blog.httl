@@ -32,7 +32,7 @@ $!{allcss}
 </head>
 <body>
 $!{include("navbar.httl")}
-<div class="container background-silver" id="container">
+<div id="container" class="container">
 	<h3>撰写博客(Markdown语法)</h3>
 	#set(action = (blog.id && blog.id > 0) ? '/blogs/' + blog.id.toString + '/edit' : '/blogs/new')
 	<form id="blog" action="${action}" method="post">

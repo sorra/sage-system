@@ -6,21 +6,32 @@
   <title>SQL Console</title>
   $!{allcss}
   <style>
+    body{
+      background: #eee;
+    }
     textarea{
       margin: 1em;
       width: 50em;
     }
+    .results{
+      padding: 1em;
+    }
+    .result{
+      margin-top: 0.5em;
+      padding: 3px;
+      border-bottom: 1px solid #ccc; 
+    }
   </style>
 </head>
 <body>
-<form action="/admin/sql" method="post">
-  <textarea name="statement"></textarea>
-  <button type="submit">执行</button>
-</form>
-<div class="results background-silver" style="padding: 1em">
-#for(each : results)
-  <div style="margin-top: 0.5em">${each}</div>
-#end
-</div>
+  <form action="/admin/sql" method="post">
+    <textarea name="statement"></textarea>
+    <button type="submit">执行</button>
+  </form>
+  <div class="results">
+  #for(each : results)
+    <div class="result">${each}</div>
+  #end
+  </div>
 </body>
 </html>

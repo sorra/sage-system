@@ -40,7 +40,7 @@ $!{include("navbar.httl")}
 			$!{include("btn_like.httl", ["likes": blog.likes, "isLiked": isLiked, "prefix": "/blogs/"+blog.id.toString])}
 		</div>
 	</div>
-	<div id="comments-container" data-tweet-id="${blog.tweetId}" class="background-silver"></div>
+	<div id="comments-container" data-tweet-id="${blog.tweetId}"></div>
 </div>
 $!{alljs}
 <script type="text/javascript">

@@ -19,7 +19,7 @@
 </head>
 <body>
 $!{include("navbar.httl")}
-<div id="container" class="container background-silver">
+<div id="container" class="container">
   <form id="user-info" action="${action}" method="post" enctype="multipart/form-data">
     <span>昵称：</span>
     <input name="name" type="text" value="${user.name}" />

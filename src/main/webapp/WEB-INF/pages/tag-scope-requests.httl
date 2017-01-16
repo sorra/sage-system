@@ -15,7 +15,7 @@
 </head>
 <body>
 $!{include("navbar.httl")}
-  <div id="container" class="container background-silver">
+  <div id="container" class="container">
     <a class="do-change" href="/tag-changes/${tag.id}/do-change">我要修改</a>
     $!{tagLabel(tag)}
     <h3>${tag.name} - 范围的修改申请</h3>

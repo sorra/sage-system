@@ -8,7 +8,7 @@
 </head>
 <body>
 $!{include("navbar.httl")}
-  <div id="container" class="container background-silver">
+  <div id="container" class="container">
     <ul id="tabs" class="nav nav-tabs">
       <li><a href="#form-setintro" data-toggle="tab">修改简介</a></li>
       <li><a href="#form-rename" data-toggle="tab">改名</a></li>
