@@ -2,10 +2,11 @@
   color: black;
 }
 
-.avatar{
-  width: 60px;
+.user-card .avatar{
+  margin-left: 2px;
+  margin-right: 5px;
 }
-.avatar img{
+.user-card .avatar img{
   width: 50px;
   height: 50px;
 }

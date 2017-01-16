@@ -6,9 +6,7 @@
 #else(isOrigin) #set(cls = 't-origin')
 #end
 <div class="tweet ${cls}" tweet-id="${t.id}" author-id="${t.authorId}">
-  #if(!isOrigin)
   <a class="avatar" $!{userLinkAttrs(t.authorId)}><img src="${t.avatar}"/></a>
-  #end
   <div class="tweet-body">
     <a class="author-name" $!{userLinkAttrs(t.authorId)}>${t.authorName}</a>
     <div class="tweet-self-body" data-id="${t.id}">
