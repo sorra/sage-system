@@ -6,10 +6,11 @@
 }
 .stream-item{
   width: 600px;
-  background: #f9f9f9;
-  border-radius: 5px;
+  margin: 0 0 5px 0;
   padding: 5px;
-  margin-bottom: 5px;
+  border-bottom: 1px solid #ddd;
+  border-radius: 5px;
+  background: #fafafa;
 }
 
 .tweet{
