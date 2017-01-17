@@ -15,7 +15,7 @@
               </div>
             </form>
           </td>
-          <td>
+          <td style="width: 5em;">
             <a id="nav-tags" href="javascript:;">标签<span class="glyphicon glyphicon-tags"></span></a>
           </td>
           <td class="nav-links" width="570" align="right" style="padding-top: 2px;">
