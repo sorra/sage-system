@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html>
-#set(components = ["bootstrap", "layout", "tag", "user", "msg"])
+<!--
 #set(UserSelf userSelf)
 #set(MessageList messageList)
 #set(Map<Long, UserLabel> users)
 #set(withUserId = messageList.withUser.id)
+-->
 <head>
   <meta charset="UTF-8">
+  $!{desc}
   <title></title>
   $!{allcss}
   <style>

@@ -4,6 +4,7 @@
 #set(UserLabel user)
 <head>
   <meta charset="UTF-8">
+  $!{desc}
   <title>用户信息 - 轻境界</title>
   $!{allcss}
   <style type="text/css">

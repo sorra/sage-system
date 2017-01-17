@@ -3,6 +3,7 @@
 #set(TagCard tag)
 <head>
   <meta charset="UTF-8">
+  $!{desc}
   <title>修改标签</title>
   $!{allcss}
 </head>

@@ -3,6 +3,7 @@
 #set(TweetGroup group)
 <head>
 <meta charset="UTF-8">
+$!{desc}
 <title>微言 - 轻境界</title>
 $!{allcss}
 </head>

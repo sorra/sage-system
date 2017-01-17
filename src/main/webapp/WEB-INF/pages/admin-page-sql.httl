@@ -3,6 +3,7 @@
 #set(Collection results)
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  $!{desc}
   <title>SQL Console</title>
   $!{allcss}
   <style>

@@ -6,6 +6,7 @@
 -->
 <head>
   <meta charset="UTF-8">
+  $!{desc}
   <title>博客列表</title>
   $!{allcss}
   <style>

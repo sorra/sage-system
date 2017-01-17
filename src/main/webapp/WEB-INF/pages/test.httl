@@ -3,6 +3,7 @@
 #set(components = ["bootstrap", "layout", "tag"])
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	$!{desc}
 	<title>贤者：测试</title>
     $!{allcss}
 </head>

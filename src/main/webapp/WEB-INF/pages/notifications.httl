@@ -6,6 +6,7 @@
 -->
 <head>
   <meta charset="UTF-8">
+  $!{desc}
   <title>${category}通知</title>
   $!{allcss}
   <style>

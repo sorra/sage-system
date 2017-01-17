@@ -8,6 +8,7 @@
 -->
 <head>
   <meta charset="UTF-8">
+  $!{desc}
   <title>私信列表</title>
   $!{allcss}
   <style>
