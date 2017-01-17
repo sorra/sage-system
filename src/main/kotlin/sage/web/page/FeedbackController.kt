@@ -25,7 +25,11 @@ class FeedbackController {
              @RequestParam(defaultValue = "") name: String,
              @RequestParam(defaultValue = "") email: String, request: HttpServletRequest): String {
     if (content.isEmpty()) throw BadArgumentException("请输入反馈内容")
-    Feedback(content = content, name = name.trim(), email = email.trim(), ip = request.remoteAddr.orEmpty()).save()
+    val ip = request.getHeader("X-Real-IP").let {
+      if (it.isNullOrEmpty()) request.remoteAddr
+      else it
+    }
+    Feedback(content = content, name = name.trim(), email = email.trim(), ip = ip).save()
     return "redirect:/feedbacks"
   }
 }
