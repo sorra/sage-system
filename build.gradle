@@ -79,21 +79,18 @@ css.source {
     css {
       srcDir "${staticSrc}/css"
       include "*.css"
-      exclude "*.min.css"
-      exclude "all.css"
-      exclude "bootstrap.css"
     }
   }
 }
 
 combineCss {
   source = css.source.dev.css.files
-  dest = "${staticSrc}/css/all.css"
+  dest = "${staticSrc}/css-bin/all.css"
 }
 
 minifyCss {
   source = combineCss
-  dest = "${staticSrc}/css/all.css"
+  dest = "${staticSrc}/css-bin/all.css"
 }
 
 javascript.source {
@@ -101,22 +98,18 @@ javascript.source {
     js {
       srcDir "src/main/webapp/static/js"
       include "*.js"
-      exclude "*.min.js"
-      exclude "all.js"
-      exclude "libs.js"
-      exclude "plugins.js"
     }
   }
 }
 
 task combinejs(type: com.eriwen.gradle.js.tasks.CombineJsTask) {
   source = javascript.source.dev.js.files
-  dest = file("${staticSrc}/js/all.js")
+  dest = file("${staticSrc}/js-bin/all.js")
 }
 
 task minifyjs(type: com.eriwen.gradle.js.tasks.MinifyJsTask) {
   source = combinejs
-  dest = file("${staticSrc}/js/all.js")
+  dest = file("${staticSrc}/js-bin/all.js")
   closure {
     warningLevel = 'QUIET'
   }

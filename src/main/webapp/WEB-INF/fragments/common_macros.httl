@@ -1,13 +1,12 @@
 #macro(allcss)
-<link href="${resLink('/static/css/bootstrap.css')}" rel="stylesheet" type="text/css"/>
-<link href="${resLink('/static/css/all.css')}" rel="stylesheet" type="text/css"/>
+<link href="${resLink('/static/css-bin/libs.css')}" rel="stylesheet" type="text/css"/>
+<link href="${resLink('/static/css-bin/all.css')}" rel="stylesheet" type="text/css"/>
 #end
 
 #macro(alljs)
 $!{include("tmpl.httl")}
-<script src="${resLink('/static/js/libs.js')}" type="text/javascript"></script>
-<script src="${resLink('/static/js/plugins.js')}" type="text/javascript"></script>
-<script src="${resLink('/static/js/all.js')}" type="text/javascript"></script>
+<script src="${resLink('/static/js-bin/libs.js')}" type="text/javascript"></script>
+<script src="${resLink('/static/js-bin/all.js')}" type="text/javascript"></script>
 #end
 
 #macro(desc)
