@@ -11,6 +11,7 @@ $!{include("tmpl.httl")}
 
 #macro(desc)
 <meta name="description" content="程序员和远程工作者社区" />
+<link rel="icon" type="image/png" href="/static/favicon.png"/>
 #end
 
 #macro(tagLabel(TagLabel tag))
