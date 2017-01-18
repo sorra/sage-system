@@ -40,35 +40,35 @@
   color: gray;
 }
 
-.stream-item .t-forward{
+.t-forward{
   margin-left: 0;
 }
-.stream-item .t-origin{
+.t-origin{
   padding: 3px;
   background: #e9e9e9;
   border-radius: 10px;
   margin-left: 20px;
 }
-.stream-item .avatar{
+.tweet .avatar{
   display: block;
   float: left;
   padding-top: 5px;
   margin-left: 2px;
   margin-right: 5px;
 }
-.stream-item .avatar img{
+.tweet .avatar img{
   width: 50px;
   height: 50px;
 }
-.stream-item .t-origin .avatar img{
+.t-origin .avatar img{
   width: 25px;
   height: 25px;
 }
-.stream-item .author-name{
+.tweet .author-name{
   font-weight: bold;
   color: black;
 }
-.stream-item .tags a{
+.tweet .tags a{
   margin-left: 0.5em;
 }
 
