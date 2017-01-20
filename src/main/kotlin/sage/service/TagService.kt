@@ -66,17 +66,8 @@ class TagService {
 
     val topKs = sortedSetOf(java.util.Comparator.comparing(Pair<Long, Int>::second).reversed())
     counters.forEach { id, count ->
-      if (topKs.size <= k) { // Why <= ?
-        topKs += Pair(id, count)
-      } else {
-        if (count >= topKs.last().second) {
-          topKs.pollLast()
-          topKs += Pair(id, count)
-        }
-      }
-      // Another implementation:
-      // topKs += Pair(id, count)
-      // if (topKs.size > k) topKs.pollLast()
+       topKs += Pair(id, count)
+       if (topKs.size > k) topKs.pollLast()
     }
     return topKs.mapNotNull { p ->
       p?.let { Tag.get(it.first) }
