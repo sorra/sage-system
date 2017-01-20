@@ -1,11 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- #set(Collection<Blog> blogs) -->
+<!-- #set(List<Blog> blogs) -->
+<!-- #set(String name) -->
 <rss version="2.0">
   <channel>
-    <title>轻境界最新博客</title>
+    #if(name != null)
+      #set(name = "\""+name+"\"用户")
+    #end
+    #if(blogs.size > 0)
+      #set(pubDate = blogs[0].whenCreated)
+    #end
+    <title>轻境界${name}最新博客</title>
     <link>http://www.qingjingjie.com</link>
     <description>轻境界 - 轻装前往更高境界</description>
-    <pubDate>${now()}</pubDate>
+    <pubDate>${pubDate}</pubDate>
     <language>zh-cn</language>
     <copyright>@qingjingjie.com</copyright>
     #for(each : blogs)

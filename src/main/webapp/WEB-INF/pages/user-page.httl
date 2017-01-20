@@ -25,6 +25,7 @@ $!{include("navbar.httl")}
   </div>
 	<div class="main">
 		<div class="blog-list">
+			<a href="/users/${user.id}/rss" style="float: right">RSS订阅</a>
 			#for(blog : blogs)
 			$!{include("blog-preview.httl")}
 			#end

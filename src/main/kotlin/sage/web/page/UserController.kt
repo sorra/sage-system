@@ -6,10 +6,13 @@ import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.servlet.ModelAndView
 import sage.entity.Blog
+import sage.entity.User
 import sage.service.UserService
 import sage.transfer.BlogPreview
+import sage.util.Strings
 import sage.web.auth.Auth
 import sage.web.context.FrontMap
+import javax.servlet.http.HttpServletResponse
 
 @Controller
 @RequestMapping("/users")
@@ -24,7 +27,7 @@ open class UserController @Autowired constructor(
   open fun userPage(@PathVariable id: Long): ModelAndView {
     val uid = Auth.uid()
     val thisUser = userService.getUserCard(uid, id)
-    val blogs = Blog.byAuthor(id).sortedByDescending { it.whenCreated }.map(::BlogPreview)
+    val blogs = Blog.byAuthor(id).map(::BlogPreview)
     return ModelAndView("user-page").addObject("thisUser", thisUser)
         .addObject("blogs", blogs)
         .include(FrontMap().attr("id", id).attr("isSelfPage", uid == id))
@@ -39,4 +42,12 @@ open class UserController @Autowired constructor(
 
   @RequestMapping
   open fun all() = "redirect:/people"
+
+  @RequestMapping("/{id}/rss")
+  open fun rss(@PathVariable id: Long, response: HttpServletResponse): ModelAndView {
+    val blogs = Blog.byAuthor(id)
+    blogs.forEach { it.content = Strings.omit(it.content, 500) }
+    response.contentType = "text/xml"
+    return ModelAndView("rss").addObject("blogs", blogs).addObject("name", User.get(id).name)
+  }
 }
