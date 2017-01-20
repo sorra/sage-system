@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html>
-#set(components = ["bootstrap", "layout", "stream", "tag", "user"])
 #set(UserCard thisUser)
 #set(Map frontMap)
 <head>

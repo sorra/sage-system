@@ -177,27 +177,23 @@ class UserService {
   }
 
   private fun userTags(userId: Long): List<TagLabel> {
-    val topping = ArrayList<TagCounter>()
+    val tagCounters = ArrayList<TagCounter>()
     for (tweet in Tweet.byAuthor(userId)) {
-      countTags(tweet.tags, topping)
+      countTags(tweet.tags, tagCounters)
     }
     for (blog in Blog.byAuthor(userId)) {
-      countTags(blog.tags, topping)
+      countTags(blog.tags, tagCounters)
     }
-    topping.sort()
+    tagCounters.sort()
 
-    val topTags = ArrayList<TagLabel>()
-    for (topOne in topping) {
-      topTags.add(TagLabel(topOne.tag))
-    }
-    return topTags
+    return tagCounters.map { TagLabel(it.tag) }
   }
 
   fun topTags(userId: Long) = userTags(userId).take(5)
 
   private fun countTags(tags: Collection<Tag>, topping: MutableList<TagCounter>) {
     for (tag in tags) {
-      if (tag.id.equals(Tag.ROOT_ID)) {
+      if (tag.id == Tag.ROOT_ID) {
         continue
       }
       val counter = TagCounter(tag)
@@ -217,10 +213,10 @@ class UserService {
     }
 
     override fun equals(other: Any?): Boolean {
-      if (other is TagCounter == false) {
+      if (other !is TagCounter) {
         return false
       }
-      return IdCommons.equal(tag.id, (other as TagCounter).tag.id)
+      return IdCommons.equal(tag.id, other.tag.id)
     }
 
     override fun hashCode(): Int {

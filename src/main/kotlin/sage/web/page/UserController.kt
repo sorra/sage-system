@@ -41,7 +41,15 @@ open class UserController @Autowired constructor(
   }
 
   @RequestMapping
-  open fun all() = "redirect:/people"
+  open fun all() = "forward:/people"
+
+  @RequestMapping("/people")
+  open fun people(): ModelAndView {
+    val uid = Auth.uid()
+    val recomms = if (uid != null) userService.recommendByTag(uid) else emptyList()
+    val people = userService.people(uid)
+    return ModelAndView("people").addObject("recomms", recomms).addObject("people", people)
+  }
 
   @RequestMapping("/{id}/rss")
   open fun rss(@PathVariable id: Long, response: HttpServletResponse): ModelAndView {
