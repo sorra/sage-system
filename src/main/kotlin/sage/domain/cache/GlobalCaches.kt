@@ -16,7 +16,9 @@ object GlobalCaches {
 
     operator fun get(key: String, valueLoader: ()->List<V>): List<V> {
       return cache.getIfPresent(key)?.run {
-        first.mapNotNull { find.byId(it) }
+        val ids = first
+        val objects = find.where().`in`("id", ids).findMap("id", Long::class.java)
+        ids.mapNotNull { objects[it] }
       } ?: run {
         val list = valueLoader()
         cache.put(key, list.map { it.id } to 0)

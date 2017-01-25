@@ -21,7 +21,7 @@ class TweetReadService
 
     tweets.sortByDescending { it.whenCreated }
     // Select the top items, for later's higher sort
-    return tweets.take(Edge.FETCH_SIZE)
+    return tweets.take(edge.limitCount)
   }
 
   private fun byFollow(follow: Follow, edge: Edge): List<Tweet> {

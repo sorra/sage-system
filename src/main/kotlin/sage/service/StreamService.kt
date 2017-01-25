@@ -26,28 +26,29 @@ class StreamService
     // e.g. from followings ends at 33, from heeds ends at 29.
     // Next time should be before 33 or before 29?
 
-    return Stream(higherSort(mergedSet))
+    return Stream(higherSort(mergedSet, edge))
   }
 
   fun istreamByTag(userId: Long, tagId: Long, edge: Edge): Stream {
     val tag = Tag.get(tagId)
     val qtagIds = tag.descendants().map(Tag::id).toSet()
 
-    val pageSize = edge.limitCount * 2
-    edge.limitCount = pageSize
-    var istream = istream(userId, edge)
-    val itemsByTag = filterByQueryTagIds(istream, qtagIds) as MutableList
-    //如果滤后列表不够 而滤前列表还能往后翻页
-    while (itemsByTag.size < Edge.FETCH_SIZE && istream.items.size == pageSize) {
-      edge.limitStart += pageSize
+    val originalLimit = edge.limitCount
+    edge.limitCount *= 2
+    var istream: Stream
+    val itemsByTag = mutableListOf<Item>()
+    do {
       istream = istream(userId, edge)
-      itemsByTag.addAll(filterByQueryTagIds(istream, qtagIds))
-    }
-    return Stream(itemsByTag.take(Edge.FETCH_SIZE))
+      itemsByTag.addAll(filterByQueryTagIds(istream, qtagIds, edge))
+      edge.limitStart += edge.limitCount
+    // 如果滤后列表不够 而滤前列表还能往后翻页:
+    } while (itemsByTag.size < originalLimit && istream.items.size == edge.limitCount)
+
+    return Stream(itemsByTag.take(originalLimit))
   }
 
-  private fun filterByQueryTagIds(istream: Stream, qtagIds: Set<Long>): List<Item> {
-    return istream.items.filter { item -> item.tags.any { qtagIds.contains(it.id) } }.take(Edge.FETCH_SIZE)
+  private fun filterByQueryTagIds(istream: Stream, qtagIds: Set<Long>, edge: Edge): List<Item> {
+    return istream.items.filter { item -> item.tags.any { qtagIds.contains(it.id) } }.take(edge.limitCount)
   }
 
   private fun tcsByTagHeeds(userId: Long, edge: Edge): List<TweetView> {
@@ -74,16 +75,16 @@ class StreamService
 
   fun tagStream(tagId: Long, edge: Edge): Stream {
     val tweets = tweetRead.byTag(tagId, edge)
-    return Stream(higherSort(transfers.toTweetViews(tweets)))
+    return Stream(higherSort(transfers.toTweetViews(tweets), edge))
   }
 
   fun personalStream(userId: Long, edge: Edge): Stream {
     val tweets = tweetRead.byAuthor(userId, edge)
-    return Stream(higherSort(transfers.toTweetViews(tweets)))
+    return Stream(higherSort(transfers.toTweetViews(tweets), edge))
   }
 
-  fun higherSort(tweets: Collection<TweetView>): List<Item> {
-    val simpleSorted = tweets.sortedByDescending { it.time }.take(Edge.FETCH_SIZE)
+  fun higherSort(tweets: Collection<TweetView>, edge: Edge): List<Item> {
+    val simpleSorted = tweets.sortedByDescending { it.time }.take(edge.limitCount)
     return combineToGroups(simpleSorted)
     // TODO Pull-near
   }

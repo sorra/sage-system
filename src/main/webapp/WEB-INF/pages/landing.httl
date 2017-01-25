@@ -24,6 +24,26 @@
       max-width: 181px;
       border-radius: 5px;
     }
+    #areas:after{
+      display: table;
+      content: " ";
+      clear: both;
+    }
+    #blogs{
+      float: left;
+      width: 49%;
+    }
+    #tweets{
+      float: left;
+      width: 49%;
+      margin-left: 1%;
+    }
+    #tweets .stream-item{
+      width: 570px;
+    }
+    #tweets .tweet-body{
+      width: 500px;
+    }
   </style>
 </head>
 <body>
@@ -41,20 +61,16 @@ $!{include("navbar.httl")}
       $!{tagLabel(each)}
     #end
   </div>
-  <ul id="tabs" class="nav nav-tabs">
-    <li class="active"><a href="#blogs" data-toggle="tab">博客</a></li>
-    <li><a href="#tweets" data-toggle="tab">微言</a></li>
-    <li><a href="/feedbacks">反馈</a></li>
-  </ul>
-  <div class="tab-content">
-    <div id="blogs" class="blog-list tab-pane active">
-      <a href="/rss" style="float: right">RSS订阅</a>
+  <a href="/feedbacks">提建议</a>
+  <div class="areas">
+    <div id="blogs" class="blog-list">
+      <a href="/rss" style="float: right; margin: 5px 5px 0 -60px;">RSS订阅</a>
       <h2 class="heading-hot">博客精选</h2>
       #for(blog : blogs)
         $!{include("blog-preview.httl")}
       #end
     </div>
-    <div id="tweets" class="tweet-list tab-pane">
+    <div id="tweets" class="tweet-list">
       <h2 class="heading-hot">最新微言</h2>
       $!{include("stream.httl")}
     </div>

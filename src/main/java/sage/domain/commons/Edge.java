@@ -1,8 +1,6 @@
 package sage.domain.commons;
 
 public class Edge {
-  public static final int FETCH_SIZE = 20;
-
   public final EdgeType type;
   public final Long edgeId;
   public int limitStart = 0;

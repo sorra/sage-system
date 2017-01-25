@@ -2,10 +2,10 @@ package sage.web.page
 
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Controller
-import org.springframework.ui.ModelMap
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.servlet.ModelAndView
 import sage.domain.cache.GlobalCaches
+import sage.domain.commons.Edge
 import sage.entity.Blog
 import sage.entity.Tweet
 import sage.service.*
@@ -27,7 +27,7 @@ open class HomeController
     private val tagService: TagService) {
 
   @RequestMapping("/")
-  open fun index(model: ModelMap): ModelAndView {
+  open fun index(): ModelAndView {
     return landing()
   }
 
@@ -40,19 +40,15 @@ open class HomeController
 
   @RequestMapping("/landing")
   open fun landing(): ModelAndView {
-    val uid = Auth.uid()
-
     val blogs = GlobalCaches.blogsCache["/landing#blogs", {
       blogService.hotBlogs()
-    }].run {
-      if (uid != null) this else take(10)
-    }.map(::BlogPreview)
+    }].map(::BlogPreview)
 
     val stream = GlobalCaches.tweetsCache["/landing#stream", {
-      Tweet.recent(20)
-    }].run {
-      if (uid != null) this else take(10)
-    }.let { Stream(streamService.higherSort(transferService.toTweetViews(it))) }
+      Tweet.recent(30)
+    }].let {
+      Stream(streamService.higherSort(transferService.toTweetViews(it), Edge.none().apply { limitCount = 30 }))
+    }
 
     val tags = GlobalCaches.tagsCache["hotTags", {
       tagService.hotTags(5)

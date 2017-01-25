@@ -122,7 +122,7 @@ class Tweet : BaseModel {
         Edge.EdgeType.AFTER -> gt("id", edge.edgeId)
         else -> throw UnsupportedOperationException()
       }
-      orderBy("id desc").maxRows = Edge.FETCH_SIZE
+      orderBy("id desc").maxRows = edge.limitCount
     }
 
     private fun default() = where().eq("deleted", false)
