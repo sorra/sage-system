@@ -41,9 +41,6 @@ open class UserController @Autowired constructor(
   }
 
   @RequestMapping
-  open fun all() = "forward:/people"
-
-  @RequestMapping("/people")
   open fun people(): ModelAndView {
     val uid = Auth.uid()
     val recomms = if (uid != null) userService.recommendByTag(uid) else emptyList()
