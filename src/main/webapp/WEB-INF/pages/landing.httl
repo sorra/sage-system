@@ -24,6 +24,9 @@
       max-width: 181px;
       border-radius: 5px;
     }
+    #hot-tags{
+      margin: 5px 0 5px 0;
+    }
     #areas:after{
       display: table;
       content: " ";
@@ -54,15 +57,19 @@ $!{include("navbar.httl")}
     <a class="btn btn-default btn-success" href="/register">快速注册</a> 参与社区互动
   </div>
   #end
-  <h1 id="site-whats"><a href="/blogs/1">轻境界是什么？</a></h1>
-  <div id="tags">
+  <h1 id="site-whats">
+    <a href="/blogs/1">轻境界是什么？</a>
+  </h1>
+  <div id="hot-tags">
     热门标签：
     #for(each : tags)
       $!{tagLabel(each)}
     #end
   </div>
-  <a href="/feedbacks">提建议</a>
-  <div class="areas">
+  <div id="feedback-entrance">
+    <a href="/feedbacks">直接反馈</a> 或联系info@qingjingjie.com
+  </div>
+  <div id="areas">
     <div id="blogs" class="blog-list">
       <a href="/rss" style="float: right; margin: 5px 5px 0 -60px;">RSS订阅</a>
       <h2 class="heading-hot">博客精选</h2>
