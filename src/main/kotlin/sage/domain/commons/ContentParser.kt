@@ -48,7 +48,7 @@ object ContentParser {
           val name = elem.value.substringAfter('\r')
           "<a class=\"mention\" uid=\"$id\" href=\"/users/$id\">@$name</a> "
         }
-        "link" -> "<a class=\"link\" href=\"${elem.value}\">${Strings.omit(elem.value, 50)}</a>"
+        "link" -> "<a class=\"link\" href=\"${elem.value}\" target=\"_blank\">${Strings.omit(elem.value, 50)}</a>"
         "emphasis" -> "<strong>${elem.value}</strong>"
         else -> elem.value
       }
