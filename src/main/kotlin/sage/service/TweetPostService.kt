@@ -18,13 +18,13 @@ class TweetPostService
     private val transfers: TransferService,
     private val notifService: NotificationService) {
 
-  fun post(userId: Long, content: String, richElements: Collection<RichElement>, tagIds: Collection<Long>): Tweet {
-    if (content.isEmpty() || content.length > TWEET_MAX_LEN) {
+  fun post(userId: Long, inputContent: String, richElements: Collection<RichElement>, tagIds: Collection<Long>): Tweet {
+    if (inputContent.isEmpty() || inputContent.length > TWEET_MAX_LEN) {
       throw BAD_TWEET_LENGTH
     }
-    val (hyperContent, mentionedIds) = ContentParser.tweet(content) { name -> User.byName(name) }
+    val (hyperContent, mentionedIds) = ContentParser.tweet(inputContent) { name -> User.byName(name) }
 
-    val tweet = Tweet(hyperContent, richElements, User.ref(userId),
+    val tweet = Tweet(inputContent, hyperContent, richElements, User.ref(userId),
         Tag.multiGet(tagIds))
     Ebean.execute {
       tweet.save()
@@ -42,29 +42,29 @@ class TweetPostService
 
   /** Should be called in a transaction */
   fun postForBlog(blog: Blog) {
-    val tweet = Tweet("", emptyList(), User.ref(blog.author.id), blog)
+    val tweet = Tweet("", "", emptyList(), User.ref(blog.author.id), blog)
     tweet.save()
     TweetStat(id = tweet.id, whenCreated = tweet.whenCreated).save()
     blog.tweetId = tweet.id
     blog.update()
   }
 
-  fun forward(userId: Long, content: String, originId: Long, removedForwardIds: Collection<Long>): Tweet {
-    if (content.length > TWEET_MAX_LEN) {
+  fun forward(userId: Long, inputContent: String, originId: Long, removedForwardIds: Collection<Long>): Tweet {
+    if (inputContent.length > TWEET_MAX_LEN) {
       throw BAD_TWEET_LENGTH
     }
-    val (hyperContent, mentionedIds) = ContentParser.tweet(content) { name -> User.byName(name) }
+    val (hyperContent, mentionedIds) = ContentParser.tweet(inputContent) { name -> User.byName(name) }
 
     val directOrigin = Tweet.ref(originId)
     val origins = fromDirectToInitialOrigin(directOrigin)
     val initialOrigin = origins.last
     val tweet: Tweet
     if (initialOrigin == directOrigin) {
-      tweet = Tweet(hyperContent, emptyList(), User.ref(userId), initialOrigin)
+      tweet = Tweet(inputContent, hyperContent, emptyList(), User.ref(userId), initialOrigin)
     } else {
       val midForwards = MidForwards(directOrigin)
       removedForwardIds.forEach { midForwards.removeById(it) }
-      tweet = Tweet(hyperContent, emptyList(), midForwards, User.ref(userId), initialOrigin)
+      tweet = Tweet(inputContent, hyperContent, emptyList(), midForwards, User.ref(userId), initialOrigin)
     }
     Ebean.execute {
       tweet.save()
@@ -82,13 +82,13 @@ class TweetPostService
     return tweet
   }
 
-  fun comment(userId: Long, content: String, tweetId: Long, replyUserId: Long?): Comment {
-    if (content.isEmpty() || content.length > COMMENT_MAX_LEN) {
+  fun comment(userId: Long, inputContent: String, tweetId: Long, replyUserId: Long?): Comment {
+    if (inputContent.isEmpty() || inputContent.length > COMMENT_MAX_LEN) {
       throw BAD_COMMENT_LENGTH
     }
-    val (hyperContent, mentionedIds) = ContentParser.comment(content) { name -> User.byName(name) }
+    val (hyperContent, mentionedIds) = ContentParser.comment(inputContent) { name -> User.byName(name) }
 
-    val comment = Comment(hyperContent, User.ref(userId), Comment.TWEET, tweetId, replyUserId)
+    val comment = Comment(inputContent, hyperContent, User.ref(userId), Comment.TWEET, tweetId, replyUserId)
     comment.save()
     TweetStat.incComments(tweetId)
     Tweet.byId(tweetId)?.let(Tweet::blogId)?.let { if (it > 0) {

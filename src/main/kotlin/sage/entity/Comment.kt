@@ -6,6 +6,10 @@ import javax.persistence.*
 class Comment : BaseModel {
 
   @Column(columnDefinition = "TEXT")
+  @Lob
+  val inputContent: String
+
+  @Column(columnDefinition = "TEXT")
   @Lob @Basic
   val content: String
 
@@ -18,8 +22,9 @@ class Comment : BaseModel {
 
   val replyUserId: Long?
 
-  constructor(content: String, author: User, sourceType: Short, sourceId: Long, replyUserId: Long?) {
-    this.content = content
+  constructor(inputContent: String, hyperContent: String, author: User, sourceType: Short, sourceId: Long, replyUserId: Long?) {
+    this.inputContent = inputContent
+    this.content = hyperContent
     this.author = author
     this.sourceType = sourceType
     this.sourceId = sourceId

@@ -45,7 +45,7 @@ $!{include("navbar.httl")}
 			<li><a href="#preview" data-toggle="tab">预览</a></li>
 		</ul>
 		<div class="tab-content">
-			<textarea id="content" name="content" class="tab-pane active" placeholder="这里是内容">$!{blog.content}</textarea>
+			<textarea id="content" name="content" class="tab-pane active" placeholder="这里是内容">$!{blog.inputContent}</textarea>
 			<div id="preview" class="tab-pane"></div>
 		</div>
 		<div>

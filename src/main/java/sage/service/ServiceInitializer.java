@@ -1,6 +1,5 @@
 package sage.service;
 
-import java.util.Arrays;
 import java.util.Collections;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,30 +8,27 @@ import sage.domain.concept.Authority;
 import sage.entity.Blog;
 import sage.entity.Tag;
 import sage.entity.User;
-import sage.transfer.Stream;
 
-import static java.lang.System.out;
+import static java.util.Arrays.asList;
 import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
 
 @Component
 public class ServiceInitializer {
   @Autowired
-  TagService tagService;
+  private TagService tagService;
   @Autowired
-  TagChangeService tagChangeService;
+  private TagChangeService tagChangeService;
   @Autowired
-  UserService userService;
+  private UserService userService;
   @Autowired
-  RelationService relationService;
+  private RelationService relationService;
   @Autowired
-  TweetPostService tweetPostService;
+  private TweetPostService tweetPostService;
   @Autowired
-  BlogService blogService;
+  private BlogService blogService;
   @Autowired
-  StreamService streamService;
-  @Autowired
-  FavService favService;
+  private FavService favService;
 
   volatile private boolean needInitialize = true;
 
@@ -49,9 +45,20 @@ public class ServiceInitializer {
   }
 
   private long root = Tag.Companion.getROOT_ID();
-  private long life, society, culture, economy, tech;
-  private long view, art, painting, music, prog, digital;
-  private long admin, bethia, centos;
+  private long life;
+  private long society;
+  private long culture;
+  private long economy;
+  private long tech;
+  private long view;
+  private long art;
+  private long painting;
+  private long music;
+  private long prog;
+  private long digital;
+  private long admin;
+  private long bethia;
+  private long centos;
 
   private void tag() {
     life = createTag("生活", root);
@@ -83,15 +90,17 @@ public class ServiceInitializer {
   }
 
   private void relation() {
-    relationService.follow(admin, bethia, Arrays.asList(society, culture));
-    relationService.follow(admin, centos, Arrays.asList(society, culture));
+    relationService.follow(admin, bethia, asList(society, culture));
+    relationService.follow(admin, centos, asList(society, culture));
 
-    relationService.follow(bethia, admin, Arrays.asList(music, view));
+    relationService.follow(bethia, admin, asList(music, view));
     relationService.follow(bethia, centos, singletonList(music));
 
-    relationService.follow(centos, admin, Arrays.asList(tech, view));
+    relationService.follow(centos, admin, asList(tech, view));
     relationService.follow(centos, bethia, singletonList(art));
   }
+
+  private static final short MARKDOWN = Blog.Companion.getMARKDOWN();
 
   private void post() {
     Blog posted;
@@ -115,7 +124,7 @@ public class ServiceInitializer {
             + "严重影响到了类库的优美程度，其使用“类型擦除”的泛型系统也为今后的发展留下了一些祸根，"
             + "因此这些旁门左道本文章就不去详细讨论了。这篇文章讲针对重要的那三个类型和两个修饰"
             + "进行讨论，并解释他们之间互相换算的方法。",
-        Collections.singleton(tech));
+        Collections.singleton(tech), MARKDOWN);
 //    tweetPostService.share(admin, posted);
     posted = blogService.post(bethia, "潜行吧！奈亚子",
         "点击:296,371 收藏:2,245 关注人数:2,672 "
@@ -125,7 +134,7 @@ public class ServiceInitializer {
             + "作品在GA文库刊行之后，获得了极大好评，曾荣获"
             + "第1回GA文库大赏优秀奖。由XEBEC制作的动画版，"
             + "与此前的FLASH动画不同，本作将回归主线。",
-        Collections.singleton(culture));
+        Collections.singleton(culture), MARKDOWN);
 //    tweetPostService.share(bethia, posted);
     posted = blogService.post(centos, "群体对人的影响",
         "群体对人的影响，主要是极化，即群体愚蠢或群体智慧。"
@@ -140,7 +149,7 @@ public class ServiceInitializer {
             + "这个在人类社会尚无很好的范例，亚马逊的相关商品精准推荐，可能算群体预测吧，"
             + "但在自然界涌现有很多范例，比如水分子朝一个方向运动会形成漩涡，"
             + "白蚁可以构筑相当于人类数千层楼高的蚁巢，且通风卫生情况良好。",
-        Collections.singleton(society));
+        Collections.singleton(society), MARKDOWN);
 //    tweetPostService.share(centos, posted);
     long a1 = tweetPostService.post(admin, "Post at root.", emptyList(), singletonList(root)).getId();
     long a2 = tweetPostService.post(admin, "HUUSF View age.", emptyList(), singletonList(view)).getId();
@@ -157,17 +166,5 @@ public class ServiceInitializer {
     favService.create(admin, "https://github.com/sorra");
     favService.create(admin, "http://segmentfault.com/u/sorra");
     favService.create(admin, "tweet:1");
-  }
-
-  private void istream() {
-    printStream(streamService.istream(admin));
-    printStream(streamService.istream(bethia));
-    printStream(streamService.istream(centos));
-  }
-
-  private void printStream(Stream st) {
-    out.println(st.toString());
-    st.getItems().forEach(out::println);
-    out.println();
   }
 }

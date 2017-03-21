@@ -13,6 +13,11 @@ import javax.persistence.*
 class Tweet : BaseModel {
 
   @Column(columnDefinition = "TEXT")
+  @Lob
+  val inputContent: String
+    get() = if (deleted) "" else field
+
+  @Column(columnDefinition = "TEXT")
   @Lob @Basic
   val content: String
     get() = if (deleted) "" else field
@@ -42,14 +47,16 @@ class Tweet : BaseModel {
 
   var deleted: Boolean = false
 
-  constructor(content: String, richElements: Collection<RichElement>, author: User, tags: Set<Tag>) {
-    this.content = content
+  constructor(inputContent: String, hyperContent: String, richElements: Collection<RichElement>, author: User, tags: Set<Tag>) {
+    this.inputContent = inputContent
+    this.content = hyperContent
     this.author = author
     this.richElementsJson = Json.json(richElements)
     this.tags = HashSet(tags)
   }
 
-  constructor(content: String, richElements: Collection<RichElement>, author: User, initialOrigin: Tweet) : this(content, richElements, author, initialOrigin.tags) {
+  constructor(inputContent: String, hyperContent: String, richElements: Collection<RichElement>, author: User, initialOrigin: Tweet)
+      : this(inputContent, hyperContent, richElements, author, initialOrigin.tags) {
     originId = initialOrigin.id
     if (initialOrigin.hasOrigin()) {
       throw IllegalArgumentException(String.format(
@@ -58,11 +65,13 @@ class Tweet : BaseModel {
     }
   }
 
-  constructor(content: String, richElements: Collection<RichElement>, midForwards: MidForwards, author: User, origin: Tweet) : this(content, richElements, author, origin) {
+  constructor(inputContent: String, hyperContent: String, richElements: Collection<RichElement>, midForwards: MidForwards, author: User, origin: Tweet)
+      : this(inputContent, hyperContent, richElements, author, origin) {
     midForwardsJson = midForwards.toJson()
   }
 
-  constructor(content: String, richElements: Collection<RichElement>, author: User, blog: Blog) : this(content, richElements, author, blog.tags) {
+  constructor(inputContent: String, hyperContent: String, richElements: Collection<RichElement>, author: User, blog: Blog)
+      : this(inputContent, hyperContent, richElements, author, blog.tags) {
     blogId = blog.id
   }
 

@@ -11,7 +11,6 @@ import sage.util.Strings
 import java.util.*
 
 @Service
-@Suppress("NAME_SHADOWING")
 class BlogService
 @Autowired constructor(
     private val tweetPostService: TweetPostService,
@@ -19,11 +18,11 @@ class BlogService
     private val searchService: SearchService,
     private val notifService: NotificationService) {
 
-  fun post(userId: Long, title: String, content: String, tagIds: Set<Long>): Blog {
-    checkLength(title, content)
-    val (content, mentionedIds) = processMarkdownContent(content)
+  fun post(userId: Long, title: String, inputContent: String, tagIds: Set<Long>, contentType: Short = Blog.MARKDOWN): Blog {
+    checkLength(title, inputContent)
+    val (hyperContent, mentionedIds) = processContent(inputContent, contentType)
 
-    val blog = Blog(title, content, User.ref(userId), Tag.multiGet(tagIds))
+    val blog = Blog(title, inputContent, hyperContent, User.ref(userId), Tag.multiGet(tagIds), contentType)
     Ebean.execute {
       blog.save()
       BlogStat(id = blog.id, whenCreated = blog.whenCreated).save()
@@ -39,23 +38,27 @@ class BlogService
     return blog
   }
 
-  fun edit(userId: Long, blogId: Long, title: String, content: String, tagIds: Set<Long>): Blog {
-    checkLength(title, content)
+  fun edit(userId: Long, blogId: Long, title: String, inputContent: String, tagIds: Set<Long>, contentType: Short = Blog.MARKDOWN): Blog {
+    checkLength(title, inputContent)
     val blog = Blog.get(blogId)
     if (userId != blog.author.id) {
       throw DomainException("User[%s] is not the author of Blog[%s]", userId, blogId)
     }
-    val (content, mentionedIds) = processMarkdownContent(content)
+    val (hyperContent, mentionedIds) = processContent(inputContent, contentType)
+    val oldInputContent = blog.inputContent
+    val oldContentType = blog.contentType
 
     blog.title = title
-    blog.content = content
+    blog.inputContent = inputContent
+    blog.content = hyperContent
     blog.tags = Tag.multiGet(tagIds)
+    blog.contentType = contentType
     blog.update()
 
     userService.updateUserTag(userId, tagIds)
 
     if (mentionedIds.isNotEmpty()) {
-      val (oldContent, oldMentionedIds) = processMarkdownContent(blog.content)
+      val (old, oldMentionedIds) = processContent(oldInputContent, oldContentType)
       (mentionedIds - oldMentionedIds).forEach { atId -> notifService.mentionedByBlog(atId, userId, blogId) }
     }
 
@@ -73,13 +76,13 @@ class BlogService
     searchService.delete(BlogView::class.java, blog.id)
   }
 
-  fun comment(userId: Long, content: String, blogId: Long, replyUserId: Long?): Comment {
-    if (content.isEmpty() || content.length > COMMENT_MAX_LEN) {
+  fun comment(userId: Long, inputContent: String, blogId: Long, replyUserId: Long?): Comment {
+    if (inputContent.isEmpty() || inputContent.length > COMMENT_MAX_LEN) {
       throw BAD_COMMENT_LENGTH
     }
-    val (hyperContent, mentionedIds) = ContentParser.comment(content) { name -> User.byName(name) }
+    val (hyperContent, mentionedIds) = ContentParser.comment(inputContent) { name -> User.byName(name) }
 
-    val comment = Comment(hyperContent, User.ref(userId), Comment.BLOG, blogId, replyUserId)
+    val comment = Comment(inputContent, hyperContent, User.ref(userId), Comment.BLOG, blogId, replyUserId)
     comment.save()
     BlogStat.incComments(blogId)
     TweetStat.incComments(Blog.get(blogId).tweetId)
@@ -104,10 +107,13 @@ class BlogService
     }
   }
 
-  private fun processMarkdownContent(content: String): Pair<String, HashSet<Long>> {
-    var content = Strings.escapeHtmlTag(content)
+  private fun processContent(inputContent: String, contentType: Short): Pair<String, HashSet<Long>> {
+    var content = inputContent
     val mentionedIds = HashSet<Long>()
     content = ReplaceMention.with {User.byName(it)}.apply(content, mentionedIds)
+    if (contentType == Blog.MARKDOWN) {
+      content = Strings.escapeHtmlTag(content)
+    }
     return Pair(content, mentionedIds)
   }
 

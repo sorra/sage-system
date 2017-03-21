@@ -1,8 +1,10 @@
 create table blog (
   id                            bigint auto_increment not null,
   title                         varchar(255),
+  input_content                 TEXT,
   content                       TEXT,
   author_id                     bigint not null,
+  content_type                  smallint,
   tweet_id                      bigint not null,
   version                       bigint not null,
   when_created                  datetime(6) not null,
@@ -32,6 +34,7 @@ create table blog_stat (
 
 create table comment (
   id                            bigint auto_increment not null,
+  input_content                 TEXT,
   content                       TEXT,
   author_id                     bigint not null,
   source_type                   smallint,
@@ -229,6 +232,7 @@ create table tag_heed (
 
 create table tweet (
   id                            bigint auto_increment not null,
+  input_content                 TEXT,
   content                       TEXT,
   rich_elements_json            TEXT,
   mid_forwards_json             TEXT,
