@@ -41,9 +41,13 @@ open class TagController @Autowired constructor(
     val relatedTags = null
     val sameNameTags = tagService.getSameNameTags(id).map(::TagLabel)
 
-    return ModelAndView("tag-page").addObject("tag", tag).addObject("blogs", blogs)
-        .addObject("coreTags", coreTags).addObject("nonCoreTags", nonCoreTags)
-        .addObject("relatedTags", relatedTags).addObject("sameNameTags", sameNameTags)
+    return ModelAndView("tag-page")
+        .addObject("tag", tag)
+        .addObject("blogs", blogs)
+        .addObject("coreTags", coreTags)
+        .addObject("nonCoreTags", nonCoreTags)
+        .addObject("relatedTags", relatedTags)
+        .addObject("sameNameTags", sameNameTags)
         .addObject("countPendingRequestsOfTagScope", tagChangeService.countPendingRequestsOfTagScope(id))
         .addObject("countPendingRequestsOfTag", tagChangeService.countPendingRequestsOfTag(id))
         .include(FrontMap().attr("id", id))

@@ -12,7 +12,6 @@ import sage.entity.User
 import sage.service.UserService
 import sage.transfer.BlogView
 import sage.web.auth.Auth
-import javax.servlet.http.HttpServletRequest
 
 @Controller
 @RequestMapping("/drafts")
@@ -25,7 +24,7 @@ open class DraftsController @Autowired constructor(private val userService: User
   }
 
   @RequestMapping("/{id}")
-  open fun draft(@PathVariable id: Long, request: HttpServletRequest): ModelAndView {
+  open fun draft(@PathVariable id: Long): ModelAndView {
     val uid = Auth.checkUid()
     Draft.byId(id)?.let { draft ->
       if (draft.targetId > 0) {
