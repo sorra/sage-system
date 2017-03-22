@@ -4,6 +4,7 @@ import java.io.PrintStream;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import sage.domain.commons.Edge;
 import sage.service.*;
 import sage.transfer.Stream;
 
@@ -30,9 +31,9 @@ public class SceneTest {
     
 //    @Test
     public void procedure() {
-        Stream s1 = streamService.istream(1);
-        Stream s2 = streamService.istream(2);
-        Stream s3 = streamService.istream(3);
+        Stream s1 = streamService.istream(1, Edge.none());
+        Stream s2 = streamService.istream(2, Edge.none());
+        Stream s3 = streamService.istream(3, Edge.none());
     }
     
 }

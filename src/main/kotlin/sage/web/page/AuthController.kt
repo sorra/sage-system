@@ -1,7 +1,6 @@
 package sage.web.page
 
 import org.slf4j.LoggerFactory
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestMethod.POST
@@ -9,19 +8,18 @@ import org.springframework.web.bind.annotation.RequestParam
 import sage.domain.commons.BadArgumentException
 import sage.domain.commons.DomainException
 import sage.entity.User
-import sage.service.UserService
 import sage.web.auth.Auth
+import sage.web.context.BaseController
 import javax.servlet.http.HttpServletRequest
 
 @Controller
 @RequestMapping("/auth")
-open class AuthController
-@Autowired constructor(private val userService: UserService) {
+open class AuthController : BaseController() {
 
   @RequestMapping("/login", method = arrayOf(POST))
-  open fun login(request: HttpServletRequest,
-                 @RequestParam email: String, @RequestParam password: String,
-                 @RequestParam(required = false) rememberMe: Boolean?): String {
+  open fun login(@RequestParam email: String,
+                 @RequestParam password: String,
+                 @RequestParam(defaultValue = "false") rememberMe: Boolean): String {
     if (email.isEmpty() || password.isEmpty()) {
       throw DomainException("Empty input!")
     }
@@ -41,7 +39,7 @@ open class AuthController
     }
 
     val user = userService.login(email, password)
-    Auth.login(user.id, rememberMe ?: false)
+    Auth.login(user.id, rememberMe)
     log.info("User {} logged in.", user)
     if (dest == null) { return "redirect:/" }
     else { return "redirect:" + Auth.decodeLink(dest) }
@@ -83,7 +81,7 @@ open class AuthController
     }
 
     userService.register(User(email, password))
-    login(request, email, password, false)
+    login(email, password, false)
     return "redirect:/user-info?next=/people"
   }
 

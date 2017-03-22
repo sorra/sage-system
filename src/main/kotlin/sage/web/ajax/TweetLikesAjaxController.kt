@@ -10,7 +10,7 @@ import sage.web.auth.Auth
 
 @RestController
 @RequestMapping("/tweets")
-open class TweetLikesController {
+open class TweetLikesAjaxController {
   @RequestMapping("/{id}/like")
   open fun like(@PathVariable id: Long) {
     val uid = Auth.checkUid()

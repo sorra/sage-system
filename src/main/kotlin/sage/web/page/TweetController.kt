@@ -1,25 +1,19 @@
 package sage.web.page
 
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.servlet.ModelAndView
 import sage.entity.Tweet
 import sage.entity.getRecordsCount
-import sage.service.TransferService
-import sage.service.TweetReadService
 import sage.transfer.TweetGroup
 import sage.util.PaginationLogic
+import sage.web.context.BaseController
 import sage.web.context.RenderUtil
 
 @Controller
 @RequestMapping("/tweets")
-class TweetController @Autowired constructor(
-    private val tweetReadService: TweetReadService,
-    private val transferService: TransferService
-) {
+class TweetController : BaseController() {
   @RequestMapping("/{id}")
   fun tweetPage(@PathVariable id: Long): ModelAndView {
     val tweetGroup = tweetReadService.getTweetView(id)?.let {
@@ -38,13 +32,17 @@ class TweetController @Autowired constructor(
 
   // TODO no page yet
   @RequestMapping
-  fun tweets(@RequestParam(defaultValue = "1") page: Int): ModelAndView {
-    val size = 20
+  fun tweets(): ModelAndView {
+    val pageIndex = pageIndex()
+    val pageSize = pageSize()
+
     val recordsCount: Long = getRecordsCount(Tweet)
-    val pagesCount: Int = PaginationLogic.pagesCount(size, recordsCount)
-    val tweets = Tweet.orderBy("id desc").findPagedList(page-1, size).list
+    val pagesCount: Int = PaginationLogic.pagesCount(pageSize, recordsCount)
+    val tweets = Tweet.orderBy("id desc").findPagedList(pageIndex-1, pageSize).list
         .map { transferService.toTweetView(it) }
-    return ModelAndView("tweets").addObject("tweets", tweets)
-        .addObject("paginationLinks", RenderUtil.paginationLinks("/tweets", pagesCount, page))
+
+    return ModelAndView("tweets")
+        .addObject("tweets", tweets)
+        .addObject("paginationLinks", RenderUtil.paginationLinks("/tweets", pagesCount, pageSize))
   }
 }

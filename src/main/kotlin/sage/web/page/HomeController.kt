@@ -1,6 +1,5 @@
 package sage.web.page
 
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.servlet.ModelAndView
@@ -8,23 +7,16 @@ import sage.domain.cache.GlobalCaches
 import sage.domain.commons.Edge
 import sage.entity.Blog
 import sage.entity.Tweet
-import sage.service.*
 import sage.transfer.BlogPreview
 import sage.transfer.Stream
 import sage.transfer.TagLabel
 import sage.util.Strings
 import sage.web.auth.Auth
-import javax.servlet.http.HttpServletResponse
+import sage.web.context.BaseController
 
 @Controller
 @RequestMapping
-open class HomeController
-@Autowired constructor(
-    private val relationService: RelationService,
-    private val blogService: BlogService,
-    private val streamService: StreamService,
-    private val transferService: TransferService,
-    private val tagService: TagService) {
+open class HomeController : BaseController() {
 
   @RequestMapping("/")
   open fun index(): ModelAndView {
@@ -67,7 +59,7 @@ open class HomeController
   open fun register(): String = "register"
 
   @RequestMapping("/rss")
-  open fun rss(response: HttpServletResponse): ModelAndView {
+  open fun rss(): ModelAndView {
     val blogs = Blog.orderBy("id desc").findList()
     blogs.forEach { it.content = Strings.omit(it.content, 500) }
     response.contentType = "text/xml"

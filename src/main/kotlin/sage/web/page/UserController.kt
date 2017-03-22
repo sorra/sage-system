@@ -1,24 +1,20 @@
 package sage.web.page
 
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.servlet.ModelAndView
 import sage.entity.Blog
 import sage.entity.User
-import sage.service.UserService
 import sage.transfer.BlogPreview
 import sage.util.Strings
 import sage.web.auth.Auth
+import sage.web.context.BaseController
 import sage.web.context.FrontMap
-import javax.servlet.http.HttpServletResponse
 
 @Controller
 @RequestMapping("/users")
-open class UserController @Autowired constructor(
-    private val userService: UserService
-) {
+open class UserController : BaseController() {
 
   @RequestMapping("/self")
   open fun userPage() = "redirect:/users/${Auth.checkUid()}"
@@ -49,7 +45,7 @@ open class UserController @Autowired constructor(
   }
 
   @RequestMapping("/{id}/rss")
-  open fun rss(@PathVariable id: Long, response: HttpServletResponse): ModelAndView {
+  open fun rss(@PathVariable id: Long): ModelAndView {
     val blogs = Blog.byAuthor(id)
     blogs.forEach { it.content = Strings.omit(it.content, 500) }
     response.contentType = "text/xml"

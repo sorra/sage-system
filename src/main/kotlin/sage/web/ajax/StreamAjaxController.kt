@@ -9,19 +9,16 @@ import org.springframework.web.servlet.ModelAndView
 import sage.domain.commons.Edge
 import sage.service.StreamService
 import sage.web.auth.Auth
+import sage.web.context.BaseController
 
 @Controller
 @RequestMapping("/stream")
-open class StreamController @Autowired constructor(
-    val streamService: StreamService
-) {
+open class StreamAjaxController : BaseController() {
   @RequestMapping("/i")
   open fun istream(
-      @RequestParam(required = false) tagId: Long?,
-      @RequestParam(required = false) before: Long?,
-      @RequestParam(required = false) after: Long?): ModelAndView {
+      @RequestParam(required = false) tagId: Long?): ModelAndView {
     val uid = Auth.checkUid()
-    val edge = getEdge(before, after)
+    val edge = getEdge()
     val stream =
       if (tagId != null) streamService.istreamByTag(uid, tagId, edge)
       else streamService.istream(uid, edge)
@@ -29,22 +26,25 @@ open class StreamController @Autowired constructor(
   }
 
   @RequestMapping("/tag/{id}")
-  open fun tagStream(@PathVariable id: Long,
-                     @RequestParam(required = false) before: Long?,
-                     @RequestParam(required = false) after: Long?): ModelAndView {
-    val stream = streamService.tagStream(id, getEdge(before, after))
+  open fun tagStream(@PathVariable id: Long): ModelAndView {
+    val edge = getEdge()
+    val stream = streamService.tagStream(id, edge)
     return ModelAndView("stream").addObject("stream", stream)
   }
 
   @RequestMapping("/user/{id}")
-  open fun userStream(@PathVariable id: Long,
-                      @RequestParam(required = false) before: Long?,
-                      @RequestParam(required = false) after: Long?): ModelAndView {
-    val stream = streamService.personalStream(id, getEdge(before, after))
+  open fun userStream(@PathVariable id: Long): ModelAndView {
+    val edge = getEdge()
+    val stream = streamService.personalStream(id, edge)
     return ModelAndView("stream").addObject("stream", stream)
   }
 
-  private fun getEdge(beforeId: Long?, afterId: Long?): Edge {
+  fun before() = param("before")?.toLong()
+  fun after() = param("after")?.toLong()
+
+  private fun getEdge(): Edge {
+    val beforeId = before()
+    val afterId = after()
     if (beforeId == null && afterId == null) {
       return Edge.none()
     } else if (beforeId != null && afterId != null) {

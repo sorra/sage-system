@@ -9,6 +9,7 @@ class BlogView {
   var id: Long = 0
   var author: UserLabel? = null
   var title: String = ""
+  var inputContent: String = ""
   var content: String = ""
   var whenCreated: Timestamp? = null
   var whenModified: Timestamp? = null
@@ -20,11 +21,14 @@ class BlogView {
 
   constructor()
 
-  constructor(blog: Blog) {
+  constructor(blog: Blog) : this(blog, false)
+
+  constructor(blog: Blog, showInputContent: Boolean) {
     id = blog.id
     author = UserLabel(blog.author)
 
     title = blog.title
+    if (showInputContent) inputContent = blog.inputContent
     content = blog.content
     whenCreated = blog.whenCreated
     whenModified = actualWhenModified(blog.whenCreated, blog.whenModified)

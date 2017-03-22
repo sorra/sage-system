@@ -8,11 +8,12 @@ import org.springframework.web.servlet.ModelAndView
 import sage.domain.commons.BadArgumentException
 import sage.entity.Feedback
 import sage.web.auth.Auth
-import javax.servlet.http.HttpServletRequest
+import sage.web.context.BaseController
 
 @Controller
 @RequestMapping("/feedbacks")
-class FeedbackController {
+class FeedbackController : BaseController() {
+
   @RequestMapping
   fun show(): ModelAndView {
     val uid = Auth.uid()
@@ -23,7 +24,7 @@ class FeedbackController {
   @RequestMapping("/new", method = arrayOf(RequestMethod.POST))
   fun create(@RequestParam content: String,
              @RequestParam(defaultValue = "") name: String,
-             @RequestParam(defaultValue = "") email: String, request: HttpServletRequest): String {
+             @RequestParam(defaultValue = "") email: String): String {
     if (content.isEmpty()) throw BadArgumentException("请输入反馈内容")
     val ip = request.getHeader("X-Real-IP").let {
       if (it.isNullOrEmpty()) request.remoteAddr

@@ -13,15 +13,12 @@ import sage.service.UserService
 import sage.transfer.ConversationPreview
 import sage.transfer.MessageList
 import sage.web.auth.Auth
+import sage.web.context.BaseController
 import java.util.*
 
 @Controller
 @RequestMapping("/messages")
-open class MessageController @Autowired constructor(
-    private val messageService: MessageService,
-    private val userService: UserService,
-    private val relationService: RelationService
-) {
+open class MessageController : BaseController() {
 
   @RequestMapping
   open fun messages(@RequestParam(required = false) withUserId: Long?, model: ModelMap): String {

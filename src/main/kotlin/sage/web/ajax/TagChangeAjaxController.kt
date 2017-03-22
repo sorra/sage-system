@@ -1,4 +1,4 @@
-package sage.web.api
+package sage.web.ajax
 
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.RequestMapping
@@ -10,22 +10,22 @@ import sage.web.auth.Auth
 
 @RestController
 @RequestMapping("/tag-change", method = arrayOf(RequestMethod.POST))
-open class TagChangeApi {
+class TagChangeAjaxController {
   @Autowired
   private val tagChangeService: TagChangeService? = null
 
   @RequestMapping("/accept")
-  open fun acceptRequest(@RequestParam requestId: Long?) {
-    tagChangeService!!.acceptRequest(Auth.checkUid(), requestId!!)
+  fun acceptRequest(@RequestParam requestId: Long) {
+    tagChangeService!!.acceptRequest(Auth.checkUid(), requestId)
   }
 
   @RequestMapping("/reject")
-  open fun rejectRequest(@RequestParam requestId: Long?) {
-    tagChangeService!!.rejectRequest(Auth.checkUid(), requestId!!)
+  fun rejectRequest(@RequestParam requestId: Long) {
+    tagChangeService!!.rejectRequest(Auth.checkUid(), requestId)
   }
 
   @RequestMapping("/cancel")
-  open fun cancelRequest(@RequestParam requestId: Long?) {
-    tagChangeService!!.cancelRequest(Auth.checkUid(), requestId!!)
+  fun cancelRequest(@RequestParam requestId: Long) {
+    tagChangeService!!.cancelRequest(Auth.checkUid(), requestId)
   }
 }

@@ -15,7 +15,7 @@ class StreamService
     private val transfers: TransferService,
     private val heedService: HeedService) {
 
-  @JvmOverloads fun istream(userId: Long, edge: Edge = Edge.none()): Stream {
+  fun istream(userId: Long, edge: Edge): Stream {
     // Deduplicate
     val mergedSet = HashSet<TweetView>()
     // TweetsByFollowings must be added first, they are prior

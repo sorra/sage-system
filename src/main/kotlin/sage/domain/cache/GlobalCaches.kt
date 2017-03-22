@@ -26,14 +26,14 @@ object GlobalCaches {
       }
     }
 
-    operator fun get(name: String, page: Int, size: Int): Pair<List<V>, Int> {
-      val key = "$name?page=$page&size=$size"
+    operator fun get(name: String, pageIndex: Int, pageSize: Int): Pair<List<V>, Int> {
+      val key = "$name?pageIndex=$pageIndex&pageSize=$pageSize"
       return cache.getIfPresent(key)?.run {
         val (ids, pagesCount) = this
         find.where().`in`("id", ids).findList().sortedByDescending { it.id } to pagesCount
       } ?: run {
-        val entities = find.orderBy("id desc").findPagedList(page - 1, size).list
-        val pagesCount = PaginationLogic.pagesCount(size, getRecordsCount(Blog))
+        val entities = find.orderBy("id desc").findPagedList(pageIndex - 1, pageSize).list
+        val pagesCount = PaginationLogic.pagesCount(pageSize, getRecordsCount(Blog))
         cache.put(key, entities.map { it.id } to pagesCount)
         entities to pagesCount
       }

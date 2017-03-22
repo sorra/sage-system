@@ -1,7 +1,6 @@
 package sage.web.page.admin
 
 import com.avaje.ebean.Ebean
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestMethod
@@ -10,17 +9,15 @@ import org.springframework.web.bind.annotation.ResponseBody
 import org.springframework.web.servlet.ModelAndView
 import sage.domain.concept.Authority
 import sage.entity.User
-import sage.service.UserService
 import sage.web.auth.Auth
-import javax.servlet.http.HttpServletRequest
-import javax.servlet.http.HttpServletResponse
+import sage.web.context.BaseController
 
 @Controller
 @RequestMapping("/admin")
-open class AdminController @Autowired constructor(private val userService: UserService) {
+open class AdminController : BaseController() {
 
   @RequestMapping("/user-info", method = arrayOf(RequestMethod.GET))
-  open fun userInfo(response: HttpServletResponse): String {
+  open fun userInfo(): String {
     if (User.get(Auth.checkUid()).authority != Authority.SITE_ADMIN) {
       response.sendError(404)
     }
@@ -29,7 +26,7 @@ open class AdminController @Autowired constructor(private val userService: UserS
 
   @RequestMapping("/user-info", method = arrayOf(RequestMethod.POST))
   @ResponseBody
-  open fun changeUserInfo(@RequestParam userId: Long, request: HttpServletRequest, response: HttpServletResponse): String {
+  open fun changeUserInfo(@RequestParam userId: Long): String {
     if (User.get(Auth.checkUid()).authority != Authority.SITE_ADMIN) {
       response.sendError(404)
       return ""
@@ -43,7 +40,9 @@ open class AdminController @Autowired constructor(private val userService: UserS
       if (User.byEmail(email) != null) {
         return "Email duplicate: $email"
       }
-      User.get(userId).run { this.email = email; update() }
+      val user = User.get(userId)
+      user.email = email
+      user.update()
     }
     if (password != null) {
       userService.resetPassword(userId, password)
@@ -55,7 +54,7 @@ open class AdminController @Autowired constructor(private val userService: UserS
   }
 
   @RequestMapping("/sql", method = arrayOf(RequestMethod.GET))
-  open fun sql(response: HttpServletResponse): String {
+  open fun sql(): String {
     if (User.get(Auth.checkUid()).authority != Authority.SITE_ADMIN) {
       response.sendError(404)
       return ""
