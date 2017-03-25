@@ -2,11 +2,13 @@ package sage.domain.search
 
 import org.elasticsearch.action.search.SearchResponse
 import org.elasticsearch.action.search.SearchType
+import org.elasticsearch.client.transport.NoNodeAvailableException
 import org.elasticsearch.client.transport.TransportClient
 import org.elasticsearch.common.transport.InetSocketTransportAddress
 import org.elasticsearch.index.query.QueryBuilders.*
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
+import sage.domain.commons.DomainException
 import sage.transfer.BlogView
 import sage.transfer.TweetView
 import sage.web.context.Json
@@ -19,25 +21,23 @@ import javax.annotation.PreDestroy
 class SearchBase {
   private val log = LoggerFactory.getLogger(javaClass)
 
-  private var client: TransportClient? = null
-
-  init {
-    client = TransportClient.builder().build().addTransportAddresses(InetSocketTransportAddress(InetAddress.getByName("localhost"), 9300))
-    if (client!!.connectedNodes().isEmpty()) {
+  private var client: TransportClient = {
+    val client = TransportClient.builder().build().addTransportAddresses(InetSocketTransportAddress(InetAddress.getByName("localhost"), 9300))
+    if (client.connectedNodes().isEmpty()) {
       log.error("Cannot connect to search server!")
-      client!!.close()
-      client = null
+      client.close()
     }
-  }
+    client
+  }()
 
   @PreDestroy
   internal fun shutdown() {
-    client?.close()
+    client.close()
   }
 
   fun setupMappings() {
       val source = String(Files.readAllBytes(Paths.get(javaClass.classLoader.getResource("search/mappings.json")!!.toURI())))
-      client?.run {admin().indices().preparePutMapping(INDEX).setSource(source).setUpdateAllTypes(true).execute()}
+    client.run {admin().indices().preparePutMapping(INDEX).setSource(source).setUpdateAllTypes(true).execute()}
   }
 
   /**
@@ -50,23 +50,39 @@ class SearchBase {
    * *          a transfer object
    */
   fun index(id: Long, obj: Any) {
-    if (client == null)
-      return
-    val json = Json.json(obj)
-    client!!.prepareIndex(INDEX, mapType(obj.javaClass), id.toString()).setSource(json).execute()
+    try {
+      val json = Json.json(obj)
+      client.prepareIndex(INDEX, mapType(obj.javaClass), id.toString()).setSource(json).execute()
+    } catch (e: NoNodeAvailableException) {
+      log.error(e.toString())
+    } catch (e: Exception) {
+      log.error("", e)
+    }
   }
 
   fun delete(clazz: Class<*>, id: Long) {
-    if (client == null)
-      return
-    client!!.prepareDelete().setIndex(INDEX).setType(mapType(clazz)).setId(id.toString()).execute()
+    try {
+      client.prepareDelete().setIndex(INDEX).setType(mapType(clazz)).setId(id.toString()).execute()
+    } catch (e: NoNodeAvailableException) {
+      log.error(e.toString())
+    } catch (e: Exception) {
+      log.error("", e)
+    }
   }
 
   fun search(query: String): SearchResponse {
-    return client!!.prepareSearch(INDEX).setTypes(BLOG, TWEET)
-        .setSearchType(SearchType.DFS_QUERY_THEN_FETCH).setQuery(queryStringQuery(query))
-        .setFrom(0).setSize(60).setExplain(true)
-        .execute().actionGet()
+    try {
+      return client.prepareSearch(INDEX).setTypes(BLOG, TWEET)
+          .setSearchType(SearchType.DFS_QUERY_THEN_FETCH).setQuery(queryStringQuery(query))
+          .setFrom(0).setSize(60).setExplain(true)
+          .execute().actionGet()
+    } catch (e: NoNodeAvailableException) {
+      log.error(e.toString())
+      throw DomainException("搜索服务出问题了！")
+    } catch (e: Exception) {
+      log.error("", e)
+      throw e
+    }
   }
 
   companion object {
