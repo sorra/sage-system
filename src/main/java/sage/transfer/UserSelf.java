@@ -18,57 +18,75 @@ public class UserSelf {
 
   private Collection<TagLabel> topTags = new ArrayList<>();
 
-  UserSelf() {}
-  
-  public UserSelf(User user, int _followingCount, int _followerCount, int _blogCount,
-      int _tweetCount,
-      Collection<TagLabel> _topTags) {
-    id = user.getId();
-    name = user.getName();
-    avatar = user.getAvatar();
-    intro = user.getIntro();
-
-    followingCount = _followingCount;
-    followerCount = _followerCount;
-    blogCount = _blogCount;
-    tweetCount = _tweetCount;
-
-    topTags.addAll(_topTags);
-  }
-
   public long getId() {
     return id;
+  }
+
+  public void setId(long id) {
+    this.id = id;
   }
 
   public String getName() {
     return name;
   }
 
+  public void setName(String name) {
+    this.name = name;
+  }
+
   public String getAvatar() {
     return avatar;
+  }
+
+  public void setAvatar(String avatar) {
+    this.avatar = avatar;
   }
 
   public String getIntro() {
     return intro;
   }
 
+  public void setIntro(String intro) {
+    this.intro = intro;
+  }
+
   public int getFollowingCount() {
     return followingCount;
+  }
+
+  public void setFollowingCount(int followingCount) {
+    this.followingCount = followingCount;
   }
 
   public int getFollowerCount() {
     return followerCount;
   }
 
+  public void setFollowerCount(int followerCount) {
+    this.followerCount = followerCount;
+  }
+
   public int getBlogCount() {
     return blogCount;
+  }
+
+  public void setBlogCount(int blogCount) {
+    this.blogCount = blogCount;
   }
 
   public int getTweetCount() {
     return tweetCount;
   }
 
+  public void setTweetCount(int tweetCount) {
+    this.tweetCount = tweetCount;
+  }
+
   public Collection<TagLabel> getTopTags() {
     return topTags;
+  }
+
+  public void setTopTags(Collection<TagLabel> topTags) {
+    this.topTags = topTags;
   }
 }

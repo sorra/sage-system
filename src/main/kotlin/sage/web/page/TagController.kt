@@ -9,7 +9,6 @@ import sage.entity.Tag
 import sage.service.TagChangeService
 import sage.service.TagService
 import sage.transfer.BlogPreview
-import sage.transfer.TagLabel
 import sage.web.auth.Auth
 import sage.web.context.FrontMap
 
@@ -37,9 +36,9 @@ open class TagController @Autowired constructor(
     val blogs = Blog.where().`in`("tags.id", tag.getQueryTags().map { it.id }).findList()
         .sortedByDescending { it.whenCreated }.map(::BlogPreview)
 
-    val (coreTags, nonCoreTags) = tag.children.map(::TagLabel).partition { it.isCore }
+    val (coreTags, nonCoreTags) = tag.children.map { it.toTagLabel() }.partition { it.isCore }
     val relatedTags = null
-    val sameNameTags = tagService.getSameNameTags(id).map(::TagLabel)
+    val sameNameTags = tagService.getSameNameTags(id).map { it.toTagLabel() }
 
     return ModelAndView("tag-page")
         .addObject("tag", tag)

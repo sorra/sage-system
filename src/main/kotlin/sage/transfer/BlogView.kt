@@ -25,7 +25,7 @@ class BlogView {
 
   constructor(blog: Blog, showInputContent: Boolean) {
     id = blog.id
-    author = UserLabel(blog.author)
+    author = blog.author.toUserLabel()
 
     title = blog.title
     if (showInputContent) inputContent = blog.inputContent
@@ -33,7 +33,7 @@ class BlogView {
     whenCreated = blog.whenCreated
     whenModified = actualWhenModified(blog.whenCreated, blog.whenModified)
 
-    tags = blog.tags.map(::TagLabel)
+    tags = blog.tags.map { it.toTagLabel() }
     tweetId = blog.tweetId
 
     blog.stat()?.let {

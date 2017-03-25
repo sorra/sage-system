@@ -18,7 +18,7 @@ class UserService {
   private val log = LoggerFactory.getLogger(javaClass)
 
   fun getSelf(userId: Long): UserSelf {
-    return UserSelf(User.get(userId),
+    return User.get(userId).toUserSelf(
         Follow.followingsCount(userId),
         Follow.followersCount(userId),
         Blog.where().eq("author", User.ref(userId)).findRowCount(),
@@ -32,7 +32,7 @@ class UserService {
   }
 
   fun getUserCard(cuid: Long?, userId: Long): UserCard {
-    return UserCard(User.get(userId),
+    return User.get(userId).toUserCard(
         Follow.followersCount(userId),
         Blog.where().eq("author", User.ref(userId)).findRowCount(),
         Tweet.where().eq("author", User.ref(userId)).findRowCount(),
@@ -42,7 +42,7 @@ class UserService {
   }
 
   fun getUserLabel(userId: Long): UserLabel {
-    return UserLabel(User.get(userId))
+    return User.get(userId).toUserLabel()
   }
 
   fun changeInfo(userId: Long, name: String?, intro: String?, avatarPath: String?) {
@@ -186,7 +186,7 @@ class UserService {
     }
     tagCounters.sort()
 
-    return tagCounters.map { TagLabel(it.tag) }
+    return tagCounters.map { it.tag.toTagLabel() }
   }
 
   fun topTags(userId: Long) = userTags(userId).take(5)

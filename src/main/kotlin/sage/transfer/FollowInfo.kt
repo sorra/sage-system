@@ -14,7 +14,7 @@ class FollowInfo {
   }
 
   constructor(follow: Follow) {
-    user = UserLabel(follow.target)
-    tags = follow.tags.map { TagLabel(it) }
+    user = follow.target.toUserLabel()
+    tags = follow.tags.map { it.toTagLabel() }
   }
 }

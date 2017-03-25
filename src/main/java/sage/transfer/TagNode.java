@@ -11,30 +11,35 @@ public class TagNode {
   private boolean isCore;
   private Collection<TagNode> children = new ArrayList<>();
 
-  TagNode() {}
-  
-  public TagNode(Tag tag) {
-    id = tag.getId();
-    name = tag.getName();
-    isCore = tag.isCore();
-    for (Tag child : tag.getChildren()) {
-      if(child.isCore()) children.add(new TagNode(child));
-    }
-  }
-
   public Long getId() {
     return id;
+  }
+
+  public void setId(Long id) {
+    this.id = id;
   }
 
   public String getName() {
     return name;
   }
-  
+
+  public void setName(String name) {
+    this.name = name;
+  }
+
   public boolean isCore() {
     return isCore;
   }
 
+  public void setCore(boolean core) {
+    isCore = core;
+  }
+
   public Collection<TagNode> getChildren() {
     return children;
+  }
+
+  public void setChildren(Collection<TagNode> children) {
+    this.children = children;
   }
 }

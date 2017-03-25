@@ -81,6 +81,6 @@ class RelationService
   fun friends(userId: Long): List<UserLabel> {
     val followingUsers = followings(userId).map { it.target }
     val followerUsers = followers(userId).map { it.source }
-    return followingUsers.intersect(followerUsers).map { UserLabel(it) }
+    return followingUsers.intersect(followerUsers).map(User::toUserLabel)
   }
 }

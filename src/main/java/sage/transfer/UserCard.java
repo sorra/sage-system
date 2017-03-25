@@ -25,74 +25,99 @@ public class UserCard {
   private List<TagLabel> tags = new ArrayList<>();
   private UserCardFollow follow;
 
-  UserCard() {}
-  
-  public UserCard(User user, int _followerCount, int _blogCount, int _tweetCount,
-      Follow followFromCurrentUser, Follow followToCurrentUser, Collection<TagLabel> _tags) {
-    id = user.getId();
-    name = user.getName();
-    avatar = user.getAvatar();
-    intro = user.getIntro();
-    whenCreated = user.getWhenCreated();
-
-    followerCount = _followerCount;
-    blogCount = _blogCount;
-    tweetCount = _tweetCount;
-
-    isFollowing = followFromCurrentUser != null;
-    isFollower = followToCurrentUser != null;
-
-    tags.addAll(_tags);
-    if (followFromCurrentUser != null) {
-      follow = new UserCardFollow(followFromCurrentUser);
-    }
-  }
-
   public long getId() {
     return id;
+  }
+
+  public void setId(long id) {
+    this.id = id;
   }
 
   public String getName() {
     return name;
   }
 
+  public void setName(String name) {
+    this.name = name;
+  }
+
   public String getAvatar() {
     return avatar;
+  }
+
+  public void setAvatar(String avatar) {
+    this.avatar = avatar;
   }
 
   public String getIntro() {
     return intro;
   }
 
+  public void setIntro(String intro) {
+    this.intro = intro;
+  }
+
   public Date getWhenCreated() {
     return whenCreated;
+  }
+
+  public void setWhenCreated(Date whenCreated) {
+    this.whenCreated = whenCreated;
   }
 
   public int getFollowerCount() {
     return followerCount;
   }
 
+  public void setFollowerCount(int followerCount) {
+    this.followerCount = followerCount;
+  }
+
   public int getBlogCount() {
     return blogCount;
+  }
+
+  public void setBlogCount(int blogCount) {
+    this.blogCount = blogCount;
   }
 
   public int getTweetCount() {
     return tweetCount;
   }
 
-  public boolean getIsFollowing() {
+  public void setTweetCount(int tweetCount) {
+    this.tweetCount = tweetCount;
+  }
+
+  public boolean isFollowing() {
     return isFollowing;
   }
 
-  public boolean getIsFollower() {
+  public void setFollowing(boolean following) {
+    isFollowing = following;
+  }
+
+  public boolean isFollower() {
     return isFollower;
+  }
+
+  public void setFollower(boolean follower) {
+    isFollower = follower;
   }
 
   public List<TagLabel> getTags() {
     return tags;
   }
 
+  public void setTags(List<TagLabel> tags) {
+    this.tags = tags;
+  }
+
   public UserCardFollow getFollow() {
     return follow;
+  }
+
+  public void setFollow(UserCardFollow follow) {
+    this.follow = follow;
   }
 }

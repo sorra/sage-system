@@ -44,7 +44,7 @@ open class HomeController : BaseController() {
 
     val tags = GlobalCaches.tagsCache["hotTags", {
       tagService.hotTags(5)
-    }].map(::TagLabel)
+    }].map { it.toTagLabel() }
 
     return ModelAndView("landing").addObject("blogs", blogs).addObject("stream", stream).addObject("tags", tags)
   }

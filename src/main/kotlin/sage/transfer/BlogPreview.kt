@@ -20,14 +20,14 @@ class BlogPreview {
 
   constructor(blog: Blog) {
     id = blog.id
-    author = UserLabel(blog.author)
+    author = blog.author.toUserLabel()
 
     title = blog.title
     summary = Strings.omit(blog.content, 103)
     whenCreated = blog.whenCreated
     whenModified = actualWhenModified(blog.whenCreated, blog.whenModified)
 
-    tags = blog.tags.map(::TagLabel)
+    tags = blog.tags.map { it.toTagLabel() }
     tweetId = blog.tweetId
     blog.stat()?.let {
       commentCount = it.comments

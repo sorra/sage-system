@@ -192,9 +192,9 @@ create table resource_list_entity (
 create table tag (
   id                            bigint auto_increment not null,
   name                          varchar(255),
+  parent_id                     bigint,
   is_core                       tinyint(1) default 0,
   intro                         TEXT,
-  parent_id                     bigint,
   creator_id                    bigint,
   version                       bigint not null,
   when_created                  datetime(6) not null,
@@ -269,10 +269,10 @@ create table tweet_stat (
 create table user (
   id                            bigint auto_increment not null,
   email                         varchar(255),
-  name                          varchar(255),
   password                      varchar(255),
-  intro                         varchar(255),
+  name                          varchar(255),
   avatar                        varchar(255),
+  intro                         varchar(255),
   authority                     integer,
   version                       bigint not null,
   when_created                  datetime(6) not null,

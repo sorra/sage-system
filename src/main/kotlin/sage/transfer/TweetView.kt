@@ -49,7 +49,7 @@ class TweetView {
     }
     midForwards = tweet.midForwards()
     for (tag in tweet.tags) {
-      tags.add(TagLabel(tag))
+      tags.add(tag.toTagLabel())
     }
 
     tweet.stat()?.let {

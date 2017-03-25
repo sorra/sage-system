@@ -14,7 +14,7 @@ class Blog : BaseModel {
   var inputContent: String
 
   @Column(columnDefinition = "TEXT")
-  @Lob @Basic
+  @Lob
   var content: String
 
   @ManyToOne(optional = false)

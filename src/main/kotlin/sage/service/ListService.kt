@@ -35,7 +35,7 @@ class ListService {
   }
 
   fun getFollowList(id: Long): FollowList {
-    return FollowListLite.fromEntity(FollowListEntity.get(id)).toFull({UserLabel(User.get(it)) }) { TagLabel(Tag.get(it)) }
+    return FollowListLite.fromEntity(FollowListEntity.get(id)).toFull({ User.get(it).toUserLabel() }) { Tag.get(it).toTagLabel() }
   }
 
   fun addFollowList(fcLite: FollowListLite, userId: Long): Long {
@@ -65,7 +65,7 @@ class ListService {
 
   fun followListsOfOwner(ownerId: Long): List<FollowList> {
     return FollowListEntity.byOwner(ownerId).map { l ->
-      FollowListLite.fromEntity(l).toFull({ UserLabel(User.get(it)) }, { TagLabel(Tag.get(it)) })
+      FollowListLite.fromEntity(l).toFull({ User.get(it).toUserLabel() }, { Tag.get(it).toTagLabel() })
     }
   }
 

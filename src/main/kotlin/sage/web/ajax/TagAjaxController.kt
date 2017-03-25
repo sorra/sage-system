@@ -20,6 +20,6 @@ class TagAjaxController : BaseController() {
 
   @RequestMapping("/suggestions")
   fun suggestions(@RequestParam q: String): List<TagLabel> {
-    return Tag.query().where("instr(name, :q)").setParameter("q", q).findList().map { TagLabel(it) }
+    return Tag.query().where("instr(name, :q)").setParameter("q", q).findList().map { it.toTagLabel() }
   }
 }

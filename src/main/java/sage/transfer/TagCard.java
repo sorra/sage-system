@@ -16,37 +16,36 @@ public class TagCard {
   private List<TagLabel> chainUp = new ArrayList<>();
   private Collection<TagLabel> children = new HashSet<>();
 
-  TagCard() {}
-  
-  public TagCard(Tag tag) {
-    id = tag.getId();
-    name = tag.getName();
-    intro = tag.getIntro();
-    isCore = tag.isCore();
-    
-    for (Tag node : tag.chainUp()) {
-      chainUp.add(new TagLabel(node));
-    }
-    
-    for (Tag child : tag.getChildren()) {
-      children.add(new TagLabel(child));
-    }
-  }
-
   public long getId() {
     return id;
+  }
+
+  public void setId(long id) {
+    this.id = id;
   }
 
   public String getName() {
     return name;
   }
 
+  public void setName(String name) {
+    this.name = name;
+  }
+
   public String getIntro() {
     return intro;
   }
 
+  public void setIntro(String intro) {
+    this.intro = intro;
+  }
+
   public boolean isCore() {
     return isCore;
+  }
+
+  public void setCore(boolean core) {
+    isCore = core;
   }
 
   /**
@@ -55,9 +54,17 @@ public class TagCard {
   public List<TagLabel> getChainUp() {
     return chainUp;
   }
-  
+
+  public void setChainUp(List<TagLabel> chainUp) {
+    this.chainUp = chainUp;
+  }
+
   public Collection<TagLabel> getChildren() {
     return children;
+  }
+
+  public void setChildren(Collection<TagLabel> children) {
+    this.children = children;
   }
 
   @Override

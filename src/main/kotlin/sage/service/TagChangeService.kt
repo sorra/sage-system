@@ -13,7 +13,6 @@ import sage.entity.TagChangeRequest.Type
 import sage.entity.User
 import sage.transfer.TagChangeRequestCard
 import sage.transfer.TagLabel
-import sage.transfer.UserLabel
 
 @Service
 class TagChangeService {
@@ -72,10 +71,10 @@ class TagChangeService {
   private val asTagChangeRequestCard = {req: TagChangeRequest ->
     TagChangeRequestCard().apply {
       id = req.id
-      tag = TagLabel(req.tag)
-      submitter = UserLabel(req.submitter)
+      tag = req.tag.toTagLabel()
+      submitter = req.submitter.toUserLabel()
       if (req.transactor != null) {
-        transactor = UserLabel(req.transactor)
+        transactor = req.transactor?.toUserLabel()
       }
       statusKey = req.status.name
       status = req.status.desc

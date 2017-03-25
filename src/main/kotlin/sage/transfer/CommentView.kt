@@ -24,8 +24,8 @@ class CommentView {
     authorName = comment.author.name
     avatar = comment.author.avatar
     whenCreated = comment.whenCreated
-    comment.replyUserId?.apply {
-      replyToUser = UserLabel(User.get(this))
+    comment.replyUserId?.let {
+      replyToUser = User.get(it).toUserLabel()
     }
   }
 }

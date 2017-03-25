@@ -1,35 +1,24 @@
 package sage.entity
 
 import sage.domain.commons.DomainException
+import sage.transfer.TagCard
+import sage.transfer.TagLabel
+import sage.transfer.TagNode
 import java.util.*
 import javax.persistence.*
 
 @Entity
-class Tag : BaseModel {
-
-  var name: String
-
-  var isCore: Boolean = false
-
-  @Column(columnDefinition = "TEXT")
-  @Lob @Basic
-  var intro: String
-
-  @ManyToOne
-  var parent: Tag?
+class Tag(
+    var name: String,
+    @ManyToOne
+    var parent: Tag?,
+    var isCore: Boolean,
+    @Column(columnDefinition = "TEXT") //@Lob @Basic
+    var intro: String = "",
+    val creatorId: Long) : BaseModel() {
 
   @OneToMany(mappedBy = "parent")
   var children: Set<Tag> = HashSet()
-
-  val creatorId: Long
-
-  @JvmOverloads constructor(name: String, parent: Tag?, isCore: Boolean, intro: String = "", creatorId: Long) {
-    this.name = name
-    this.parent = parent
-    this.isCore = isCore
-    this.intro = intro
-    this.creatorId = creatorId
-  }
 
   /**
    * @return a chain from itself to ancestors, excluding root; is empty for root
@@ -74,6 +63,43 @@ class Tag : BaseModel {
     }
   }
 
+  fun toTagNode(): TagNode {
+    val t = TagNode()
+    t.id = id
+    t.name = name
+    t.isCore = isCore
+    t.children = children
+        .filter { it.isCore }
+        .map { it.toTagNode() }
+    return t
+  }
+
+  fun toTagCard(): TagCard {
+    val t = TagCard()
+    t.id = id
+    t.name = name
+    t.intro = intro
+    t.isCore = isCore
+
+    for (node in chainUp()) {
+      t.chainUp.add(node.toTagLabel())
+    }
+
+    for (child in children) {
+      t.children.add(child.toTagLabel())
+    }
+    return t
+  }
+
+  fun toTagLabel(): TagLabel {
+    val t = TagLabel()
+    t.id = id
+    t.name = name
+    t.isCore = isCore
+    t.chainStr = chainUp().asReversed().map(Tag::name).joinToString("->")
+    return t
+  }
+  
   companion object : Find<Long, Tag>() {
     val ROOT_ID: Long = 1
     val ROOT_NAME = "无"
