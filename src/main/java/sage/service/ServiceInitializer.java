@@ -100,7 +100,7 @@ public class ServiceInitializer {
     relationService.follow(centos, bethia, singletonList(art));
   }
 
-  private static final short MARKDOWN = Blog.Companion.getMARKDOWN();
+  private static final String MARKDOWN = "markdown";
 
   private void post() {
     Blog posted;

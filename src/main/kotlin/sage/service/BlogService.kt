@@ -1,13 +1,15 @@
 package sage.service
 
 import com.avaje.ebean.Ebean
+import org.markdown4j.Markdown4jProcessor
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import sage.domain.cache.GlobalCaches
 import sage.domain.commons.*
 import sage.entity.*
 import sage.transfer.BlogView
-import sage.util.Strings
+import sage.util.JsoupUtil
+import java.sql.Timestamp
 import java.util.*
 
 @Service
@@ -18,11 +20,11 @@ class BlogService
     private val searchService: SearchService,
     private val notifService: NotificationService) {
 
-  fun post(userId: Long, title: String, inputContent: String, tagIds: Set<Long>, contentType: Short = Blog.MARKDOWN): Blog {
+  fun post(userId: Long, title: String, inputContent: String, tagIds: Set<Long>, contentType: String): Blog {
     checkLength(title, inputContent)
-    val (hyperContent, mentionedIds) = processContent(inputContent, contentType)
 
-    val blog = Blog(title, inputContent, hyperContent, User.ref(userId), Tag.multiGet(tagIds), contentType)
+    val blog = Blog(title, inputContent, "", User.ref(userId), Tag.multiGet(tagIds), Blog.contentTypeValue(contentType))
+    val mentionedIds = renderAndGetMentions(blog)
     Ebean.execute {
       blog.save()
       BlogStat(id = blog.id, whenCreated = blog.whenCreated).save()
@@ -38,27 +40,27 @@ class BlogService
     return blog
   }
 
-  fun edit(userId: Long, blogId: Long, title: String, inputContent: String, tagIds: Set<Long>, contentType: Short = Blog.MARKDOWN): Blog {
+  fun edit(userId: Long, blogId: Long, title: String, inputContent: String, tagIds: Set<Long>, contentType: String): Blog {
     checkLength(title, inputContent)
     val blog = Blog.get(blogId)
     if (userId != blog.author.id) {
       throw DomainException("User[%s] is not the author of Blog[%s]", userId, blogId)
     }
-    val (hyperContent, mentionedIds) = processContent(inputContent, contentType)
+
     val oldInputContent = blog.inputContent
-    val oldContentType = blog.contentType
 
     blog.title = title
     blog.inputContent = inputContent
-    blog.content = hyperContent
+    blog.contentType = Blog.contentTypeValue(contentType)
+    val mentionedIds = renderAndGetMentions(blog)
     blog.tags = Tag.multiGet(tagIds)
-    blog.contentType = contentType
+    blog.whenEdited = Timestamp(System.currentTimeMillis())
     blog.update()
 
     userService.updateUserTag(userId, tagIds)
 
     if (mentionedIds.isNotEmpty()) {
-      val (old, oldMentionedIds) = processContent(oldInputContent, oldContentType)
+      val (old, oldMentionedIds) = parseMentions(oldInputContent)
       (mentionedIds - oldMentionedIds).forEach { atId -> notifService.mentionedByBlog(atId, userId, blogId) }
     }
 
@@ -107,14 +109,26 @@ class BlogService
     }
   }
 
-  private fun processContent(inputContent: String, contentType: Short): Pair<String, HashSet<Long>> {
-    var content = inputContent
-    val mentionedIds = HashSet<Long>()
-    content = ReplaceMention.with {User.byName(it)}.apply(content, mentionedIds)
-    if (contentType == Blog.MARKDOWN) {
-      content = Strings.escapeHtmlTag(content)
+  private fun renderAndGetMentions(blog: Blog) : Set<Long> {
+    var content = blog.inputContent
+
+    val pair = parseMentions(content)
+    content = pair.first
+    val mentionedIds = pair.second
+
+    if (blog.contentType == Blog.MARKDOWN) {
+      content = Markdown4jProcessor().process(content)
+      content = JsoupUtil.clean(content)
+    } else {
+      content = JsoupUtil.clean(content)
     }
-    return Pair(content, mentionedIds)
+    blog.content = content
+    return mentionedIds
+  }
+
+  private fun parseMentions(text: String): Pair<String, Set<Long>> {
+    val mentionedIds = HashSet<Long>()
+    return ReplaceMention.with {User.byName(it)}.apply(text, mentionedIds) to mentionedIds
   }
 
   companion object {

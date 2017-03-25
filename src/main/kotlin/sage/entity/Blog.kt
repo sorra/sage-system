@@ -1,6 +1,7 @@
 package sage.entity
 
 import com.avaje.ebean.annotation.SoftDelete
+import java.sql.Timestamp
 import java.util.*
 import javax.persistence.*
 
@@ -25,6 +26,8 @@ class Blog : BaseModel {
 
   var contentType: Short
 
+  var whenEdited: Timestamp? = null
+
   @Column(nullable = false)
   var tweetId: Long = 0
 
@@ -45,6 +48,16 @@ class Blog : BaseModel {
   companion object : Find<Long, Blog>() {
     val MARKDOWN: Short = 1
     val RICHTEXT: Short = 2
+    fun contentTypeValue(contentType: String): Short = when(contentType.toLowerCase()) {
+      "markdown" -> MARKDOWN
+      "richtext" -> RICHTEXT
+      else -> 0
+    }
+    fun contentTypeString(contentType: Short): String = when(contentType) {
+      MARKDOWN -> "markdown"
+      RICHTEXT -> "richtext"
+      else -> ""
+    }
 
     fun get(id: Long) = getNonNull(Blog::class, id)
 

@@ -5,6 +5,7 @@ create table blog (
   content                       TEXT,
   author_id                     bigint not null,
   content_type                  smallint,
+  when_edited                   datetime(6),
   tweet_id                      bigint not null,
   version                       bigint not null,
   when_created                  datetime(6) not null,

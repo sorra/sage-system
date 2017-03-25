@@ -68,5 +68,10 @@ function write_contentArea() {
 
 function write_contentRefresh() {
   var input = $('#content').val()
-  $('#preview').html(marked(input))
+  var contentType = $('#contentType').val()
+  if (contentType == 'markdown') {
+    $('#preview').html(marked(input))
+  } else {
+    $('#preview').html(input)
+  }
 }

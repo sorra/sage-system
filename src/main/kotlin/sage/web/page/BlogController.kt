@@ -30,10 +30,11 @@ open class BlogController : BaseController() {
   @RequestMapping("/new", method = arrayOf(POST))
   @ResponseBody
   open fun create(@RequestParam title: String, @RequestParam content: String,
+                  @RequestParam contentType: String,
                   @RequestParam(required = false) draftId: Long?): String {
     val uid = Auth.checkUid()
     val tagIds = tagIds()
-    val blog = blogService.post(uid, title, content, tagIds).run { BlogView(this) }
+    val blog = blogService.post(uid, title, content, tagIds, contentType).run { BlogView(this) }
     draftId?.let { Draft.deleteById(it) }
     return "/blogs/${blog.id}"
   }
@@ -41,7 +42,7 @@ open class BlogController : BaseController() {
   @RequestMapping("/{id}/edit", method = arrayOf(GET))
   open fun editPage(@PathVariable id: Long): ModelAndView {
     val uid = Auth.checkUid()
-    val blog = Blog.get(id).run { BlogView(this) }
+    val blog = Blog.get(id).run { BlogView(this, showInputContent = true) }
     if (uid != blog.author?.id) {
       throw DomainException("无权编辑: User[$uid] cannot edit Blog[${blog.id}]")
     }
@@ -54,10 +55,11 @@ open class BlogController : BaseController() {
   @RequestMapping("/{id}/edit", method = arrayOf(POST))
   @ResponseBody
   open fun edit(@PathVariable id: Long, @RequestParam title: String, @RequestParam content: String,
+                @RequestParam contentType: String,
                 @RequestParam(required = false) draftId: Long?): String {
     val uid = Auth.checkUid()
     val tagIds = tagIds()
-    blogService.edit(uid, id, title, content, tagIds)
+    blogService.edit(uid, id, title, content, tagIds, contentType)
     draftId?.let { Draft.deleteById(it) }
     return "/blogs/$id"
   }

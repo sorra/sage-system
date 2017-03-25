@@ -88,12 +88,7 @@ $!{include("navbar.httl")}
 $!{alljs}
 <script>
   setup(humanTime_setup, stream_setup)
-  $(document).ready(function() {
-    $('.summary').warnEmpty().each(function(){
-      $(this).html(marked($(this).text()))
-    })
-    window.streamModel = {} // stub
-  })
+  window.streamModel = {} // stub
 </script>
 </body>
 </html>

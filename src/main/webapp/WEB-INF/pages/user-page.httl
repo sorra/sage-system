@@ -40,10 +40,6 @@ $!{alljs}
 <script type="text/javascript">
   setup(user_setup, tag_setup, humanTime_setup, stream_setup)
   $(document).ready(function() {
-		$('.summary').warnEmpty().each(function(){
-      $(this).html(marked($(this).text()))
-    })
-
     var $thisUser = $('.side .user-card').css('border', '').css('border-radius', '')
     if (window.frontMap.isSelfPage) {
       $thisUser.find('.avatar').attr('href', '/user-info')

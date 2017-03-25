@@ -92,10 +92,6 @@ $!{alljs}
 <script type="text/javascript">
 setup(humanTime_setup, tag_setup, stream_setup, user_setup)
 $(document).ready(function(){
-  $('.summary').warnEmpty().each(function(){
-    $(this).html(marked($(this).text()))
-  })
-
 	var tagId = window.frontMap.id
 	getStream('/stream/tag/' + tagId)
 	getTagChain(tagId, $('#chain'))

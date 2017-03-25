@@ -9,10 +9,11 @@ class BlogView {
   var id: Long = 0
   var author: UserLabel? = null
   var title: String = ""
+  var contentType: String = ""
   var inputContent: String = ""
   var content: String = ""
   var whenCreated: Timestamp? = null
-  var whenModified: Timestamp? = null
+  var whenEdited: Timestamp? = null
   var tags: List<TagLabel> = arrayListOf()
   var tweetId: Long = 0
 
@@ -28,10 +29,11 @@ class BlogView {
     author = blog.author.toUserLabel()
 
     title = blog.title
+    contentType = Blog.contentTypeString(blog.contentType)
     if (showInputContent) inputContent = blog.inputContent
     content = blog.content
     whenCreated = blog.whenCreated
-    whenModified = actualWhenModified(blog.whenCreated, blog.whenModified)
+    whenEdited = actualWhenEdited(blog.whenCreated, blog.whenEdited)
 
     tags = blog.tags.map { it.toTagLabel() }
     tweetId = blog.tweetId

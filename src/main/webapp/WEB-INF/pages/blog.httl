@@ -26,8 +26,8 @@ $!{include("navbar.httl")}
 		<h3 class="title">${blog.title}</h3>
 		$!{userLabel(blog.author)}
 		发表于 $!{spanHumanTime(blog.whenCreated)}
-		#if(blog.whenModified)
-		修改于 $!{spanHumanTime(blog.whenModified)}
+		#if(blog.whenEdited)
+		修改于 $!{spanHumanTime(blog.whenEdited)}
 		#end
 		阅读数${blog.views}
 		#if(userSelf.id == blog.author.id)
@@ -38,7 +38,6 @@ $!{include("navbar.httl")}
 				$!{tagLabel(each)}
 			#end
 		</div>
-		<div id="loading-alert" class="alert alert-info" role="alert">Markdown正在加载...</div>
 		<div class="content">$!{blog.content}</div>
 		<div>
 			$!{include("btn_like.httl", ["likes": blog.likes, "isLiked": isLiked, "prefix": "/blogs/"+blog.id.toString])}
@@ -50,11 +49,6 @@ $!{alljs}
 <script type="text/javascript">
 	setup(humanTime_setup, tag_setup, user_setup)
 	$(document).ready(function() {
-		$('.content').warnEmpty().each(function(){
-			var $this = $(this)
-			$this.html(marked($this.text()))
-		});
-		$('#loading-alert').hide()
 		btnLike_init()
 
 		var id = $('.blog').data('id')

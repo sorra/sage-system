@@ -2,11 +2,11 @@ package sage.transfer
 
 import java.sql.Timestamp
 
-fun actualWhenModified(whenCreated: Timestamp?, whenModified: Timestamp?): Timestamp? {
-  if (whenCreated == null || whenModified == null) {
+fun actualWhenEdited(whenCreated: Timestamp?, whenEdited: Timestamp?): Timestamp? {
+  if (whenCreated == null || whenEdited == null) {
     return null
-  } else if (whenModified > whenCreated) {
-    return whenModified
+  } else if (whenEdited > whenCreated) {
+    return whenEdited
   }
   return null
 }

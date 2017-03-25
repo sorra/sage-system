@@ -12,7 +12,7 @@ class BlogPreview {
   var title: String = ""
   var summary: String = ""
   var whenCreated: Timestamp? = null
-  var whenModified: Timestamp? = null
+  var whenEdited: Timestamp? = null
   var tags: List<TagLabel> = arrayListOf()
   var tweetId: Long = 0
   var commentCount: Int = 0
@@ -23,9 +23,13 @@ class BlogPreview {
     author = blog.author.toUserLabel()
 
     title = blog.title
-    summary = Strings.omit(blog.content, 103)
+    if (blog.contentType == Blog.MARKDOWN) {
+      summary = Strings.escapeHtmlTag(Strings.omit(blog.inputContent, 103))
+    } else {
+      summary = Strings.escapeHtmlTag(Strings.omit(blog.content, 103))
+    }
     whenCreated = blog.whenCreated
-    whenModified = actualWhenModified(blog.whenCreated, blog.whenModified)
+    whenEdited = actualWhenEdited(blog.whenCreated, blog.whenEdited)
 
     tags = blog.tags.map { it.toTagLabel() }
     tweetId = blog.tweetId

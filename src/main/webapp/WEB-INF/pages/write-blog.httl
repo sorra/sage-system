@@ -39,6 +39,10 @@ $!{include("navbar.httl")}
 	<form id="blog" action="${action}" method="post">
 		<div>
 			<input id="title" name="title" placeholder="这里是标题" value="${blog.title}"/>
+			<select id="contentType" name="contentType">
+				<option value="markdown" #if(blog.contentType=='markdown')selected#end>Markdown</option>
+				<option value="richtext" #if(blog.contentType=='richtext')selected#end>富文本</option>
+			</select>
 		</div>
 		<ul id="tabs" class="nav nav-tabs">
 			<li><a href="#content" data-toggle="tab">写作</a></li>
@@ -65,12 +69,13 @@ $!{alljs}
 	setup(tag_setup, writeBlog_setup, function () {
 		function saveDraft() {
 			var title = $('#title').val()
+			var contentType = $('#contentType').val()
 			var content = $('#content').val()
 			if (title === savedTitle && content === savedContent) {
 				setTimeout(saveDraft, 3000)
 				return
 			}
-			var params = {draftId: draftId, targetId: blogId, title: title, content: content}
+			var params = {draftId: draftId, targetId: blogId, title: title, contentType: contentType, content: content}
 			$.post("/drafts/save", params).done(function (resp) {
 				var savedDraftId = parseInt(resp)
 				if (savedDraftId) {
