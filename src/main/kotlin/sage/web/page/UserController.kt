@@ -47,7 +47,6 @@ open class UserController : BaseController() {
   @RequestMapping("/{id}/rss")
   open fun rss(@PathVariable id: Long): ModelAndView {
     val blogs = Blog.byAuthor(id)
-    blogs.forEach { it.content = Strings.omit(it.content, 500) }
     response.contentType = "text/xml"
     return ModelAndView("rss").addObject("blogs", blogs).addObject("name", User.get(id).name)
   }
