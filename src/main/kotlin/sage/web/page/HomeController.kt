@@ -62,6 +62,9 @@ open class HomeController : BaseController() {
   open fun rss(): ModelAndView {
     val blogs = Blog.orderBy("id desc").findList()
     response.contentType = "text/xml"
+    blogs.forEach {
+      it.content = Strings.escapeXmlInvalidChar(it.content)
+    }
     return ModelAndView("rss").addObject("blogs", blogs)
   }
 }

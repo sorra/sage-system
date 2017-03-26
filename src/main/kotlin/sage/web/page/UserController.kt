@@ -48,6 +48,9 @@ open class UserController : BaseController() {
   open fun rss(@PathVariable id: Long): ModelAndView {
     val blogs = Blog.byAuthor(id)
     response.contentType = "text/xml"
+    blogs.forEach {
+      it.content = Strings.escapeXmlInvalidChar(it.content)
+    }
     return ModelAndView("rss").addObject("blogs", blogs).addObject("name", User.get(id).name)
   }
 }

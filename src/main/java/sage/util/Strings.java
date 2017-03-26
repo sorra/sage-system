@@ -32,4 +32,8 @@ public class Strings {
   public static String escapeHtmlTag(String text) {
     return StringUtils.replaceEach(text, new String[]{"&", "<", ">"}, new String[]{"&amp;", "&lt;", "&gt;"});
   }
+
+  public static String escapeXmlInvalidChar(String text) {
+    return text.replaceAll("[\\x00-\\x08\\x0b-\\x0c\\x0e-\\x1f]", "");
+  }
 }
