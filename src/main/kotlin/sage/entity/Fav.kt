@@ -10,6 +10,8 @@ class Fav(
     @ManyToOne
     var owner: User) : BaseModel() {
   companion object : Find<Long, Fav>() {
+    fun get(id: Long) = getNonNull(Fav::class, id)
+
     fun ofOwner(ownerId: Long): List<Fav> = where().eq("owner", User.ref(ownerId)).findList()
   }
 }

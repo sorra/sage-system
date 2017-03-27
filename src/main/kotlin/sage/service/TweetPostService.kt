@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import sage.domain.cache.GlobalCaches
 import sage.domain.commons.*
+import sage.domain.permission.CheckPermission
 import sage.entity.*
 import sage.transfer.MidForwards
 import sage.transfer.TweetView
@@ -105,9 +106,8 @@ class TweetPostService
 
   fun delete(userId: Long, tweetId: Long) {
     val tweet = Tweet.ref(tweetId)
-    if (!IdCommons.equal(userId, tweet.author.id)) {
-      throw DomainException("User[%d] is not the author of Tweet[%d]", userId, tweetId)
-    }
+    CheckPermission.canDelete(userId, tweet, userId == tweet.author.id)
+
     tweet.deleted = true
     tweet.update()
 

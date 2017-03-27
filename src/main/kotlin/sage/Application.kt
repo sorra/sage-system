@@ -13,15 +13,16 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.config.ConfigurableBeanFactory.SCOPE_SINGLETON
 import org.springframework.boot.SpringApplication
 import org.springframework.boot.autoconfigure.SpringBootApplication
-import org.springframework.boot.autoconfigure.web.WebMvcAutoConfiguration
-import org.springframework.boot.context.embedded.EmbeddedServletContainerCustomizer
-import org.springframework.boot.context.embedded.ErrorPage
+import org.springframework.boot.web.servlet.ErrorPage
+import org.springframework.boot.web.servlet.ErrorPageRegistrar
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Scope
 import org.springframework.http.HttpStatus
 import org.springframework.web.multipart.commons.CommonsMultipartResolver
+import org.springframework.web.servlet.config.annotation.EnableWebMvc
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.ViewResolverRegistry
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView
 import sage.service.FilesService
 import sage.util.Settings
@@ -32,10 +33,11 @@ import sage.web.filter.StaticResourceRefreshFilter
 import javax.servlet.ServletContext
 
 @SpringBootApplication
-open class Application : WebMvcAutoConfiguration.WebMvcAutoConfigurationAdapter() {
+@EnableWebMvc
+class Application : WebMvcConfigurerAdapter() {
 
   @Bean(autowire = Autowire.BY_TYPE) @Scope(SCOPE_SINGLETON)
-  open fun getEbeanServer(): EbeanServer {
+    fun getEbeanServer(): EbeanServer {
     val config = ServerConfig()
     config.name = "db"
     val ebeanProps = PropertyMap.defaultProperties()
@@ -65,25 +67,25 @@ open class Application : WebMvcAutoConfiguration.WebMvcAutoConfigurationAdapter(
   }
 
   @Bean
-  open fun json() = MappingJackson2JsonView()
+  fun json() = MappingJackson2JsonView()
 
   @Bean
-  open fun multipartResolver() = CommonsMultipartResolver().apply { setMaxUploadSize(10000000) }
+  fun multipartResolver() = CommonsMultipartResolver().apply { setMaxUploadSize(5*1024*1024) }
 
   @Bean
-  open fun servletCustomizer() = EmbeddedServletContainerCustomizer { container ->
-    container.addErrorPages(ErrorPage(HttpStatus.NOT_FOUND, "/not-found"))
+  fun errorPages() = ErrorPageRegistrar { registry ->
+    registry.addErrorPages(ErrorPage(HttpStatus.NOT_FOUND, "/not-found"))
   }
 
   @Bean
-  open fun loggingURLFilter() = LoggingURLFilter()
+  fun loggingURLFilter() = LoggingURLFilter()
   @Bean
-  open fun currentRequestFilter() = CurrentRequestFilter()
+  fun currentRequestFilter() = CurrentRequestFilter()
   @Bean
-  open fun staticResourceRefreshFilter() = StaticResourceRefreshFilter()
+  fun staticResourceRefreshFilter() = StaticResourceRefreshFilter()
 
   @Bean
-  open fun versionsMapper(servletContext: ServletContext) = VersionsMapper.setup(servletContext)
+  fun versionsMapper(servletContext: ServletContext) = VersionsMapper.setup(servletContext)
 
   @Autowired
   private lateinit var filesService: FilesService

@@ -27,7 +27,7 @@ open class UploadController {
       response.contentType = "text/plain"
       response.writer.write(link)
     } catch (e: IOException) {
-      throw DomainException("文件上传失败", e)
+      throw DomainException("Upload failed!", e)
     }
 
   }

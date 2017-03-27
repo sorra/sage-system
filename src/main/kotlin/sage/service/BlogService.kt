@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import sage.domain.cache.GlobalCaches
 import sage.domain.commons.*
+import sage.domain.permission.CheckPermission
 import sage.entity.*
 import sage.transfer.BlogView
 import sage.util.JsoupUtil
@@ -43,9 +44,7 @@ class BlogService
   fun edit(userId: Long, blogId: Long, title: String, inputContent: String, tagIds: Set<Long>, contentType: String): Blog {
     checkLength(title, inputContent)
     val blog = Blog.get(blogId)
-    if (userId != blog.author.id) {
-      throw DomainException("User[%s] is not the author of Blog[%s]", userId, blogId)
-    }
+    CheckPermission.canEdit(userId, blog, userId == blog.author.id)
 
     val oldInputContent = blog.inputContent
 
@@ -60,7 +59,7 @@ class BlogService
     userService.updateUserTag(userId, tagIds)
 
     if (mentionedIds.isNotEmpty()) {
-      val (old, oldMentionedIds) = parseMentions(oldInputContent)
+      val (_, oldMentionedIds) = parseMentions(oldInputContent)
       (mentionedIds - oldMentionedIds).forEach { atId -> notifService.mentionedByBlog(atId, userId, blogId) }
     }
 
@@ -70,9 +69,8 @@ class BlogService
 
   fun delete(userId: Long, blogId: Long) {
     val blog = Blog.get(blogId)
-    if (userId != blog.author.id) {
-      throw DomainException("User[%d] is not the author of Blog[%d]", userId, blogId)
-    }
+    CheckPermission.canDelete(userId, blog, userId == blog.author.id)
+
     blog.delete()
 
     searchService.delete(BlogView::class.java, blog.id)

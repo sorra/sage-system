@@ -1,7 +1,7 @@
 package sage.service
 
 import org.springframework.stereotype.Service
-import org.springframework.util.Assert
+import sage.domain.permission.CheckPermission
 import sage.entity.FollowListEntity
 import sage.entity.ResourceListEntity
 import sage.entity.Tag
@@ -26,7 +26,7 @@ class ListService {
 
   fun updateResourceList(rc: ResourceList, userId: Long) {
     val entity = ResourceListEntity.get(rc.id)
-    Assert.isTrue(entity.ownerId == userId)
+    CheckPermission.canEdit(userId, entity, userId == entity.ownerId)
 
     val neo = escaped(rc).toEntity()
     entity.name = neo.name
@@ -47,7 +47,7 @@ class ListService {
 
   fun updateFollowList(fcLite: FollowListLite, userId: Long) {
     val entity = FollowListEntity.get(fcLite.id)
-    Assert.isTrue(entity.ownerId == userId)
+    CheckPermission.canEdit(userId, entity, userId == entity.ownerId)
 
     val neo = fcLite.toEntity()
     entity.name = neo.name

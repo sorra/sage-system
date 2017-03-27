@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.ResponseBody
 import org.springframework.web.servlet.ModelAndView
 import sage.domain.cache.GlobalCaches
-import sage.domain.commons.DomainException
+import sage.domain.permission.CheckPermission
 import sage.entity.*
 import sage.transfer.BlogPreview
 import sage.transfer.BlogView
@@ -42,14 +42,14 @@ open class BlogController : BaseController() {
   @RequestMapping("/{id}/edit", method = arrayOf(GET))
   open fun editPage(@PathVariable id: Long): ModelAndView {
     val uid = Auth.checkUid()
-    val blog = Blog.get(id).run { BlogView(this, showInputContent = true) }
-    if (uid != blog.author?.id) {
-      throw DomainException("无权编辑: User[$uid] cannot edit Blog[${blog.id}]")
-    }
-    val topTags = userService.filterNewTags(uid, blog.tags)
+    val blog = Blog.get(id)
+    CheckPermission.canEdit(uid, blog, uid == blog.author.id)
+
+    val blogView = blog.let { BlogView(it, showInputContent = true) }
+    val topTags = userService.filterNewTags(uid, blogView.tags)
     return ModelAndView("write-blog")
-        .addObject("blog", blog)
-        .addObject("existingTags", blog.tags).addObject("topTags", topTags)
+        .addObject("blog", blogView)
+        .addObject("existingTags", blogView.tags).addObject("topTags", topTags)
   }
 
   @RequestMapping("/{id}/edit", method = arrayOf(POST))

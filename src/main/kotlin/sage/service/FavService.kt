@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import sage.domain.commons.DomainException
 import sage.domain.commons.IdCommons
+import sage.domain.permission.CheckPermission
 import sage.entity.Fav
 import sage.entity.User
 import sage.transfer.FavInfo
@@ -25,10 +26,8 @@ class FavService
   }
 
   fun delete(userId: Long, favId: Long) {
-    val fav = Fav.byId(favId)
-    if (!IdCommons.equal(fav?.owner!!.id, userId)) {
-      throw DomainException("User[%d] is not the owner of Fav[%d]", userId, favId)
-    }
-    fav?.delete()
+    val fav = Fav.get(favId)
+    CheckPermission.canDelete(userId, fav, userId == fav.owner.id)
+    fav.delete()
   }
 }

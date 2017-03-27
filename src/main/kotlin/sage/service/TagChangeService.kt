@@ -6,13 +6,13 @@ import org.springframework.stereotype.Service
 import sage.domain.commons.AuthorityException
 import sage.domain.commons.DomainException
 import sage.domain.concept.Authority
+import sage.domain.permission.CheckPermission
 import sage.entity.Tag
 import sage.entity.TagChangeRequest
 import sage.entity.TagChangeRequest.Status
 import sage.entity.TagChangeRequest.Type
 import sage.entity.User
 import sage.transfer.TagChangeRequestCard
-import sage.transfer.TagLabel
 
 @Service
 class TagChangeService {
@@ -92,9 +92,8 @@ class TagChangeService {
 
   fun cancelRequest(userId: Long, reqId: Long) {
     val request = TagChangeRequest.byId(reqId)!!
-    if (userId != request.submitter.id) {
-      throw DomainException("User[%d] is not the owner of TagChangeRequest[%d]", userId, reqId)
-    }
+    CheckPermission.canEdit(userId, request, userId == request.submitter.id)
+
     request.status = Status.CANCELED
   }
 
