@@ -48,11 +48,14 @@ $!{include("navbar.httl")}
 $!{alljs}
 <script type="text/javascript">
 	setup(humanTime_setup, tag_setup, user_setup)
-	$(document).ready(function() {
+	$(document).ready(function () {
 		btnLike_init()
 
 		var id = $('.blog').data('id')
+
 		comments_render('#comments-container', 2, $('#comments-container').data('tweet-id'))
+
+		hljs.initHighlightingOnLoad()
 	})
 </script>
 </body>
