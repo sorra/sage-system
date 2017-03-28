@@ -1,37 +1,35 @@
-<!DOCTYPE html>
-<html>
-<!--
-#set(List<Feedback> feedbacks)
-#set(Long uid)
--->
-<head>
-  <meta charset="UTF-8">
-  $!{desc}
-  <title>反馈 - 轻境界</title>
-  $!{allcss}
-  <style>
-    #container{
-      padding: 1em;
-    }
-    form textarea{
-      min-width: 30em;
-      min-height: 10em;
-    }
-    .form-row{
-      margin-top: 0.5em;
-    }
-    .feedback{
-      margin-top: 1em;
-      padding: 5px;
-      border-radius: 5px; 
-      background: #f3f3f3;
-    }
-  </style>
-</head>
-<body>
-$!{include("navbar.httl")}
+${extends("layout.httl")}
 
-<div id="container" class="container">
+#macro(title)
+用户反馈
+#end
+
+#macro(style)
+<style>
+  #container{
+    padding: 1em;
+  }
+  form textarea{
+    min-width: 30em;
+    min-height: 10em;
+  }
+  .form-row{
+    margin-top: 0.5em;
+  }
+  .feedback{
+    margin-top: 1em;
+    padding: 5px;
+    border-radius: 5px; 
+    background: #f3f3f3;
+  }
+</style>
+#end
+
+#macro(body)
+  <!--
+  #set(List<Feedback> feedbacks)
+  #set(Long uid)
+  -->
   <form action="/feedbacks/new" method="post">
     <div class="form-row">
       名字：<input type="text" name="name">（可选）
@@ -60,11 +58,10 @@ $!{include("navbar.httl")}
     <div>时间：${fk.whenCreated}</div>
   </div>
   #end
-</div>
+#end
 
-$!{alljs}
+#macro(script)
 <script>
 setup()
 </script>
-</body>
-</html>
+#end

@@ -1,27 +1,27 @@
-<!DOCTYPE html>
-<html>
-<!--
-#set(BlogView blog, List<TweetView> tweets)
-#set(UserSelf userSelf)
--->
-<head>
-	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-	$!{desc}
-	<title>${blog.title}</title>
-	$!{allcss}
-	<style type="text/css">
-		#container{
-			background: #fafafa;
-		}
-		#comments-container{
-			margin-top: 20px;
-			padding: 10px;
-		}
-	</style>
-</head>
-<body>
-$!{include("navbar.httl")}
-<div class="container" id="container">
+${extends("layout.httl")}
+
+#macro(title)
+<!-- #set(BlogView blog) -->
+${blog.title}
+#end
+
+#macro(style)
+<style>
+	#container{
+		background: #fafafa;
+	}
+	#comments-container{
+		margin-top: 20px;
+		padding: 10px;
+	}
+</style>
+#end
+
+#macro(body)
+	<!--
+	#set(BlogView blog, List<TweetView> tweets)
+	#set(UserSelf userSelf)
+	-->
 	<div class="blog" data-id="$!{blog.id}">
 		<h3 class="title">${blog.title}</h3>
 		$!{userLabel(blog.author)}
@@ -44,9 +44,10 @@ $!{include("navbar.httl")}
 		</div>
 	</div>
 	<div id="comments-container" data-tweet-id="${blog.tweetId}"></div>
-</div>
-$!{alljs}
-<script type="text/javascript">
+#end
+
+#macro(script)
+<script>
 	setup(humanTime_setup, tag_setup, user_setup)
 	$(document).ready(function () {
 		btnLike_init()
@@ -58,5 +59,4 @@ $!{alljs}
 		hljs.initHighlightingOnLoad()
 	})
 </script>
-</body>
-</html>
+#end

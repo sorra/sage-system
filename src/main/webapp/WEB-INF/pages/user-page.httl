@@ -1,17 +1,12 @@
-<!DOCTYPE html>
-<html>
-#set(UserCard thisUser)
-#set(Map frontMap)
-<head>
-	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-	$!{desc}
-	<title>用户主页</title>
-	$!{allcss}
-</head>
-<body>
-$!{include("navbar.httl")}
+${extends("layout.httl")}
 
-<div class="container" id="container">
+#macro(title)
+用户主页
+#end
+
+#macro(body)
+  #set(UserCard thisUser)
+  #set(Map frontMap)
 	<div class="side">
     <div style="height:30px;"></div>
     #if(frontMap.get("isSelfPage") == true)
@@ -33,11 +28,10 @@ $!{include("navbar.httl")}
 			<div class="stream-items"></div>
 		</div>
 	</div>
-	<div class="footer"></div>
-</div>
+#end
 
-$!{alljs}
-<script type="text/javascript">
+#macro(script)
+<script>
   setup(user_setup, tag_setup, humanTime_setup, stream_setup)
   $(document).ready(function() {
     var $thisUser = $('.side .user-card').css('border', '').css('border-radius', '')
@@ -49,5 +43,4 @@ $!{alljs}
     getStream('/stream/user/' + window.frontMap.id);
   });
 </script>
-</body>
-</html>
+#end

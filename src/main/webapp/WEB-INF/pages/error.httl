@@ -1,23 +1,21 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  $!{desc}
-  <title>错误页</title>
-  $!{allcss}
-  <style>
-    #main{
-      text-align: center;
-    }
-  </style>
-</head>
-<body>
-  <div id="container" class="container">
-    <div id="main">
-      <p>HTTP错误${errorCode}</p>
-      <p>${reason}</p>
-      <a href="/">回到首页</a>
-    </div>
+${extends("layout.httl")}
+
+#macro(title)
+错误页
+#end
+
+#macro(style)
+<style>
+  #main{
+    text-align: center;
+  }
+</style>
+#end
+
+#macro(body)
+  <div id="main">
+    <p>HTTP错误${errorCode}</p>
+    <p>${reason}</p>
+    <a href="/">回到首页</a>
   </div>
-</body>
-</html>
+#end

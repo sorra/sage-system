@@ -1,5 +1,5 @@
 #set(FrontMap frontMap)
-#set(UserSelf userSelf = frontMap['userSelf'])
+#set(UserSelf userSelf)
 <div id="navbar">
   <div class="nav-content">
     <div style="padding-top: 6px;">

@@ -1,17 +1,13 @@
-<!DOCTYPE html>
-<html>
-<!--
-#set(List<Draft> drafts)
--->
-<head>
-  <meta charset="UTF-8">
-  $!{desc}
-  <title>轻境界 - 草稿箱</title>
-  $!{allcss}
-</head>
-<body>
-$!{include("navbar.httl")}
-<div id="container" class="container">
+${extends("layout.httl")}
+
+#macro(title)
+草稿箱
+#end
+
+#macro(body)
+  <!--
+  #set(List<Draft> drafts)
+  -->
   <h1>草稿箱</h1>
   <div id="drafts">
     #for(draft : drafts)
@@ -21,11 +17,10 @@ $!{include("navbar.httl")}
     </div>
     #end
   </div>
-</div>
+#end
 
-$!{alljs}
+#macro(script)
 <script>
   setup(humanTime_setup)
 </script>
-</body>
-</html>
+#end

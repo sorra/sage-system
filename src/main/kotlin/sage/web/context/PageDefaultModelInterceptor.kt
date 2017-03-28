@@ -19,11 +19,13 @@ class PageDefaultModelInterceptor @Autowired constructor (
   override fun preHandle(request: HttpServletRequest, response: HttpServletResponse, handler: Any?): Boolean {
     val uri = request.requestURI
 
-    val isPage = arrayOf("/ajax/", "/api/", "/errors/").none { uri.startsWith(it) }
+    val isPage = arrayOf("/ajax/", "/api/", "/errors/").none { uri.startsWith(it) } && uri != "/error"
 
     if (isPage) {
+      val userSelf = userSelf()
+      request.setAttribute("userSelf", userSelf)
       FrontMap.from(request)
-          .attr("userSelf", userSelf())
+          .attr("userSelf", userSelf)
           .attr("tagTree", tagTree())
     }
     return true

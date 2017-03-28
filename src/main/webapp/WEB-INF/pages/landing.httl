@@ -1,57 +1,56 @@
-<!DOCTYPE html>
-<html>
-<!--
-#set(List<BlogPreview> blogs)
-#set(Stream stream)
-#set(List<TagLabel> tags)
--->
-<head>
-  <meta charset="UTF-8">
-  $!{desc}
-  <title>轻境界：轻装前往更高境界</title>
-  $!{allcss}
-  <style>
-    #site-whats{
-      font-size: 16px;
-    }
-    #site-whats a{
-      color: #256DAB;
-    }
-    #welcome-login{
-      margin: 20px;
-      padding: 5px;
-      background-color: beige;
-      max-width: 181px;
-      border-radius: 5px;
-    }
-    #hot-tags{
-      margin: 5px 0 5px 0;
-    }
-    #areas:after{
-      display: table;
-      content: " ";
-      clear: both;
-    }
-    #blogs{
-      float: left;
-      width: 49%;
-    }
-    #tweets{
-      float: left;
-      width: 49%;
-      margin-left: 1%;
-    }
-    #tweets .stream-item{
-      width: 570px;
-    }
-    #tweets .tweet-body{
-      width: 500px;
-    }
-  </style>
-</head>
-<body>
-$!{include("navbar.httl")}
-<div id="container" class="container">
+${extends("layout.httl")}
+
+#macro(title)
+轻境界：轻装前往更高境界
+#end
+
+#macro(style)
+<style>
+  #site-whats{
+    font-size: 16px;
+  }
+  #site-whats a{
+    color: #256DAB;
+  }
+  #welcome-login{
+    margin: 20px;
+    padding: 5px;
+    background-color: beige;
+    max-width: 181px;
+    border-radius: 5px;
+  }
+  #hot-tags{
+    margin: 5px 0 5px 0;
+  }
+  #areas:after{
+    display: table;
+    content: " ";
+    clear: both;
+  }
+  #blogs{
+    float: left;
+    width: 49%;
+  }
+  #tweets{
+    float: left;
+    width: 49%;
+    margin-left: 1%;
+  }
+  #tweets .stream-item{
+    width: 570px;
+  }
+  #tweets .tweet-body{
+    width: 500px;
+  }
+</style>
+#end
+
+#macro(body)
+  <!--
+  #set(List<BlogPreview> blogs)
+  #set(Stream stream)
+  #set(List<TagLabel> tags)
+  -->
   #if(userSelf == null)
   <div id="welcome-login">
     <a class="btn btn-default btn-success" href="/register">快速注册</a> 参与社区互动
@@ -82,13 +81,11 @@ $!{include("navbar.httl")}
       $!{include("stream.httl")}
     </div>
   </div>
-  $!{include("footer.httl")}
-</div>
+#end
 
-$!{alljs}
+#macro(script)
 <script>
   setup(humanTime_setup, stream_setup)
   window.streamModel = {} // stub
 </script>
-</body>
-</html>
+#end

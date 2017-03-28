@@ -1,19 +1,14 @@
-<!DOCTYPE html>
-<html>
-<!--
-#set(UserSelf self = userSelf)
-#set(List<UserLabel> friends)
--->
-<head>
-	<meta charset="UTF-8">
-	$!{desc}
-	<title>首页 - 轻境界</title>
-  $!{allcss}
-</head>
-<body>
-$!{include("navbar.httl")}
+${extends("layout.httl")}
 
-<div id="container" class="container">
+#macro(title)
+首页 - 轻境界
+#end
+
+#macro(body)
+	<!--
+	#set(UserSelf self = userSelf)
+	#set(List<UserLabel> friends)
+	-->
 	<div class="side">
 		<div class="user-self user-card" style="border-radius: 0">
 			<a class="avatar" href="/users/self"><img src="${self.avatar}"/></a>
@@ -37,20 +32,19 @@ $!{include("navbar.httl")}
 			#end
 		</ul>
 	</div>
+
 	<div class="main">
-		$!{include("post-box.httl")}
+		${include("post-box.httl")}
 		<div class="stream">
 			<a class="newfeed btn">看看新的</a>
 			<div class="stream-items"></div>
 			<a class="oldfeed btn">看看更早的</a>
 		</div>
 	</div>
-	$!{include("footer.httl")}
-</div>
+#end
 
-$!{alljs}
+#macro(script)
 <script>
 setup(home_setup, stream_setup, humanTime_setup, tag_setup, user_setup)
 </script>
-</body>
-</html>
+#end

@@ -1,21 +1,20 @@
-<!DOCTYPE html>
-<html>
-<!--
-#set(List<BlogPreview> blogs)
-#set(paginationLinks)
--->
-<head>
-  <meta charset="UTF-8">
-  $!{desc}
-  <title>博客列表</title>
-  $!{allcss}
-  <style>
-    .btn-write-blog {margin: 10px}
-  </style>
-</head>
-<body>
-$!{include("navbar.httl")}
-<div class="container" id="container">
+${extends("layout.httl")}
+
+#macro(title)
+博客列表
+#end
+
+#macro(style)
+<style>
+  .btn-write-blog {margin: 10px}
+</style>
+#end
+
+#macro(body)
+  <!--
+  #set(List<BlogPreview> blogs)
+  #set(paginationLinks)
+  -->
   <div class="blog-list">
     <a class="btn-write-blog btn btn-default btn-sm" href="/blogs/new">写博客!</a>
     #for(blog : blogs)
@@ -25,10 +24,10 @@ $!{include("navbar.httl")}
   <div class="pagination">
     $!{paginationLinks}
   </div>
-</div>
-$!{alljs}
+#end
+
+#macro(script)
 <script>
   setup(humanTime_setup, tag_setup, user_setup)
 </script>
-</body>
-</html>
+#end

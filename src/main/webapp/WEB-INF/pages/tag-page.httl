@@ -1,29 +1,28 @@
-<!DOCTYPE html>
-<html>
-<!--
-#set(Tag tag)
-#set(Integer countPendingRequestsOfTag, Integer countPendingRequestsOfTagScope)
-#set(Collection<BlogPreview> blogs)
-#set(Collection coreTags, Collection nonCoreTags, Collection relatedTags, Collection sameNameTags)
--->
-<head>
-	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-  $!{desc}
-	<title>${tag.name} - 轻境界</title>
-  $!{allcss}
-  <style>
-    .side > div, #bkg-intro{
-      min-height: 50px;
-      margin: 2px;
-      padding: 5px;
-      background-color: #e5e5e5;
-    }
-  </style>
-</head>
-<body>
-$!{include("navbar.httl")}
+${extends("layout.httl")}
 
-<div class="container" id="container">
+#macro(title)
+<!-- #set(Tag tag) -->
+${tag.name} - 轻境界
+#end
+
+#macro(style)
+<style>
+  .side > div, #bkg-intro{
+    min-height: 50px;
+    margin: 2px;
+    padding: 5px;
+    background-color: #e5e5e5;
+  }
+</style>
+#end
+
+#macro(body)
+  <!--
+  #set(Tag tag)
+  #set(Integer countPendingRequestsOfTag, Integer countPendingRequestsOfTagScope)
+  #set(Collection<BlogPreview> blogs)
+  #set(Collection coreTags, Collection nonCoreTags, Collection relatedTags, Collection sameNameTags)
+  -->
 	<div id="chain"></div>
 	<div style="margin-top: 50px">
 		<div class="side">
@@ -85,11 +84,10 @@ $!{include("navbar.httl")}
 			</div>
 		</div>
 	</div>
-	<div class="footer"></div>
-</div>
+#end
 
-$!{alljs}
-<script type="text/javascript">
+#macro(script)
+<script>
 setup(humanTime_setup, tag_setup, stream_setup, user_setup)
 $(document).ready(function(){
 	var tagId = window.frontMap.id
@@ -126,5 +124,4 @@ $(document).ready(function(){
   })
 })
 </script>
-</body>
-</html>
+#end
