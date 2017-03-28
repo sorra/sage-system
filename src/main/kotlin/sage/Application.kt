@@ -19,13 +19,13 @@ import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Scope
 import org.springframework.http.HttpStatus
 import org.springframework.web.multipart.commons.CommonsMultipartResolver
-import org.springframework.web.servlet.config.annotation.EnableWebMvc
-import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
-import org.springframework.web.servlet.config.annotation.ViewResolverRegistry
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
+import org.springframework.web.servlet.config.annotation.*
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView
 import sage.service.FilesService
+import sage.service.TagService
+import sage.service.UserService
 import sage.util.Settings
+import sage.web.context.PageDefaultModelInterceptor
 import sage.web.context.VersionsMapper
 import sage.web.filter.CurrentRequestFilter
 import sage.web.filter.LoggingURLFilter
@@ -74,7 +74,7 @@ class Application : WebMvcConfigurerAdapter() {
 
   @Bean
   fun errorPages() = ErrorPageRegistrar { registry ->
-    registry.addErrorPages(ErrorPage(HttpStatus.NOT_FOUND, "/not-found"))
+    registry.addErrorPages(ErrorPage(HttpStatus.NOT_FOUND, "/errors/not-found"))
   }
 
   @Bean
@@ -87,8 +87,16 @@ class Application : WebMvcConfigurerAdapter() {
   @Bean
   fun versionsMapper(servletContext: ServletContext) = VersionsMapper.setup(servletContext)
 
+  override fun addInterceptors(registry: InterceptorRegistry) {
+    registry.addInterceptor(PageDefaultModelInterceptor(userService, tagService))
+  }
+
   @Autowired
   private lateinit var filesService: FilesService
+  @Autowired
+  private lateinit var userService: UserService
+  @Autowired
+  private lateinit var tagService: TagService
 }
 
 fun main(args: Array<String>) {

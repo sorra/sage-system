@@ -1,4 +1,5 @@
-#set(UserSelf userSelf)
+#set(FrontMap frontMap)
+#set(UserSelf userSelf = frontMap['userSelf'])
 <div id="navbar">
   <div class="nav-content">
     <div style="padding-top: 6px;">
@@ -51,12 +52,6 @@
 <div class="data-holder">
     #if(frontMap != null)
     <span id="front-map">${frontMap}</span>
-    #end
-    #if(userSelfJson != null)
-    <span id="user-self-json">${userSelfJson}</span>
-    #end
-    #if(tagTreeJson != null)
-    <span id="tag-tree-json">${tagTreeJson}</span>
     #end
 </div>
 

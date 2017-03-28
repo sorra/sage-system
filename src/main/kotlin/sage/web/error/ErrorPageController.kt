@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.servlet.ModelAndView
 
 @Controller
+@RequestMapping("/errors/")
 open class ErrorPageController {
   @RequestMapping("/not-found")
   open fun notFound(): ModelAndView {

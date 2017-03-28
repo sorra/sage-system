@@ -19,7 +19,7 @@ class TweetController : BaseController() {
     val tweetGroup = tweetReadService.getTweetView(id)?.let {
       if (it.origin != null) TweetGroup.createByForward(it)
       else TweetGroup.createByOrigin(it)
-    } ?: return ModelAndView("forward:/not-found")
+    } ?: return ModelAndView("forward:/errors/not-found")
     return ModelAndView("tweet-page").addObject("group", tweetGroup)
   }
 

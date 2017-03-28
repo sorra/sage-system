@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Scope
 import org.springframework.web.bind.MissingServletRequestParameterException
 import org.springframework.web.context.WebApplicationContext
 import sage.service.HasServices
+import sage.web.model.FrontMap
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
@@ -16,6 +17,8 @@ abstract class BaseController : HasServices() {
   protected lateinit var request: HttpServletRequest
   @Autowired
   protected lateinit var response: HttpServletResponse
+
+  fun frontMap(): FrontMap = FrontMap.from(request)
 
   fun param(name: String): String? = request.getParameter(name)
 

@@ -1,23 +1,17 @@
 package sage.web.page
 
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.servlet.ModelAndView
 import sage.entity.Blog
 import sage.entity.Tag
-import sage.service.TagChangeService
-import sage.service.TagService
 import sage.transfer.BlogPreview
 import sage.web.auth.Auth
-import sage.web.context.FrontMap
+import sage.web.context.BaseController
 
 @Controller
 @RequestMapping("/tags")
-open class TagController @Autowired constructor(
-    private val tagService: TagService,
-    private val tagChangeService: TagChangeService
-) {
+open class TagController : BaseController() {
 
   @RequestMapping("/new", method = arrayOf(RequestMethod.POST))
   @ResponseBody
@@ -40,6 +34,8 @@ open class TagController @Autowired constructor(
     val relatedTags = null
     val sameNameTags = tagService.getSameNameTags(id).map { it.toTagLabel() }
 
+    frontMap().attr("id", id)
+
     return ModelAndView("tag-page")
         .addObject("tag", tag)
         .addObject("blogs", blogs)
@@ -49,6 +45,5 @@ open class TagController @Autowired constructor(
         .addObject("sameNameTags", sameNameTags)
         .addObject("countPendingRequestsOfTagScope", tagChangeService.countPendingRequestsOfTagScope(id))
         .addObject("countPendingRequestsOfTag", tagChangeService.countPendingRequestsOfTag(id))
-        .include(FrontMap().attr("id", id))
   }
 }

@@ -10,7 +10,6 @@ import sage.transfer.BlogPreview
 import sage.util.Strings
 import sage.web.auth.Auth
 import sage.web.context.BaseController
-import sage.web.context.FrontMap
 
 @Controller
 @RequestMapping("/users")
@@ -24,9 +23,11 @@ open class UserController : BaseController() {
     val uid = Auth.uid()
     val thisUser = userService.getUserCard(uid, id)
     val blogs = Blog.byAuthor(id).map(::BlogPreview)
+
+    frontMap().attr("id", id).attr("isSelfPage", uid == id)
+
     return ModelAndView("user-page").addObject("thisUser", thisUser)
         .addObject("blogs", blogs)
-        .include(FrontMap().attr("id", id).attr("isSelfPage", uid == id))
   }
 
   @RequestMapping("/{id}/card")

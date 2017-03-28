@@ -3,13 +3,13 @@ $(document).ready(function(){
 
   if ($('#front-map').length > 0) {
     window.frontMap = $.parseJSON($('#front-map').text());
+    window.userSelf = window.frontMap.userSelf
+    window.tagTree = window.frontMap.tagTree
   } else {
     window.frontMap = {};
   }
 
-  if ($('#user-self-json').length > 0) {
-    window.userSelf = $.parseJSON($('#user-self-json').text());
-
+  if (window.userSelf) {
     var uri = window.location.toString()
     var idxOfQueMark = uri.indexOf('?')
     if(idxOfQueMark >= 0) uri = uri.substring(0, idxOfQueMark)
@@ -18,8 +18,7 @@ $(document).ready(function(){
     }
   }
 
-  if ($('#tag-tree-json').length > 0) {
-    window.tagTree = $.parseJSON($('#tag-tree-json').text());
+  if (window.tagTree) {
     var $lnk = $('#nav-tags')
       .click(function(event){
         event.preventDefault();

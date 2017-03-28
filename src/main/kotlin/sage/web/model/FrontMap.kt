@@ -1,7 +1,9 @@
-package sage.web.context
+package sage.web.model
 
 import org.slf4j.LoggerFactory
 import org.springframework.ui.ModelMap
+import sage.web.context.Json
+import javax.servlet.http.HttpServletRequest
 
 class FrontMap constructor() : ModelMap() {
 
@@ -11,28 +13,24 @@ class FrontMap constructor() : ModelMap() {
   }
 
   /**
-   * Use for rendering in template engine
+   * Used for rendering in template engine
    * @return JSON string
    */
   override fun toString(): String {
-    logger.debug("Keys: " + this.keys)
+    if (logger.isDebugEnabled) {
+      logger.debug("Keys: " + this.keys)
+    }
     return Json.json(this)
   }
 
   companion object {
     val NAME = "frontMap"
 
-    /**
-     * Get the front map from model, create one if not exist
-     * @param model
-     * *
-     * @return the front map
-     */
-    fun from(model: ModelMap): FrontMap {
-      var fm: FrontMap? = model[NAME] as FrontMap?
+    fun from(request: HttpServletRequest): FrontMap {
+      var fm = request.getAttribute(NAME) as FrontMap?
       if (fm == null) {
         fm = FrontMap()
-        model.addAttribute(NAME, fm)
+        request.setAttribute(NAME, fm)
       }
       return fm
     }
