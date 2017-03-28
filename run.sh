@@ -1,1 +1,1 @@
-nohup java -cp '.:./lib/*' sage.ApplicationKt &
+nohup java -cp './BOOT-INF/classes:./BOOT-INF/lib/*' sage.ApplicationKt &
