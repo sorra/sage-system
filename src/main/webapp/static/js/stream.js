@@ -186,6 +186,6 @@ function stream_setupListeners() {
   })
 
   $doc.delegate('.tweet-content .view-img', 'click', function(){
-    $(this).toggleClass('view-large')
+    $(this).toggleClass('view-img-large')
   })
 }

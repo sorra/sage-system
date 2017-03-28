@@ -94,9 +94,10 @@ class TweetView {
 
   private fun convertRichElements(tweet: Tweet): String {
     val sb = StringBuilder(tweet.content)
-    tweet.richElements().forEach { elem ->
-      if (elem.type == "picture") {
-        sb.append("<img class=\"view-img\" src=\"").append(elem.value).append("\"/>")
+    tweet.richElements().forEach { (type, value) ->
+      if (type == "picture") {
+        sb.append("<a class=\"img-origin-link\" href=\"$value\" target=\"_blank\">查看原图</a>")
+        sb.append("<img class=\"view-img\" src=\"$value\"/>")
       }
     }
     return sb.toString()
