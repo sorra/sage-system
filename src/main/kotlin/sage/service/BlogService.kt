@@ -107,7 +107,7 @@ class BlogService
     }
   }
 
-  private fun renderAndGetMentions(blog: Blog) : Set<Long> {
+  fun renderAndGetMentions(blog: Blog) : Set<Long> {
     var content = blog.inputContent
 
     val pair = parseMentions(content)

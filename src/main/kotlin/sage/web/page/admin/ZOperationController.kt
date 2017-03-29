@@ -1,20 +1,17 @@
 package sage.web.page.admin
 
-import org.jsoup.Jsoup
-import org.jsoup.safety.Whitelist
-import org.markdown4j.Markdown4jProcessor
+import org.apache.commons.lang3.StringUtils
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.ResponseBody
-import sage.domain.commons.ReplaceMention
 import sage.entity.*
+import sage.service.BlogService
 import sage.service.SearchService
 import sage.service.ServiceInitializer
 import sage.transfer.BlogView
 import sage.transfer.TweetView
-import sage.util.Strings
 import sage.web.auth.Auth
 import sage.web.context.DataInitializer
 import java.util.*
@@ -22,7 +19,8 @@ import java.util.*
 @Controller
 open class ZOperationController @Autowired constructor(
     private val si: ServiceInitializer, private val di: DataInitializer,
-    private val searchService: SearchService
+    private val searchService: SearchService,
+    private val blogService: BlogService
 ) {
 
   @RequestMapping("/z-init")
@@ -102,20 +100,29 @@ open class ZOperationController @Autowired constructor(
 
   @RequestMapping("/z-rendertext")
   @ResponseBody
-  open fun renderText(): String {
+  fun renderText(): String {
     if(Auth.checkUid() != 1L) {
       return "Page not found."
     }
 
     Blog.findEach { blog ->
-      var content = blog.inputContent
-      if (blog.contentType == Blog.MARKDOWN) {
-        content = Strings.escapeHtmlTag(content)
-        content = Markdown4jProcessor().process(content)
-      } else if (blog.contentType == Blog.RICHTEXT) {
-        content = Jsoup.clean(content, Whitelist.relaxed())
-      }
-      blog.content = content
+      blogService.renderAndGetMentions(blog)
+      blog.update()
+    }
+
+    return "Done."
+  }
+
+  @RequestMapping("/z-recoverchars")
+  @ResponseBody
+  fun recoverChars(): String {
+    if(Auth.checkUid() != 1L) {
+      return "Page not found."
+    }
+
+    Blog.findEach { blog ->
+      blog.inputContent = StringUtils.replaceEach(blog.inputContent,
+          arrayOf("&amp;", "&lt;", "&gt;"), arrayOf("&", "<", ">"))
       blog.update()
     }
 
