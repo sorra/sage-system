@@ -6,6 +6,7 @@ import java.util.stream.Stream;
 
 import sage.util.SemiTemplate;
 import sage.util.SemiTemplate.Section;
+import sage.util.Strings;
 
 public class Links {
 
@@ -14,7 +15,8 @@ public class Links {
     if (idxLinkStart < 0) {
       return null;
     }
-    int idxLinkEnd = least(endChar -> str.indexOf(endChar, idxLinkStart), ' ', '，', '。', '；', '、', '）', '\n', '\r', '\t');
+    int idxLinkEnd = least(endChar -> str.indexOf(endChar, idxLinkStart),
+        ' ', '，', '。', '；', '、', '（', '）', '\n', '\r', '\t', '<', '>');
     if (idxLinkEnd < 0) {
       idxLinkEnd = str.length();
     }
