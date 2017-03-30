@@ -1,3 +1,7 @@
+.avatar img{
+  border-radius: 10%;
+}
+
 .user-label .name, .user-card .name{
   color: black;
 }

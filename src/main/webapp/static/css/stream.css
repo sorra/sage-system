@@ -1,11 +1,11 @@
 .stream{
-  width: 620px;
+  max-width: 620px;
 }
 .newfeed, .oldfeed{
   margin-left: 260px;
 }
 .stream-item{
-  width: 600px;
+  max-width: 600px;
   margin: 0 0 5px 0;
   padding: 5px;
   border-bottom: 1px solid #ddd;
@@ -15,6 +15,8 @@
 
 .tweet{
   display: table;
+  word-wrap: break-word;
+  word-break: break-all;
 }
 .tweet:after{
   display: table;
@@ -22,8 +24,9 @@
   clear: both;
 }
 .tweet-body{
-  width: 530px;
+  max-width: 530px;
   float: left;
+  margin-left: 56px
 }
 .tweet-content .view-img{
   display: block;
@@ -32,8 +35,8 @@
   cursor: zoom-in;
 }
 .tweet-content .view-img-large{
-  max-width: 500px;
-  max-height: 500px;
+  max-width: 600px;
+  max-height: 600px;
   cursor: zoom-out;
 }
 .tweet-ops a{
@@ -53,7 +56,7 @@
   display: block;
   float: left;
   padding-top: 5px;
-  margin-left: 2px;
+  margin-left: -56px;
   margin-right: 5px;
 }
 .tweet .avatar img{

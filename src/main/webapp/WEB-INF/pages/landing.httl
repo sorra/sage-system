@@ -34,13 +34,7 @@ ${extends("layout.httl")}
   #tweets{
     float: left;
     width: 49%;
-    margin-left: 1%;
-  }
-  #tweets .stream-item{
-    width: 570px;
-  }
-  #tweets .tweet-body{
-    width: 500px;
+    margin-left: 2%;
   }
 </style>
 #end
