@@ -79,7 +79,7 @@ ${extends("layout.httl")}
 
 #macro(script)
 <script>
-  setup(humanTime_setup, stream_setup)
+  setup(humanTime_setup, stream_setup, user_setup)
   window.streamModel = {} // stub
 </script>
 #end
