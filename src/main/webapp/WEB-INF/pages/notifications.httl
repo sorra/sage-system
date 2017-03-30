@@ -1,37 +1,35 @@
-<!DOCTYPE html>
-<html>
-<!--
-#set(components = ["bootstrap", "layout", "tag", "user"])
-#set(List<NotifView> notifications)
--->
-<head>
-  <meta charset="UTF-8">
-  $!{desc}
-  <title>${category}通知</title>
-  $!{allcss}
-  <style>
-    .user-label{
-      display: inline-block;
-    }
-    .notif{
-      margin-top: 10px;
-    }
-  </style>
-</head>
-<body>
-$!{include("navbar.httl")}
-  <div id="container" class="container">
-    #for(each : notifications)
-    <div class="notif" data-id="${each.id}">
-      $!{userLabel(each.sender)}
-      ${each.desc}
-      #if(each.source.length > 0)<a href="${each.source}">${each.source}</a>#end
-      <div>${humanTime(each.time)}</div>
-    </div>
-    #end
-  </div>
+${extends("layout.httl")}
 
-$!{alljs}
+#macro(title)
+${category}通知
+#end
+
+#macro(style)
+<style>
+  .user-label{
+    display: inline-block;
+  }
+  .notif{
+    margin-top: 10px;
+  }
+</style>
+#end
+
+#macro(body)
+  <!--
+  #set(List<NotifView> notifications)
+  -->
+  #for(each : notifications)
+  <div class="notif" data-id="${each.id}">
+    $!{userLabel(each.sender)}
+    ${each.desc}
+    #if(each.source.length > 0)<a href="${each.source}">${each.source}</a>#end
+    <div>${humanTime(each.time)}</div>
+  </div>
+  #end
+#end
+
+#macro(script)
 <script>
   // mark-read after 1 second
   window.setTimeout(function () {
@@ -42,5 +40,4 @@ $!{alljs}
     $.post("/notifications/mark-read", {id: ids})
   }, 1000);
 </script>
-</body>
-</html>
+#end

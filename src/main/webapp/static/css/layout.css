@@ -14,6 +14,10 @@ blockquote{
   font-size: 14px;
 }
 
+code{
+  word-break: normal;
+}
+
 body, .background-dark{
   background: radial-gradient(farthest-side ellipse at 100% 0, rgba(102,105,104,0.9),rgba(93,112,119,0.89),rgba(160,174,150,0.9));
 }

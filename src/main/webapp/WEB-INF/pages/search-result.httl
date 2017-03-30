@@ -1,23 +1,19 @@
-<!DOCTYPE html>
-<html>
-<!--
-#set(List<String> types)
-#set(List results)
--->
-<head>
-	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-	$!{desc}
-	<title>搜索结果</title>
-    $!{allcss}
-</head>
-<body>
-$!{include("navbar.httl")}
-<div class="data-holder" style="display:none;">
-	#for(result : results)
-	<span class="hit-json">$!{json(result)}</span>
-	#end
-</div>
-<div id="container" class="container">
+${extends("layout.httl")}
+
+#macro(title)
+搜索结果
+#end
+
+#macro(body)
+	<!--
+	#set(List<String> types)
+	#set(List results)
+	-->
+	<div class="data-holder" style="display:none;">
+		#for(result : results)
+		<span class="hit-json">$!{json(result)}</span>
+		#end
+	</div>
 	<div id="result-list">
 		#for(result : results)
 			#set(type = types[for.index])
@@ -27,8 +23,4 @@ $!{include("navbar.httl")}
 			#end
 		#end
 	</div>
-</div>
-
-$!{alljs}
-</body>
-</html>
+#end

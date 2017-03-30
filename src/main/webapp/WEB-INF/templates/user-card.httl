@@ -24,7 +24,7 @@
   #else
     #set(text = "+关注")
   #end
+  <button class="btn_message" data-url="/messages?withUserId=${u.id}" style="opacity: ${isSelf ? 0 : 1}">私信</button>
   <button class="btn_action #if(!isSelf)follow btn-success#end btn span pull-right">${text}</button>
-  <button class="btn_message" data-url="/messages?withUserId=${u.id}">私信</button>
 </div>
 #end

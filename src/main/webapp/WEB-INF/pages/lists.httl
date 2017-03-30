@@ -1,34 +1,33 @@
-<!DOCTYPE html>
-<html>
-<!--
-#set(components = ["bootstrap", "layout", "tag", "user"])
-#set(UserSelf self, UserLabel owner)
-#set(Collection<FollowList> followLists, Collection<ResourceList> resourceLists)
-#set(Map<Long, Boolean> followListHeedStatuses)
-#set(isSelf = (self.id == owner.id))
--->
-<head>
-  <meta charset="UTF-8">
-  $!{desc}
-  <title>${owner.name}的所有列表</title>
-  $!{allcss}
-  <style>
-    .follow-list{
-      background: #e0e0e0;
-      padding: 5px;
-    }
-    .finfo{
-      margin-top: 10px;
-    }
-    .finfo-tags{
-      display: inline-block;
-      margin-left: 10px;
-    }
-  </style>
-</head>
-<body>
-$!{include("navbar.httl")}
-<div id="container" class="container">
+${extends("layout.httl")}
+
+#macro(title)
+<!-- #set(UserLabel owner) -->
+${owner.name}的所有列表
+#end
+
+#macro(style)
+<style>
+  .follow-list{
+    background: #e0e0e0;
+    padding: 5px;
+  }
+  .finfo{
+    margin-top: 10px;
+  }
+  .finfo-tags{
+    display: inline-block;
+    margin-left: 10px;
+  }
+</style>
+#end
+
+#macro(body)
+  <!--
+  #set(UserSelf self, UserLabel owner)
+  #set(Collection<FollowList> followLists, Collection<ResourceList> resourceLists)
+  #set(Map<Long, Boolean> followListHeedStatuses)
+  #set(isSelf = (self.id == owner.id))
+  -->
   #if(isSelf)
   <button id="btn_expose_all" class="btn btn-sm">展示我的所有关注</button>
   #end
@@ -46,9 +45,9 @@ $!{include("navbar.httl")}
     $!{include("resource-list.httl")}
     #end
   #end
-</div>
+#end
 
-$!{alljs}
+#macro(script)
 <script>
   $(document).on('click', '.heed_follow_list', function(){
     var $this = $(this)
@@ -83,5 +82,4 @@ $!{alljs}
         })
   })
 </script>
-</body>
-</html>
+#end

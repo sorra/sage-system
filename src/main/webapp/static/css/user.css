@@ -20,6 +20,8 @@
   padding: 5px;
   border-radius: 8px;
   margin: 10px;
+  width: 380px;
+  display: inline-block;
 }
 .user-card .name{
   font-weight: bold;
@@ -35,7 +37,7 @@
 }
 
 .user-card .info-part{
-  width: 16em;
+  width: 200px;
 }
 .user-card .follow{
   width: 60px;

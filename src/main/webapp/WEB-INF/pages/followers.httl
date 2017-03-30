@@ -1,27 +1,21 @@
-<!DOCTYPE html>
-<html>
-<!--
-#set(components = ["bootstrap", "layout", "tag", "user", "followers"])
-#set(UserCard thisUser)
-#set(List<UserCard> users)
--->
-<head>
-	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-	$!{desc}
-	<title>${thisUser.name}的粉丝</title>
-  $!{allcss}
-</head>
-<body>
-$!{include("navbar.httl")}
-<div id="container" class="container">
-#for(user : users)
-	$!{include("user-card.httl")}
-#end
-</div>
+${extends("layout.httl")}
 
-$!{alljs}
+#macro(title)
+<!-- #set(UserCard thisUser) -->
+${thisUser.name}的粉丝
+#end
+
+#macro(body)
+  <!--
+  #set(List<UserCard> users)
+  -->
+  #for(user : users)
+  	$!{include("user-card.httl")}
+  #end
+#end
+
+#macro(script)
 <script>
-	setup(user_setup, followers_setup)
+	setup(user_setup)
 </script>
-</body>
-</html>
+#end
