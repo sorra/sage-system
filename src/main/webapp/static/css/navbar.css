@@ -1,6 +1,5 @@
 #navbar{
   text-align: center;
-  height: 43px;
   font-size: 15px;
   background-size: 44px 44px;
   padding: 0 20px 0 20px;
@@ -14,27 +13,21 @@
   border: 1px solid transparent;
   background-color: #222;
   top: 0;
+  border-radius: 0;
 }
 
-.nav-content{
-  min-width: 600px;
-  max-width: 1100px;
+#navbar-content{
+  max-width: 1200px;
   margin: 0 auto 0 auto;
 }
 
-.nav-links a, #nav-tags{
-  color: #999;
-  text-decoration: none;
-  margin-right: 5px;
-}
-.nav-links a:hover, #nav-tags:hover{
-  color: #fff;
-  background-color: transparent;
+.nav>li>a, .nav>li>.dropdown, #search {
+  padding: 10px 5px;
+  position: relative; display: block;
 }
 
-#nav-tags{
-  position: relative;
-  right: -3em;
+.navbar-header {
+  padding: 10px 5px;
 }
 
 .nav-brand{
@@ -49,14 +42,38 @@
   text-decoration: none;
 }
 
-input[name=q]{
+.nav-links {
+  height: 100%;
+  padding-top: 4px;
+}
+
+.nav-links a, #nav-tags{
+  color: #999;
+  text-decoration: none;
+  margin-right: 5px;
+}
+
+.nav-links a:hover, #nav-tags:hover{
+  color: #fff;
+  background-color: transparent;
+}
+
+#nav-tags{
+  position: relative;
+}
+
+#search {
+  padding: 6px 0;
+}
+
+#search input[name=q]{
   width: 226px;
   height: 26px;
   border: 0;
   border-radius: 5px;
   padding: 5px;
-  margin-top: 1px;
 }
+
 #search button{
   position: relative;
   right: 27px;

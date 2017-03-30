@@ -1,53 +1,55 @@
 #set(FrontMap frontMap)
 #set(UserSelf userSelf)
-<div id="navbar">
-  <div class="nav-content">
-    <div style="padding-top: 6px;">
-      <table cellpadding="0" cellspacing="0" border="0" width="100%">
-        <tbody><tr>
-          <td width="80" align="left">
-            <a class="nav-brand" href="/">轻境界</a>
-          </td>
-          <td width="auto" align="left">
+<nav id="navbar" class="navbar navbar-default" role="navigation">
+  <div id="navbar-content" class="container-fluid">
+      <!--header section -->  
+      <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+          </button>
+          <a class="nav-brand" href="/">轻境界</a>
+      </div>
+      <!-- menu section -->  
+      <div class="collapse navbar-collapse navbar-ex1-collapse navbar-inverse">
+        <ul class="nav-links nav navbar-nav navbar-right">
+          <li>
             <form id="search" action="/search" method="get" accept-charset="UTF-8">
-              <div style="width: 276px; height: 28px; display: inline-block;">
-                <input type="text" maxlength="50" name="q" placeholder="搜索" value="">
-                <button type="submit" class="glyphicon glyphicon-search"></button>
-              </div>
+              <input type="text" maxlength="50" name="q" placeholder="搜索" value="">
+              <button type="submit" class="glyphicon glyphicon-search"></button>
             </form>
-          </td>
-          <td style="width: 5em;">
-            <a id="nav-tags" href="javascript:;">标签<span class="glyphicon glyphicon-tags"></span></a>
-          </td>
-          <td class="nav-links" width="570" align="right" style="padding-top: 2px;">
-            <a href="/home">流<span class="glyphicon glyphicon-home" title="Home"></span></a>
-            <a href="/blogs">博客</a>
-            <a href="/users">人们</a>
-            #if(userSelf != null)
-            <a id="nav-user" href="/users/self" title="我的主页">${userSelf.name}</a>
-            <span class="dropdown" style="margin-left: -5px">
+          </li>
+          <li><a id="nav-tags" href="javascript:;"><span class="glyphicon glyphicon-tags"></span> 标签</a></li>
+          <li><a href="/home"><span class="glyphicon glyphicon-home" title="Home"></span>信息流</a></li>
+          <li><a href="/blogs">博客</a></li>
+          <li><a href="/users">人们</a></li>
+          #if(userSelf != null)
+          <li><a id="nav-user" href="/users/self" title="我的主页">${userSelf.name}</a></li>
+          <li>
+            <span class="dropdown">
               <a id="userDropdownMenu" href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                 <span class="glyphicon glyphicon-cog" title="设置"></span>
               </a>
               <ul class="dropdown-menu" aria-labelledby="userDropdownMenu">
-                <li><a href="/blogs/new">写博客</a></li>
                 <li><a href="/drafts">草稿箱</a></li>
                 <li><a href="/trash">回收站</a></li>
                 <li><a href="/user-info">设置</a></li>
                 <li><a href="/logout">退出</a></li>
               </ul>
             </span>
-            <a href="/notifications"><span class="glyphicon glyphicon-bell" title="通知"></span></a>
-            <a href="/messages"><span class="glyphicon glyphicon-envelope" title="私信"></span></a>
-            #else
-            <a href="/login" style="color: lightgreen">登录</a>
-            #end
-          </td>
-        </tr></tbody>
-      </table>
-    </div>
+          </li>
+          <li><a href="/blogs/new"><span class="glyphicon glyphicon-pencil" title="写博客"></span></a></li>
+          <li><a href="/notifications"><span class="glyphicon glyphicon-bell" title="通知"></span></a></li>
+          <li><a href="/messages"><span class="glyphicon glyphicon-envelope" title="私信"></span></a></li>
+          #else
+          <li><a href="/login" style="color: lightgreen">登录</a></li>
+          #end
+        </ul>
+      </div>
   </div>
-</div>
+</nav>
 
 <div class="data-holder">
     #if(frontMap != null)
