@@ -30,6 +30,7 @@ import sage.web.context.VersionsMapper
 import sage.web.filter.CurrentRequestFilter
 import sage.web.filter.LoggingURLFilter
 import sage.web.filter.StaticResourceRefreshFilter
+import java.sql.Timestamp
 import javax.servlet.ServletContext
 
 @SpringBootApplication
@@ -103,6 +104,11 @@ fun main(args: Array<String>) {
   if (!AgentLoader.loadAgentFromClasspath("avaje-ebeanorm-agent", "debug=1;packages=sage.entity.**")) {
     System.err.println("avaje-ebeanorm-agent not found in classpath - not dynamically loaded")
   }
+
   ToStringBuilder.setDefaultStyle(ToStringStyle.SHORT_PREFIX_STYLE)
   SpringApplication.run(Application::class.java, *args)
+
+  // Show a success message in console, because production logs are not printed in console
+  System.out.println("[${Timestamp(System.currentTimeMillis())}] Server is started.")
+  System.out.flush()
 }
