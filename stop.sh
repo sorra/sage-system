@@ -1,1 +1,1 @@
-ps aux | grep sage.ApplicationKt | grep -v grep | awk '{print $2}' | xargs kill
+ps -ef | grep sage.ApplicationKt | grep -v grep | awk '{print $2}' | xargs kill
