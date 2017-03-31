@@ -38,6 +38,7 @@ class BlogService
 
     searchService.index(blog.id, BlogView(blog))
     GlobalCaches.blogsCache.clear()
+    GlobalCaches.tweetsCache.clear()
     return blog
   }
 
