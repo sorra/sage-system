@@ -15,6 +15,7 @@ public class TagCard {
   private boolean isCore;
   private List<TagLabel> chainUp = new ArrayList<>();
   private Collection<TagLabel> children = new HashSet<>();
+  private String chainStr;
 
   public long getId() {
     return id;
@@ -65,6 +66,14 @@ public class TagCard {
 
   public void setChildren(Collection<TagLabel> children) {
     this.children = children;
+  }
+
+  public String getChainStr() {
+    return chainStr;
+  }
+
+  public void setChainStr(String chainStr) {
+    this.chainStr = chainStr;
   }
 
   @Override

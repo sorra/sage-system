@@ -88,6 +88,9 @@ class Tag(
     for (child in children) {
       t.children.add(child.toTagLabel())
     }
+
+    t.chainStr = produceChainStr()
+
     return t
   }
 
@@ -96,10 +99,12 @@ class Tag(
     t.id = id
     t.name = name
     t.isCore = isCore
-    t.chainStr = chainUp().asReversed().map(Tag::name).joinToString("->")
+    t.chainStr = produceChainStr()
     return t
   }
-  
+
+  private fun produceChainStr() = chainUp().asReversed().map(Tag::name).joinToString("->")
+
   companion object : Find<Long, Tag>() {
     val ROOT_ID: Long = 1
     val ROOT_NAME = "无"

@@ -27,7 +27,7 @@ $!{include("navbar.httl")}
         <button type="submit">提交</button>
       </form>
       <form id="form-move" class="tab-pane" action="/tag-changes/${tag.id}/move" method="post">
-        <div>旧层级：${new TagLabel(tag).chainStr}</div>
+        <div>旧层级：${tag.chainStr}</div>
         <div>新母标签：<input name="parentId"/></div>
         <button type="submit">提交</button>
       </form>
