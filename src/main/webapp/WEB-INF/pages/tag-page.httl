@@ -7,11 +7,22 @@ ${tag.name} - 轻境界
 
 #macro(style)
 <style>
-  .side > div, #bkg-intro{
+  .side > div, #bkg-intro {
     min-height: 50px;
-    margin: 2px;
     padding: 5px;
-    background-color: #e5e5e5;
+  }
+  #bkg-intro {
+    text-align: center;
+    padding: 10px;
+  }
+
+  .tag-chain {
+    margin-top: 15px;
+  }
+
+  .tag-chain-line {
+    font-weight: bold;
+    color: #f08080;
   }
 </style>
 #end
@@ -23,9 +34,17 @@ ${tag.name} - 轻境界
   #set(Collection<BlogPreview> blogs)
   #set(Collection coreTags, Collection nonCoreTags, Collection relatedTags, Collection sameNameTags)
   -->
-	<div id="chain"></div>
+	<div class="tag-chain">
+  #for(Tag eachTag: tag.chainDown())
+    #set(eachTagClass = for.last ? 'btn-success' : 'btn-info')
+    <a href="/tags/${eachTag.id}" class="tag-chain-item btn btn-sm ${eachTagClass}">${eachTag.name}</a>
+    #if(!for.last)
+    <span class="tag-chain-line">-----></span>
+    #end
+  #end
+  </div>
 	<div style="margin-top: 50px">
-		<div class="side">
+		<div class="side well well-sm">
       <div class="parallel-links">
         <div>
           <a id="heed-the-tag" class="btn btn-success" href="javascript:;" style="display: none">+关注</a>
@@ -55,7 +74,7 @@ ${tag.name} - 轻境界
       #if(relatedTags)
       <div>关联标签
         <div>
-          #for(each : sameNameTags)
+          #for(each : relatedTags)
             $!{tagLabel(each)}
           #end
         </div>
@@ -72,7 +91,7 @@ ${tag.name} - 轻境界
       #end
 		</div>
 		<div class="main">
-		  <div id="bkg-intro" style="text-align: center; padding: 10px">${tag.intro == null ? "没有背景介绍" : tag.intro}</div>
+		  <div id="bkg-intro" class="well well-sm">${tag.intro == null ? "没有背景介绍" : tag.intro}</div>
       <div class="blog-list">
         <h2 class="heading-hot">博客精选</h2>
         #for(blog : blogs)
@@ -92,7 +111,6 @@ setup(humanTime_setup, tag_setup, stream_setup, user_setup)
 $(document).ready(function(){
 	var tagId = window.frontMap.id
 	getStream('/stream/tag/' + tagId)
-	getTagChain(tagId, $('#chain'))
 
   $('#heed-the-tag').click(function(){
     var $this = $(this)

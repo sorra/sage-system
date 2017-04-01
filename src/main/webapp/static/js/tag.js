@@ -2,57 +2,6 @@ function tag_setup() {
   tag_input_init()
 }
 
-function getTagChain(id, $parent) {
-  $.get('/tag/card/'+id, {})
-  .done(function(resp){
-    createTagChain(resp).appendTo($parent)
-  })
-  .fail(function(resp){
-    console.log(resp)
-  })
-}
-
-function createTagChain(tagCard) {
-  var $tch = $('<div class="tag-chain"></div>').css({position: 'relative'})
-  for (var i = tagCard.chainUp.length-1, inc = 0; i >= 0; i--, inc++) {
-    var item = tagCard.chainUp[i]
-
-    var $tag = $('<a></a>').addClass('tag btn').addClass('btn-info').appendTo($tch)
-    $tag.text(item.name).attr('href', '/tags/'+item.id)
-    $tag.css({
-    	display:  'block',
-      width:   '58px',
-      height:  '23px',
-      padding: '0',
-      margin:  '0'
-    })
-    var pleft = inc*(60+50)
-    $tag.css({
-    	position:  'absolute',
-      left: pleft+'px',
-      top: '0px'
-    })
-    if (i == 0) {
-      $tag.removeClass('btn-info').addClass('btn-success')
-    }
-    
-    if (i > 0) {
-      var pxleft = inc*(60+50) + 60
-      var $line = $('<div></div>').addClass('line').appendTo($tch)
-      $line.css({
-      	width:  '50px',
-        height:  '5px',
-        background:  '#CCCCCC'
-      }).css({
-      	position: 'absolute',
-        left: pxleft+'px',
-        top: '10px'
-      })
-    }
-  }
-  return $tch
-}
-
 function tag_tree(tagTree, params) {
   var $tree = $('<div class="tag-tree">')
   tag_node($tree, tagTree, -1, params)

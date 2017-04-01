@@ -36,6 +36,9 @@ class Tag(
     return chain
   }
 
+  @Suppress("unused")
+  fun chainDown(): List<Tag> = chainUp().asReversed()
+
   /**
    * @return all of its descendant tags
    */
