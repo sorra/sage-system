@@ -9,8 +9,7 @@
   </appender>
 
   <!-- 时间滚动输出 -->
-  <appender name="file-log"
-            class="ch.qos.logback.core.rolling.RollingFileAppender">
+  <appender name="file-log" class="ch.qos.logback.core.rolling.RollingFileAppender">
     <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
       <level>INFO</level>
     </filter>
