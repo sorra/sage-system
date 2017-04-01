@@ -31,10 +31,10 @@ $(document).ready(function(){
   window.onscroll = function(){
         var toTop = document.body.scrollTop || document.documentElement.scrollTop
         if (toTop > 0 && isBackToTopHidden) {
-            $('#back-to-top').css('display', 'block')
+            $('#back-to-top').addClass('show-back-to-top')
             isBackToTopHidden = false
         } else if (toTop == 0 && !isBackToTopHidden) {
-            $('#back-to-top').css('display', 'none')
+            $('#back-to-top').removeClass('show-back-to-top')
             isBackToTopHidden = true
         };
     }

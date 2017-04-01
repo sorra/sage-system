@@ -109,6 +109,12 @@ input[type=text]{
     display: none;
 }
 
+@media (min-width: 768px) {
+  #back-to-top .show-back-to-top{
+    display: block;
+  }
+}
+
 .tweet .like-btn-liked{
   color: #5cb85c;
 }

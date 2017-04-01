@@ -20,7 +20,7 @@
   margin: 0 auto 0 auto;
 }
 
-.nav>li>a, .nav>li>.dropdown, #search {
+.nav-links>li>a, .nav-links>li>.dropdown, #search {
   padding: 10px 5px;
   position: relative; display: block;
 }

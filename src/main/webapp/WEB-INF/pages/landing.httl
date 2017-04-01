@@ -6,35 +6,49 @@ ${extends("layout.httl")}
 
 #macro(style)
 <style>
-  #site-whats{
+  #site-whats {
     font-size: 16px;
   }
-  #site-whats a{
+  #site-whats a {
     color: #256DAB;
   }
-  #welcome-login{
+  #welcome-login {
     margin: 20px;
     padding: 5px;
     background-color: beige;
     max-width: 181px;
     border-radius: 5px;
   }
-  #hot-tags{
+  #hot-tags {
     margin: 5px 0 5px 0;
   }
-  #areas:after{
+
+  #areas:after {
     display: table;
     content: " ";
     clear: both;
   }
-  #blogs{
-    float: left;
-    width: 49%;
-  }
-  #tweets{
-    float: left;
-    width: 49%;
-    margin-left: 2%;
+
+  @media (min-width: 768px) {
+    #rss-link {
+      margin: 5px 5px 0 -60px;
+      float: right;
+    }
+    #areas-switcher {
+      display: none;
+    }
+    #areas .tab-pane {
+      display: block;
+    }
+    #blogs {
+      float: left;
+      width: 49%;
+    }
+    #tweets {
+      float: left;
+      width: 49%;
+      margin-left: 2%;
+    }
   }
 </style>
 #end
@@ -62,15 +76,20 @@ ${extends("layout.httl")}
   <div id="feedback-entrance">
     <a href="/feedbacks">直接反馈</a> 或联系info@qingjingjie.com
   </div>
-  <div id="areas">
-    <div id="blogs" class="blog-list">
-      <a href="/rss" style="float: right; margin: 5px 5px 0 -60px;">RSS订阅</a>
+
+  <ul id="areas-switcher" class="nav nav-tabs" role="tablist">
+    <li role="presentation" class="active"><a href="#blogs" aria-controls="blogs" role="tab" data-toggle="tab">博客精选</a></li>
+    <li role="presentation"><a href="#tweets" aria-controls="tweets" role="tab" data-toggle="tab">最新微言</a></li>
+  </ul>
+  <div id="areas" class="tab-content">
+    <div id="blogs" class="blog-list tab-pane active" role="tabpanel">
+      <a id="rss-link" href="/rss">RSS订阅</a>
       <h2 class="heading-hot">博客精选</h2>
       #for(blog : blogs)
         $!{include("blog-preview.httl")}
       #end
     </div>
-    <div id="tweets" class="tweet-list">
+    <div id="tweets" class="tweet-list tab-pane" role="tabpanel">
       <h2 class="heading-hot">最新微言</h2>
       $!{include("stream.httl")}
     </div>
