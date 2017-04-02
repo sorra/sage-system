@@ -29,8 +29,10 @@ function getStream(url) {
   $('.stream-items').tipover('获取中···', 3000)
   return $.get(url)
     .done(function (resp) {
-      if (resp) {
-        $('.stream-items').empty().append($(resp))
+      var $items = resp ? $(resp) : $()
+      if ($items.length > 0) {
+        $('.stream-items').empty().append($items)
+        $items.find('.tag-label').tooltip()
         humanTime_show()
         $('.stream-items').tipover('获取了' + $('.stream-items .tweet').length + '条信息')
       } else {
@@ -66,6 +68,7 @@ function funcLookNewer(ignoreEmpty) {
         var $items = resp ? $(resp) : $()
         if ($items.length > 0) {
           $('.stream-items').prepend($items)
+          $items.find('.tag-label').tooltip()
         } else if (!ignoreEmpty) {
           $('.stream .newfeed').tipover('还没有新的')
         }
@@ -101,6 +104,7 @@ function funcLookEarlier(ignoreEmpty) {
         var $items = resp ? $(resp) : $()
         if ($items.length > 0) {
           $('.stream-items').append($items)
+          $items.find('.tag-label').tooltip()
         } else if (!ignoreEmpty) {
           $('.stream .oldfeed').tipover('没有更早的了')
         }
