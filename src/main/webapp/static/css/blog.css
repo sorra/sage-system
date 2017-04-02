@@ -4,6 +4,8 @@
   border-bottom: 1px solid #ddd;
   border-radius: 10px;
   background: #fafafa;
+  word-wrap: break-word;
+  word-break: break-all;
 }
 
 .blog-preview .title{

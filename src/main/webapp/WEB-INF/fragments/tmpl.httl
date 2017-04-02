@@ -2,7 +2,7 @@
   <div class="comments-box" v-show="visible">
     <div class="main-comment-editor">
       <div class="action-alert" role="alert"></div>
-      <textarea v-model="editorContent" placeholder="写点评论吧" style="width: 400px; height: 43px; resize: none;"></textarea>
+      <textarea v-model="editorContent" placeholder="写点评论吧"></textarea>
       <button class="btn btn-xs btn-success" @click="postComment(true)">转+评</button>
       <button class="btn btn-xs btn-info" @click="postComment(false)">评论</button>
     </div>
@@ -21,9 +21,9 @@
             <a class="reply-btn pull-right" href="javascript:;" @click="toggleWriteReply(c)">回复</a>
           </div>
         </div>
-        <div v-show="commentBeingReplied == c">
+        <div class="reply-comment-editor" v-show="commentBeingReplied == c">
           <div class="action-alert" role="alert"></div>
-          <textarea v-model="c.replyEditorContent" placeholder="回复" style="width: 400px; height: 43px; resize: none;"></textarea>
+          <textarea v-model="c.replyEditorContent" placeholder="回复"></textarea>
           <button class="btn btn-xs btn-success" @click="postReply(c, true)">转+评</button>
           <button class="btn btn-xs btn-info" @click="postReply(c, false)">评论</button>
         </div>
