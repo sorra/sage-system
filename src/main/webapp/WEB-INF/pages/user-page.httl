@@ -18,15 +18,23 @@ ${extends("layout.httl")}
     加入时间：$!{spanHumanTime(user.whenCreated)}
   </div>
 	<div class="main">
-		<div class="blog-list">
-			<a href="/users/${user.id}/rss" style="float: right">RSS订阅</a>
-			#for(blog : blogs)
-			$!{include("blog-preview.httl")}
-			#end
-		</div>
-		<div class="stream">
-			<div class="stream-items"></div>
-		</div>
+    <ul class="nav nav-tabs" role="tablist">
+      <li role="presentation" class="active"><a href="#blogs" aria-controls="blogs" role="tab" data-toggle="tab">博客</a></li>
+      <li role="presentation"><a href="#tweets" aria-controls="tweets" role="tab" data-toggle="tab">微言</a></li>
+    </ul>
+
+    <div class="tab-content">
+      <div id="blogs" class="blog-list tab-pane active" role="tabpanel">
+        <a href="/users/${user.id}/rss" style="float: right">RSS订阅</a>
+        #for(blog : blogs)
+        $!{include("blog-preview.httl")}
+        #end
+      </div>
+      <div id="tweets" class="stream tab-pane" role="tabpanel">
+        <div class="stream-items"></div>
+      </div>
+    </div>
+
 	</div>
 #end
 

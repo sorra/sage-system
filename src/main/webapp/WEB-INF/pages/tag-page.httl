@@ -93,15 +93,23 @@ ${tag.name} - 轻境界
 
 	<div class="main">
 	  <div id="bkg-intro" class="well well-sm">${tag.intro == null ? "没有背景介绍" : tag.intro}</div>
-    <div class="blog-list">
-      <h2 class="heading-hot">博客精选</h2>
-      #for(blog : blogs)
-        $!{include("blog-preview.httl")}
-      #end
+    
+    <ul class="nav nav-tabs" role="tablist">
+      <li role="presentation" class="active"><a href="#blogs" aria-controls="blogs" role="tab" data-toggle="tab">博客</a></li>
+      <li role="presentation"><a href="#tweets" aria-controls="tweets" role="tab" data-toggle="tab">微言</a></li>
+    </ul>
+
+    <div class="tab-content">
+      <div id="blogs" class="blog-list tab-pane active" role="tabpanel">
+        #for(blog : blogs)
+          $!{include("blog-preview.httl")}
+        #end
+      </div>
+      <div id="tweets" class="stream tab-pane" role="tabpanel">
+        <div class="stream-items"></div>
+      </div>
     </div>
-		<div class="stream">
-			<div class="stream-items"></div>
-		</div>
+
 	</div>
 #end
 
