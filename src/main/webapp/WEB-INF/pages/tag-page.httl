@@ -17,7 +17,7 @@ ${tag.name} - 轻境界
   }
 
   .tag-chain {
-    margin-top: 15px;
+    margin: 15px 3px 15px 3px;
   }
 
   .tag-chain-line {
@@ -43,64 +43,64 @@ ${tag.name} - 轻境界
     #end
   #end
   </div>
-	<div style="margin-top: 50px">
-		<div class="side well well-sm">
-      <div class="parallel-links">
-        <div>
-          <a id="heed-the-tag" class="btn btn-success" href="javascript:;" style="display: none">+关注</a>
-        </div>
-        <div>
-          <a href="/tag-changes/${tag.id}/scope">修改申请(范围内)</a>
-          #if(countPendingRequestsOfTagScope > 0)[${countPendingRequestsOfTagScope}]#end
-        </div>
-        <div>
-          <a href="/tag-changes/${tag.id}">修改申请(仅本标签)</a>
-          #if(countPendingRequestsOfTag > 0)[${countPendingRequestsOfTag}]#end
-        </div>
+
+	<div class="side well well-sm">
+    <div class="parallel-links">
+      <div>
+        <a id="heed-the-tag" class="btn btn-success" href="javascript:;" style="display: none">+关注</a>
       </div>
-      <div>子标签
-        <div>
-          #for(each : coreTags)
-            $!{tagLabel(each)}
-          #end
-        </div>
-        <hr style="margin: 5px;"/>
-        <div>
-          #for(each : nonCoreTags)
-            $!{tagLabel(each)}
-          #end
-        </div>
+      <div>
+        <a href="/tag-changes/${tag.id}/scope">修改申请(范围内)</a>
+        #if(countPendingRequestsOfTagScope > 0)[${countPendingRequestsOfTagScope}]#end
       </div>
-      #if(relatedTags)
-      <div>关联标签
-        <div>
-          #for(each : relatedTags)
-            $!{tagLabel(each)}
-          #end
-        </div>
+      <div>
+        <a href="/tag-changes/${tag.id}">修改申请(仅本标签)</a>
+        #if(countPendingRequestsOfTag > 0)[${countPendingRequestsOfTag}]#end
       </div>
-      #end
-      #if(sameNameTags)
-      <div>同名标签
-        <div>
-          #for(each : sameNameTags)
-            $!{tagLabel(each)}
-          #end
-        </div>
-      </div>
-      #end
-		</div>
-		<div class="main">
-		  <div id="bkg-intro" class="well well-sm">${tag.intro == null ? "没有背景介绍" : tag.intro}</div>
-      <div class="blog-list">
-        <h2 class="heading-hot">博客精选</h2>
-        #for(blog : blogs)
-          $!{include("blog-preview.httl")}
+    </div>
+    <div>子标签
+      <div>
+        #for(each : coreTags)
+          $!{tagLabel(each)}
         #end
       </div>
-			<div class="stream">
-				<div class="stream-items"></div>
-			</div>
+      <hr style="margin: 5px;"/>
+      <div>
+        #for(each : nonCoreTags)
+          $!{tagLabel(each)}
+        #end
+      </div>
+    </div>
+    #if(relatedTags)
+    <div>关联标签
+      <div>
+        #for(each : relatedTags)
+          $!{tagLabel(each)}
+        #end
+      </div>
+    </div>
+    #end
+    #if(sameNameTags)
+    <div>同名标签
+      <div>
+        #for(each : sameNameTags)
+          $!{tagLabel(each)}
+        #end
+      </div>
+    </div>
+    #end
+	</div>
+
+	<div class="main">
+	  <div id="bkg-intro" class="well well-sm">${tag.intro == null ? "没有背景介绍" : tag.intro}</div>
+    <div class="blog-list">
+      <h2 class="heading-hot">博客精选</h2>
+      #for(blog : blogs)
+        $!{include("blog-preview.httl")}
+      #end
+    </div>
+		<div class="stream">
+			<div class="stream-items"></div>
 		</div>
 	</div>
 #end
