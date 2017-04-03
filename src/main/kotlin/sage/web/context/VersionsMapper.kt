@@ -1,6 +1,7 @@
 package sage.web.context
 
 import org.slf4j.LoggerFactory
+import sage.util.Settings
 import sage.util.Utils
 import java.io.File
 import java.nio.file.Files
@@ -14,6 +15,8 @@ object VersionsMapper {
   private val log = LoggerFactory.getLogger(VersionsMapper.javaClass)
   private lateinit var dir: Path
   private val map: MutableMap<String, VersionedFile> = ConcurrentHashMap()
+
+  private val delaySeconds: Int = Settings.props["versions.delaySeconds"]?.toString()?.toInt() ?: 0
 
   fun setup(servletContext: ServletContext): VersionsMapper {
     dir = Paths.get(servletContext.getRealPath("/static/"))
@@ -46,7 +49,7 @@ object VersionsMapper {
       }
 
     val currentTime = System.currentTimeMillis()
-    if (currentTime > versionedFile.lastChecked + 30000) { // 30s after last checked
+    if (currentTime > versionedFile.lastChecked + delaySeconds * 1000) {
       if (versionedFile.file.lastModified() > versionedFile.lastChecked) { // file is modified
         versionedFile = putVersionedFile(path, versionedFile.file.toPath(), currentTime)
       } else {
