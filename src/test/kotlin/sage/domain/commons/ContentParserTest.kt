@@ -9,12 +9,12 @@ class ContentParserTest {
   fun test() {
     runs("", "", emptySet())
     runs("http://a/#id #@Some @Nobody#\"Em\"#",
-        "<a class=\"link\" href=\"http://a/#id\" target=\"_blank\">http://a/#id</a> #<a class=\"mention\" uid=\"1\" href=\"/users/1\">@Some</a> @Nobody<strong>\"Em\"</strong>",
+        "<a class=\"link\" href=\"http://a/#id\" target=\"_blank\">http://a/#id</a> #<a class=\"mention\" uid=\"1\" href=\"/users/1\">@Some</a> @Nobody<strong>#\"Em\"#</strong>",
         setOf(1))
   }
 
   private fun runs(original: String, expected: String, expectedMentions: Set<Long>) {
-    val (json, mentionedIds) = ContentParser.tweet(original, { name -> User("a@a.com", "pwd").apply { id = 1 } })
+    val (json, mentionedIds) = ContentParser.tweet(original, { _ -> User("a@a.com", "pwd").apply { id = 1 } })
     Assert.assertEquals(expected, json)
     Assert.assertEquals(expectedMentions, mentionedIds)
   }

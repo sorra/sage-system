@@ -30,7 +30,7 @@ object ContentParser {
             substring(0, idx1).apply {
               if (length > 0) subSegs.add(Element("", this))
             }
-            subSegs.add(Element("emphasis", substring(idx1 + 1, idx2)))
+            subSegs.add(Element("emphasis", substring(idx1, idx2 + 1)))
             substring(idx2 + 1).apply {
               if (length > 0) subSegs.add(Element("", this))
             }
