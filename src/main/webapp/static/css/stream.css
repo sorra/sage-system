@@ -17,16 +17,16 @@
   display: table;
   word-wrap: break-word;
   word-break: break-all;
+  width: 100%;
 }
 .tweet:after{
   display: table;
   content: " ";
   clear: both;
 }
+
 .tweet-body{
-  max-width: 530px;
-  float: left;
-  margin-left: 56px
+  margin-left: 56px;
 }
 .tweet-content .view-img{
   display: block;
