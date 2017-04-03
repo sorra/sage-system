@@ -7,6 +7,7 @@ import sage.domain.cache.GlobalCaches
 import sage.domain.commons.BadArgumentException
 import sage.domain.commons.ContentParser
 import sage.domain.commons.ReplaceMention
+import sage.domain.concept.Authority
 import sage.domain.permission.CheckPermission
 import sage.entity.*
 import sage.transfer.BlogView
@@ -71,10 +72,15 @@ class BlogService
   }
 
   fun delete(userId: Long, blogId: Long) {
-    val blog = Blog.get(blogId)
-    CheckPermission.canDelete(userId, blog, userId == blog.author.id)
+    val blog = Blog.query().setId(blogId).setIncludeSoftDeletes().findUnique()!!
+    CheckPermission.canDelete(userId, blog, userId == blog.author.id || Authority.isSiteAdmin(User.get(userId).authority))
 
     blog.delete()
+    blog.stat()?.let {
+      it.rank = 0.0
+      it.tune = -1
+      it.update()
+    }
 
     searchService.delete(BlogView::class.java, blog.id)
   }

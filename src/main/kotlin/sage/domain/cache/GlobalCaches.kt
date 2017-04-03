@@ -15,15 +15,22 @@ object GlobalCaches {
     private val cache = CacheBuilder.newBuilder().maximumSize(100).expireAfterWrite(5, TimeUnit.MINUTES).build<String, Pair<List<Long>, Int>>()
 
     operator fun get(key: String, valueLoader: ()->List<V>): List<V> {
-      return cache.getIfPresent(key)?.run {
-        val ids = first
-        val objects = find.where().`in`("id", ids).findMap("id", Long::class.java)
-        ids.mapNotNull { objects[it] }
-      } ?: run {
+      val loadValue = {
         val list = valueLoader()
         cache.put(key, list.map { it.id } to 0)
         list
       }
+
+      return cache.getIfPresent(key)?.let { entry ->
+        val ids = entry.first
+        val objects = find.where().`in`("id", ids).findMap("id", Long::class.java)
+        val objectList = ids.mapNotNull { id -> objects[id] }
+        if (objectList.size == ids.size) {
+          objectList
+        } else {
+          loadValue()
+        }
+      } ?: loadValue()
     }
 
     operator fun get(name: String, pageIndex: Int, pageSize: Int): Pair<List<V>, Int> {

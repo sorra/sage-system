@@ -128,4 +128,15 @@ open class ZOperationController @Autowired constructor(
 
     return "Done."
   }
+
+  @RequestMapping("/z-delete")
+  @ResponseBody
+  fun delete(@RequestParam blogId: Long): String {
+    if(Auth.checkUid() != 1L) {
+      return "Page not found."
+    }
+
+    blogService.delete(Auth.checkUid(), blogId)
+    return "Done $blogId"
+  }
 }
