@@ -1,15 +1,17 @@
 package sage.service
 
 import com.avaje.ebean.Ebean
-import org.markdown4j.Markdown4jProcessor
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import sage.domain.cache.GlobalCaches
-import sage.domain.commons.*
+import sage.domain.commons.BadArgumentException
+import sage.domain.commons.ContentParser
+import sage.domain.commons.ReplaceMention
 import sage.domain.permission.CheckPermission
 import sage.entity.*
 import sage.transfer.BlogView
 import sage.util.JsoupUtil
+import sage.util.MarkdownUtil
 import java.sql.Timestamp
 import java.util.*
 
@@ -116,7 +118,7 @@ class BlogService
     val mentionedIds = pair.second
 
     if (blog.contentType == Blog.MARKDOWN) {
-      content = Markdown4jProcessor().process(content)
+      content = MarkdownUtil.render(content)
       content = JsoupUtil.clean(content)
     } else {
       content = JsoupUtil.clean(content)

@@ -4,7 +4,8 @@ import org.jsoup.Jsoup
 import org.jsoup.safety.Whitelist
 
 object JsoupUtil {
-  val whitelist = Whitelist.relaxed().addProtocols("a", "href", "#", "/") // Though adding "#" and "/" has no effect
+  // Though adding "#" and "/" has no effect
+  val whitelist: Whitelist = Whitelist.relaxed().addProtocols("a", "href", "#", "/")
 
-  fun clean(html: String) = Jsoup.clean(html, whitelist)
+  fun clean(html: String): String = Jsoup.clean(html, whitelist)
 }
