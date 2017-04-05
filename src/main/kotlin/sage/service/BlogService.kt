@@ -106,7 +106,7 @@ class BlogService
 
   fun hotBlogs() : List<Blog> {
     val stats = BlogStat.where().orderBy("rank desc, id desc").setMaxRows(20).findList()
-    return stats.map { Blog.get(it.id) }
+    return stats.mapNotNull { Blog.byId(it.id) }
   }
 
   private fun checkLength(title: String, content: String) {
