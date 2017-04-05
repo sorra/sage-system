@@ -22,7 +22,10 @@
             </form>
           </li>
           <li><a id="nav-tags" href="javascript:;"><span class="glyphicon glyphicon-tags"></span> 标签</a></li>
-          <li><a href="/home"><span class="glyphicon glyphicon-home" title="Home"></span>信息流</a></li>
+          <li><a href="/home">
+            <span class="glyphicon glyphicon-home" title="Home"></span>
+            <span style="margin-left: -2px;">信息流</span>
+          </a></li>
           <li><a href="/blogs">博客</a></li>
           <li><a href="/users">人们</a></li>
           #if(userSelf != null)
