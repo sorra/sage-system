@@ -16,6 +16,9 @@ $!{alljs}
 
 <script>
 setup(stream_setup, humanTime_setup, user_setup)
+$(function () {
+  toggleTweetComments.apply($('.comment-btn')[0])
+})
 </script>
 </body>
 </html>
