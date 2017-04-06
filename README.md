@@ -15,7 +15,7 @@
 
 启动：
 
-- IDE方式: 用Intellij导入项目(项目类型选Gradle)，执行`src/main/kotlin/sage/Application.kt`文件
+- IDE方式: 运行`./gradlew web`，然后用Intellij导入项目(项目类型选Gradle)，执行`src/main/kotlin/sage/Application.kt`文件
 - 命令方式: `./gradlew web bootRun`
 
 开发过程：
