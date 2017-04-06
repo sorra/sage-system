@@ -96,11 +96,16 @@ class TweetPostService
       BlogStat.incComments(it)
     }}
 
-    notifService.commented(Tweet.ref(tweetId).author.id, userId, comment.id)
     if (replyUserId != null) {
       notifService.replied(replyUserId, userId, comment.id)
     }
+    val tweetAuthorId = Tweet.ref(tweetId).author.id
+    if (replyUserId != tweetAuthorId) {
+      // Avoid REPLIED and COMMENTED notifications being duplicate
+      notifService.commented(tweetAuthorId, userId, comment.id)
+    }
     mentionedIds.forEach { atId -> notifService.mentionedByComment(atId, userId, comment.id) }
+
     return comment
   }
 
