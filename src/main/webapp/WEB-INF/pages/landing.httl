@@ -30,10 +30,6 @@ ${extends("layout.httl")}
   }
 
   @media (min-width: 768px) {
-    #rss-link {
-      margin: 5px 5px 0 -60px;
-      float: right;
-    }
     #areas-switcher {
       display: none;
     }

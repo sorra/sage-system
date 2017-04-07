@@ -3,13 +3,10 @@
 <!-- #set(String name) -->
 <rss version="2.0">
   <channel>
-    #if(name != null)
-      #set(name = "\""+name+"\"用户")
-    #end
     #if(blogs.size > 0)
       #set(pubDate = blogs[0].whenCreated)
     #end
-    <title>轻境界${name}最新博客</title>
+    <title>${name}</title>
     <link>http://www.qingjingjie.com</link>
     <description>轻境界 - 轻装前往更高境界</description>
     <pubDate>${pubDate}</pubDate>

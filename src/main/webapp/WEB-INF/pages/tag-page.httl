@@ -101,6 +101,7 @@ ${tag.name} - 轻境界
 
     <div class="tab-content">
       <div id="blogs" class="blog-list tab-pane active" role="tabpanel">
+        <a id="rss-link" href="/tags/${tag.id}/rss">RSS订阅</a>
         #for(blog : blogs)
           $!{include("blog-preview.httl")}
         #end

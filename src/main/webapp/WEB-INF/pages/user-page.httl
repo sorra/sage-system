@@ -25,7 +25,7 @@ ${extends("layout.httl")}
 
     <div class="tab-content">
       <div id="blogs" class="blog-list tab-pane active" role="tabpanel">
-        <a href="/users/${user.id}/rss" style="float: right">RSS订阅</a>
+        <a id="rss-link" href="/users/${user.id}/rss">RSS订阅</a>
         #for(blog : blogs)
         $!{include("blog-preview.httl")}
         #end

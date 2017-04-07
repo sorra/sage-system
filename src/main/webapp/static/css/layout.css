@@ -113,6 +113,11 @@ input[type=text]{
   #back-to-top .show-back-to-top{
     display: block;
   }
+
+  #rss-link {
+    margin: 5px 5px 0 -60px;
+    float: right;
+  }
 }
 
 .tweet .like-btn-liked{

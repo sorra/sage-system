@@ -6,6 +6,7 @@ import org.springframework.web.servlet.ModelAndView
 import sage.entity.Blog
 import sage.entity.Tag
 import sage.transfer.BlogPreview
+import sage.util.Strings
 import sage.web.auth.Auth
 import sage.web.context.BaseController
 
@@ -45,5 +46,15 @@ open class TagController : BaseController() {
         .addObject("sameNameTags", sameNameTags)
         .addObject("countPendingRequestsOfTagScope", tagChangeService.countPendingRequestsOfTagScope(id))
         .addObject("countPendingRequestsOfTag", tagChangeService.countPendingRequestsOfTag(id))
+  }
+
+  @RequestMapping("/{id}/rss")
+  fun rss(@PathVariable id: Long): ModelAndView {
+    val blogs = Blog.where().`in`("tags", Tag.ref(id)).findList()
+    response.contentType = "text/xml"
+    blogs.forEach {
+      it.content = Strings.escapeXmlInvalidChar(it.content)
+    }
+    return ModelAndView("rss").addObject("blogs", blogs).addObject("name", Tag.get(id).name)
   }
 }
