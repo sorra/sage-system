@@ -28,16 +28,24 @@ body, .background-dark{
 }
 
 .side{
-  width: 240px;
   height: 100%;
   float: left;
 }
 .main{
-  width: 660px;
   float: left;
   margin-left: 20px;
   margin-right: 20px;
 }
+
+@media (min-width: 768px) {
+  .side {
+    width: 20%;
+  }
+  .main {
+    width: 70%;
+  }
+}
+
 footer{
   margin: 10px 0;
   padding: 5px 5px;

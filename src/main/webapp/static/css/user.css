@@ -25,6 +25,7 @@
   border-radius: 8px;
   margin: 10px;
   width: 380px;
+  min-height: 90px;
   display: inline-block;
 }
 .user-card .name{
