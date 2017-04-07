@@ -1,6 +1,6 @@
 package sage.entity
 
-import sage.domain.concept.Authority
+import sage.domain.constraints.Authority
 import sage.transfer.*
 import javax.persistence.Entity
 

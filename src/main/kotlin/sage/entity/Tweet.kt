@@ -3,6 +3,7 @@ package sage.entity
 import org.slf4j.LoggerFactory
 import sage.domain.commons.Edge
 import sage.domain.commons.RichElement
+import sage.domain.constraints.TweetConstraints
 import sage.transfer.MidForward
 import sage.transfer.MidForwards
 import sage.web.context.Json
@@ -95,6 +96,11 @@ class Tweet : BaseModel {
     }
 
   fun stat() = TweetStat.byId(id)
+
+  @PrePersist @PreUpdate
+  fun validate() {
+    TweetConstraints.check(this)
+  }
 
   companion object : Find<Long, Tweet>() {
     private val log = LoggerFactory.getLogger(Tweet::class.java)

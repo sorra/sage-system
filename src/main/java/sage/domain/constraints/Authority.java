@@ -1,4 +1,4 @@
-package sage.domain.concept;
+package sage.domain.constraints;
 
 public enum Authority {
   USER, TAG_ADMIN, SITE_ADMIN;

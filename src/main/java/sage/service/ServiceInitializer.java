@@ -4,7 +4,7 @@ import java.util.Collections;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import sage.domain.concept.Authority;
+import sage.domain.constraints.Authority;
 import sage.entity.Blog;
 import sage.entity.Tag;
 import sage.entity.User;

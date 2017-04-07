@@ -5,7 +5,7 @@ import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 import sage.domain.commons.DomainException
 import sage.domain.commons.IdCommons
-import sage.domain.concept.Authority
+import sage.domain.constraints.Authority
 import sage.entity.*
 import sage.transfer.TagLabel
 import sage.transfer.UserCard

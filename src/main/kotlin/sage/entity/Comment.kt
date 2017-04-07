@@ -1,5 +1,6 @@
 package sage.entity
 
+import sage.domain.constraints.CommentConstraints
 import javax.persistence.*
 
 @Entity
@@ -29,6 +30,11 @@ class Comment : BaseModel {
     this.sourceType = sourceType
     this.sourceId = sourceId
     this.replyUserId = replyUserId
+  }
+
+  @PrePersist @PreUpdate
+  fun validate() {
+    CommentConstraints.check(inputContent)
   }
 
   companion object : Find<Long, Comment>() {

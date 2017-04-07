@@ -4,10 +4,9 @@ import com.avaje.ebean.Ebean
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import sage.domain.cache.GlobalCaches
-import sage.domain.commons.BadArgumentException
 import sage.domain.commons.ContentParser
 import sage.domain.commons.ReplaceMention
-import sage.domain.concept.Authority
+import sage.domain.constraints.Authority
 import sage.domain.permission.CheckPermission
 import sage.entity.*
 import sage.transfer.BlogView
@@ -25,10 +24,9 @@ class BlogService
     private val notifService: NotificationService) {
 
   fun post(userId: Long, title: String, inputContent: String, tagIds: Set<Long>, contentType: String): Blog {
-    checkLength(title, inputContent)
-
     val blog = Blog(title, inputContent, "", User.ref(userId), Tag.multiGet(tagIds), Blog.contentTypeValue(contentType))
     val mentionedIds = renderAndGetMentions(blog)
+
     Ebean.execute {
       blog.save()
       BlogStat(id = blog.id, whenCreated = blog.whenCreated).save()
@@ -46,8 +44,8 @@ class BlogService
   }
 
   fun edit(userId: Long, blogId: Long, title: String, inputContent: String, tagIds: Set<Long>, contentType: String): Blog {
-    checkLength(title, inputContent)
     val blog = Blog.get(blogId)
+
     CheckPermission.canEdit(userId, blog, userId == blog.author.id)
 
     val oldInputContent = blog.inputContent
@@ -73,6 +71,7 @@ class BlogService
 
   fun delete(userId: Long, blogId: Long) {
     val blog = Blog.query().setId(blogId).setIncludeSoftDeletes().findUnique()!!
+
     CheckPermission.canDelete(userId, blog, userId == blog.author.id || Authority.isSiteAdmin(User.get(userId).authority))
 
     blog.delete()
@@ -86,9 +85,6 @@ class BlogService
   }
 
   fun comment(userId: Long, inputContent: String, blogId: Long, replyUserId: Long?): Comment {
-    if (inputContent.isEmpty() || inputContent.length > COMMENT_MAX_LEN) {
-      throw BAD_COMMENT_LENGTH
-    }
     val (hyperContent, mentionedIds) = ContentParser.comment(inputContent) { name -> User.byName(name) }
 
     val comment = Comment(inputContent, hyperContent, User.ref(userId), Comment.BLOG, blogId, replyUserId)
@@ -107,13 +103,6 @@ class BlogService
   fun hotBlogs() : List<Blog> {
     val stats = BlogStat.where().orderBy("rank desc, id desc").setMaxRows(20).findList()
     return stats.mapNotNull { Blog.byId(it.id) }
-  }
-
-  private fun checkLength(title: String, content: String) {
-    if (title.isEmpty() || title.length > BLOG_TITLE_MAX_LEN
-        || content.isEmpty() || content.length > BLOG_CONTENT_MAX_LEN) {
-      throw BAD_INPUT_LENGTH
-    }
   }
 
   fun renderAndGetMentions(blog: Blog) : Set<Long> {
@@ -136,15 +125,5 @@ class BlogService
   private fun parseMentions(text: String): Pair<String, Set<Long>> {
     val mentionedIds = HashSet<Long>()
     return ReplaceMention.with {User.byName(it)}.apply(text, mentionedIds) to mentionedIds
-  }
-
-  companion object {
-    private val BLOG_TITLE_MAX_LEN = 100
-    private val BLOG_CONTENT_MAX_LEN = 10000
-    private val BAD_INPUT_LENGTH = BadArgumentException(
-        "输入长度不正确(标题1~${BLOG_TITLE_MAX_LEN}字,内容1~${BLOG_CONTENT_MAX_LEN}字)")
-
-    private val COMMENT_MAX_LEN = 1000
-    private val BAD_COMMENT_LENGTH = BadArgumentException("评论应为1~${COMMENT_MAX_LEN}字")
   }
 }

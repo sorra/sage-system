@@ -1,6 +1,7 @@
 package sage.entity
 
 import com.avaje.ebean.annotation.SoftDelete
+import sage.domain.constraints.BlogConstraints
 import java.sql.Timestamp
 import java.util.*
 import javax.persistence.*
@@ -44,6 +45,11 @@ class Blog : BaseModel {
   }
 
   fun stat() = BlogStat.byId(id)
+
+  @PrePersist @PreUpdate
+  fun validate() {
+    BlogConstraints.check(this)
+  }
 
   companion object : Find<Long, Blog>() {
     val MARKDOWN: Short = 1

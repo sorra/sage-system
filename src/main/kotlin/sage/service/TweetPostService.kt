@@ -4,7 +4,8 @@ import com.avaje.ebean.Ebean
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import sage.domain.cache.GlobalCaches
-import sage.domain.commons.*
+import sage.domain.commons.ContentParser
+import sage.domain.commons.RichElement
 import sage.domain.permission.CheckPermission
 import sage.entity.*
 import sage.transfer.MidForwards
@@ -20,9 +21,6 @@ class TweetPostService
     private val notifService: NotificationService) {
 
   fun post(userId: Long, inputContent: String, richElements: Collection<RichElement>, tagIds: Collection<Long>): Tweet {
-    if (inputContent.isEmpty() || inputContent.length > TWEET_MAX_LEN) {
-      throw BAD_TWEET_LENGTH
-    }
     val (hyperContent, mentionedIds) = ContentParser.tweet(inputContent) { name -> User.byName(name) }
 
     val tweet = Tweet(inputContent, hyperContent, richElements, User.ref(userId),
@@ -51,14 +49,12 @@ class TweetPostService
   }
 
   fun forward(userId: Long, inputContent: String, originId: Long, removedForwardIds: Collection<Long>): Tweet {
-    if (inputContent.length > TWEET_MAX_LEN) {
-      throw BAD_TWEET_LENGTH
-    }
     val (hyperContent, mentionedIds) = ContentParser.tweet(inputContent) { name -> User.byName(name) }
 
     val directOrigin = Tweet.ref(originId)
     val origins = fromDirectToInitialOrigin(directOrigin)
     val initialOrigin = origins.last
+
     val tweet: Tweet
     if (initialOrigin == directOrigin) {
       tweet = Tweet(inputContent, hyperContent, emptyList(), User.ref(userId), initialOrigin)
@@ -84,9 +80,6 @@ class TweetPostService
   }
 
   fun comment(userId: Long, inputContent: String, tweetId: Long, replyUserId: Long?): Comment {
-    if (inputContent.isEmpty() || inputContent.length > COMMENT_MAX_LEN) {
-      throw BAD_COMMENT_LENGTH
-    }
     val (hyperContent, mentionedIds) = ContentParser.comment(inputContent) { name -> User.byName(name) }
 
     val comment = Comment(inputContent, hyperContent, User.ref(userId), Comment.TWEET, tweetId, replyUserId)
@@ -111,6 +104,7 @@ class TweetPostService
 
   fun delete(userId: Long, tweetId: Long) {
     val tweet = Tweet.ref(tweetId)
+
     CheckPermission.canDelete(userId, tweet, userId == tweet.author.id)
 
     tweet.deleted = true
@@ -131,12 +125,5 @@ class TweetPostService
       origin = Tweet.getOrigin(origin)
     }
     return origins
-  }
-
-  companion object {
-    private val TWEET_MAX_LEN = 1000
-    private val COMMENT_MAX_LEN = 1000
-    private val BAD_TWEET_LENGTH = BadArgumentException("状态应为1~1000字")
-    private val BAD_COMMENT_LENGTH = BadArgumentException("评论应为1~1000字")
   }
 }
