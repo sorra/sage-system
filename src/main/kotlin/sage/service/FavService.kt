@@ -4,7 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import sage.domain.commons.DomainException
 import sage.domain.commons.IdCommons
-import sage.domain.permission.CheckPermission
+import sage.domain.permission.AbstractPermission
+import sage.domain.permission.FavPermission
 import sage.entity.Fav
 import sage.entity.User
 import sage.transfer.FavInfo
@@ -27,7 +28,9 @@ class FavService
 
   fun delete(userId: Long, favId: Long) {
     val fav = Fav.get(favId)
-    CheckPermission.canDelete(userId, fav, userId == fav.owner.id)
+
+    FavPermission(userId, fav).canDelete()
+
     fav.delete()
   }
 }

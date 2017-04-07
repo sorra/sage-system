@@ -5,8 +5,7 @@ import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 import sage.domain.commons.AuthorityException
 import sage.domain.commons.DomainException
-import sage.domain.constraints.Authority
-import sage.domain.permission.CheckPermission
+import sage.domain.permission.TagChangeRequestPermission
 import sage.entity.Tag
 import sage.entity.TagChangeRequest
 import sage.entity.TagChangeRequest.Status
@@ -42,7 +41,7 @@ class TagChangeService {
   private fun saveRequest(req: TagChangeRequest): TagChangeRequest {
     req.save()
     val submitter = req.submitter
-    if (Authority.isTagAdminOrHigher(submitter.authority)) {
+    if (submitter.authority.isTagAdminOrHigher) {
       // Admin权限者自动接受自己的修改
       acceptRequest(submitter.id, req.id)
     } else {
@@ -92,7 +91,7 @@ class TagChangeService {
 
   fun cancelRequest(userId: Long, reqId: Long) {
     val request = TagChangeRequest.byId(reqId)!!
-    CheckPermission.canEdit(userId, request, userId == request.submitter.id)
+    TagChangeRequestPermission(userId, request).canEdit()
 
     request.status = Status.CANCELED
   }
@@ -101,11 +100,11 @@ class TagChangeService {
 
   fun rejectRequest(userId: Long, reqId: Long) = transactRequest(userId, reqId, Status.REJECTED)
 
-  fun userCanTransact(userId: Long) = Authority.isTagAdminOrHigher(User.get(userId).authority)
+  fun userCanTransact(userId: Long) = User.get(userId).authority.isTagAdminOrHigher
 
   private fun transactRequest(userId: Long, reqId: Long, status: Status): TagChangeRequest {
     val user = User.get(userId)
-    if (!Authority.isTagAdminOrHigher(user.authority)) {
+    if (user.authority.isTagAdminOrHigher) {
       throw AuthorityException("Require TagAdmin or higher.")
     }
     val req = TagChangeRequest.byId(reqId)!!

@@ -1,8 +1,7 @@
 package sage.web.ajax
 
 import org.springframework.web.bind.annotation.*
-import sage.domain.commons.DomainException
-import sage.domain.permission.CheckPermission
+import sage.domain.permission.DraftPermission
 import sage.entity.Draft
 import sage.entity.User
 import sage.web.auth.Auth
@@ -17,7 +16,7 @@ open class DraftAjaxController {
                 @RequestParam(defaultValue = "") content: String): Long {
     val uid = Auth.checkUid()
     return draftId?.let { Draft.byId(it) }?.let {
-      CheckPermission.canEdit(uid, it, uid == it.owner.id)
+      DraftPermission(uid, it).canEdit()
       it.title = title
       it.content = content
       it.update()

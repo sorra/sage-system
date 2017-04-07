@@ -8,7 +8,7 @@ import sage.domain.commons.ContentParser
 import sage.domain.commons.RichElement
 import sage.domain.constraints.CommentConstraints
 import sage.domain.constraints.TweetConstraints
-import sage.domain.permission.CheckPermission
+import sage.domain.permission.TweetPermission
 import sage.entity.*
 import sage.transfer.MidForwards
 import sage.transfer.TweetView
@@ -116,7 +116,7 @@ class TweetPostService
   fun delete(userId: Long, tweetId: Long) {
     val tweet = Tweet.ref(tweetId)
 
-    CheckPermission.canDelete(userId, tweet, userId == tweet.author.id)
+    TweetPermission(userId, tweet).canDelete()
 
     tweet.deleted = true
     tweet.update()

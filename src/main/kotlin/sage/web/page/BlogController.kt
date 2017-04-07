@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.ResponseBody
 import org.springframework.web.servlet.ModelAndView
 import sage.domain.cache.GlobalCaches
-import sage.domain.permission.CheckPermission
+import sage.domain.permission.BlogPermission
 import sage.entity.*
 import sage.transfer.BlogPreview
 import sage.transfer.BlogView
@@ -43,7 +43,7 @@ open class BlogController : BaseController() {
   open fun editPage(@PathVariable id: Long): ModelAndView {
     val uid = Auth.checkUid()
     val blog = Blog.get(id)
-    CheckPermission.canEdit(uid, blog, uid == blog.author.id)
+    BlogPermission(uid, blog).canEdit()
 
     val blogView = blog.let { BlogView(it, showInputContent = true) }
     val topTags = userService.filterNewTags(uid, blogView.tags)

@@ -5,7 +5,7 @@ import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 import org.springframework.web.multipart.MultipartFile
 import sage.domain.commons.DomainException
-import sage.domain.permission.CheckPermission
+import sage.domain.permission.FileItemPermission
 import sage.entity.FileItem
 import java.io.File
 import java.io.IOException
@@ -22,7 +22,7 @@ class FilesService {
     PIC, AVATAR
   }
 
-  private val fileManagers = HashMap<Folder, FileManager>()
+  private final val fileManagers = HashMap<Folder, FileManager>()
 
   init {
     fileManagers.put(Folder.PIC, FileManager(SUBDIR_PIC))
@@ -48,7 +48,7 @@ class FilesService {
   fun delete(userId: Long, fileId: Long) {
     Ebean.execute({
       val fileItem = FileItem.byId(fileId) ?: throw DomainException("FileItem[%s] does not exist", fileId)
-      CheckPermission.canDelete(userId, fileItem, userId == fileItem.ownerId)
+      FileItemPermission(userId, fileItem).canDelete()
 
       //TODO Soft delete file content?
       fileItem.delete()
@@ -72,7 +72,7 @@ class FilesService {
   }
 
   private fun isPictureFileSizeAllowed(size: Long): Boolean {
-    return size > 0 && size <= MAX_PICTURE_BYTES
+    return size in 1..MAX_PICTURE_BYTES
   }
 
   private class FileManager internal constructor(subdir: String) {

@@ -6,10 +6,9 @@ import org.springframework.stereotype.Service
 import sage.domain.cache.GlobalCaches
 import sage.domain.commons.ContentParser
 import sage.domain.commons.ReplaceMention
-import sage.domain.constraints.Authority
 import sage.domain.constraints.BlogConstraints
 import sage.domain.constraints.CommentConstraints
-import sage.domain.permission.CheckPermission
+import sage.domain.permission.BlogPermission
 import sage.entity.*
 import sage.transfer.BlogView
 import sage.util.JsoupUtil
@@ -50,7 +49,7 @@ class BlogService
   fun edit(userId: Long, blogId: Long, title: String, inputContent: String, tagIds: Set<Long>, contentType: String): Blog {
     val blog = Blog.get(blogId)
 
-    CheckPermission.canEdit(userId, blog, userId == blog.author.id)
+    BlogPermission(userId, blog).canEdit()
 
     val oldInputContent = blog.inputContent
 
@@ -79,7 +78,7 @@ class BlogService
   fun delete(userId: Long, blogId: Long) {
     val blog = Blog.query().setId(blogId).setIncludeSoftDeletes().findUnique()!!
 
-    CheckPermission.canDelete(userId, blog, userId == blog.author.id || Authority.isSiteAdmin(User.get(userId).authority))
+    BlogPermission(userId, blog).canDelete()
 
     blog.delete()
     blog.stat()?.let {
