@@ -38,7 +38,7 @@ $!{include("navbar.httl")}
 	#set(action = (blog.id && blog.id > 0) ? '/blogs/' + blog.id.toString + '/edit' : '/blogs/new')
 	<form id="blog" action="${action}" method="post">
 		<div>
-			<input id="title" name="title" placeholder="这里是标题(限100个字)" value="${blog.title}"/>
+			<input id="title" name="title" placeholder="这里是标题(限50个字)" value="${blog.title}"/>
 			<select id="contentType" name="contentType">
 				<option value="markdown" #if(blog.contentType=='markdown')selected#end>Markdown</option>
 				<option value="richtext" #if(blog.contentType=='richtext')selected#end>富文本</option>

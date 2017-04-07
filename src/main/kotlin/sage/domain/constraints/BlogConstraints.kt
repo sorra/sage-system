@@ -5,7 +5,7 @@ import sage.entity.Blog
 
 
 object BlogConstraints {
-  private val BLOG_TITLE_MAX_LEN = 100
+  private val BLOG_TITLE_MAX_LEN = 50
   private val BLOG_CONTENT_MAX_LEN = 10000
 
   fun check(blog: Blog) {
