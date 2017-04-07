@@ -7,6 +7,8 @@ import sage.domain.cache.GlobalCaches
 import sage.domain.commons.ContentParser
 import sage.domain.commons.ReplaceMention
 import sage.domain.constraints.Authority
+import sage.domain.constraints.BlogConstraints
+import sage.domain.constraints.CommentConstraints
 import sage.domain.permission.CheckPermission
 import sage.entity.*
 import sage.transfer.BlogView
@@ -26,6 +28,8 @@ class BlogService
   fun post(userId: Long, title: String, inputContent: String, tagIds: Set<Long>, contentType: String): Blog {
     val blog = Blog(title, inputContent, "", User.ref(userId), Tag.multiGet(tagIds), Blog.contentTypeValue(contentType))
     val mentionedIds = renderAndGetMentions(blog)
+
+    BlogConstraints.check(blog)
 
     Ebean.execute {
       blog.save()
@@ -56,6 +60,9 @@ class BlogService
     val mentionedIds = renderAndGetMentions(blog)
     blog.tags = Tag.multiGet(tagIds)
     blog.whenEdited = Timestamp(System.currentTimeMillis())
+
+    BlogConstraints.check(blog)
+
     blog.update()
 
     userService.updateUserTag(userId, tagIds)
@@ -88,6 +95,9 @@ class BlogService
     val (hyperContent, mentionedIds) = ContentParser.comment(inputContent) { name -> User.byName(name) }
 
     val comment = Comment(inputContent, hyperContent, User.ref(userId), Comment.BLOG, blogId, replyUserId)
+
+    CommentConstraints.check(inputContent)
+
     comment.save()
     BlogStat.incComments(blogId)
     TweetStat.incComments(Blog.get(blogId).tweetId)

@@ -6,6 +6,8 @@ import org.springframework.stereotype.Service
 import sage.domain.cache.GlobalCaches
 import sage.domain.commons.ContentParser
 import sage.domain.commons.RichElement
+import sage.domain.constraints.CommentConstraints
+import sage.domain.constraints.TweetConstraints
 import sage.domain.permission.CheckPermission
 import sage.entity.*
 import sage.transfer.MidForwards
@@ -25,6 +27,9 @@ class TweetPostService
 
     val tweet = Tweet(inputContent, hyperContent, richElements, User.ref(userId),
         Tag.multiGet(tagIds))
+
+    TweetConstraints.check(tweet)
+
     Ebean.execute {
       tweet.save()
       TweetStat(id = tweet.id, whenCreated = tweet.whenCreated).save()
@@ -63,6 +68,9 @@ class TweetPostService
       removedForwardIds.forEach { midForwards.removeById(it) }
       tweet = Tweet(inputContent, hyperContent, emptyList(), midForwards, User.ref(userId), initialOrigin)
     }
+
+    TweetConstraints.check(tweet)
+
     Ebean.execute {
       tweet.save()
       TweetStat(id = tweet.id, whenCreated = tweet.whenCreated).save()
@@ -83,6 +91,9 @@ class TweetPostService
     val (hyperContent, mentionedIds) = ContentParser.comment(inputContent) { name -> User.byName(name) }
 
     val comment = Comment(inputContent, hyperContent, User.ref(userId), Comment.TWEET, tweetId, replyUserId)
+
+    CommentConstraints.check(inputContent)
+
     comment.save()
     TweetStat.incComments(tweetId)
     Tweet.byId(tweetId)?.let(Tweet::blogId)?.let { if (it > 0) {
