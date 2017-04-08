@@ -4,14 +4,17 @@ function home_setup() {
 
   var $postBox = $($('.post-box')[0]).attr('id', 'the-post-box')
   $postBox.find('.pic-upload input[type=file]').ajaxfileupload({
-    action: '/pic-upload',
+    action: '/upload/pic',
     onComplete: function (resp) {
+      if (!resp.location) {
+        return
+      }
       var $postBox = $('#the-post-box')
-      $postBox.find('input[name=pictureRef]').val(resp)
-      $postBox.find('.pic-preview').show().find('img').attr('src', resp)
+      $postBox.find('input[name=pictureRef]').val(resp.location)
+      $postBox.find('.pic-preview').show().find('img').attr('src', resp.location)
     },
     onStart: function () {
-      console.info('~~~')
+      console.info('Upload tweet picture')
     }
   })
   $postBox.find('.pic-preview').click(function () {
