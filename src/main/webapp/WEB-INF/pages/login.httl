@@ -15,7 +15,7 @@
     form{
       width: 400px;
       margin: 15% auto auto auto;
-      background-color: rgba(51,51,51,0.4);
+      /*background-color: rgba(51,51,51,0.4);*/
     }
     input{
       width: 20em;
@@ -33,11 +33,11 @@
       width: auto;
       margin: 1em 0 0 0;
       padding: 2em;
-      background-color: rgba(51,51,51,0.25);
+      /*background-color: rgba(51,51,51,0.25);*/
       text-align: center;
     }
     #login-action a{
-      color: skyblue;
+      /*color: skyblue;*/
       margin-top: 10px;
     }
     .validation-alert{
@@ -47,7 +47,7 @@
 </head>
 <body class="background-dark">
   <form id="login" action="/auth/login" method="post">
-    <h3 class="heading">轻境界</h3>
+    <a href="/"><h3 class="heading">轻境界</h3></a>
     <div class="input-group">
       <label for="email">邮箱</label>
       <input id="email" name="email" type="text" placeholder="请输入您的邮箱" />
@@ -66,7 +66,7 @@
         <span class="small-circle"><i class="fa fa-caret-right"></i></span>
         <small>登录</small>
       </button>
-      <a class="btn" href="/register">没有账号，注册一个</a>
+      <a class="btn" href="/register">没有账号？注册一个</a>
     </div>
   </form>
   $!{alljs}

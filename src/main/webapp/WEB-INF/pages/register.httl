@@ -10,12 +10,12 @@
     .heading{
       text-align: center;
       padding: 10px;
-      color: lightgreen;
+      color: green;
     }
     form{
       width: 400px;
       margin: 15% auto auto auto;
-      background-color: rgba(51,51,51,0.4);
+      /*background-color: rgba(51,51,51,0.4);*/
     }
     input{
       width: 20em;
@@ -30,11 +30,11 @@
       width: auto;
       margin: 1em 0 0 0;
       padding: 2em;
-      background-color: rgba(51,51,51,0.25);
+      /*background-color: rgba(51,51,51,0.25);*/
       text-align: center;
     }
     #register-action a{
-      color: skyblue;
+      /*color: skyblue;*/
       margin-top: 10px;
     }
     .validation-alert{

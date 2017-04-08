@@ -47,7 +47,8 @@
           <li><a href="/notifications"><span class="glyphicon glyphicon-bell" title="通知"></span></a></li>
           <li><a href="/messages"><span class="glyphicon glyphicon-envelope" title="私信"></span></a></li>
           #else
-          <li><a href="/login" style="color: lightgreen">登录</a></li>
+          <li><a href="/login" style="color: lightgreen">注册</a></li>
+          <li><a href="/login" style="color: lightskyblue">登录</a></li>
           #end
         </ul>
       </div>
