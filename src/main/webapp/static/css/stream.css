@@ -15,9 +15,10 @@
 
 .tweet{
   display: table;
+  padding: 5px;
+  width: 100%;
   word-wrap: break-word;
   word-break: break-all;
-  width: 100%;
 }
 .tweet:after{
   display: table;

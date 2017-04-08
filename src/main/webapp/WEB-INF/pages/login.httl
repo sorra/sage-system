@@ -57,7 +57,7 @@
       <input id="password" name="password" type="password" placeholder="请输入密码" />
     </div>
     <div class="input-group">
-      <label for="rememberMe" title="建议在网吧或公共电脑上取消该选项" data-toggle="tooltip">
+      <label for="rememberMe" title="注意：在网吧或公共电脑上取消该选项" data-toggle="tooltip">
         <input id="rememberMe" name="rememberMe" type="checkbox" checked />&nbsp;记住登录
       </label>
     </div>

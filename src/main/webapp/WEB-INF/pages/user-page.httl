@@ -4,6 +4,14 @@ ${extends("layout.httl")}
 用户主页
 #end
 
+#macro(style)
+<style>
+.side .user-card {
+  width: 100%;
+}
+</style>
+#end
+
 #macro(body)
   #set(UserCard thisUser)
   #set(Map frontMap)
