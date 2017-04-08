@@ -110,7 +110,7 @@ class BlogService
   }
 
   fun hotBlogs() : List<Blog> {
-    val stats = BlogStat.where().orderBy("rank desc, id desc").setMaxRows(20).findList()
+    val stats = BlogStat.where().orderBy("rank desc, id desc").setMaxRows(30).findList()
     return stats.mapNotNull { Blog.byId(it.id) }
   }
 

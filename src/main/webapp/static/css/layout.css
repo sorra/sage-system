@@ -19,12 +19,13 @@ code{
 }
 
 body, .background-dark{
-  background: radial-gradient(farthest-side ellipse at 100% 0, rgba(102,105,104,0.9),rgba(93,112,119,0.89),rgba(160,174,150,0.9));
+  /*background: radial-gradient(farthest-side ellipse at 100% 0, rgba(102,105,104,0.9),rgba(93,112,119,0.89),rgba(160,174,150,0.9));*/
+  background: #f5f8fa;
 }
 
 #container{
   margin-top: 50px;
-  background: #f0f0f0;
+  background: #f5f8fa;
 }
 
 .side{
@@ -72,10 +73,15 @@ input[type=text]{
 .summary{
   margin-bottom: 10px;
 }
-.tags{
-  margin-top: 5px;
-  margin-bottom: 5px;
+
+.tags a{
+  margin-left: 5px;
 }
+
+.metadata-row {
+  margin-top: 5px;
+}
+
 .metadata-row > *{
   margin-right: 5px;
 }

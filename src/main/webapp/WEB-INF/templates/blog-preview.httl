@@ -2,20 +2,23 @@
 <div class="blog-preview">
   <span id="id" style="display:none">$!{blog.id}</span>
   <a class="title" href="/blogs/${blog.id}">${blog.title}</a>
-  <p class="summary">$!{blog.summary}</p>
-  <div class="tags">
-    #for(each : blog.tags)
-    $!{tagLabel(each)}
-    #end
-  </div>
-  <div class="metadata-row">
+  <!-- <p class="summary">$!{blog.summary}</p> -->
+
+  <div class="metadata-row clearfix">
     $!{userLabel(blog.author)}
     $!{spanHumanTime(blog.whenCreated)}
-    #if(blog.commentCount > 0)
+    <span class="tags">
+      #for(each : blog.tags)
+      $!{tagLabel(each)}
+      #end
+    </span>
+    <span class="blog-ops">
+      #if(blog.commentCount > 0)
       <span class="glyphicon glyphicon-comment" aria-hidden="true">${blog.commentCount}</span>
-    #end
-    #if(blog.likes > 0)
+      #end
+      #if(blog.likes > 0)
       <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true">${blog.likes}</span>
-    #end
+      #end
+    </span>
   </div>
 </div>

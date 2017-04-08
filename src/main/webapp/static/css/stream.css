@@ -6,11 +6,11 @@
 }
 .stream-item{
   max-width: 600px;
-  margin: 0 0 5px 0;
+  margin: 0 0 10px 0;
   padding: 5px;
-  border-bottom: 1px solid #ddd;
+  border: 1px solid #ddd;
   border-radius: 5px;
-  background: #fafafa;
+  background: #fff;
 }
 
 .tweet{
@@ -43,15 +43,21 @@
   color: gray;
 }
 
+.tweet-ops .delete-btn{
+  margin: 0 10px;
+}
+
 .t-forward{
   margin-left: 0;
 }
 .t-origin{
   padding: 3px;
-  background: #e9e9e9;
+  background: #f0f0f0;
   border-radius: 10px;
   margin-left: 20px;
+  max-width: 95%;
 }
+
 .tweet .avatar{
   display: block;
   float: left;
@@ -63,6 +69,13 @@
   width: 50px;
   height: 50px;
 }
+
+.t-origin .tweet-body {
+  margin-left: 50px;
+}
+.t-origin .avatar {
+  margin-left: -43px;
+}
 .t-origin .avatar img{
   width: 25px;
   height: 25px;
@@ -70,9 +83,6 @@
 .tweet .author-name{
   font-weight: bold;
   color: black;
-}
-.tweet .tags a{
-  margin-left: 0.5em;
 }
 
 #forward-dialog .modal-dialog{

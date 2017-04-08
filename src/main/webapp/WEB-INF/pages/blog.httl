@@ -8,7 +8,7 @@ ${blog.title}
 #macro(style)
 <style>
 	#container{
-		background: #fafafa;
+		background: #fff;
 	}
 	#comments-container{
 		margin-top: 20px;

@@ -1,18 +1,23 @@
 .blog-preview {
-  margin: 0 0 5px 0;
+  margin: 0 0 10px 0;
   padding: 10px;
-  border-bottom: 1px solid #ddd;
+  border: 1px solid #ddd;
   border-radius: 10px;
-  background: #fafafa;
+  background: #fff;
   word-wrap: break-word;
   word-break: break-all;
 }
 
 .blog-preview .title {
   display: block;
+  margin: 5px auto;
   font-weight: bold;
   font-size: 16px;
   color: #256DAB;
+}
+
+.blog-ops {
+  margin: 5px 0 0 10px;
 }
 
 @media (max-width: 768px) {

@@ -54,7 +54,7 @@ $!{include("navbar.httl")}
 			#end
 			#set(anotherContentType = (contentType == 'markdown' ? 'richtext' : 'markdown'))
 			<a href="?contentType=${anotherContentType}">切换到${anotherContentType}</a>
-			<input id="contentType" name="contentType" type="text" value="${contentType}" style="display: none;">
+			<input id="contentType" name="contentType" type="hidden" value="${contentType}">
 			<input id="title" name="title" placeholder="这里是标题(限50个字)" value="${blog.title}"/>
 		</div>
 		
