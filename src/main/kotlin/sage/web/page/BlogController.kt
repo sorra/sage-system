@@ -21,10 +21,12 @@ import sage.web.context.RenderUtil
 @RequestMapping("/blogs")
 open class BlogController : BaseController() {
   @RequestMapping("/new", method = arrayOf(GET))
-  open fun newPage(): ModelAndView {
+  open fun newPage(@RequestParam(required = false) contentType: String?): ModelAndView {
     val uid = Auth.checkUid()
     val topTags = userService.topTags(uid)
-    return ModelAndView("write-blog").addObject("topTags", topTags)
+    return ModelAndView("write-blog")
+        .addObject("contentType", contentType)
+        .addObject("topTags", topTags)
   }
 
   @RequestMapping("/new", method = arrayOf(POST))
@@ -40,7 +42,7 @@ open class BlogController : BaseController() {
   }
 
   @RequestMapping("/{id}/edit", method = arrayOf(GET))
-  open fun editPage(@PathVariable id: Long): ModelAndView {
+  open fun editPage(@PathVariable id: Long, @RequestParam(required = false) contentType: String?): ModelAndView {
     val uid = Auth.checkUid()
     val blog = Blog.get(id)
     BlogPermission(uid, blog).canEdit()
@@ -48,7 +50,7 @@ open class BlogController : BaseController() {
     val blogView = blog.let { BlogView(it, showInputContent = true) }
     val topTags = userService.filterNewTags(uid, blogView.tags)
     return ModelAndView("write-blog")
-        .addObject("blog", blogView)
+        .addObject("blog", blogView).addObject("contentType", contentType)
         .addObject("existingTags", blogView.tags).addObject("topTags", topTags)
   }
 

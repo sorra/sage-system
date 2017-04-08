@@ -4,7 +4,41 @@ function writeBlog_setup() {
     trigger: 'manual'
   })
   $('#blog').submit(write_formSubmit)
-  write_contentArea()
+
+  window.contentEditor = write_createEditor()
+}
+
+function write_createEditor() {
+  if ($('#contentType').val() == 'markdown') {
+    return write_createMarkdownEditor()
+  } else {
+    return write_createRichtextEditor()
+  }
+}
+
+function write_createMarkdownEditor() {
+  return {
+    simplemde: new SimpleMDE({
+      element: $('#content')[0],
+      autoDownloadFontAwesome: false,
+      spellChecker: false
+    }),
+    getContent: function () {
+      return this.simplemde.value()
+    }
+  }
+}
+
+function write_createRichtextEditor() {
+  tinymce.init({
+    selector: '#content',
+    language: 'zh_CN'
+  })
+  return {
+    getContent: function () {
+      return tinymce.activeEditor.getContent()
+    }
+  }
 }
 
 function write_formSubmit() {
@@ -23,9 +57,11 @@ function write_formSubmit() {
       tipover($submit, '请填写标题')
       return false
     }
-    var $content = $('#content')
-    if ($content.val().length == 0) {
-      $content.fadeOut().fadeIn()
+
+    var contentValue = window.contentEditor.getContent()
+    $('#content').val(contentValue)
+    if (contentValue.length == 0) {
+      $('#editor-wrapper').fadeOut().fadeIn()
       tipover($submit, '请填写内容')
       return false
     }
@@ -44,34 +80,5 @@ function write_formSubmit() {
     console.error(ex)
   } finally {
     return false
-  }
-}
-
-function write_contentArea() {
-  var $content = $('#content')
-  $content.keydown(function(event){
-    if (event.keyCode == 9) {
-      event.preventDefault();
-      var content = $(this).val();
-      var pos = $(this).getCursorPosition();
-      content = content.slice(0, pos) + '\t' + content.slice(pos, content.length);
-      $(this).val(content);
-      $(this).setCursorPosition(pos+1);
-    }
-  }).keyup(function() {
-    write_contentRefresh();
-  });
-  $('#tabs a[href="#content"]').warnEmpty().tab('show');
-
-  write_contentRefresh();
-}
-
-function write_contentRefresh() {
-  var input = $('#content').val()
-  var contentType = $('#contentType').val()
-  if (contentType == 'markdown') {
-    $('#preview').html(marked(input))
-  } else {
-    $('#preview').html(input)
   }
 }
