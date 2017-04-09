@@ -59,14 +59,14 @@
   max-width: 95%;
 }
 
-.tweet .avatar{
+.tweet-avatar{
   display: block;
   float: left;
   padding-top: 5px;
   margin-left: -56px;
   margin-right: 5px;
 }
-.tweet .avatar img{
+.tweet-avatar img{
   width: 50px;
   height: 50px;
 }
@@ -74,10 +74,10 @@
 .t-origin .tweet-body {
   margin-left: 50px;
 }
-.t-origin .avatar {
+.t-origin .tweet-avatar {
   margin-left: -43px;
 }
-.t-origin .avatar img{
+.t-origin .tweet-avatar img{
   width: 25px;
   height: 25px;
 }

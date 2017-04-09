@@ -7,7 +7,7 @@
 #end
 <div class="tweet ${cls}" tweet-id="${t.id}" author-id="${t.authorId}">
   <div class="tweet-body">
-    <a class="avatar" $!{userLinkAttrs(t.authorId)}><img src="${t.avatar}"/></a>
+    <a class="avatar tweet-avatar" $!{userLinkAttrs(t.authorId)}><img src="${t.avatar}"/></a>
     <a class="author-name" $!{userLinkAttrs(t.authorId)}>${t.authorName}</a>
     <div class="tweet-self-body" data-id="${t.id}">
       <span class="tweet-content">$!{t.content}</span>
