@@ -71,8 +71,8 @@ $!{include("navbar.httl")}
 <div class="footer"></div>
 
 $!{alljs}
-<script src="/static/js-bin/simplemde.min.js"></script>
-<script src="/static/js-bin/tinymce/tinymce.min.js"></script>
+<script src="${resLink('/static/js-bin/simplemde.min.js')}"></script>
+<script src="${resLink('/static/js-bin/tinymce/tinymce.min.js')}"></script>
 <script>
 	var draftId = ${draftId ? draftId : 'null'}
 	var blogId = ${blog.id ? blog.id : 'null'}
