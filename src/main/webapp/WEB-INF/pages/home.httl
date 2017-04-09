@@ -4,13 +4,21 @@ ${extends("layout.httl")}
 首页 - 轻境界
 #end
 
+#macro(style)
+<style>
+	.side .user-card {
+	  width: 100%;
+	}
+</style>
+#end
+
 #macro(body)
 	<!--
 	#set(UserSelf self = userSelf)
 	#set(List<UserLabel> friends)
 	-->
 	<div class="side">
-		<div class="user-self user-card" style="border-radius: 0">
+		<div class="user-self user-card">
 			<a class="avatar" href="/users/self"><img src="${self.avatar}"/></a>
 			<div class="info-part">
 				<div class="name-intro">

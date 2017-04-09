@@ -6,9 +6,9 @@ ${extends("layout.httl")}
 
 #macro(style)
 <style>
-.side .user-card {
-  width: 100%;
-}
+  .side .user-card {
+    width: 100%;
+  }
 </style>
 #end
 
