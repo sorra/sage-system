@@ -28,7 +28,7 @@
       </span>
       <span class="tweet-ops pull-right">
         <!-- #if(userSelf != null && userSelf.id == t.authorId) -->
-        <a class="delete-btn" href="javascript:;">
+        <a class="delete-btn" href="javascript:;" data-toggle="modal" data-target="#delete-dialog">
           <span class="glyphicon glyphicon-trash"></span>
         </a>
         <!-- #end -->

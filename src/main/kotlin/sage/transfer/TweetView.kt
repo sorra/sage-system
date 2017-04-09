@@ -96,7 +96,7 @@ class TweetView {
     val sb = StringBuilder(tweet.content)
     tweet.richElements().forEach { (type, value) ->
       if (type == "picture") {
-        sb.append("<a class=\"img-origin-link\" href=\"$value\" target=\"_blank\">查看原图</a>")
+        sb.append(" <a class=\"img-origin-link\" href=\"$value\" target=\"_blank\">查看原图</a>")
         sb.append("<img class=\"view-img\" src=\"$value\"/>")
       }
     }

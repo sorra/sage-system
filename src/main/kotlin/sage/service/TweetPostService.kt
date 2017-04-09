@@ -122,6 +122,7 @@ class TweetPostService
     tweet.update()
 
     searchService.delete(TweetView::class.java, tweetId)
+    GlobalCaches.tweetsCache.clear()
   }
 
   /*

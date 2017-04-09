@@ -121,11 +121,13 @@ function shouldSkipThisTweet($tweet) {
 }
 
 function deleteDialogEach() {
-  var $tweet = $(this).parents('.tweet').warnEmpty()
-  var tweetId = $tweet.attr('tweet-id')
-  function doDelete(id){
+  var $delBtn = $(this)
+
+  function doDelete() {
+    var $tweet = $delBtn.parents('.tweet').warnEmpty()
+    var tweetId = $tweet.attr('tweet-id')
     if (!id) {
-      console.warn('this id is '+id)
+      console.warn('this id is ' + id)
       return
     }
     $.post('/tweets/'+id+'/delete')
@@ -143,8 +145,13 @@ function deleteDialogEach() {
         }
         else {console.error("Tweet "+id+" delete failed.")}
       })
-      .fail(function(resp){console.error("Tweet "+id+" delete failed. Error: "+resp)})
+      .fail(function (resp) {
+        console.error("Tweet "+id+" delete failed. Error: " + resp)
+      })
   }
+
+  $delBtn.modal
+  
   commonConfirmPopover($(this), function(){doDelete(tweetId)}, '确认要删除吗？', 'left')
 }
 
@@ -165,14 +172,32 @@ function setupForwardDialog() {
 function stream_setupListeners() {
   var $doc = $(document)
   $doc.delegate('a[uid]', 'mouseenter', launchUcOpener).delegate('a[uid]', 'mouseleave', launchUcCloser)
+  
   $doc.delegate('.tweet-ops .forward-btn', 'click', function() {
     var $tweet = $(this).parents('.tweet').warnEmpty()
     $('#forward-dialog').data('tweet', $tweet).modal({backdrop: false})
   })
   $doc.delegate('.tweet-ops .comment-btn', 'click', toggleTweetComments)
-  //TODO deleteDialogEach is not done yet
-  $doc.delegate('.tweet-ops .delete-btn', 'click', deleteDialogEach)
-
+  
+  $('#delete-dialog').on('show.bs.modal', function (event) {
+    var $modal = $(this)
+    var $delBtn = $(event.relatedTarget)
+    var $tweet = $delBtn.parents('.tweet').warnEmpty()
+    var id = $tweet.attr('tweet-id')
+    $modal.find('.modal-body').html($tweet.html())
+    var $sureBtn = $modal.find('.sure-btn')
+    $sureBtn.data('url', '/tweets/'+id+'/delete')
+    $sureBtn.data('selector', '.tweet[tweet-id='+id+']')
+  })
+  $('#delete-dialog').delegate('.sure-btn', 'click', function (event) {
+      var $btn = $(event.target)
+      $.post($btn.data('url')).done(function () {
+        $($btn.data('selector')).remove()
+      }).fail(function (resp) {
+        console.error(errorMsg(resp))
+      })
+      $(this).modal('hide')
+  })
 
   $doc.delegate('#forward-dialog .mf-x', 'click', function() {
     $(this).parents('*[mf-id]').addClass('mf-removed')

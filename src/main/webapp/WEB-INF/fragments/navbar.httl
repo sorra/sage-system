@@ -55,7 +55,11 @@
   </div>
 </nav>
 
-<div class="data-holder">
+<div id="back-to-top">
+  <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>
+</div>
+
+<div class="data-holder" style="display: none;">
     #if(frontMap != null)
     <span id="front-map">${frontMap}</span>
     #end
@@ -115,6 +119,19 @@
     </div>
   </div>
 </div>
-<div id="back-to-top">
-  <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>
+
+<div id="delete-dialog" class="modal fade" tabindex="-1" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">真的要删除吗？</h4>
+      </div>
+      <div class="modal-body">内容预览</div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+        <button type="button" class="sure-btn btn btn-danger">删除</button>
+      </div>
+    </div>
+  </div>
 </div>
