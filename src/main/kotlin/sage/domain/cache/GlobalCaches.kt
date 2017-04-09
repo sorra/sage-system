@@ -35,13 +35,18 @@ object GlobalCaches {
 
     operator fun get(name: String, pageIndex: Int, pageSize: Int): Pair<List<V>, Int> {
       val key = "$name?pageIndex=$pageIndex&pageSize=$pageSize"
-      return cache.getIfPresent(key)?.run {
-        val (ids, pagesCount) = this
-        find.where().`in`("id", ids).findList().sortedByDescending { it.id } to pagesCount
-      } ?: run {
-        val entities = find.orderBy("id desc").findPagedList(pageIndex - 1, pageSize).list
-        val pagesCount = PaginationLogic.pagesCount(pageSize, getRecordsCount(Blog))
+      return cache.getIfPresent(key)?.let { value ->
+        val (ids, pagesCount) = value
+        val entities =
+            if (ids.isEmpty()) emptyList<V>()
+            else find.where().`in`("id", ids).findList().sortedByDescending { it.id }
+
+        entities to pagesCount
+      } ?: let { _ ->
+        val entities = find.where().eq("deleted", false).orderBy("id desc").findPagedList(pageIndex - 1, pageSize).list
+        val pagesCount = PaginationLogic.pagesCount(pageSize, getValidRecordsCount(find))
         cache.put(key, entities.map { it.id } to pagesCount)
+
         entities to pagesCount
       }
     }

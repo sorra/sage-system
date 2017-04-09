@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.servlet.ModelAndView
 import sage.entity.Tweet
-import sage.entity.getRecordsCount
+import sage.entity.getValidRecordsCount
 import sage.transfer.TweetGroup
 import sage.util.PaginationLogic
 import sage.web.context.BaseController
@@ -36,7 +36,7 @@ class TweetController : BaseController() {
     val pageIndex = pageIndex()
     val pageSize = pageSize()
 
-    val recordsCount: Long = getRecordsCount(Tweet)
+    val recordsCount: Int = getValidRecordsCount(Tweet)
     val pagesCount: Int = PaginationLogic.pagesCount(pageSize, recordsCount)
     val tweets = Tweet.orderBy("id desc").findPagedList(pageIndex-1, pageSize).list
         .map { transferService.toTweetView(it) }
