@@ -55,7 +55,10 @@ dependencies {
 
   compile 'com.github.httl:httl:1.0.11'
   compile 'com.github.httl:httl-springmvc:1.0.11'
-  compile 'org.avaje.ebeanorm:avaje-ebeanorm:7.9.1'
+  compile ('org.avaje.ebeanorm:avaje-ebeanorm:7.9.1') {
+    exclude group: 'org.slf4j', module: 'slf4j-api'
+    exclude group: 'ch.qos.logback', module: 'logback-classic'
+  }
   compile 'org.avaje.ebeanorm:avaje-ebeanorm-agent:4.9.2'
   compile 'org.avaje:avaje-agentloader:2.1.2'
 
