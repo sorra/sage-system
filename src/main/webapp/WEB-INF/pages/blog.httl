@@ -9,6 +9,7 @@ ${blog.title}
 <style>
 	#container{
 		background: #fff;
+  	border: 1px solid #ddd;
 	}
 	#comments-container{
 		margin-top: 20px;
