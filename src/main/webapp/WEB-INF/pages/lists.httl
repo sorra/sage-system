@@ -75,7 +75,7 @@ ${owner.name}的所有列表
     var $this = $(this)
     $.post('/list/follow/expose-all')
         .done(function(){
-          window.location = window.location
+          redirect(window.location)
         })
         .fail(function(resp){
           tipover($this, '操作遇到问题', 1000)

@@ -66,6 +66,7 @@ function createFavLink(favInfo) {
 }
 
 function unfavPopover($node, action) {
+  //TODO broken
   commonConfirmPopover($node, action, '确定要取消收藏吗?', 'top')
 }
 

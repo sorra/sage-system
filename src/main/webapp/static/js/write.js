@@ -90,13 +90,13 @@ function write_setupSwitchEditor() {
   $switchEditorDialog.on('show.bs.modal', function (event) {
     var $link = $(event.relatedTarget)
     if (window.contentEditor.getContent().length == 0) {
-      window.location = $link.data('url')
+      redirect($link.data('url'))
       event.preventDefault()
     }
     var $sureBtn = $(this).find('.sure-btn')
     $sureBtn.data('url', $link.data('url'))
   })
   $switchEditorDialog.find('.sure-btn').click(function (event) {
-    window.location = $(event.target).data('url')
+    redirect($(event.target).data('url'))
   })
 }

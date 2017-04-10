@@ -120,41 +120,6 @@ function shouldSkipThisTweet($tweet) {
   return $tweet.hasClass('t-origin') && $tweet.parents('.stream-item').data('contains-origin') === false
 }
 
-function deleteDialogEach() {
-  var $delBtn = $(this)
-
-  function doDelete() {
-    var $tweet = $delBtn.parents('.tweet').warnEmpty()
-    var tweetId = $tweet.attr('tweet-id')
-    if (!id) {
-      console.warn('this id is ' + id)
-      return
-    }
-    $.post('/tweets/'+id+'/delete')
-      .done(function(resp){
-        if(resp == true) {
-          if ($tweet.hasClass('t-forward')) {
-            $tweet.remove()
-            var $tweetGroup = $tweet.parents('.stream-item')
-            if (!$tweetGroup.data('containsOrigin') && $tweetGroup.find('.t-forward').length == 0) {
-              $tweetGroup.remove()
-            }
-          } else {
-            $tweet.remove()
-          }
-        }
-        else {console.error("Tweet "+id+" delete failed.")}
-      })
-      .fail(function (resp) {
-        console.error("Tweet "+id+" delete failed. Error: " + resp)
-      })
-  }
-
-  $delBtn.modal
-  
-  commonConfirmPopover($(this), function(){doDelete(tweetId)}, '确认要删除吗？', 'left')
-}
-
 function setupForwardDialog() {
   var $dia = $('#forward-dialog')
   $dia.find('.modal-title').text('转发')
