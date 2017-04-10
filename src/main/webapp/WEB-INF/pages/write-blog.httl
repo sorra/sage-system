@@ -112,9 +112,9 @@ $!{alljs}
 				}
 				savedTitle = title
 				savedContent = content
-				$('.btn-submit').tipover('草稿已保存', 2000)
+        popAlert('草稿已保存', 'info', 1000)
 			}).fail(function (resp) {
-				$('.btn-submit').tipover('草稿保存失败：'+errorMsg(resp), 2000)
+				popAlert('草稿保存失败：'+errorMsg(resp))
 			}).always(function () {
 				setTimeout(saveDraft, 3000)
 			})

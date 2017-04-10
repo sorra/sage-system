@@ -9,23 +9,23 @@ function btnLike_init() {
     })
   }
 
-  $(document).on('click', '.like-btn', function(){
+  $(document).on('click', '.like-btn', function () {
     var $btn = $(this)
     var prefix = $btn.data('prefix')
     var classLiked = 'like-btn-liked'
     if ($btn.hasClass(classLiked)) {
-      $.post(prefix + '/unlike').done(function(){
+      $.post(prefix + '/unlike').done(function () {
         refreshLikes($btn, prefix)
         $btn.removeClass(classLiked)
-      }).fail(function(resp){
-        $btn.tipover(errorMsg(resp))
+      }).fail(function (resp) {
+        popAlert(errorMsg(resp))
       })
     } else {
-      $.post(prefix+'/like').done(function(){
+      $.post(prefix+'/like').done(function () {
         refreshLikes($btn, prefix)
         $btn.addClass(classLiked)
-      }).fail(function(resp){
-        $btn.tipover(errorMsg(resp))
+      }).fail(function (resp) {
+        popAlert(errorMsg(resp))
       })
     }
   })

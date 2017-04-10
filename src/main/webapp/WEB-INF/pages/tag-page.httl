@@ -128,14 +128,14 @@ $(document).ready(function(){
         $this.text('已关注')
         $this.attr('class', 'btn btn-default')
       }).fail(function(msg){
-        tipover($this, '操作失败' + msg)
+        popAlert('操作失败' + msg)
       })
     } else {
       $.post('/unheed/tag/'+tagId).done(function(){
         $this.text('+关注')
         $this.attr('class', 'btn btn-success')
       }).fail(function(msg){
-        tipover($this, '操作失败' + msg)
+        popAlert('操作失败' + msg)
       })
     }
   })

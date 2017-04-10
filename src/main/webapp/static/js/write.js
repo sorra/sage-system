@@ -56,7 +56,7 @@ function write_formSubmit() {
     var $title = $('#title')
     if ($title.val().length == 0) {
       $title.fadeOut().fadeIn()
-      tipover($submit, '请填写标题')
+      popAlert('请填写标题')
       return false
     }
 
@@ -64,7 +64,7 @@ function write_formSubmit() {
     $('#content').val(contentValue)
     if (contentValue.length == 0) {
       $('#editor-wrapper').fadeOut().fadeIn()
-      tipover($submit, '请填写内容')
+      popAlert('请填写内容')
       return false
     }
 
@@ -74,7 +74,7 @@ function write_formSubmit() {
       success: redirect,
       error: function (msg) {
         var $submit = $form.find('.btn-submit')
-        tipover($submit, '发表失败: ' + msg, 2000)
+        popAlert('发表失败: ' + msg)
         $submit.prop('disabled', false)
       }
     })

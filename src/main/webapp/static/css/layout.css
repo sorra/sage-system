@@ -123,6 +123,19 @@ input[type=text]{
     display: none;
 }
 
+#alerts-holder {
+  position: fixed;
+  top: 60px;
+  right: 0px;
+  z-index: 1000;
+}
+
+.alert-wrapper {
+  width: 200px;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
 @media (min-width: 768px) {
   #back-to-top .show-back-to-top{
     display: block;

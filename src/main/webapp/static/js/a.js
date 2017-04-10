@@ -61,7 +61,7 @@ function redirect(url) {
 
 function funcFormSubmitError($parent) {
   return function (resp) {
-    $parent.find('*[type=submit]').tipover(errorMsg(resp))
+    popAlert(errorMsg(resp))
   }
 }
 
@@ -73,7 +73,20 @@ function errorMsg(resp) {
   }
 }
 
-/*
+/**
+ * pops an alert in the fixed alerts-holder
+ */
+function popAlert(text, level, duration) {
+  level = level || 'danger'
+  duration = duration || 2000
+  var $alert = $('<div class="alert-wrapper alert alert-' + level + '">').text(text)
+  setTimeout(function () {
+    $alert.fadeOut(1000).remove()
+  }, duration)
+  $('#alerts-holder').prepend($alert)
+}
+
+/**
  * common tip function
  */
 function tipover($node, text, duration) {

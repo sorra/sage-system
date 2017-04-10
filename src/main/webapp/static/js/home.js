@@ -77,15 +77,13 @@ function home_setup() {
 }
 
 function postTweetDone() {
-  var $submit = $('form.post-tweet .btn[type="submit"]')
   $('.post-box .input').val('')
   $('.post-box .pic-preview img').attr('src', '')
   hideTagTreeInput($('.tag-plus'))
-  tipover($submit, '发表成功')
+  popAlert('发表成功', 'success')
   funcLookNewer(true)()
 }
 
 function postTweetFail() {
-  var $submit = $('form.post-tweet .btn[type="submit"]')
-  tipover($submit, '发表失败')
+  popAlert('发表失败')
 }

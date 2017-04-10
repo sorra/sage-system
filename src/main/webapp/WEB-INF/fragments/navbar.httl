@@ -59,6 +59,8 @@
   <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>
 </div>
 
+<div id="alerts-holder"></div>
+
 <div class="data-holder" style="display: none;">
     #if(frontMap != null)
     <span id="front-map">${frontMap}</span>
