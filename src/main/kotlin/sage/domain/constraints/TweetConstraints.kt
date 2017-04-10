@@ -8,7 +8,7 @@ object TweetConstraints {
   private val TWEET_MAX_LEN = 1000
 
   fun check(tweet: Tweet) {
-    if (tweet.hasOrigin() && tweet.inputContent.isBlank()) {
+    if (!tweet.hasOrigin() && !tweet.hasBlog() && tweet.inputContent.isBlank()) {
       throw BadArgumentException("微言字数为0")
     }
 
