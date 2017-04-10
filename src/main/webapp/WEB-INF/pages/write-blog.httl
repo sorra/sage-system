@@ -42,7 +42,7 @@ $!{allcss}
 <body>
 $!{include("navbar.httl")}
 <div id="container" class="container">
-	#set(action = (blog.id && blog.id > 0) ? '/blogs/' + blog.id.toString + '/edit' : '/blogs/new')
+	<!-- #set(action = (blog.id && blog.id > 0) ? '/blogs/' + blog.id.toString + '/edit' : '/blogs/new') -->
 	<form id="blog" action="${action}" method="post">
 		<div id="header-wrapper">
 			#if(contentType == null)
@@ -53,7 +53,9 @@ $!{include("navbar.httl")}
 				#end
 			#end
 			#set(anotherContentType = (contentType == 'markdown' ? 'richtext' : 'markdown'))
-			<a href="?contentType=${anotherContentType}">切换到${anotherContentType}</a>
+			<a href="javascript:;" data-url="?contentType=${anotherContentType}" data-toggle="modal" data-target="#switch-editor-dialog">
+        切换到${anotherContentType}
+      </a>
 			<input id="contentType" name="contentType" type="hidden" value="${contentType}">
 			<input id="title" name="title" placeholder="这里是标题(限50个字)" value="${blog.title}"/>
 		</div>
@@ -69,6 +71,21 @@ $!{include("navbar.httl")}
 	</form>
 </div>
 <div class="footer"></div>
+
+<div id="switch-editor-dialog" class="modal fade" tabindex="-1" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">真的要切换吗？（未提交的内容不会保存）</h4>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="sure-btn btn btn-primary">切换</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 $!{alljs}
 <script src="${resLink('/static/js-bin/simplemde.min.js')}"></script>

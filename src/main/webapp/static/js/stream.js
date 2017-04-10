@@ -179,7 +179,8 @@ function stream_setupListeners() {
   })
   $doc.delegate('.tweet-ops .comment-btn', 'click', toggleTweetComments)
   
-  $('#delete-dialog').on('show.bs.modal', function (event) {
+  var $deleteDialog = $('#delete-dialog')
+  $deleteDialog.on('show.bs.modal', function (event) {
     var $modal = $(this)
     var $delBtn = $(event.relatedTarget)
     var $tweet = $delBtn.parents('.tweet').warnEmpty()
@@ -189,14 +190,14 @@ function stream_setupListeners() {
     $sureBtn.data('url', '/tweets/'+id+'/delete')
     $sureBtn.data('selector', '.tweet[tweet-id='+id+']')
   })
-  $('#delete-dialog').delegate('.sure-btn', 'click', function (event) {
-      var $btn = $(event.target)
-      $.post($btn.data('url')).done(function () {
-        $($btn.data('selector')).remove()
-      }).fail(function (resp) {
-        console.error(errorMsg(resp))
-      })
-      $(this).modal('hide')
+  $deleteDialog.delegate('.sure-btn', 'click', function (event) {
+    var $btn = $(event.target)
+    $.post($btn.data('url')).done(function () {
+      $($btn.data('selector')).remove()
+    }).fail(function (resp) {
+      console.error(errorMsg(resp))
+    })
+    $(this).modal('hide')
   })
 
   $doc.delegate('#forward-dialog .mf-x', 'click', function() {

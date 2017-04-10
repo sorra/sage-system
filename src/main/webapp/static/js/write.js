@@ -6,6 +6,8 @@ function writeBlog_setup() {
   $('#blog').submit(write_formSubmit)
 
   window.contentEditor = write_createEditor()
+
+  write_setupSwitchEditor()
 }
 
 function write_createEditor() {
@@ -81,4 +83,20 @@ function write_formSubmit() {
   } finally {
     return false
   }
+}
+
+function write_setupSwitchEditor() {
+  var $switchEditorDialog = $('#switch-editor-dialog')
+  $switchEditorDialog.on('show.bs.modal', function (event) {
+    var $link = $(event.relatedTarget)
+    if (window.contentEditor.getContent().length == 0 && $('#content').val().length == 0) {
+      window.location = $link.data('url')
+      event.preventDefault()
+    }
+    var $sureBtn = $(this).find('.sure-btn')
+    $sureBtn.data('url', $link.data('url'))
+  })
+  $switchEditorDialog.delegate('.sure-btn', 'click', function (event) {
+    window.location = $(event.target).data('url')
+  })
 }
