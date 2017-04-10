@@ -9,7 +9,7 @@ ${blog.title}
 <style>
 	#container{
 		background: #fff;
-  	border: 1px solid #ddd;
+  	border: 1px solid #e1e8ed;
 	}
 	#comments-container{
 		margin-top: 20px;
