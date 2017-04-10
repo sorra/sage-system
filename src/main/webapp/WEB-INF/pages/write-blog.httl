@@ -99,7 +99,7 @@ $!{alljs}
 		function saveDraft() {
 			var title = $('#title').val()
 			var contentType = $('#contentType').val()
-			var content = $('#content').val()
+			var content = window.contentEditor.getContent()
 			if (title === savedTitle && content === savedContent) {
 				setTimeout(saveDraft, 3000)
 				return

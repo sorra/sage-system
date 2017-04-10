@@ -89,7 +89,7 @@ function write_setupSwitchEditor() {
   var $switchEditorDialog = $('#switch-editor-dialog')
   $switchEditorDialog.on('show.bs.modal', function (event) {
     var $link = $(event.relatedTarget)
-    if (window.contentEditor.getContent().length == 0 && $('#content').val().length == 0) {
+    if (window.contentEditor.getContent().length == 0) {
       window.location = $link.data('url')
       event.preventDefault()
     }

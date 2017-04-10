@@ -30,7 +30,7 @@ open class DraftsController @Autowired constructor(private val userService: User
       if (draft.targetId > 0) {
         val blog = Blog.get(draft.targetId).let(::BlogView).apply {
           title = draft.title
-          content = draft.content
+          inputContent = draft.content
         }
         val topTags = userService.filterNewTags(uid, blog.tags)
         return ModelAndView("write-blog").addObject("blog", blog)
@@ -39,7 +39,7 @@ open class DraftsController @Autowired constructor(private val userService: User
       } else {
         val newBlog = BlogView().apply {
           title = draft.title
-          content = draft.content
+          inputContent = draft.content
         }
         val topTags = userService.topTags(uid)
         return ModelAndView("write-blog").addObject("blog", newBlog)

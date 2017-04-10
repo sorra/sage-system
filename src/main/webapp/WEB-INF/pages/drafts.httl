@@ -12,7 +12,7 @@ ${extends("layout.httl")}
   <div id="drafts">
     #for(draft : drafts)
     <div class="draft">
-      <a href="/drafts/${draft.id}">${draft.title}</a>
+      <a href="/drafts/${draft.id}">${draft.title.isEmpty() ? '无标题' : draft.title}</a>
       $!{spanHumanTime(draft.whenCreated)}
     </div>
     #end
