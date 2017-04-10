@@ -1,12 +1,12 @@
 create table blog (
   id                            bigint auto_increment not null,
-  title                         varchar(255),
-  input_content                 TEXT,
   content                       TEXT,
-  author_id                     bigint not null,
-  content_type                  smallint,
   when_edited                   datetime(6),
   tweet_id                      bigint not null,
+  title                         varchar(255),
+  input_content                 TEXT,
+  author_id                     bigint not null,
+  content_type                  smallint,
   version                       bigint not null,
   when_created                  datetime(6) not null,
   when_modified                 datetime(6) not null,
@@ -35,8 +35,8 @@ create table blog_stat (
 
 create table comment (
   id                            bigint auto_increment not null,
-  input_content                 TEXT,
   content                       TEXT,
+  input_content                 TEXT,
   author_id                     bigint not null,
   source_type                   smallint,
   source_id                     bigint,

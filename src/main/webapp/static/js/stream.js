@@ -197,7 +197,7 @@ function stream_setupListeners() {
     }).fail(function (resp) {
       console.error(errorMsg(resp))
     })
-    $(this).modal('hide')
+    $deleteDialog.modal('hide')
   })
 
   $('#forward-dialog').delegate('.mf-x', 'click', function() {
