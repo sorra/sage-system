@@ -6,8 +6,6 @@ import org.springframework.stereotype.Service
 import sage.domain.cache.GlobalCaches
 import sage.domain.commons.ContentParser
 import sage.domain.commons.RichElement
-import sage.domain.constraints.CommentConstraints
-import sage.domain.constraints.TweetConstraints
 import sage.domain.permission.TweetPermission
 import sage.entity.*
 import sage.transfer.MidForwards
@@ -28,7 +26,7 @@ class TweetPostService
     val tweet = Tweet(inputContent, hyperContent, richElements, User.ref(userId),
         Tag.multiGet(tagIds))
 
-    TweetConstraints.check(tweet)
+    tweet.validate()
 
     Ebean.execute {
       tweet.save()
@@ -47,6 +45,9 @@ class TweetPostService
   /** Should be called in a transaction */
   fun postForBlog(blog: Blog) {
     val tweet = Tweet("", "", emptyList(), User.ref(blog.author.id), blog)
+
+    tweet.validate()
+
     tweet.save()
     TweetStat(id = tweet.id, whenCreated = tweet.whenCreated).save()
     blog.tweetId = tweet.id
@@ -69,7 +70,7 @@ class TweetPostService
       tweet = Tweet(inputContent, hyperContent, emptyList(), midForwards, User.ref(userId), initialOrigin)
     }
 
-    TweetConstraints.check(tweet)
+    tweet.validate()
 
     Ebean.execute {
       tweet.save()
@@ -92,7 +93,7 @@ class TweetPostService
 
     val comment = Comment(inputContent, hyperContent, User.ref(userId), Comment.TWEET, tweetId, replyUserId)
 
-    CommentConstraints.check(inputContent)
+    comment.validate()
 
     comment.save()
     TweetStat.incComments(tweetId)
@@ -114,7 +115,7 @@ class TweetPostService
   }
 
   fun delete(userId: Long, tweetId: Long) {
-    val tweet = Tweet.ref(tweetId)
+    val tweet = Tweet.get(tweetId)
 
     TweetPermission(userId, tweet).canDelete()
 

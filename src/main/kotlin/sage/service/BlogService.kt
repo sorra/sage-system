@@ -6,8 +6,6 @@ import org.springframework.stereotype.Service
 import sage.domain.cache.GlobalCaches
 import sage.domain.commons.ContentParser
 import sage.domain.commons.ReplaceMention
-import sage.domain.constraints.BlogConstraints
-import sage.domain.constraints.CommentConstraints
 import sage.domain.permission.BlogPermission
 import sage.entity.*
 import sage.transfer.BlogView
@@ -28,7 +26,7 @@ class BlogService
     val blog = Blog(title, inputContent, "", User.ref(userId), Tag.multiGet(tagIds), Blog.contentTypeValue(contentType))
     val mentionedIds = renderAndGetMentions(blog)
 
-    BlogConstraints.check(blog)
+    blog.validate()
 
     Ebean.execute {
       blog.save()
@@ -60,7 +58,7 @@ class BlogService
     blog.tags = Tag.multiGet(tagIds)
     blog.whenEdited = Timestamp(System.currentTimeMillis())
 
-    BlogConstraints.check(blog)
+    blog.validate()
 
     blog.update()
 
@@ -95,7 +93,7 @@ class BlogService
 
     val comment = Comment(inputContent, hyperContent, User.ref(userId), Comment.BLOG, blogId, replyUserId)
 
-    CommentConstraints.check(inputContent)
+    comment.validate()
 
     comment.save()
     BlogStat.incComments(blogId)

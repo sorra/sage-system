@@ -7,25 +7,27 @@ import java.util.*
 import javax.persistence.*
 
 @Entity
-class Blog : BaseModel {
+class Blog(
+    var title: String,
 
-  var title: String
+    @Column(columnDefinition = "TEXT")
+    @Lob
+    var inputContent: String,
+
+    hyperContent: String,
+
+    @ManyToOne(optional = false)
+    val author: User, tags: Set<Tag>,
+
+    var contentType: Short
+) : BaseModel() {
 
   @Column(columnDefinition = "TEXT")
   @Lob
-  var inputContent: String
-
-  @Column(columnDefinition = "TEXT")
-  @Lob
-  var content: String
-
-  @ManyToOne(optional = false)
-  val author: User
+  var content: String = hyperContent
 
   @ManyToMany(cascade = arrayOf(CascadeType.ALL))
   var tags: MutableSet<Tag> = HashSet()
-
-  var contentType: Short
 
   var whenEdited: Timestamp? = null
 
@@ -35,18 +37,8 @@ class Blog : BaseModel {
   @SoftDelete
   var deleted: Boolean = false
 
-  constructor(title: String, inputContent: String, hyperContent: String, author: User, tags: Set<Tag>, contentType: Short) {
-    this.title = title
-    this.inputContent = inputContent
-    this.content = hyperContent
-    this.author = author
-    this.tags = HashSet(tags)
-    this.contentType = contentType
-  }
-
   fun stat() = BlogStat.byId(id)
 
-  @PrePersist @PreUpdate
   fun validate() {
     BlogConstraints.check(this)
   }
@@ -68,5 +60,9 @@ class Blog : BaseModel {
     fun get(id: Long) = getNonNull(Blog::class, id)
 
     fun byAuthor(authorId: Long): List<Blog> = where().eq("author", User.ref(authorId)).orderBy("id desc").findList()
+  }
+
+  init {
+    this.tags = HashSet(tags)
   }
 }

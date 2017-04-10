@@ -96,7 +96,7 @@ function write_setupSwitchEditor() {
     var $sureBtn = $(this).find('.sure-btn')
     $sureBtn.data('url', $link.data('url'))
   })
-  $switchEditorDialog.delegate('.sure-btn', 'click', function (event) {
+  $switchEditorDialog.find('.sure-btn').click(function (event) {
     window.location = $(event.target).data('url')
   })
 }

@@ -36,9 +36,8 @@ class Tweet : BaseModel {
   @ManyToOne(optional = false)
   val author: User
 
+  @Column(nullable = false)
   var originId: Long = 0
-    @Column(nullable = false)
-    get() = if (deleted) -1 else field
 
   @Column(nullable = false)
   var blogId: Long = 0
@@ -78,6 +77,8 @@ class Tweet : BaseModel {
 
   fun hasOrigin() = originId > 0
 
+  fun hasBlog() = blogId > 0
+
   fun richElements(): Collection<RichElement> =
       try {
         if (richElementsJson != null && richElementsJson != "[]") RichElement.fromJsonToList(richElementsJson!!)
@@ -97,13 +98,14 @@ class Tweet : BaseModel {
 
   fun stat() = TweetStat.byId(id)
 
-  @PrePersist @PreUpdate
   fun validate() {
     TweetConstraints.check(this)
   }
 
   companion object : Find<Long, Tweet>() {
     private val log = LoggerFactory.getLogger(Tweet::class.java)
+
+    fun get(id: Long): Tweet = getNonNull(Tweet::class, id)
 
     fun recent(size: Int): List<Tweet> = default().orderBy("id desc").setMaxRows(size).findList()
 

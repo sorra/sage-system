@@ -190,7 +190,7 @@ function stream_setupListeners() {
     $sureBtn.data('url', '/tweets/'+id+'/delete')
     $sureBtn.data('selector', '.tweet[tweet-id='+id+']')
   })
-  $deleteDialog.delegate('.sure-btn', 'click', function (event) {
+  $deleteDialog.find('.sure-btn').click(function (event) {
     var $btn = $(event.target)
     $.post($btn.data('url')).done(function () {
       $($btn.data('selector')).remove()
@@ -200,10 +200,10 @@ function stream_setupListeners() {
     $(this).modal('hide')
   })
 
-  $doc.delegate('#forward-dialog .mf-x', 'click', function() {
+  $('#forward-dialog').delegate('.mf-x', 'click', function() {
     $(this).parents('*[mf-id]').addClass('mf-removed')
   })
-  $doc.delegate('#forward-dialog .btn-primary', 'click', function() {
+  $('#forward-dialog').find('.sure-btn').click(function() {
     var $dialog = $('#forward-dialog')
     $.post('/post/forward', {
       content: $dialog.find('.input').val(),

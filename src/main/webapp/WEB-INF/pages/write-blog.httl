@@ -53,7 +53,7 @@ $!{include("navbar.httl")}
 				#end
 			#end
 			#set(anotherContentType = (contentType == 'markdown' ? 'richtext' : 'markdown'))
-			<a href="javascript:;" data-url="?contentType=${anotherContentType}" data-toggle="modal" data-target="#switch-editor-dialog">
+			<a href="#switch-editor-dialog" data-url="?contentType=${anotherContentType}" data-toggle="modal">
         切换到${anotherContentType}
       </a>
 			<input id="contentType" name="contentType" type="hidden" value="${contentType}">

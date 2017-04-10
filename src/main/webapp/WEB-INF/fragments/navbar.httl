@@ -114,7 +114,7 @@
         <textarea class="input"></textarea>
       </div>
       <div class="modal-footer">
-        <button class="btn btn-primary" style="float: right">转发</button>
+        <button class="sure-btn btn btn-primary" style="float: right">转发</button>
       </div>
     </div>
   </div>

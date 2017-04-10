@@ -4,35 +4,25 @@ import sage.domain.constraints.CommentConstraints
 import javax.persistence.*
 
 @Entity
-class Comment : BaseModel {
+class Comment(
+    @Column(columnDefinition = "TEXT")
+    @Lob val inputContent: String,
 
-  @Column(columnDefinition = "TEXT")
-  @Lob
-  val inputContent: String
+    hyperContent: String,
+
+    @ManyToOne(optional = false) val author: User,
+
+    var sourceType: Short,
+
+    var sourceId: Long,
+
+    val replyUserId: Long?
+) : BaseModel() {
 
   @Column(columnDefinition = "TEXT")
   @Lob @Basic
-  val content: String
+  val content: String = hyperContent
 
-  @ManyToOne(optional = false)
-  val author: User
-
-  var sourceType: Short
-
-  var sourceId: Long
-
-  val replyUserId: Long?
-
-  constructor(inputContent: String, hyperContent: String, author: User, sourceType: Short, sourceId: Long, replyUserId: Long?) {
-    this.inputContent = inputContent
-    this.content = hyperContent
-    this.author = author
-    this.sourceType = sourceType
-    this.sourceId = sourceId
-    this.replyUserId = replyUserId
-  }
-
-  @PrePersist @PreUpdate
   fun validate() {
     CommentConstraints.check(inputContent)
   }
@@ -41,7 +31,7 @@ class Comment : BaseModel {
     val BLOG: Short = 1
     val TWEET: Short = 2
 
-    fun list(sourceType: Short, sourceId: Long) =
+    fun list(sourceType: Short, sourceId: Long): List<Comment> =
         if ((1..2).contains(sourceType)) where().eq("sourceType", sourceType).eq("sourceId", sourceId).findList()
         else emptyList()
 
