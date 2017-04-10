@@ -34,7 +34,6 @@ import java.sql.Timestamp
 import javax.servlet.ServletContext
 
 @SpringBootApplication
-@EnableWebMvc
 class Application : WebMvcConfigurerAdapter() {
 
   @Bean(autowire = Autowire.BY_TYPE) @Scope(SCOPE_SINGLETON)
