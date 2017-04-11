@@ -56,7 +56,7 @@ class TagAnalyzer(val text: String, val presentTagIds: Collection<Long>, val top
 
     val numLack = numLimit - leafLikeChosens.size
     return if (numLack > 0) {
-      leafLikeChosens + ancestorPacks.sortedByDescending { it.score }.take(numLimit).map { it.tag }
+      leafLikeChosens + ancestorPacks.sortedByDescending { it.score }.take(numLack).map { it.tag }
     } else {
       leafLikeChosens
     }
