@@ -1,0 +1,52 @@
+.auth-page form {
+  width: 400px;
+  margin: 15% auto;
+  border: 1px solid #e1e8ed;
+}
+
+.auth-page label {
+  display: block;
+}
+
+.auth-page input {
+  display: block;
+  width: 100%;
+}
+
+.auth-page input[type=checkbox] {
+  display: inline;
+  width: auto;
+}
+
+.auth-page .input-group {
+  display: block;
+  margin: 0.5em auto;
+  padding: 0.5em 0 0 0;
+  width: 20em;
+}
+
+.auth-act-box {
+  width: auto;
+  margin: 1em auto;
+  padding: 2em;
+  text-align: center;
+}
+
+.auth-act-box .btn {
+  margin-top: 10px;
+}
+
+.validation-alert {
+  color: red;
+}
+
+@media (max-width: 768px) {
+  .auth-page form {
+    width: 100%;
+  }
+
+  .auth-act-box {
+    width: 90%;
+    padding-left: 5%;
+  }
+}

@@ -7,60 +7,15 @@
   $!{allcss}
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
-    .heading{
+    .heading {
       text-align: center;
       padding: 10px;
       color: green;
     }
-    form{
-      width: 400px;
-      margin: 15% auto;
-      border: 1px solid #e1e8ed;
-    }
-
-    label {
-      display: block;
-    }
-
-    input{
-      display: block;
-      width: 20em;
-    }
-    .input-group{
-      display: block;
-      margin: 0.5em auto;
-      padding: 0.5em 0 0 0;
-      width: 20em;
-    }
-    #register-action{
-      width: auto;
-      margin: 1em auto;
-      padding: 2em;
-      text-align: center;
-    }
-    #register-action a{
-      margin-top: 10px;
-    }
-    .validation-alert{
-      color: red;
-    }
-
-    @media (max-width: 768px) {
-      form {
-        width: 100%;
-      }
-      label, input {
-        width: 90%;
-      }
-      .input-group, #register-action {
-        width: 90%;
-        padding-left: 5%;
-      }
-    }
   </style>
 </head>
-<body class="background-dark">
-  <form id="register" action="/auth/register" method="post">
+<body class="auth-page">
+  <form id="register" class="auth-form" action="/auth/register" method="post">
     <h4 class="heading">注册一个账号</h4>
     <div class="input-group">
       <label for="email">邮箱</label>
@@ -74,7 +29,7 @@
       <label for="repeat-password">再次输入密码</label>
       <input id="repeat-password" name="repeat-password" type="password" placeholder="请再次输入密码" />
     </div>
-    <div class="input-group" id="register-action">
+    <div class="auth-act-box input-group">
       <button type="submit" class="btn btn-block btn-lg btn-danger">
         <span class="small-circle"><i class="fa fa-caret-right"></i></span>
         <small>注册</small>

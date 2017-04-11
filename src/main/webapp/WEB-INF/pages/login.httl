@@ -12,58 +12,9 @@
       padding: 10px;
       color: deepskyblue;
     }
-    form{
-      width: 400px;
-      margin: 15% auto;
-      border: 1px solid #e1e8ed;
-    }
-
-    label {
-      display: block;
-    }
-
-    input{
-      display: block;
-      width: 20em;
-    }
-    input[type=checkbox]{
-      display: inline;
-      width: auto;
-    }
-    .input-group{
-      display: block;
-      margin: 0.5em auto;
-      padding: 0.5em 0 0 0;
-      width: 20em;
-    }
-    #login-action{
-      width: auto;
-      margin: 1em auto;
-      padding: 2em;
-      text-align: center;
-    }
-    #login-action a{
-      margin-top: 10px;
-    }
-    .validation-alert{
-      color: red;
-    }
-
-    @media (max-width: 768px) {
-      form {
-        width: 100%;
-      }
-      label, input {
-        width: 90%;
-      }
-      .input-group, #login-action {
-        width: 90%;
-        padding-left: 5%;
-      }
-    }
   </style>
 </head>
-<body class="background-dark">
+<body class="auth-page">
   <form id="login" action="/auth/login" method="post">
     <a href="/"><h3 class="heading">轻境界</h3></a>
     <div class="input-group">
@@ -79,7 +30,8 @@
         <input id="rememberMe" name="rememberMe" type="checkbox" checked />&nbsp;记住登录
       </label>
     </div>
-    <div class="input-group" id="login-action">
+
+    <div class="auth-act-box input-group">
       <button type="submit" class="btn btn-block btn-lg btn-danger">
         <span class="small-circle"><i class="fa fa-caret-right"></i></span>
         <small>登录</small>
