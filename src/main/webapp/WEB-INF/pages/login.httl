@@ -14,34 +14,52 @@
     }
     form{
       width: 400px;
-      margin: 15% auto auto auto;
-      /*background-color: rgba(51,51,51,0.4);*/
+      margin: 15% auto;
+      border: 1px solid #e1e8ed;
     }
+
+    label {
+      display: block;
+    }
+
     input{
+      display: block;
       width: 20em;
     }
     input[type=checkbox]{
+      display: inline;
       width: auto;
     }
     .input-group{
       display: block;
-      margin: 0.5em auto 0.5em auto;
+      margin: 0.5em auto;
       padding: 0.5em 0 0 0;
       width: 20em;
     }
     #login-action{
       width: auto;
-      margin: 1em 0 0 0;
+      margin: 1em auto;
       padding: 2em;
-      /*background-color: rgba(51,51,51,0.25);*/
       text-align: center;
     }
     #login-action a{
-      /*color: skyblue;*/
       margin-top: 10px;
     }
     .validation-alert{
       color: red;
+    }
+
+    @media (max-width: 768px) {
+      form {
+        width: 100%;
+      }
+      label, input {
+        width: 90%;
+      }
+      .input-group, #login-action {
+        width: 90%;
+        padding-left: 5%;
+      }
     }
   </style>
 </head>
