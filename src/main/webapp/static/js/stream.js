@@ -14,14 +14,16 @@ function stream_setup() {
   $('.stream .newfeed').click(funcLookNewer())
   var lookEarlier = funcLookEarlier()
   $('.stream .oldfeed').click(lookEarlier)
-  $(window).scroll(function () {
-    var scrollTop = $(window).scrollTop()
-    var winHeight = $(window).height()
-    var docuHeight = $(document).height()
-    if (scrollTop + winHeight >= docuHeight) {
-      lookEarlier()
-    }
-  })
+  if ($('.stream .oldfeed').length > 0) {
+    $(window).scroll(function () {
+      var scrollTop = $(window).scrollTop()
+      var winHeight = $(window).height()
+      var docuHeight = $(document).height()
+      if (scrollTop + winHeight >= docuHeight) {
+        lookEarlier()
+      }
+    })
+  }
 }
 
 function getStream(url) {

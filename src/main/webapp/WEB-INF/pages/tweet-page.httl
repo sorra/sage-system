@@ -1,24 +1,19 @@
-<!DOCTYPE html>
-<html>
-#set(TweetGroup group)
-<head>
-<meta charset="UTF-8">
-$!{desc}
-<title>微言 - 轻境界</title>
-$!{allcss}
-</head>
-<body>
-$!{include("navbar.httl")}
-<div id="container" class="container">
-  $!{include("tweet-group.httl")}
-</div>
-$!{alljs}
+${extends("layout.httl")}
 
+#macro(title)
+微言 - 轻境界
+#end
+
+#macro(body)
+  #set(TweetGroup group)
+  $!{include("tweet-group.httl")}
+#end
+
+#macro(script)
 <script>
 setup(stream_setup, humanTime_setup, user_setup)
 $(function () {
   toggleTweetComments.apply($('.comment-btn')[0])
 })
 </script>
-</body>
-</html>
+#end

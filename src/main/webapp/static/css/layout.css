@@ -66,6 +66,15 @@ input[type=text]{
   outline: none;
 }
 
+.glyphicon {
+  font-size: 15px;
+}
+@media (max-width: 768px) {
+  .glyphicon {
+    font-size: 16px;
+  }
+}
+
 .human-time{
   color: gray;
 }
