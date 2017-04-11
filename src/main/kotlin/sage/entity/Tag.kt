@@ -23,17 +23,19 @@ class Tag(
   /**
    * @return a chain from itself to ancestors, excluding root; is empty for root
    */
-  fun chainUp(): List<Tag> {
-    val chain = LinkedList<Tag>()
-    if (id == ROOT_ID)
-      return chain
+  fun chainUp(): List<Tag> = listOf(this) + ancestorsUp()
 
-    var current: Tag = this
+  fun ancestorsUp(): List<Tag> {
+    val ancestors = LinkedList<Tag>()
+    if (id == ROOT_ID) {
+      return ancestors
+    }
+    var current: Tag = this.parent!!
     while (current.id != ROOT_ID) {
-      chain.add(current)
+      ancestors.add(current)
       current = current.parent!!
     }
-    return chain
+    return ancestors
   }
 
   @Suppress("unused")

@@ -189,7 +189,7 @@ class UserService {
     return tagCounters.map { it.tag.toTagLabel() }
   }
 
-  fun topTags(userId: Long) = userTags(userId).take(5)
+  fun topTags(userId: Long): List<TagLabel> = userTags(userId).take(5)
 
   private fun countTags(tags: Collection<Tag>, topping: MutableList<TagCounter>) {
     for (tag in tags) {

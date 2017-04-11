@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service
 import sage.domain.cache.GlobalCaches
 import sage.domain.commons.ContentParser
 import sage.domain.commons.RichElement
+import sage.domain.intelligence.TagAnalyzer
 import sage.domain.permission.TweetPermission
 import sage.entity.*
 import sage.transfer.MidForwards
@@ -21,10 +22,12 @@ class TweetPostService
     private val notifService: NotificationService) {
 
   fun post(userId: Long, inputContent: String, richElements: Collection<RichElement>, tagIds: Collection<Long>): Tweet {
+    val intelliTagIds = TagAnalyzer(inputContent, tagIds, userService.topTags(userId).map { it.id }).analyze()
+
     val (hyperContent, mentionedIds) = ContentParser.tweet(inputContent) { name -> User.byName(name) }
 
     val tweet = Tweet(inputContent, hyperContent, richElements, User.ref(userId),
-        Tag.multiGet(tagIds))
+        Tag.multiGet(intelliTagIds))
 
     tweet.validate()
 
@@ -33,7 +36,7 @@ class TweetPostService
       TweetStat(id = tweet.id, whenCreated = tweet.whenCreated).save()
     }
 
-    userService.updateUserTag(userId, tagIds)
+    userService.updateUserTag(userId, intelliTagIds)
 
     mentionedIds.forEach { atId -> notifService.mentionedByTweet(atId, userId, tweet.id) }
 

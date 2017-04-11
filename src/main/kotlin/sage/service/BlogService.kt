@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service
 import sage.domain.cache.GlobalCaches
 import sage.domain.commons.ContentParser
 import sage.domain.commons.ReplaceMention
+import sage.domain.intelligence.TagAnalyzer
 import sage.domain.permission.BlogPermission
 import sage.entity.*
 import sage.transfer.BlogView
@@ -23,7 +24,9 @@ class BlogService
     private val notifService: NotificationService) {
 
   fun post(userId: Long, title: String, inputContent: String, tagIds: Set<Long>, contentType: String): Blog {
-    val blog = Blog(title, inputContent, "", User.ref(userId), Tag.multiGet(tagIds), Blog.contentTypeValue(contentType))
+    val intelliTagIds = TagAnalyzer(title + inputContent, tagIds, userService.topTags(userId).map { it.id }).analyze()
+
+    val blog = Blog(title, inputContent, "", User.ref(userId), Tag.multiGet(intelliTagIds), Blog.contentTypeValue(contentType))
     val mentionedIds = renderAndGetMentions(blog)
 
     blog.validate()
@@ -34,7 +37,7 @@ class BlogService
       tweetPostService.postForBlog(blog)
     }
 
-    userService.updateUserTag(userId, tagIds)
+    userService.updateUserTag(userId, intelliTagIds)
 
     mentionedIds.forEach { atId -> notifService.mentionedByBlog(atId, userId, blog.id) }
 
