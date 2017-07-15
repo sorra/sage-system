@@ -6,6 +6,7 @@ import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.ResponseBody
+import sage.domain.cache.GlobalCaches
 import sage.entity.*
 import sage.service.BlogService
 import sage.service.SearchService
@@ -36,10 +37,7 @@ open class ZOperationController @Autowired constructor(
 
   @RequestMapping("/z-reindex")
   @ResponseBody
-  open fun reindex(): String {
-    if (Auth.checkUid() != 1L) {
-      return "Page not found."
-    }
+  open fun reindex() = authDo {
     searchService.setupMappings()
     Blog.findEach {
       searchService.index(it.id, BlogView(it))
@@ -47,7 +45,7 @@ open class ZOperationController @Autowired constructor(
     Tweet.findEach {
       searchService.index(it.id, TweetView(it, Tweet.getOrigin(it), false, {false}))
     }
-    return "Done."
+    "Done."
   }
 
   @RequestMapping("/z-reload")
@@ -55,11 +53,7 @@ open class ZOperationController @Autowired constructor(
 
   @RequestMapping("/z-genstats")
   @ResponseBody
-  open fun genstats(@RequestParam(defaultValue = "false") loopAll: Boolean): String {
-    if (Auth.checkUid() != 1L) {
-      return "Page not found."
-    }
-
+  open fun genstats(@RequestParam(defaultValue = "false") loopAll: Boolean) = authDo {
     val blogIds = arrayListOf<Long>()
     Blog.findEachWhile {
       if (BlogStat.byId(it.id) == null) {
@@ -78,15 +72,12 @@ open class ZOperationController @Autowired constructor(
       } else return@findEachWhile loopAll
     }
 
-    return "Done:\nblogs:$blogIds , tweets:$tweetIds"
+    "Done:\nblogs:$blogIds , tweets:$tweetIds"
   }
 
   @RequestMapping("/z-genavatars")
   @ResponseBody
-  open fun genavatars(): String {
-    if (Auth.checkUid() != 1L) {
-      return "Page not found."
-    }
+  open fun genavatars() = authDo {
     val random = Random()
     User.findEach { user ->
       if (user.avatar.isNullOrEmpty()) {
@@ -95,48 +86,51 @@ open class ZOperationController @Autowired constructor(
         user.update()
       }
     }
-    return "Done."
+    "Done."
   }
 
   @RequestMapping("/z-rendertext")
   @ResponseBody
-  fun renderText(): String {
-    if(Auth.checkUid() != 1L) {
-      return "Page not found."
-    }
-
+  fun renderText() = authDo {
     Blog.findEach { blog ->
       blogService.renderAndGetMentions(blog)
       blog.update()
     }
-
-    return "Done."
+    "Done."
   }
 
   @RequestMapping("/z-recoverchars")
   @ResponseBody
-  fun recoverChars(): String {
-    if(Auth.checkUid() != 1L) {
-      return "Page not found."
-    }
-
+  fun recoverChars() = authDo {
     Blog.findEach { blog ->
       blog.inputContent = StringUtils.replaceEach(blog.inputContent,
           arrayOf("&amp;", "&lt;", "&gt;"), arrayOf("&", "<", ">"))
       blog.update()
     }
-
-    return "Done."
+    "Done."
   }
 
   @RequestMapping("/z-delete")
   @ResponseBody
-  fun delete(@RequestParam blogId: Long): String {
+  fun delete(@RequestParam blogId: Long) = authDo {
+    blogService.delete(Auth.checkUid(), blogId)
+    "Done $blogId"
+  }
+
+  @RequestMapping("/z-clearcache")
+  @ResponseBody
+  fun clearCache() = authDo {
+    GlobalCaches.blogsCache.clear()
+    GlobalCaches.tweetsCache.clear()
+    GlobalCaches.tagsCache.clear()
+    "Done."
+  }
+
+  fun authDo(f: () -> String): String {
     if(Auth.checkUid() != 1L) {
       return "Page not found."
+    } else {
+      return f()
     }
-
-    blogService.delete(Auth.checkUid(), blogId)
-    return "Done $blogId"
   }
 }
