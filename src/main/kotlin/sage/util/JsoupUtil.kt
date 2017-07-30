@@ -1,7 +1,13 @@
 package sage.util
 
 import org.jsoup.Jsoup
+import org.jsoup.nodes.Document
+import org.jsoup.nodes.Element
+import org.jsoup.nodes.Node
+import org.jsoup.safety.Cleaner
 import org.jsoup.safety.Whitelist
+import org.jsoup.select.NodeTraversor
+import org.jsoup.select.NodeVisitor
 
 object JsoupUtil {
   // Though adding "#" and "/" has no effect
@@ -17,5 +23,26 @@ object JsoupUtil {
     }
   }
 
-  fun clean(html: String): String = Jsoup.clean(html, whitelist)
+  fun clean(html: String): String {
+    val dirty = Jsoup.parseBodyFragment(html, "")
+    val cleaner = Cleaner(whitelist)
+    val clean = cleaner.clean(dirty)
+
+    secureLinks(clean)
+
+    return clean.body().html()
+  }
+
+  fun secureLinks(document: Document) {
+    NodeTraversor(object : NodeVisitor {
+      override fun head(node: Node, depth: Int) {
+        if (node is Element && node.tagName() == "a") {
+          node.attr("target", "_blank")
+          node.attr("rel", "noopener noreferrer")
+        }
+      }
+
+      override fun tail(node: Node, depth: Int) {}
+    }).traverse(document)
+  }
 }
