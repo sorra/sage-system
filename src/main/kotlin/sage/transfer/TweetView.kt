@@ -4,6 +4,7 @@ import sage.annotation.KotlinNoArg
 import sage.domain.commons.IdCommons
 import sage.entity.Blog
 import sage.entity.Tweet
+import sage.web.context.RenderUtil
 import java.util.*
 
 @KotlinNoArg
@@ -96,8 +97,9 @@ class TweetView {
     val sb = StringBuilder(tweet.content)
     tweet.richElements().forEach { (type, value) ->
       if (type == "picture") {
-        sb.append(" <a class=\"img-origin-link\" href=\"$value\" target=\"_blank\">查看原图</a>")
-        sb.append("<img class=\"view-img\" src=\"$value\"/>")
+        val link = RenderUtil.cdn() + value
+        sb.append(" <a class=\"img-origin-link\" href=\"$link\" target=\"_blank\">查看原图</a>")
+        sb.append("<img class=\"view-img\" src=\"$link\"/>")
       }
     }
     return sb.toString()
