@@ -56,7 +56,7 @@ $!{include("navbar.httl")}
     好友
     #for(u : friends)
       <span class="user-label" data-id="${u.id}" style="display: block">
-        <a class="avatar" uid="${u.id}" href="/messages?withUserId=${u.id}"><img src="${u.avatar}"/></a>
+        <a class="avatar" uid="${u.id}" href="/messages?withUserId=${u.id}"><img src="${cdn()}${u.avatar}"/></a>
         <a class="name" uid="${u.id}" href="/messages?withUserId=${u.id}">${u.name}</a>
       </span>
     #end

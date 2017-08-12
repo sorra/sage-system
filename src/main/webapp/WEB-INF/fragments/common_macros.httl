@@ -11,7 +11,7 @@ $!{include("tmpl.httl")}
 
 #macro(desc)
 <meta name="description" content="程序员和远程工作者社区" />
-<link rel="icon" type="image/png" href="/static/favicon.png"/>
+<link rel="icon" type="image/png" href="${cdn()}/static/favicon.png"/>
 #end
 
 #macro(tagLabel(TagLabel tag))
@@ -23,7 +23,7 @@ $!{include("tmpl.httl")}
 
 #macro(userLabel(UserLabel u))
 <span class="user-label" data-id="${u.id}">
-  <a class="avatar" uid="${u.id}" href="/users/${u.id}"><img src="${u.avatar}"/></a>
+  <a class="avatar" uid="${u.id}" href="/users/${u.id}"><img src="${cdn()}${u.avatar}"/></a>
   <a class="name" uid="${u.id}" href="/users/${u.id}">${u.name}</a>
 </span>
 #end

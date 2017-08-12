@@ -19,7 +19,7 @@ ${extends("layout.httl")}
 	-->
 	<div class="side">
 		<div class="user-self user-card">
-			<a class="avatar" href="/users/self"><img src="${self.avatar}"/></a>
+			<a class="avatar" href="/users/self"><img src="${cdn()}${self.avatar}"/></a>
 			<div class="info-part">
 				<div class="name-intro">
 					<p class="name">${self.name}</p>

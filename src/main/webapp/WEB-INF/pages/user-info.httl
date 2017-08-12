@@ -40,7 +40,7 @@ $!{include("navbar.httl")}
     </span>
     <br/>
     <span>上传头像：</span>
-    <img src="${user.avatar}" />
+    <img src="${cdn()}${user.avatar}" />
     <input name="avatar" type="file" />
     <br/>
     <input type="submit" />
