@@ -94,6 +94,7 @@ class TagChangeService {
     TagChangeRequestPermission(userId, request).canEdit()
 
     request.status = Status.CANCELED
+    request.update()
   }
 
   fun acceptRequest(userId: Long, reqId: Long) = transactRequest(userId, reqId, Status.ACCEPTED)

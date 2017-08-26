@@ -25,7 +25,7 @@ $!{include("navbar.httl")}
         <div>编号: ${req.id}</div>
         <div>标签: $!{tagLabel(req.tag)}</div>
         <div>发起者: $!{userLabel(req.submitter)}</div>
-        <div>处理者: $!{userLabel(req.transactor)}</div>
+        <div>处理者: $!{req.transactor!=null ? userLabel(req.transactor) : ''}</div>
         <div>状态: <span class="status">${req.status}</span></div>
         <div>描述: ${req.desc}</div>
         #if(req.statusKey == "PENDING")
