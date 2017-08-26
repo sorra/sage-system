@@ -41,7 +41,7 @@ class TagChangeService {
   private fun saveRequest(req: TagChangeRequest): TagChangeRequest {
     req.save()
     val submitter = req.submitter
-    if (submitter.authority.isTagAdminOrHigher) {
+    if (submitter.authority.canManageTags()) {
       // Admin权限者自动接受自己的修改
       acceptRequest(submitter.id, req.id)
     } else {
@@ -100,12 +100,12 @@ class TagChangeService {
 
   fun rejectRequest(userId: Long, reqId: Long) = transactRequest(userId, reqId, Status.REJECTED)
 
-  fun userCanTransact(userId: Long) = User.get(userId).authority.isTagAdminOrHigher
+  fun userCanTransact(userId: Long) = User.get(userId).authority.canManageTags()
 
   private fun transactRequest(userId: Long, reqId: Long, status: Status): TagChangeRequest {
     val user = User.get(userId)
-    if (user.authority.isTagAdminOrHigher) {
-      throw AuthorityException("Require TagAdmin or higher.")
+    if (user.authority.cannotManageTags()) {
+      throw AuthorityException("You are not authorized to manage tags.")
     }
     val req = TagChangeRequest.byId(reqId)!!
     if (req.status !== Status.PENDING) {

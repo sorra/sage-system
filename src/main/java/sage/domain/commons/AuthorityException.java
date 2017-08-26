@@ -1,6 +1,6 @@
 package sage.domain.commons;
 
-public class AuthorityException extends RuntimeException {
+public class AuthorityException extends DomainException {
   public AuthorityException() {
   }
 
