@@ -16,16 +16,19 @@ object ContentParser {
     val allElements = elements.flatMap { elem ->
       if (elem.type == "") {
         SemiTemplate.match(elem.value, Links::match).flatMap { seg ->
-          if (seg is SemiTemplate.Section<*>) listOf(Element("link", seg.data as String))
-          else (seg as String).run {
+          if (seg is SemiTemplate.Section<*>) seg.run {
+            listOf(Element("link", (data as String)))
+          } else (seg as String).run {
             val idx1 = indexOf('#')
             if (idx1 < 0) {
-              return@run listOf(Element("", this))
+              return@run listOf(toTextElem())
             }
+
             val idx2 = indexOf('#', idx1 + 1)
             if (idx2 < 0) {
-              return@run listOf(Element("", this))
+              return@run listOf(toTextElem())
             }
+
             val subSegs = ArrayList<Element>(3)
             substring(0, idx1).apply {
               if (length > 0) subSegs.add(Element("", this))
@@ -37,8 +40,7 @@ object ContentParser {
             return@run subSegs
           }
         }
-      }
-      else listOf(elem)
+      } else listOf(elem)
     }
 
     val rewritten = allElements.map { elem ->
@@ -48,7 +50,9 @@ object ContentParser {
           val name = elem.value.substringAfter('\r')
           "<a class=\"mention\" uid=\"$id\" href=\"/users/$id\">@$name</a> "
         }
-        "link" -> "<a class=\"link\" href=\"${elem.value}\" target=\"_blank\" rel=\"noopener noreferrer\">${Strings.omit(elem.value, 50)}</a>"
+        "link" -> "<a class=\"link\" href=\"${elem.value}\" target=\"_blank\" rel=\"noopener noreferrer\">" +
+            Strings.omit(elem.value, 50) +
+            "</a>"
         "emphasis" -> "<strong>${elem.value}</strong>"
         else -> elem.value
       }
@@ -60,4 +64,39 @@ object ContentParser {
   fun comment(content: String, userFinder: (String) -> User?): Pair<String, Set<Long>> = tweet(content, userFinder)
 
   fun userLinkForMidForward(mf: MidForward) = "<a uid=\"${mf.authorId}\" href=\"/user/${mf.authorId}\">@${mf.authorName}</a> "
+}
+
+private const val BR = "<br/>"
+
+private fun String.toTextElem() = Element("", toMultiLineText())
+
+private fun String.toMultiLineText(): String {
+  var idx = indexOf('\n')
+  if (idx < 0) {
+    return this;
+  }
+
+  val sb = StringBuilder(substring(0, idx)).append(BR)
+  idx++
+  var hasBR = true
+
+  while (idx < this.length) {
+    val current = this[idx]
+
+    if (current == '\n') {
+      if (!hasBR) {
+        sb.append(BR)
+        hasBR = true
+      }
+    } else if (current.isWhitespace() && hasBR) {
+      // Skip
+    } else {
+      sb.append(current)
+      hasBR = false
+    }
+
+    idx++
+  }
+
+  return sb.toString()
 }
