@@ -12,19 +12,19 @@ import sage.web.auth.Auth
 
 @RestController
 @RequestMapping("/api/message")
-open class MessageApi @Autowired constructor(
+class MessageApi @Autowired constructor(
     private val messageService: MessageService
 ) {
 
   @RequestMapping
-  open fun messages(@RequestParam withUserId: Long?): Collection<Message> {
+  fun messages(@RequestParam withUserId: Long?): Collection<Message> {
     val uid = Auth.checkUid()
     return if (withUserId != null) messageService.withSomeone(uid, withUserId)
         else messageService.all(uid)
   }
 
   @RequestMapping("/send", method = arrayOf(RequestMethod.POST))
-  open fun send(@RequestParam to: Long, @RequestParam content: String) {
+  fun send(@RequestParam to: Long, @RequestParam content: String) {
     val uid = Auth.checkUid()
     if (content.isEmpty()) {
       throw CONTENT_EMPTY

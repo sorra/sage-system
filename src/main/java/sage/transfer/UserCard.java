@@ -1,12 +1,8 @@
 package sage.transfer;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Date;
 import java.util.List;
-
-import sage.entity.Follow;
-import sage.entity.User;
 
 public class UserCard {
   private long id;

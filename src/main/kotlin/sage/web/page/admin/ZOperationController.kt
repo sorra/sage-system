@@ -18,7 +18,7 @@ import sage.web.context.DataInitializer
 import java.util.*
 
 @Controller
-open class ZOperationController @Autowired constructor(
+class ZOperationController @Autowired constructor(
     private val si: ServiceInitializer, private val di: DataInitializer,
     private val searchService: SearchService,
     private val blogService: BlogService
@@ -26,7 +26,7 @@ open class ZOperationController @Autowired constructor(
 
   @RequestMapping("/z-init")
   @ResponseBody
-  open fun initData(): String {
+  fun initData(): String {
     if (User.byId(1) != null) {
       return "Already inited."
     }
@@ -37,7 +37,7 @@ open class ZOperationController @Autowired constructor(
 
   @RequestMapping("/z-reindex")
   @ResponseBody
-  open fun reindex() = authDo {
+  fun reindex() = authDo {
     searchService.setupMappings()
     Blog.findEach {
       searchService.index(it.id, BlogView(it))
@@ -49,11 +49,11 @@ open class ZOperationController @Autowired constructor(
   }
 
   @RequestMapping("/z-reload")
-  open fun reloadHttl(@RequestParam name: String) = name
+  fun reloadHttl(@RequestParam name: String) = name
 
   @RequestMapping("/z-genstats")
   @ResponseBody
-  open fun genstats(@RequestParam(defaultValue = "false") loopAll: Boolean) = authDo {
+  fun genstats(@RequestParam(defaultValue = "false") loopAll: Boolean) = authDo {
     val blogIds = arrayListOf<Long>()
     Blog.findEachWhile {
       if (BlogStat.byId(it.id) == null) {
@@ -77,7 +77,7 @@ open class ZOperationController @Autowired constructor(
 
   @RequestMapping("/z-genavatars")
   @ResponseBody
-  open fun genavatars() = authDo {
+  fun genavatars() = authDo {
     val random = Random()
     User.findEach { user ->
       if (user.avatar.isNullOrEmpty()) {

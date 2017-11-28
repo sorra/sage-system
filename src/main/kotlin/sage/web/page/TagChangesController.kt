@@ -11,13 +11,13 @@ import sage.web.auth.Auth
 
 @Controller
 @RequestMapping("/tag-changes")
-open class TagChangesController @Autowired constructor(
+class TagChangesController @Autowired constructor(
     private val tagService: TagService,
     private val tagChangeService: TagChangeService
 ) {
 
   @RequestMapping("/{id}")
-  open fun requests(@PathVariable id: Long, model: ModelMap): String {
+  fun requests(@PathVariable id: Long, model: ModelMap): String {
     val cuid = Auth.checkUid()
     model.put("tag", tagService.getTagLabel(id))
     model.put("reqs", tagChangeService.getRequestsOfTag(id))
@@ -27,7 +27,7 @@ open class TagChangesController @Autowired constructor(
   }
 
   @RequestMapping("/{id}/scope")
-  open fun scopeRequests(@PathVariable id: Long, model: ModelMap): String {
+  fun scopeRequests(@PathVariable id: Long, model: ModelMap): String {
     val cuid = Auth.checkUid()
     model.put("tag", tagService.getTagLabel(id))
     model.put("reqs", tagChangeService.getRequestsOfTagScope(id))
@@ -37,12 +37,12 @@ open class TagChangesController @Autowired constructor(
   }
 
   @RequestMapping("{id}/do-change")
-  open fun doChange(@PathVariable id: Long, model: ModelMap): String {
+  fun doChange(@PathVariable id: Long, model: ModelMap): String {
     Auth.checkUid()
     model.put("tag", tagService.getTagCard(id))
     return "tag-do-change"
   }
 
   @RequestMapping
-  open fun allRequests() = "forward:/tag-changes/1/scope"
+  fun allRequests() = "forward:/tag-changes/1/scope"
 }

@@ -13,7 +13,7 @@ import java.io.*
 import java.util.*
 
 @Component
-open class DataInitializer {
+class DataInitializer {
   private val logger = LoggerFactory.getLogger(javaClass)
   @Autowired
   private val na: ServiceInitializer? = null
@@ -26,7 +26,7 @@ open class DataInitializer {
   @Autowired
   private val tweetPostService: TweetPostService? = null
 
-  open fun init() {
+  fun init() {
     val docRootPath = wac!!.servletContext.getRealPath("/docs")
     logger.info("Reading docRootPath: " + docRootPath)
     val docFolder = File(docRootPath)

@@ -6,7 +6,6 @@ import java.util.stream.Stream;
 
 import sage.util.SemiTemplate;
 import sage.util.SemiTemplate.Section;
-import sage.util.Strings;
 
 public class Links {
 

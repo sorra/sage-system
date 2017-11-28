@@ -34,7 +34,7 @@ class UserAjaxController : BaseController() {
   }
 
   @RequestMapping("/change-avatar", method = arrayOf(RequestMethod.POST))
-  open fun changeAvatar(@RequestParam photo: MultipartFile) {
+  fun changeAvatar(@RequestParam photo: MultipartFile) {
     //TODO
     userService.changeAvatar(Auth.checkUid(), "")
   }

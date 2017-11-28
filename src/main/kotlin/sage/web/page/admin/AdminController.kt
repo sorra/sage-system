@@ -14,10 +14,10 @@ import sage.web.context.BaseController
 
 @Controller
 @RequestMapping("/admin")
-open class AdminController : BaseController() {
+class AdminController : BaseController() {
 
   @RequestMapping("/user-info", method = arrayOf(RequestMethod.GET))
-  open fun userInfo(): String {
+  fun userInfo(): String {
     if (User.get(Auth.checkUid()).authority != Authority.SITE_ADMIN) {
       response.sendError(404)
     }
@@ -26,7 +26,7 @@ open class AdminController : BaseController() {
 
   @RequestMapping("/user-info", method = arrayOf(RequestMethod.POST))
   @ResponseBody
-  open fun changeUserInfo(@RequestParam userId: Long): String {
+  fun changeUserInfo(@RequestParam userId: Long): String {
     if (User.get(Auth.checkUid()).authority != Authority.SITE_ADMIN) {
       response.sendError(404)
       return ""
@@ -54,7 +54,7 @@ open class AdminController : BaseController() {
   }
 
   @RequestMapping("/sql", method = arrayOf(RequestMethod.GET))
-  open fun sql(): String {
+  fun sql(): String {
     if (User.get(Auth.checkUid()).authority != Authority.SITE_ADMIN) {
       response.sendError(404)
       return ""
@@ -63,7 +63,7 @@ open class AdminController : BaseController() {
   }
 
   @RequestMapping("/sql", method = arrayOf(RequestMethod.POST))
-  open fun submitSql(@RequestParam statement: String): ModelAndView {
+  fun submitSql(@RequestParam statement: String): ModelAndView {
     val results = if (statement.trim().toLowerCase().startsWith("select")) {
       Ebean.getDefaultServer().createSqlQuery(statement).findList().map { it.toString() }
     } else {

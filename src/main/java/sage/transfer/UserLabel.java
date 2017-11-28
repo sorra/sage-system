@@ -1,11 +1,5 @@
 package sage.transfer;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
-import sage.entity.User;
-
 public class UserLabel {
   private long id;
   private String name;

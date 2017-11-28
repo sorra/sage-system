@@ -13,12 +13,12 @@ import sage.web.auth.Auth
 
 @Controller
 @RequestMapping("/notifications")
-open class NotificationController @Autowired constructor(
+class NotificationController @Autowired constructor(
     private val notificationService: NotificationService
 ) {
 
   @RequestMapping("/unread")
-  open fun unread(): ModelAndView {
+  fun unread(): ModelAndView {
     val uid = Auth.checkUid()
     val ns = notificationService.unread(uid)
     return ModelAndView("notifications").addObject("category", "未读")
@@ -27,10 +27,10 @@ open class NotificationController @Autowired constructor(
 
   @RequestMapping("/unread-counts")
   @ResponseBody
-  open fun unreadCounts() = notificationService.unreadCounts(Auth.checkUid())
+  fun unreadCounts() = notificationService.unreadCounts(Auth.checkUid())
 
   @RequestMapping
-  open fun all(model: ModelMap): ModelAndView {
+  fun all(model: ModelMap): ModelAndView {
     val uid = Auth.checkUid()
     val ns = notificationService.all(uid)
     return ModelAndView("notifications").addObject("category", "全部")
@@ -39,7 +39,7 @@ open class NotificationController @Autowired constructor(
 
   @RequestMapping("/mark-read")
   @ResponseBody
-  open fun confirmRead(@RequestParam("id[]", required = false) ids: List<Long>?) {
+  fun confirmRead(@RequestParam("id[]", required = false) ids: List<Long>?) {
     val uid = Auth.checkUid()
     if (ids == null) {
       log.warn("User[{}] /notifications/mark-read is requested with no id!")

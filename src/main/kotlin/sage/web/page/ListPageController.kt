@@ -13,14 +13,14 @@ import java.util.*
 
 @Controller
 @RequestMapping("/lists")
-open class ListPageController @Autowired constructor(
+class ListPageController @Autowired constructor(
     private val listService: ListService,
     private val userService: UserService,
     private val heedService: HeedService
     ) {
 
   @RequestMapping
-  open fun lists(@RequestParam(required = false) type: String?,
+  fun lists(@RequestParam(required = false) type: String?,
                   @RequestParam(required = false) uid: Long?, model: ModelMap): String {
     val cuid = Auth.checkUid()
     val ownerId = uid ?: cuid

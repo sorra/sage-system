@@ -15,16 +15,16 @@ import sage.web.auth.Auth
 
 @Controller
 @RequestMapping("/drafts")
-open class DraftsController @Autowired constructor(private val userService: UserService) {
+class DraftsController @Autowired constructor(private val userService: UserService) {
   @RequestMapping
-  open fun show(): ModelAndView {
+  fun show(): ModelAndView {
     val uid = Auth.checkUid()
     val drafts = Draft.where().eq("owner", User.ref(uid)).findList()
     return ModelAndView("drafts").addObject("drafts", drafts)
   }
 
   @RequestMapping("/{id}")
-  open fun draft(@PathVariable id: Long): ModelAndView {
+  fun draft(@PathVariable id: Long): ModelAndView {
     val uid = Auth.checkUid()
     Draft.byId(id)?.let { draft ->
       if (draft.targetId > 0) {

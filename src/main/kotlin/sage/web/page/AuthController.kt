@@ -14,10 +14,10 @@ import javax.servlet.http.HttpServletRequest
 
 @Controller
 @RequestMapping("/auth")
-open class AuthController : BaseController() {
+class AuthController : BaseController() {
 
   @RequestMapping("/login", method = arrayOf(POST))
-  open fun login(@RequestParam email: String,
+  fun login(@RequestParam email: String,
                  @RequestParam password: String,
                  @RequestParam(defaultValue = "false") rememberMe: Boolean): String {
     if (email.isEmpty() || password.isEmpty()) {
@@ -46,14 +46,14 @@ open class AuthController : BaseController() {
   }
 
   @RequestMapping("/logout")
-  open fun logout(): String {
+  fun logout(): String {
     log.info("Logout uid: ", Auth.uid())
     Auth.logout()
     return "redirect:/login"
   }
 
   @RequestMapping("/register", method = arrayOf(POST))
-  open fun register(request: HttpServletRequest,
+  fun register(request: HttpServletRequest,
                     @RequestParam("email") email: String,
                     @RequestParam("password") password: String,
                     @RequestParam("repeatPassword", required = false) repeatPassword: String?): String {

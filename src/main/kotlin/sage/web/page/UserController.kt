@@ -13,13 +13,13 @@ import sage.web.context.BaseController
 
 @Controller
 @RequestMapping("/users")
-open class UserController : BaseController() {
+class UserController : BaseController() {
 
   @RequestMapping("/self")
-  open fun userPage() = "redirect:/users/${Auth.checkUid()}"
+  fun userPage() = "redirect:/users/${Auth.checkUid()}"
 
   @RequestMapping("/{id}")
-  open fun userPage(@PathVariable id: Long): ModelAndView {
+  fun userPage(@PathVariable id: Long): ModelAndView {
     val uid = Auth.uid()
     val thisUser = userService.getUserCard(uid, id)
     val blogs = Blog.byAuthor(id).map(::BlogPreview)
@@ -31,14 +31,14 @@ open class UserController : BaseController() {
   }
 
   @RequestMapping("/{id}/card")
-  open fun userCard(@PathVariable id: Long): ModelAndView {
+  fun userCard(@PathVariable id: Long): ModelAndView {
     val uid = Auth.checkUid()
     val theUser = userService.getUserCard(uid, id)
     return ModelAndView("user-card").addObject("user", theUser)
   }
 
   @RequestMapping
-  open fun people(): ModelAndView {
+  fun people(): ModelAndView {
     val uid = Auth.uid()
     val recomms = if (uid != null) userService.recommendByTag(uid) else emptyList()
     val people = userService.people(uid)
@@ -46,7 +46,7 @@ open class UserController : BaseController() {
   }
 
   @RequestMapping("/{id}/rss")
-  open fun rss(@PathVariable id: Long): ModelAndView {
+  fun rss(@PathVariable id: Long): ModelAndView {
     val blogs = Blog.byAuthor(id)
     response.contentType = "text/xml"
     blogs.forEach {

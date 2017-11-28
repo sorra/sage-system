@@ -19,19 +19,19 @@ import sage.web.context.Json
 
 @RestController
 @RequestMapping("/list")
-open class ListController @Autowired constructor(
+class ListController @Autowired constructor(
   private val listService: ListService,
   private val relationService: RelationService
   ) {
 
   @RequestMapping("/resource/{id}", method = arrayOf(GET))
-  open fun getResourceList(@PathVariable id: Long?): ResourceList {
+  fun getResourceList(@PathVariable id: Long?): ResourceList {
     Auth.checkUid()
     return listService.getResourceList(id!!)
   }
 
   @RequestMapping("/resource/{id}", method = arrayOf(POST))
-  open fun updateResourceList(@PathVariable id: Long?, @RequestParam list: String): Boolean? {
+  fun updateResourceList(@PathVariable id: Long?, @RequestParam list: String): Boolean? {
     val uid = Auth.checkUid()
 
     val rc = Json.`object`(list, ResourceList::class.java)
@@ -42,7 +42,7 @@ open class ListController @Autowired constructor(
   }
 
   @RequestMapping("/resource/add", method = arrayOf(POST))
-  open fun addResourceList(@RequestParam list: String): Long? {
+  fun addResourceList(@RequestParam list: String): Long? {
     val uid = Auth.checkUid()
 
     val rc = Json.`object`(list, ResourceList::class.java)
@@ -50,13 +50,13 @@ open class ListController @Autowired constructor(
   }
 
   @RequestMapping("/follow/{id}", method = arrayOf(GET))
-  open fun getFollowList(@PathVariable id: Long?): FollowList {
+  fun getFollowList(@PathVariable id: Long?): FollowList {
     Auth.checkUid()
     return listService.getFollowList(id!!)
   }
 
   @RequestMapping("/follow/{id}", method = arrayOf(POST))
-  open fun updateFollowList(@PathVariable id: Long?, @RequestParam listLite: String): Boolean? {
+  fun updateFollowList(@PathVariable id: Long?, @RequestParam listLite: String): Boolean? {
     val uid = Auth.checkUid()
 
     val fcLite = Json.`object`(listLite, FollowListLite::class.java)
@@ -67,7 +67,7 @@ open class ListController @Autowired constructor(
   }
 
   @RequestMapping("/follow/add", method = arrayOf(POST))
-  open fun addFollowList(@RequestParam listLite: String): Long? {
+  fun addFollowList(@RequestParam listLite: String): Long? {
     val uid = Auth.checkUid()
 
     val fcLite = Json.`object`(listLite, FollowListLite::class.java)
@@ -76,7 +76,7 @@ open class ListController @Autowired constructor(
   }
 
   @RequestMapping("/follow/expose-all", method = arrayOf(POST))
-  open fun exposeAllOfFollow(): Long? {
+  fun exposeAllOfFollow(): Long? {
     val cuid = Auth.checkUid()
 
     val existingIdOrNull = listService.followListsOfOwner(cuid).find { it.name == "所有关注" }?.id

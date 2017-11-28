@@ -1,22 +1,20 @@
 package sage.web.page
 
 import org.slf4j.LoggerFactory
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Controller
 import org.springframework.ui.ModelMap
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import sage.entity.Tweet
-import sage.service.SearchService
 import sage.transfer.TweetGroup
 import sage.transfer.TweetView
 import sage.web.auth.Auth
 import sage.web.context.BaseController
 
 @Controller
-open class SearchPageController : BaseController() {
+class SearchPageController : BaseController() {
   @RequestMapping("/search")
-  open fun search(@RequestParam q: String, model: ModelMap): String {
+  fun search(@RequestParam q: String, model: ModelMap): String {
     if (q.isEmpty()) {
       return "forward:/"
     }

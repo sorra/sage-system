@@ -9,29 +9,28 @@ import sage.entity.Blog
 import sage.entity.Tweet
 import sage.transfer.BlogPreview
 import sage.transfer.Stream
-import sage.transfer.TagLabel
 import sage.util.Strings
 import sage.web.auth.Auth
 import sage.web.context.BaseController
 
 @Controller
 @RequestMapping
-open class HomeController : BaseController() {
+class HomeController : BaseController() {
 
   @RequestMapping("/")
-  open fun index(): ModelAndView {
+  fun index(): ModelAndView {
     return landing()
   }
 
   @RequestMapping("/home")
-  open fun home(): ModelAndView {
+  fun home(): ModelAndView {
     val cuid = Auth.checkUid()
     val friends = relationService.friends(cuid)
     return ModelAndView("home").addObject("friends", friends)
   }
 
   @RequestMapping("/landing")
-  open fun landing(): ModelAndView {
+  fun landing(): ModelAndView {
     val blogs = GlobalCaches.blogsCache["/landing#blogs", {
       blogService.hotBlogs()
     }].map(::BlogPreview)
@@ -50,16 +49,16 @@ open class HomeController : BaseController() {
   }
 
   @RequestMapping("/login")
-  open fun login(): String = "login"
+  fun login(): String = "login"
 
   @RequestMapping("/logout")
-  open fun logout(): String = "forward:/auth/logout"
+  fun logout(): String = "forward:/auth/logout"
 
   @RequestMapping("/register")
-  open fun register(): String = "register"
+  fun register(): String = "register"
 
   @RequestMapping("/rss")
-  open fun rss(): ModelAndView {
+  fun rss(): ModelAndView {
     val blogs = Blog.orderBy("id desc").findList()
     response.contentType = "text/xml"
     blogs.forEach {

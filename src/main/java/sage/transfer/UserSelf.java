@@ -3,8 +3,6 @@ package sage.transfer;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import sage.entity.User;
-
 public class UserSelf {
   private long id;
   private String name;

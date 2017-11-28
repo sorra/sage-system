@@ -10,9 +10,9 @@ import sage.web.auth.Auth
 
 @RestController
 @RequestMapping("/tweets")
-open class TweetLikesAjaxController {
+class TweetLikesAjaxController {
   @RequestMapping("/{id}/like")
-  open fun like(@PathVariable id: Long) {
+  fun like(@PathVariable id: Long) {
     val uid = Auth.checkUid()
     TweetStat.like(id, uid)
     Tweet.byId(id)?.let(Tweet::blogId)?.let { if (it > 0) {
@@ -21,7 +21,7 @@ open class TweetLikesAjaxController {
   }
 
   @RequestMapping("/{id}/unlike")
-  open fun unlike(@PathVariable id: Long) {
+  fun unlike(@PathVariable id: Long) {
     val uid = Auth.checkUid()
     TweetStat.unlike(id, uid)
     Tweet.byId(id)?.let(Tweet::blogId)?.let { if (it > 0) {
@@ -30,5 +30,5 @@ open class TweetLikesAjaxController {
   }
 
   @RequestMapping("/{id}/likes")
-  open fun likes(@PathVariable id: Long) = TweetStat.get(id).likes
+  fun likes(@PathVariable id: Long) = TweetStat.get(id).likes
 }

@@ -10,15 +10,15 @@ import sage.service.UserService
 import sage.web.auth.Auth
 
 @Controller
-open class RelationController @Autowired constructor(
+class RelationController @Autowired constructor(
     private val userService: UserService,
     private val relationService: RelationService) {
 
   @RequestMapping("/followings")
-  open fun followings() = "forward:/followings/${Auth.checkUid()}"
+  fun followings() = "forward:/followings/${Auth.checkUid()}"
 
   @RequestMapping("/followings/{userId}")
-  open fun followings(@PathVariable userId: Long): ModelAndView {
+  fun followings(@PathVariable userId: Long): ModelAndView {
     val uid = Auth.checkUid()
     val thisUser = userService.getUserCard(uid, userId)
     val followings = relationService.followings(userId).map { fol ->
@@ -29,10 +29,10 @@ open class RelationController @Autowired constructor(
 }
 
   @RequestMapping("/followers")
-  open fun followers() = "forward:/followers/${Auth.checkUid()}"
+  fun followers() = "forward:/followers/${Auth.checkUid()}"
 
   @RequestMapping("/followers/{userId}")
-  open fun followers(@PathVariable userId: Long): ModelAndView {
+  fun followers(@PathVariable userId: Long): ModelAndView {
     val uid = Auth.checkUid()
     val thisUser = userService.getUserCard(uid, userId)
     val followers = relationService.followers(userId).map { fol ->

@@ -1,15 +1,11 @@
 package sage.web.page
 
 import org.slf4j.LoggerFactory
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Controller
 import org.springframework.ui.ModelMap
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import sage.entity.Message
-import sage.service.MessageService
-import sage.service.RelationService
-import sage.service.UserService
 import sage.transfer.ConversationPreview
 import sage.transfer.MessageList
 import sage.web.auth.Auth
@@ -18,10 +14,10 @@ import java.util.*
 
 @Controller
 @RequestMapping("/messages")
-open class MessageController : BaseController() {
+class MessageController : BaseController() {
 
   @RequestMapping
-  open fun messages(@RequestParam(required = false) withUserId: Long?, model: ModelMap): String {
+  fun messages(@RequestParam(required = false) withUserId: Long?, model: ModelMap): String {
     val uid = Auth.checkUid()
     if (withUserId != null) {
       loadConversation(model, uid, withUserId,
@@ -35,7 +31,7 @@ open class MessageController : BaseController() {
   }
 
   @RequestMapping("/more")
-  open fun more(@RequestParam withUser: Long, @RequestParam afterId: Long, model: ModelMap): String {
+  fun more(@RequestParam withUser: Long, @RequestParam afterId: Long, model: ModelMap): String {
     val uid = Auth.checkUid()
     loadConversation(model, uid, withUser,
         { messageService.withSomeoneAfterThat(uid, withUser, afterId) })

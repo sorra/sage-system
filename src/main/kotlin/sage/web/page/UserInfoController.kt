@@ -15,13 +15,13 @@ import sage.service.UserService
 import sage.web.auth.Auth
 
 @Controller
-open class UserInfoController
+class UserInfoController
 @Autowired constructor(
     private val userService: UserService,
     private val filesService: FilesService) {
 
   @RequestMapping("/user-info", method = arrayOf(GET))
-  open fun info(@RequestParam(required = false) next: String?, model: ModelMap): String {
+  fun info(@RequestParam(required = false) next: String?, model: ModelMap): String {
     val cuid = Auth.checkUid()
     model.put("user", userService.getUserLabel(cuid))
     var action = "user-info"
@@ -33,7 +33,7 @@ open class UserInfoController
   }
 
   @RequestMapping("/user-info", method = arrayOf(POST))
-  open fun changeInfo(@RequestParam(required = false) name: String?,
+  fun changeInfo(@RequestParam(required = false) name: String?,
                       @RequestParam(required = false) intro: String?,
                       @RequestParam(required = false) avatar: MultipartFile?,
                       @RequestParam(required = false) colorAvatar: String?,
@@ -51,13 +51,13 @@ open class UserInfoController
   }
 
   @RequestMapping("/change-password", method = arrayOf(GET))
-  open fun pageChangePassword(): String {
+  fun pageChangePassword(): String {
     Auth.checkUid()
     return "change-password"
   }
 
   @RequestMapping("/change-password", method = arrayOf(POST))
-  open fun changePassword(@RequestParam oldPassword: String, @RequestParam newPassword: String, model: ModelMap): String {
+  fun changePassword(@RequestParam oldPassword: String, @RequestParam newPassword: String, model: ModelMap): String {
     val cuid = Auth.checkUid()
     try {
       val match = userService.updatePassword(cuid, oldPassword, newPassword)

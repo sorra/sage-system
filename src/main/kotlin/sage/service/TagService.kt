@@ -9,7 +9,6 @@ import sage.entity.Blog
 import sage.entity.Tag
 import sage.transfer.TagCard
 import sage.transfer.TagLabel
-import sage.transfer.TagNode
 import sage.web.context.Json
 import java.util.*
 import javax.annotation.PostConstruct
@@ -42,8 +41,6 @@ class TagService {
   }
 
   fun getTagTree() = Tag.get(Tag.ROOT_ID).toTagNode()
-
-  fun getTagTreeJson() = Json.json(getTagTree())
 
   private val powers = arrayOf(1, 10, 100, 1000, 10000)
   private val maxPower = 10000

@@ -18,33 +18,33 @@ import javax.servlet.http.HttpServletRequest
 
 @ControllerAdvice
 @Order(org.springframework.core.Ordered.LOWEST_PRECEDENCE)
-open class ControllerExceptionReporter {
+class ControllerExceptionReporter {
   private val log = LoggerFactory.getLogger(javaClass)
 
   @ExceptionHandler(TypeMismatchException::class)
   @ResponseStatus(HttpStatus.BAD_REQUEST)
-  open fun typeMismatch(e: TypeMismatchException, request: HttpServletRequest): ModelAndView {
+  fun typeMismatch(e: TypeMismatchException, request: HttpServletRequest): ModelAndView {
     log.error("URI: {} Exception: {}", request.requestURI, e.toString())
     return errorPage(HttpStatus.BAD_REQUEST, "Parameter type mismatch 参数类型不对")
   }
 
   @ExceptionHandler(BadArgumentException::class)
   @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
-  open fun badArgument(e: BadArgumentException, request: HttpServletRequest): ModelAndView {
+  fun badArgument(e: BadArgumentException, request: HttpServletRequest): ModelAndView {
     log.error("URI: {} Exception: {}", request.requestURI, e.toString())
     return errorPage(HttpStatus.UNPROCESSABLE_ENTITY, e.message)
   }
 
   @ExceptionHandler(HttpRequestMethodNotSupportedException::class)
   @ResponseStatus(HttpStatus.METHOD_NOT_ALLOWED)
-  open fun httpMethodNotSupported(e: HttpRequestMethodNotSupportedException, request: HttpServletRequest): ModelAndView {
+  fun httpMethodNotSupported(e: HttpRequestMethodNotSupportedException, request: HttpServletRequest): ModelAndView {
     log.error("URI: {} Exception: {}", request.requestURI, e.toString())
     return errorPage(HttpStatus.METHOD_NOT_ALLOWED, e.message)
   }
 
   @ExceptionHandler(DomainException::class)
   @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-  open fun domainRuntimeException(e: DomainException): ModelAndView {
+  fun domainRuntimeException(e: DomainException): ModelAndView {
     val msgBuilder = StringBuilder(e.toString())
     val stacks = e.stackTrace
     if (stacks.isNotEmpty()) msgBuilder.append("\n\tat ").append(stacks[0])
@@ -61,7 +61,7 @@ open class ControllerExceptionReporter {
   @ExceptionHandler
   @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
   @Throws(IOException::class)
-  open fun any(e: Throwable, request: HttpServletRequest): ModelAndView {
+  fun any(e: Throwable, request: HttpServletRequest): ModelAndView {
     log.error("URI: " + request.requestURI + "\nController error: ", e)
     return errorPage(HttpStatus.INTERNAL_SERVER_ERROR, e.javaClass.name)
   }

@@ -3,8 +3,6 @@ package sage.transfer;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import sage.entity.Tag;
-
 public class TagNode {
   private Long id;
   private String name;

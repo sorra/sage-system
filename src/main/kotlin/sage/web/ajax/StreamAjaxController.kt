@@ -1,21 +1,19 @@
 package sage.web.ajax
 
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.servlet.ModelAndView
 import sage.domain.commons.Edge
-import sage.service.StreamService
 import sage.web.auth.Auth
 import sage.web.context.BaseController
 
 @Controller
 @RequestMapping("/stream")
-open class StreamAjaxController : BaseController() {
+class StreamAjaxController : BaseController() {
   @RequestMapping("/i")
-  open fun istream(
+  fun istream(
       @RequestParam(required = false) tagId: Long?): ModelAndView {
     val uid = Auth.checkUid()
     val edge = getEdge()
@@ -26,14 +24,14 @@ open class StreamAjaxController : BaseController() {
   }
 
   @RequestMapping("/tag/{id}")
-  open fun tagStream(@PathVariable id: Long): ModelAndView {
+  fun tagStream(@PathVariable id: Long): ModelAndView {
     val edge = getEdge()
     val stream = streamService.tagStream(id, edge)
     return ModelAndView("stream").addObject("stream", stream)
   }
 
   @RequestMapping("/user/{id}")
-  open fun userStream(@PathVariable id: Long): ModelAndView {
+  fun userStream(@PathVariable id: Long): ModelAndView {
     val edge = getEdge()
     val stream = streamService.personalStream(id, edge)
     return ModelAndView("stream").addObject("stream", stream)

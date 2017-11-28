@@ -2,9 +2,6 @@ package sage.service
 
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
-import sage.domain.commons.DomainException
-import sage.domain.commons.IdCommons
-import sage.domain.permission.AbstractPermission
 import sage.domain.permission.FavPermission
 import sage.entity.Fav
 import sage.entity.User

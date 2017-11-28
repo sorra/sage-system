@@ -1,7 +1,7 @@
 .idea
 sage.iml
 build/
-classes/
+out/
 logs/
 .gradle/
 .DS_Store

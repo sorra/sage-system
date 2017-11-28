@@ -8,13 +8,13 @@ import sage.web.auth.Auth
 
 @RestController
 @RequestMapping("/favs")
-open class FavController {
+class FavController {
 
   @Autowired
   private val favService: FavService? = null
 
   @RequestMapping("/add", method = arrayOf(RequestMethod.POST))
-  open fun addFav(@RequestParam(required = false) link: String?, @RequestParam(required = false) tweetId: Long?) {
+  fun addFav(@RequestParam(required = false) link: String?, @RequestParam(required = false) tweetId: Long?) {
     val uid = Auth.checkUid()
 
     if (link != null && tweetId == null) {
@@ -27,7 +27,7 @@ open class FavController {
   }
 
   @RequestMapping("/{favId}/delete", method = arrayOf(RequestMethod.POST))
-  open fun deleteFav(@PathVariable favId: Long?): Boolean {
+  fun deleteFav(@PathVariable favId: Long?): Boolean {
     val uid = Auth.checkUid()
 
     favService!!.delete(uid, favId!!)
@@ -35,7 +35,7 @@ open class FavController {
   }
 
   @RequestMapping("/get")
-  open fun favs(): Collection<FavInfo> {
+  fun favs(): Collection<FavInfo> {
     val uid = Auth.checkUid()
 
     return favService!!.favs(uid)

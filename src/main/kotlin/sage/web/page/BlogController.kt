@@ -19,9 +19,9 @@ import sage.web.context.RenderUtil
 
 @Controller
 @RequestMapping("/blogs")
-open class BlogController : BaseController() {
+class BlogController : BaseController() {
   @RequestMapping("/new", method = arrayOf(GET))
-  open fun newPage(@RequestParam(required = false) contentType: String?): ModelAndView {
+  fun newPage(@RequestParam(required = false) contentType: String?): ModelAndView {
     val uid = Auth.checkUid()
     val topTags = userService.topTags(uid)
     return ModelAndView("write-blog")
@@ -31,7 +31,7 @@ open class BlogController : BaseController() {
 
   @RequestMapping("/new", method = arrayOf(POST))
   @ResponseBody
-  open fun create(@RequestParam title: String, @RequestParam content: String,
+  fun create(@RequestParam title: String, @RequestParam content: String,
                   @RequestParam contentType: String,
                   @RequestParam(required = false) draftId: Long?): String {
     val uid = Auth.checkUid()
@@ -42,7 +42,7 @@ open class BlogController : BaseController() {
   }
 
   @RequestMapping("/{id}/edit", method = arrayOf(GET))
-  open fun editPage(@PathVariable id: Long, @RequestParam(required = false) contentType: String?): ModelAndView {
+  fun editPage(@PathVariable id: Long, @RequestParam(required = false) contentType: String?): ModelAndView {
     val uid = Auth.checkUid()
     val blog = Blog.get(id)
     BlogPermission(uid, blog).canEdit()
@@ -56,7 +56,7 @@ open class BlogController : BaseController() {
 
   @RequestMapping("/{id}/edit", method = arrayOf(POST))
   @ResponseBody
-  open fun edit(@PathVariable id: Long, @RequestParam title: String, @RequestParam content: String,
+  fun edit(@PathVariable id: Long, @RequestParam title: String, @RequestParam content: String,
                 @RequestParam contentType: String,
                 @RequestParam(required = false) draftId: Long?): String {
     val uid = Auth.checkUid()
@@ -67,7 +67,7 @@ open class BlogController : BaseController() {
   }
 
   @RequestMapping("/{id}")
-  open fun get(@PathVariable id: Long) : ModelAndView {
+  fun get(@PathVariable id: Long) : ModelAndView {
     val blog = Blog.get(id).run { BlogView(this) }
     blog.views += 1
     BlogStat.incViews(id)
@@ -76,14 +76,14 @@ open class BlogController : BaseController() {
   }
 
   @RequestMapping("/{id}/delete", method = arrayOf(POST))
-  open fun delete(@PathVariable id: Long): String {
+  fun delete(@PathVariable id: Long): String {
     val uid = Auth.checkUid()
     blogService.delete(uid, id)
     return "redirect:/"
   }
 
   @RequestMapping
-  open fun all(): ModelAndView {
+  fun all(): ModelAndView {
     val pageIndex = pageIndex()
     val pageSize = pageSize()
 

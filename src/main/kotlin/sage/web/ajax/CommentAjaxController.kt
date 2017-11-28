@@ -11,7 +11,7 @@ import sage.web.context.BaseController
 
 @RestController
 @RequestMapping("/comments")
-open class CommentAjaxController : BaseController() {
+class CommentAjaxController : BaseController() {
 
   @RequestMapping("/new")
   fun create(@RequestParam content: String, @RequestParam sourceType: Short, @RequestParam sourceId: Long,

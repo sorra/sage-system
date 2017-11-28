@@ -1,7 +1,6 @@
 package sage.domain.permission
 
 import sage.domain.commons.PermissionDeniedException
-import sage.entity.BaseModel
 
 abstract class AbstractPermission {
   abstract val userId: Long

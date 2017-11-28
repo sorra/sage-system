@@ -12,11 +12,11 @@ import sage.web.context.BaseController
 
 @Controller
 @RequestMapping("/tags")
-open class TagController : BaseController() {
+class TagController : BaseController() {
 
   @RequestMapping("/new", method = arrayOf(RequestMethod.POST))
   @ResponseBody
-  open fun create(@RequestParam name: String,
+  fun create(@RequestParam name: String,
                   @RequestParam(required = false) parentId: Long?,
                   @RequestParam(defaultValue = "false") isCore: Boolean,
                   @RequestParam(defaultValue = "") intro: String): String {
@@ -26,7 +26,7 @@ open class TagController : BaseController() {
   }
 
   @RequestMapping("/{id}")
-  open fun get(@PathVariable id: Long): ModelAndView {
+  fun get(@PathVariable id: Long): ModelAndView {
     val tag = Tag.get(id)
     val blogs = Blog.where().`in`("tags.id", tag.getQueryTags().map { it.id }).findList()
         .sortedByDescending { it.whenCreated }.map(::BlogPreview)
