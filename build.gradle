@@ -1,15 +1,15 @@
 buildscript {
   ext {
-    springBootVersion = '1.5.2.RELEASE'
-    kotlinVersion = '1.1.1'
+    kotlinVersion = '1.1.61'
+    springBootVersion = '1.5.9.RELEASE'
   }
   repositories {
     jcenter()
     mavenCentral()
   }
   dependencies {
-    classpath "org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}"
     classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${kotlinVersion}"
+    classpath "org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}"
     classpath "org.jetbrains.kotlin:kotlin-allopen:${kotlinVersion}"
     classpath "org.jetbrains.kotlin:kotlin-noarg:${kotlinVersion}"
     classpath 'com.eriwen:gradle-css-plugin:2.12.0'
@@ -29,13 +29,16 @@ apply plugin: "kotlin-noarg"
 
 jar {
   baseName = 'sage'
-  version = '0.3-SNAPSHOT'
+  version = '1.0-SNAPSHOT'
 }
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 compileJava.options.compilerArgs.add '-parameters'
 compileTestJava.options.compilerArgs.add '-parameters'
+compileKotlin.kotlinOptions.jvmTarget = '1.8'
+compileTestKotlin.kotlinOptions.jvmTarget = '1.8'
+
 springBoot {
   mainClass = 'sage.ApplicationKt'
 }
@@ -49,9 +52,9 @@ repositories {
 }
 
 dependencies {
+  compile "org.jetbrains.kotlin:kotlin-stdlib-jre8:${kotlinVersion}"
   compile "org.springframework.boot:spring-boot-starter-aop:${springBootVersion}"
   compile "org.springframework.boot:spring-boot-starter-web:${springBootVersion}"
-  compile "org.jetbrains.kotlin:kotlin-stdlib:${kotlinVersion}"
 
   compile 'com.github.httl:httl:1.0.11'
   compile 'com.github.httl:httl-springmvc:1.0.11'
