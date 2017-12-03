@@ -5,7 +5,7 @@ import org.apache.commons.lang3.StringUtils;
 /**
  * String utilities
  */
-public class Strings {
+public class StringUtil {
 
   /**
    * Produce a substring. No matter if source is shorter than endIndex.

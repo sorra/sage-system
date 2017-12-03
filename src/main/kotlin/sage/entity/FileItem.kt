@@ -7,6 +7,7 @@ class FileItem(
     var name: String?,
     var webPath: String?,
     var storePath: String?,
-    var ownerId: Long?) : BaseModel() {
-  companion object : Find<Long, FileItem>()
+    var ownerId: Long?) : AutoModel() {
+
+  companion object : BaseFind<Long, FileItem>(FileItem::class)
 }

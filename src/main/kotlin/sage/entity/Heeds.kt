@@ -9,11 +9,12 @@ class FollowListHeed(
     var user: User,
     @ManyToOne
     var list: FollowListEntity
-) : BaseModel() {
-  companion object : Find<Long, FollowListHeed>() {
+) : AutoModel() {
+
+  companion object : BaseFind<Long, FollowListHeed>(FollowListHeed::class) {
     fun find(userId: Long, listId: Long) =
         where().eq("user", User.ref(userId)).eq("list", FollowListEntity.ref(listId)).findUnique()
-    fun byUser(userId: Long) = where().eq("user", User.ref(userId)).findList()
+    fun byUser(userId: Long): List<FollowListHeed> = where().eq("user", User.ref(userId)).findList()
   }
 }
 
@@ -23,10 +24,11 @@ class TagHeed(
     var user: User,
     @ManyToOne
     var tag: Tag
-) : BaseModel() {
-  companion object : Find<Long, TagHeed>() {
+) : AutoModel() {
+
+  companion object : BaseFind<Long, TagHeed>(TagHeed::class) {
     fun find(userId: Long, tagId: Long) =
         where().eq("user", User.ref(userId)).eq("tag", Tag.ref(tagId)).findUnique()
-    fun byUser(userId: Long) = where().eq("user", User.ref(userId)).findList()
+    fun byUser(userId: Long): List<TagHeed> = where().eq("user", User.ref(userId)).findList()
   }
 }

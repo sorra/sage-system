@@ -13,5 +13,5 @@ object Settings {
       properties.load(FileInputStream(path))
     }
     properties
-  }.invoke()
+  }()
 }

@@ -1,5 +1,3 @@
-@file:Suppress("unused")
-
 package sage.web.context
 
 import java.time.Instant
@@ -11,9 +9,9 @@ import java.time.temporal.ChronoUnit
 import java.util.*
 
 object DateUtil {
-  @JvmStatic fun humanTime(time: Date?): String? {
+  @JvmStatic fun humanTime(time: Date?): String {
     if (time == null) {
-      return null
+      return ""
     }
     val instant = Instant.ofEpochMilli(time.time)
     val minutes = instant.until(Instant.now(), ChronoUnit.MINUTES)
@@ -23,7 +21,7 @@ object DateUtil {
     if (minutes == 0L) {
       return "刚才"
     }
-    if (minutes > 0 && minutes < 60) {
+    if (minutes in 1..59) {
       return "${minutes}分钟前"
     }
     if (LocalDate.now().isEqual(thatDay)) { // 当天
@@ -35,9 +33,9 @@ object DateUtil {
     return DateTimeFormatter.ofPattern("yyyy MM/dd HH:mm").cn().format(thatTime)
   }
 
-  @JvmStatic fun spanHumanTime(date: Date?): String? {
+  @JvmStatic fun spanHumanTime(date: Date?): String {
     return "<span class=\"human-time\" data-time=\"${date?.time}\">${humanTime(date)}</span>"
   }
 
-  fun DateTimeFormatter.cn() = withZone(ZoneId.of("UTC+8"))
+  private fun DateTimeFormatter.cn() = withZone(ZoneId.of("UTC+8"))
 }

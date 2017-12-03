@@ -5,19 +5,11 @@ import javax.persistence.Entity
 import javax.persistence.ManyToOne
 
 @Entity
-class TagChangeRequest : BaseModel {
-
-  @ManyToOne
-  var tag: Tag
-    private set
-
-  @ManyToOne
-  var submitter: User
-    private set
-
-  var type: Type
-    private set
-
+class TagChangeRequest(@ManyToOne
+                       val tag: Tag,
+                       @ManyToOne
+                       val submitter: User,
+                       val type: Type) : AutoModel() {
   @ManyToOne
   var transactor: User? = null
 
@@ -29,12 +21,6 @@ class TagChangeRequest : BaseModel {
   var name: String = ""
 
   var intro: String = ""
-
-  constructor(tag: Tag, submitter: User, type: Type) {
-    this.tag = tag
-    this.submitter = submitter
-    this.type = type
-  }
 
   enum class Status private constructor(val desc: String) {
     PENDING("待定"), CANCELED("已取消"), ACCEPTED("已接受"), REJECTED("已拒绝")
@@ -48,17 +34,18 @@ class TagChangeRequest : BaseModel {
     return ToStringBuilder.reflectionToString(this)
   }
 
-  companion object : Find<Long, TagChangeRequest>() {
+  companion object : BaseFind<Long, TagChangeRequest>(TagChangeRequest::class) {
 
-    fun byTag(tagId: Long) = where().eq("tag", Tag.ref(tagId)).orderBy("id desc").findList()
+    fun byTag(tagId: Long): List<TagChangeRequest> = where().eq("tag", Tag.ref(tagId)).orderBy("id desc").findList()
 
-    fun byTagAndStatus(tagId: Long, status: Status) =
-        where().eq("tag", Tag.ref(tagId)).eq("status", status.ordinal).orderBy("id desc").findRowCount()
+    fun countByTagAndStatus(tagId: Long, status: Status) =
+        where().eq("tag", Tag.ref(tagId)).eq("status", status.ordinal).findRowCount()
 
-    fun countByTagScope(tag: Tag) = where().`in`("tag", tag.getQueryTags()).orderBy("id desc").findList()
+    fun byTagScope(tag: Tag): List<TagChangeRequest> =
+        where().`in`("tag", tag.getQueryTags()).orderBy("id desc").findList()
 
     fun countByTagScopeAndStatus(tag: Tag, status: Status) =
-        where().`in`("tag", tag.getQueryTags()).eq("status", status.ordinal).orderBy("id desc").findRowCount()
+        where().`in`("tag", tag.getQueryTags()).eq("status", status.ordinal).findRowCount()
 
     fun forMove(tag: Tag, submitter: User, parentId: Long): TagChangeRequest {
       val request = TagChangeRequest(tag, submitter, Type.MOVE)

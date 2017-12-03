@@ -3,13 +3,13 @@ package sage.domain.commons
 import sage.entity.User
 import sage.transfer.MidForward
 import sage.util.SemiTemplate
-import sage.util.Strings
+import sage.util.StringUtil
 import java.util.*
 
 
 object ContentParser {
   fun tweet(content: String, userFinder: (String) -> User?): Pair<String, Set<Long>> {
-    val contentEscaped = Strings.escapeHtmlTag(content)
+    val contentEscaped = StringUtil.escapeHtmlTag(content)
 
     val (elements, mentionedIds) = MentionExtractor(userFinder).extract(contentEscaped)
 
@@ -33,7 +33,7 @@ object ContentParser {
           "<a class=\"mention\" uid=\"$id\" href=\"/users/$id\">@$name</a> "
         }
         "link" -> "<a class=\"link\" href=\"${elem.value}\" target=\"_blank\" rel=\"noopener noreferrer\">" +
-            Strings.omit(elem.value, 50) +
+            StringUtil.omit(elem.value, 50) +
             "</a>"
         "emphasis" -> "<strong>${elem.value}</strong>"
         else -> elem.value

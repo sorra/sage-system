@@ -3,7 +3,7 @@ package sage.entity
 import javax.persistence.Entity
 
 @Entity
-class Notification : BaseModel {
+class Notification : AutoModel {
 
   var ownerId: Long? = null
     private set
@@ -23,10 +23,11 @@ class Notification : BaseModel {
     this.sourceId = sourceId
   }
 
-  companion object : Find<Long, Notification>() {
-    fun byOwner(ownerId: Long) = where().eq("ownerId", ownerId).orderBy("whenCreated desc").findList()
-    fun byOwnerAndIsRead(ownerId: Long, isRead: Boolean) =
-        where().eq("ownerId", ownerId).eq("isRead", isRead).orderBy("whenCreated desc")
+  companion object : BaseFind<Long, Notification>(Notification::class) {
+    fun byOwner(ownerId: Long): List<Notification>
+        = where().eq("ownerId", ownerId).orderBy("whenCreated desc").findList()
+    fun byOwnerAndIsRead(ownerId: Long, isRead: Boolean): List<Notification> =
+        where().eq("ownerId", ownerId).eq("isRead", isRead).orderBy("whenCreated desc").findList()
   }
 
   @Suppress("DEPRECATION")

@@ -8,9 +8,8 @@ import javax.persistence.ManyToOne
 class Fav(
     var link: String,
     @ManyToOne
-    var owner: User) : BaseModel() {
-  companion object : Find<Long, Fav>() {
-    fun get(id: Long) = getNonNull(Fav::class, id)
+    var owner: User) : AutoModel() {
+  companion object : BaseFind<Long, Fav>(Fav::class) {
 
     fun ofOwner(ownerId: Long): List<Fav> = where().eq("owner", User.ref(ownerId)).findList()
   }

@@ -8,7 +8,7 @@ import javax.persistence.ManyToMany
 import javax.persistence.ManyToOne
 
 @Entity
-class Follow : BaseModel {
+class Follow : AutoModel {
 
   @ManyToOne(optional = false)
   var source: User
@@ -43,13 +43,13 @@ class Follow : BaseModel {
     this.userTagOffset = userTagOffset
   }
 
-  companion object : Find<Long, Follow>() {
+  companion object : BaseFind<Long, Follow>(Follow::class) {
 
     fun find(sourceId: Long, targetId: Long) =
         where().eq("source", User.ref(sourceId)).eq("target", User.ref(targetId)).findUnique()
 
-    fun followings(userId: Long) = where().eq("source", User.ref(userId)).findList()
-    fun followers(userId: Long) = where().eq("target", User.ref(userId)).findList()
+    fun followings(userId: Long): List<Follow> = where().eq("source", User.ref(userId)).findList()
+    fun followers(userId: Long): List<Follow> = where().eq("target", User.ref(userId)).findList()
 
     fun followingsCount(userId: Long) = where().eq("source", User.ref(userId)).findRowCount()
     fun followersCount(userId: Long) = where().eq("target", User.ref(userId)).findRowCount()

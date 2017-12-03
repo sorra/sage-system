@@ -5,7 +5,7 @@ import sage.transfer.MidForward
 import sage.util.Settings
 
 object RenderUtil {
-  val CDN: String = Settings.props.getProperty("cdn") ?: ""
+  private val CDN: String = Settings.props.getProperty("cdn") ?: ""
 
   @JvmStatic fun cdn() = CDN
 

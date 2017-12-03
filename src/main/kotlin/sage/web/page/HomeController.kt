@@ -5,11 +5,9 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.servlet.ModelAndView
 import sage.domain.cache.GlobalCaches
 import sage.domain.commons.Edge
-import sage.entity.Blog
 import sage.entity.Tweet
 import sage.transfer.BlogPreview
 import sage.transfer.Stream
-import sage.util.Strings
 import sage.web.auth.Auth
 import sage.web.context.BaseController
 
@@ -59,11 +57,8 @@ class HomeController : BaseController() {
 
   @RequestMapping("/rss")
   fun rss(): ModelAndView {
-    val blogs = Blog.orderBy("id desc").findList()
+    val blogs = blogService.homeRSS()
     response.contentType = "text/xml"
-    blogs.forEach {
-      it.content = Strings.escapeXmlInvalidChar(it.content)
-    }
     return ModelAndView("rss").addObject("blogs", blogs)
   }
 }

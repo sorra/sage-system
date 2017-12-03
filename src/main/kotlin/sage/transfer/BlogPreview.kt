@@ -2,7 +2,7 @@ package sage.transfer
 
 import sage.annotation.KotlinNoArg
 import sage.entity.Blog
-import sage.util.Strings
+import sage.util.StringUtil
 import java.sql.Timestamp
 
 @KotlinNoArg
@@ -24,9 +24,9 @@ class BlogPreview {
 
     title = blog.title
     if (blog.contentType == Blog.MARKDOWN) {
-      summary = Strings.escapeHtmlTag(Strings.omit(blog.inputContent, 103))
+      summary = StringUtil.escapeHtmlTag(StringUtil.omit(blog.inputContent, 103))
     } else {
-      summary = Strings.escapeHtmlTag(Strings.omit(blog.content, 103))
+      summary = StringUtil.escapeHtmlTag(StringUtil.omit(blog.content, 103))
     }
     whenCreated = blog.whenCreated
     whenEdited = actualWhenEdited(blog.whenCreated, blog.whenEdited)

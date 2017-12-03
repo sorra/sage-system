@@ -10,6 +10,9 @@ class Feedback(
     val name: String = "",
     val email: String = "",
     val ip: String = ""
-) : BaseModel() {
-  companion object : Find<Long, Feedback>()
+) : AutoModel() {
+
+  companion object : BaseFind<Long, Feedback>(Feedback::class) {
+    fun allDescending(): List<Feedback> = orderBy("id desc").findList()
+  }
 }

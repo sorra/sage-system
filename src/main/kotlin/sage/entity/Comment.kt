@@ -6,7 +6,7 @@ import javax.persistence.*
 @Entity
 class Comment(
     @Column(columnDefinition = "TEXT")
-    @Lob val inputContent: String,
+    val inputContent: String,
 
     hyperContent: String,
 
@@ -17,10 +17,9 @@ class Comment(
     var sourceId: Long,
 
     val replyUserId: Long?
-) : BaseModel() {
+) : AutoModel() {
 
   @Column(columnDefinition = "TEXT")
-  @Lob @Basic
   val content: String = hyperContent
 
   fun validate() {

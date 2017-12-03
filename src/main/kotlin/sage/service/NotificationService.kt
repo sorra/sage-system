@@ -20,7 +20,7 @@ class NotificationService @Autowired constructor(
   fun all(userId: Long) = Notification.byOwner(userId).mapNotNull { toView(it) }
 
   fun unread(userId: Long) =
-      Notification.byOwnerAndIsRead(userId, false).findList().mapNotNull { toView(it) }
+      Notification.byOwnerAndIsRead(userId, false).mapNotNull { toView(it) }
 
   fun unreadCounts(userId: Long): Map<String, NotifCounter> {
     val counts = HashMap<String, NotifCounter>()

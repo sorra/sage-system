@@ -5,7 +5,7 @@ import sage.transfer.*
 import javax.persistence.Entity
 
 @Entity
-class User : BaseModel {
+class User : AutoModel {
 
   var email: String = ""
   var password: String = ""
@@ -72,9 +72,7 @@ class User : BaseModel {
     return u
   }
 
-  companion object : Find<Long, User>() {
-    fun get(id: Long) = getNonNull(User::class, id)
-
+  companion object : BaseFind<Long, User>(User::class) {
     fun byEmail(email: String) = where().eq("email", email).findUnique()
     fun byName(name: String) = where().eq("name", name).findUnique()
   }

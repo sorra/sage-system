@@ -56,11 +56,11 @@ class TagChangeService {
   }
 
   fun countPendingRequestsOfTag(tagId: Long): Int {
-    return TagChangeRequest.byTagAndStatus(tagId, Status.PENDING)
+    return TagChangeRequest.countByTagAndStatus(tagId, Status.PENDING)
   }
 
   fun getRequestsOfTagScope(tagId: Long): Collection<TagChangeRequestCard> {
-    return TagChangeRequest.countByTagScope(Tag.get(tagId)).map(asTagChangeRequestCard)
+    return TagChangeRequest.byTagScope(Tag.get(tagId)).map(asTagChangeRequestCard)
   }
 
   fun countPendingRequestsOfTagScope(tagId: Long): Int {

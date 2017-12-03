@@ -34,18 +34,21 @@ class BlogStat (
     super.update()
   }
 
-  fun computeRank() = apply {
-    if (whenCreated == null) return@apply
+  private fun computeRank() {
+    if (whenCreated == null) {
+      return
+    }
+
     if(floatUp == 0.0) {
       var days = Instant.ofEpochMilli(siteLaunchTime).until(whenCreated!!.toInstant(), ChronoUnit.DAYS)
       if (days < 0) days = 0
       floatUp = Math.pow(1.2, days.toDouble())
     }
+
     rank = (1 + comments + likes + views / 10) * (1 + tune) * floatUp
   }
 
-  companion object : Find<Long, BlogStat>() {
-    fun get(id: Long) = getNonNull(BlogStat::class, id)
+  companion object : BaseFind<Long, BlogStat>(BlogStat::class) {
 
     fun like(id: Long, userId: Long) {
       Liking.like(userId, Liking.BLOG, id, BlogStat::class.java, "blogStat")

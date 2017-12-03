@@ -7,7 +7,6 @@ import org.springframework.web.servlet.ModelAndView
 import sage.entity.Blog
 import sage.entity.User
 import sage.transfer.BlogPreview
-import sage.util.Strings
 import sage.web.auth.Auth
 import sage.web.context.BaseController
 
@@ -47,11 +46,8 @@ class UserController : BaseController() {
 
   @RequestMapping("/{id}/rss")
   fun rss(@PathVariable id: Long): ModelAndView {
-    val blogs = Blog.byAuthor(id)
+    val blogs = blogService.authorRSS(id)
     response.contentType = "text/xml"
-    blogs.forEach {
-      it.content = Strings.escapeXmlInvalidChar(it.content)
-    }
     return ModelAndView("rss").addObject("blogs", blogs).addObject("name", User.get(id).name)
   }
 }

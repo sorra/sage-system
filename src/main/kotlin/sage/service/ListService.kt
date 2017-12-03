@@ -8,7 +8,7 @@ import sage.entity.ResourceListEntity
 import sage.entity.Tag
 import sage.entity.User
 import sage.transfer.*
-import sage.util.Strings
+import sage.util.StringUtil
 import java.util.*
 
 @Service
@@ -18,7 +18,7 @@ class ListService {
     return ResourceList.fromEntity(ResourceListEntity.get(id))
   }
 
-  fun addResourceList(rc: ResourceList, userId: Long): Long? {
+  fun addResourceList(rc: ResourceList, userId: Long): Long {
     val entity = escaped(rc).toEntity()
     entity.ownerId = userId
     entity.save()
@@ -46,7 +46,7 @@ class ListService {
     return entity.id
   }
 
-  fun updateFollowList(fcLite: FollowListLite, userId: Long) {
+  fun updateFollowList(fcLite: FollowListLite, userId: Long): Long {
     val entity = FollowListEntity.get(fcLite.id)
     FollowListEntityPermission(userId, entity).canEdit()
 
@@ -54,12 +54,13 @@ class ListService {
     entity.name = neo.name
     entity.listJson = neo.listJson
     entity.update()
+    return entity.id
   }
 
   private fun escaped(rc: ResourceList): ResourceList {
     val neo = ResourceList(rc.id, rc.ownerId, rc.name, ArrayList<ResourceInfo>())
     rc.list.forEach { info ->
-      neo.list.add(ResourceInfo(Strings.escapeHtmlTag(info.link), Strings.escapeHtmlTag(info.desc)))
+      neo.list.add(ResourceInfo(StringUtil.escapeHtmlTag(info.link), StringUtil.escapeHtmlTag(info.desc)))
     }
     return neo
   }

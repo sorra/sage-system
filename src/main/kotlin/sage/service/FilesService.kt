@@ -4,7 +4,6 @@ import com.avaje.ebean.Ebean
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 import org.springframework.web.multipart.MultipartFile
-import sage.domain.commons.DomainException
 import sage.domain.permission.FileItemPermission
 import sage.entity.FileItem
 import java.io.File
@@ -46,13 +45,11 @@ class FilesService {
   }
 
   fun delete(userId: Long, fileId: Long) {
-    Ebean.execute({
-      val fileItem = FileItem.byId(fileId) ?: throw DomainException("FileItem[%s] does not exist", fileId)
+    Ebean.execute {
+      val fileItem = FileItem.get(fileId)
       FileItemPermission(userId, fileItem).canDelete()
-
-      //TODO Soft delete file content?
       fileItem.delete()
-    })
+    }
   }
 
   @Throws(IOException::class)

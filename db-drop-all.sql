@@ -37,14 +37,14 @@ drop index ix_follow_list_heed_list_id on follow_list_heed;
 alter table tag drop foreign key fk_tag_parent_id;
 drop index ix_tag_parent_id on tag;
 
+alter table tag_change_request drop foreign key fk_tag_change_request_transactor_id;
+drop index ix_tag_change_request_transactor_id on tag_change_request;
+
 alter table tag_change_request drop foreign key fk_tag_change_request_tag_id;
 drop index ix_tag_change_request_tag_id on tag_change_request;
 
 alter table tag_change_request drop foreign key fk_tag_change_request_submitter_id;
 drop index ix_tag_change_request_submitter_id on tag_change_request;
-
-alter table tag_change_request drop foreign key fk_tag_change_request_transactor_id;
-drop index ix_tag_change_request_transactor_id on tag_change_request;
 
 alter table tag_heed drop foreign key fk_tag_heed_user_id;
 drop index ix_tag_heed_user_id on tag_heed;

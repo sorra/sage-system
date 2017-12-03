@@ -2,7 +2,6 @@ package sage.entity
 
 import javax.persistence.Column
 import javax.persistence.Entity
-import javax.persistence.Lob
 
 interface ListEntity {
   var id: Long
@@ -14,13 +13,12 @@ interface ListEntity {
 class FollowListEntity(
     override var ownerId: Long?,
     override var name: String?,
-    @Column(columnDefinition = "TEXT") @Lob
-    var listJson: String?) : BaseModel(), ListEntity {
+    @Column(columnDefinition = "TEXT")
+    var listJson: String?) : AutoModel(), ListEntity {
 
-  companion object : Find<Long, FollowListEntity>() {
-    fun get(id: Long) = getNonNull(FollowListEntity::class, id)
+  companion object : BaseFind<Long, FollowListEntity>(FollowListEntity::class) {
 
-    fun byOwner(ownerId: Long) = where().eq("ownerId", ownerId).findList()
+    fun byOwner(ownerId: Long): List<FollowListEntity> = where().eq("ownerId", ownerId).findList()
   }
 }
 
@@ -28,13 +26,12 @@ class FollowListEntity(
 class ResourceListEntity(
     override var ownerId: Long?,
     override var name: String?,
-    @Column(columnDefinition = "TEXT") @Lob
+    @Column(columnDefinition = "TEXT")
     var listJson: String?
-) : BaseModel(), ListEntity {
+) : AutoModel(), ListEntity {
 
-  companion object : Find<Long, ResourceListEntity>() {
-    fun get(id: Long) = getNonNull(ResourceListEntity::class, id)
+  companion object : BaseFind<Long, ResourceListEntity>(ResourceListEntity::class) {
 
-    fun byOwner(ownerId: Long) = where().eq("ownerId", ownerId).findList()
+    fun byOwner(ownerId: Long): List<ResourceListEntity> = where().eq("ownerId", ownerId).findList()
   }
 }

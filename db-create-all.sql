@@ -205,19 +205,19 @@ create table tag (
 
 create table tag_change_request (
   id                            bigint auto_increment not null,
-  tag_id                        bigint,
-  submitter_id                  bigint,
-  type                          integer,
   transactor_id                 bigint,
   status                        integer,
   parent_id                     bigint,
   name                          varchar(255),
   intro                         varchar(255),
+  tag_id                        bigint,
+  submitter_id                  bigint,
+  type                          integer,
   version                       bigint not null,
   when_created                  datetime(6) not null,
   when_modified                 datetime(6) not null,
-  constraint ck_tag_change_request_type check (type in (0,1,2)),
   constraint ck_tag_change_request_status check (status in (0,1,2,3)),
+  constraint ck_tag_change_request_type check (type in (0,1,2)),
   constraint pk_tag_change_request primary key (id)
 );
 
@@ -334,14 +334,14 @@ create index ix_follow_list_heed_list_id on follow_list_heed (list_id);
 alter table tag add constraint fk_tag_parent_id foreign key (parent_id) references tag (id) on delete restrict on update restrict;
 create index ix_tag_parent_id on tag (parent_id);
 
+alter table tag_change_request add constraint fk_tag_change_request_transactor_id foreign key (transactor_id) references user (id) on delete restrict on update restrict;
+create index ix_tag_change_request_transactor_id on tag_change_request (transactor_id);
+
 alter table tag_change_request add constraint fk_tag_change_request_tag_id foreign key (tag_id) references tag (id) on delete restrict on update restrict;
 create index ix_tag_change_request_tag_id on tag_change_request (tag_id);
 
 alter table tag_change_request add constraint fk_tag_change_request_submitter_id foreign key (submitter_id) references user (id) on delete restrict on update restrict;
 create index ix_tag_change_request_submitter_id on tag_change_request (submitter_id);
-
-alter table tag_change_request add constraint fk_tag_change_request_transactor_id foreign key (transactor_id) references user (id) on delete restrict on update restrict;
-create index ix_tag_change_request_transactor_id on tag_change_request (transactor_id);
 
 alter table tag_heed add constraint fk_tag_heed_user_id foreign key (user_id) references user (id) on delete restrict on update restrict;
 create index ix_tag_heed_user_id on tag_heed (user_id);

@@ -4,9 +4,9 @@ import javax.persistence.*
 
 @Entity
 @Table(uniqueConstraints = arrayOf(UniqueConstraint(columnNames = arrayOf("user_id", "tag_id"))))
-class UserTag(var userId: Long = 0, var tagId: Long = 0) : BaseModel() {
+class UserTag(var userId: Long = 0, var tagId: Long = 0) : AutoModel() {
 
-  companion object : Find<Long, UserTag>() {
+  companion object : BaseFind<Long, UserTag>(UserTag::class) {
     fun lastIdByUser(userId: Long) = select("id").where().eq("userId", userId)
         .orderBy("id desc").setMaxRows(1).findUnique()?.id ?: 0
 

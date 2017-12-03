@@ -25,8 +25,7 @@ class TweetStat(
     var comments: Int = 0
 ) : Model() {
 
-  companion object : Find<Long, TweetStat>() {
-    fun get(id: Long) = getNonNull(TweetStat::class, id)
+  companion object : BaseFind<Long, TweetStat>(TweetStat::class) {
 
     fun like(id: Long, userId: Long) {
       Liking.like(userId, Liking.TWEET, id, TweetStat::class.java, "tweetStat")

@@ -10,8 +10,7 @@ import javax.persistence.*
 class Blog(
     var title: String,
 
-    @Column(columnDefinition = "TEXT")
-    @Lob
+    @Column(columnDefinition = "TEXT") @Basic(fetch = FetchType.LAZY)
     var inputContent: String,
 
     hyperContent: String,
@@ -20,10 +19,9 @@ class Blog(
     val author: User, tags: Set<Tag>,
 
     var contentType: Short
-) : BaseModel() {
+) : AutoModel() {
 
-  @Column(columnDefinition = "TEXT")
-  @Lob
+  @Column(columnDefinition = "TEXT") @Basic(fetch = FetchType.LAZY)
   var content: String = hyperContent
 
   @ManyToMany(cascade = arrayOf(CascadeType.ALL))
@@ -43,7 +41,7 @@ class Blog(
     BlogConstraints.check(this)
   }
 
-  companion object : Find<Long, Blog>() {
+  companion object : BaseFind<Long, Blog>(Blog::class) {
     val MARKDOWN: Short = 1
     val RICHTEXT: Short = 2
     fun contentTypeValue(contentType: String): Short = when(contentType.toLowerCase()) {
@@ -56,8 +54,6 @@ class Blog(
       RICHTEXT -> "richtext"
       else -> ""
     }
-
-    fun get(id: Long) = getNonNull(Blog::class, id)
 
     fun byAuthor(authorId: Long): List<Blog> = where().eq("author", User.ref(authorId)).orderBy("id desc").findList()
   }

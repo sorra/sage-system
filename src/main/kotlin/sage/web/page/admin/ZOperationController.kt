@@ -80,21 +80,11 @@ class ZOperationController @Autowired constructor(
   fun genavatars() = authDo {
     val random = Random()
     User.findEach { user ->
-      if (user.avatar.isNullOrEmpty()) {
+      if (user.avatar.isEmpty()) {
         val num = random.nextInt(6) + 2 // 0~5 + 2 = 2~7
         user.avatar = "/files/avatar/color${num}.png"
         user.update()
       }
-    }
-    "Done."
-  }
-
-  @RequestMapping("/z-rendertext")
-  @ResponseBody
-  fun renderText() = authDo {
-    Blog.findEach { blog ->
-      blogService.renderAndGetMentions(blog)
-      blog.update()
     }
     "Done."
   }
@@ -127,10 +117,10 @@ class ZOperationController @Autowired constructor(
   }
 
   fun authDo(f: () -> String): String {
-    if(Auth.checkUid() != 1L) {
-      return "Page not found."
+    return if(Auth.checkUid() != 1L) {
+      "Page not found."
     } else {
-      return f()
+      f()
     }
   }
 }

@@ -1,40 +1,31 @@
 {
-    "blog": {
-        "properties": {
-            "content": {
-                "type": "string",
-                "store": "no",
-                "term_vector": "with_positions_offsets",
-                "analyzer": "ik_max_word",
-                "search_analyzer": "ik_smart",
-                "include_in_all": "true",
-                "boost": 8
-            },
-            "title": {
-                "type": "string",
-                "store": "no",
-                "term_vector": "with_positions_offsets",
-                "analyzer": "ik_max_word",
-                "search_analyzer": "ik_smart",
-                "include_in_all": "true",
-                "boost": 10
-            }
-        }
-    },
-  "topic": {
+  "blog": {
     "properties": {
-      "content": {"type": "string"},
-      "title": {"type": "string"}
-    }
-  },
-  "topic_reply": {
-    "properties": {
-      "content": {"type": "string"}
+      "content": {
+        "type": "string",
+        "store": "no",
+        "term_vector": "with_positions_offsets",
+        "analyzer": "ik_max_word",
+        "search_analyzer": "ik_smart",
+        "include_in_all": "true",
+        "boost": 8
+      },
+      "title": {
+        "type": "string",
+        "store": "no",
+        "term_vector": "with_positions_offsets",
+        "analyzer": "ik_max_word",
+        "search_analyzer": "ik_smart",
+        "include_in_all": "true",
+        "boost": 10
+      }
     }
   },
   "tweet": {
     "properties": {
-      "content": {"type": "string"}
+      "content": {
+        "type": "string"
+      }
     }
   }
 }

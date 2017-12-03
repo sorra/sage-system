@@ -1,48 +1,39 @@
 package sage.web.api
 
-import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.util.Assert
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestMethod.GET
 import org.springframework.web.bind.annotation.RequestMethod.POST
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
-import sage.service.ListService
-import sage.service.RelationService
-import sage.transfer.FollowInfoLite
-import sage.transfer.FollowList
-import sage.transfer.FollowListLite
-import sage.transfer.ResourceList
+import sage.domain.commons.DomainException
+import sage.transfer.*
 import sage.web.auth.Auth
+import sage.web.context.BaseController
 import sage.web.context.Json
 
 @RestController
 @RequestMapping("/list")
-class ListController @Autowired constructor(
-  private val listService: ListService,
-  private val relationService: RelationService
-  ) {
+class ListController : BaseController() {
 
   @RequestMapping("/resource/{id}", method = arrayOf(GET))
-  fun getResourceList(@PathVariable id: Long?): ResourceList {
+  fun getResourceList(@PathVariable id: Long): ResourceList {
     Auth.checkUid()
-    return listService.getResourceList(id!!)
+    return listService.getResourceList(id)
   }
 
   @RequestMapping("/resource/{id}", method = arrayOf(POST))
-  fun updateResourceList(@PathVariable id: Long?, @RequestParam list: String): Boolean? {
+  fun updateResourceList(@PathVariable id: Long, @RequestParam list: String): Boolean {
     val uid = Auth.checkUid()
 
     val rc = Json.`object`(list, ResourceList::class.java)
-    Assert.isTrue(rc.ownerId == uid)
-    Assert.isTrue(rc.id == id)
+    checkBeforeUpdate(id, rc)
     listService.updateResourceList(rc, uid)
     return true
   }
 
   @RequestMapping("/resource/add", method = arrayOf(POST))
-  fun addResourceList(@RequestParam list: String): Long? {
+  fun addResourceList(@RequestParam list: String): Long {
     val uid = Auth.checkUid()
 
     val rc = Json.`object`(list, ResourceList::class.java)
@@ -50,24 +41,23 @@ class ListController @Autowired constructor(
   }
 
   @RequestMapping("/follow/{id}", method = arrayOf(GET))
-  fun getFollowList(@PathVariable id: Long?): FollowList {
+  fun getFollowList(@PathVariable id: Long): FollowList {
     Auth.checkUid()
-    return listService.getFollowList(id!!)
+    return listService.getFollowList(id)
   }
 
   @RequestMapping("/follow/{id}", method = arrayOf(POST))
-  fun updateFollowList(@PathVariable id: Long?, @RequestParam listLite: String): Boolean? {
+  fun updateFollowList(@PathVariable id: Long, @RequestParam listLite: String): Boolean {
     val uid = Auth.checkUid()
 
     val fcLite = Json.`object`(listLite, FollowListLite::class.java)
-    Assert.isTrue(fcLite.ownerId == uid)
-    Assert.isTrue(fcLite.id == id)
+    checkBeforeUpdate(id, fcLite)
     listService.updateFollowList(fcLite, uid)
     return true
   }
 
   @RequestMapping("/follow/add", method = arrayOf(POST))
-  fun addFollowList(@RequestParam listLite: String): Long? {
+  fun addFollowList(@RequestParam listLite: String): Long {
     val uid = Auth.checkUid()
 
     val fcLite = Json.`object`(listLite, FollowListLite::class.java)
@@ -76,18 +66,28 @@ class ListController @Autowired constructor(
   }
 
   @RequestMapping("/follow/expose-all", method = arrayOf(POST))
-  fun exposeAllOfFollow(): Long? {
-    val cuid = Auth.checkUid()
+  fun exposeAllOfFollow(): Long {
+    val uid = Auth.checkUid()
 
-    val existingIdOrNull = listService.followListsOfOwner(cuid).find { it.name == "所有关注" }?.id
+    val follows = relationService.followings(uid).map { f -> FollowInfoLite(f.target.id, f.tags.map { it.id }) }
 
-    val follows = relationService.followings(cuid).map { f -> FollowInfoLite(f.target.id, f.tags.map { it.id }) }
-    val list = FollowListLite(existingIdOrNull, cuid, "所有关注", follows)
-    if (existingIdOrNull == null) {
-      return listService.addFollowList(list, cuid)
+    val existingIdOrNull = listService.followListsOfOwner(uid).find { it.name == "所有关注" }?.id
+    val list = FollowListLite(existingIdOrNull, uid, "所有关注", follows)
+
+    return if (existingIdOrNull == null) {
+      listService.addFollowList(list, uid)
     } else {
-      listService.updateFollowList(list, cuid)
-      return existingIdOrNull
+      listService.updateFollowList(list, uid)
+    }
+  }
+
+  private fun checkBeforeUpdate(id: Long, obj: AList) {
+    if (obj.id != id) {
+      throw DomainException("id不匹配：链接中id=${id}，对象中id=${obj.id}")
+    }
+    val uid = Auth.uid()
+    if (obj.ownerId != uid) {
+      throw DomainException("User[$uid] is not allowed to edit ${obj.javaClass}[$id]")
     }
   }
 }

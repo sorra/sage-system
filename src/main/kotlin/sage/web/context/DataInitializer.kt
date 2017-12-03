@@ -30,7 +30,7 @@ class DataInitializer {
     val docRootPath = wac!!.servletContext.getRealPath("/docs")
     logger.info("Reading docRootPath: " + docRootPath)
     val docFolder = File(docRootPath)
-    Assert.isTrue(docFolder.exists())
+    Assert.isTrue(docFolder.exists(), "$docRootPath not exist!")
     for (doc in docFolder.listFiles()!!) {
       try {
         BufferedReader(InputStreamReader(FileInputStream(doc), "UTF-8")).use { br -> loadDoc(br) }

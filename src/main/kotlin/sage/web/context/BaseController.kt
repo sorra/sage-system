@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Scope
 import org.springframework.web.bind.MissingServletRequestParameterException
 import org.springframework.web.context.WebApplicationContext
+import org.springframework.web.servlet.ModelAndView
 import sage.service.HasServices
 import sage.web.model.FrontMap
 import javax.servlet.http.HttpServletRequest
@@ -41,4 +42,9 @@ abstract class BaseController : HasServices() {
   fun pageIndex() = param("pageIndex", "1").toInt()
 
   fun pageSize() = param("pageSize", "20").toInt()
+
+  fun pagedModelAndView(listName: String, list: List<*>, pagesCount: Int, pageIndex: Int): ModelAndView =
+      ModelAndView(listName)
+          .addObject(listName, list)
+          .addObject("paginationLinks", RenderUtil.paginationLinks("/$listName", pagesCount, pageIndex))
 }

@@ -11,7 +11,7 @@ import java.util.*
 import javax.persistence.*
 
 @Entity
-class Tweet : BaseModel {
+class Tweet : AutoModel {
 
   @Column(columnDefinition = "TEXT")
   @Lob
@@ -102,10 +102,8 @@ class Tweet : BaseModel {
     TweetConstraints.check(this)
   }
 
-  companion object : Find<Long, Tweet>() {
+  companion object : BaseFind<Long, Tweet>(Tweet::class) {
     private val log = LoggerFactory.getLogger(Tweet::class.java)
-
-    fun get(id: Long): Tweet = getNonNull(Tweet::class, id)
 
     fun recent(size: Int): List<Tweet> = default().orderBy("id desc").setMaxRows(size).findList()
 

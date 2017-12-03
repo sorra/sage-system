@@ -1,6 +1,5 @@
 package sage.domain.cache
 
-import com.avaje.ebean.Model
 import com.google.common.cache.CacheBuilder
 import sage.entity.*
 import sage.util.PaginationLogic
@@ -11,8 +10,9 @@ object GlobalCaches {
   val tweetsCache = ListCache(Tweet)
   val tagsCache = ListCache(Tag)
 
-  class ListCache<V : BaseModel>(val find: Model.Find<Long, V>) {
-    private val cache = CacheBuilder.newBuilder().maximumSize(100).expireAfterWrite(5, TimeUnit.MINUTES).build<String, Pair<List<Long>, Int>>()
+  class ListCache<V : AutoModel>(val find: BaseFind<Long, V>) {
+    private val cache = CacheBuilder.newBuilder().maximumSize(100).expireAfterWrite(5, TimeUnit.MINUTES)
+        .build<String, Pair<List<Long>, Int>>()
 
     operator fun get(key: String, valueLoader: ()->List<V>): List<V> {
       val loadValue = {
@@ -43,8 +43,9 @@ object GlobalCaches {
 
         entities to pagesCount
       } ?: let { _ ->
-        val entities = find.where().eq("deleted", false).orderBy("id desc").findPagedList(pageIndex - 1, pageSize).list
-        val pagesCount = PaginationLogic.pagesCount(pageSize, getValidRecordsCount(find))
+        val entities = find.where().eq("deleted", false).orderBy("id desc")
+            .findPagedList(pageIndex - 1, pageSize).list
+        val pagesCount = PaginationLogic.pagesCount(pageSize, find.totalCount())
         cache.put(key, entities.map { it.id } to pagesCount)
 
         entities to pagesCount

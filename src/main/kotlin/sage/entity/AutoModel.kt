@@ -3,17 +3,16 @@ package sage.entity
 import com.avaje.ebean.Model
 import com.avaje.ebean.annotation.WhenCreated
 import com.avaje.ebean.annotation.WhenModified
-import sage.domain.commons.DomainException
 import sage.domain.commons.IdCommons
 import java.sql.Timestamp
 import javax.persistence.GeneratedValue
 import javax.persistence.Id
 import javax.persistence.MappedSuperclass
 import javax.persistence.Version
-import kotlin.reflect.KClass
 
 @MappedSuperclass
-abstract class BaseModel : Model() {
+abstract class AutoModel : Model() {
+  // AutoModel has auto-increment id & useful stuff
 
   @Id @GeneratedValue
   var id: Long = 0
@@ -30,7 +29,7 @@ abstract class BaseModel : Model() {
   override fun equals(other: Any?): Boolean{
     if (this === other) return true
     if (other?.javaClass != javaClass) return false
-    other as BaseModel
+    other as AutoModel
     if (!IdCommons.equal(id, other.id)) return false
     return true
   }
@@ -39,15 +38,5 @@ abstract class BaseModel : Model() {
     return id.hashCode()
   }
 }
-
-fun <T: Any> load(beanType: KClass<T>, id: Long): T? =
-    if (id > 0) Model.db().find(beanType.java, id) else null
-
-fun <T : Any> getNonNull(beanType: KClass<T>, id: Long): T = Model.db().find(beanType.java, id)
-    ?: throw DomainException("${beanType.java.simpleName}[$id] does not exist")
-
-fun getValidRecordsCount(find: Model.Find<Long, *>): Int =
-    find.where().eq("deleted", false).findRowCount()
-// (deleted = false) is needless for @SoftDelete, we add it for safety anyway
 
 val siteLaunchTime = 1463989140000 // 2016 5/23 15:39

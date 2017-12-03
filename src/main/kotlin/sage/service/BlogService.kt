@@ -12,6 +12,7 @@ import sage.entity.*
 import sage.transfer.BlogView
 import sage.util.JsoupUtil
 import sage.util.MarkdownUtil
+import sage.util.StringUtil
 import java.sql.Timestamp
 import java.util.*
 
@@ -110,12 +111,38 @@ class BlogService
     return comment
   }
 
+  private val maxLatest = 30
+
   fun hotBlogs() : List<Blog> {
-    val stats = BlogStat.where().orderBy("rank desc, id desc").setMaxRows(30).findList()
+    val stats = BlogStat.where().orderBy("rank desc, id desc").setMaxRows(maxLatest).findList()
     return stats.mapNotNull { Blog.byId(it.id) }
   }
 
-  fun renderAndGetMentions(blog: Blog) : Set<Long> {
+  fun homeRSS(): List<Blog> {
+    val blogs = Blog.orderBy("id desc").setMaxRows(maxLatest).findList()
+    blogs.forEach {
+      it.content = StringUtil.escapeXmlInvalidChar(it.content)
+    }
+    return blogs
+  }
+
+  fun tagRSS(tagId: Long): List<Blog> {
+    val blogs = Blog.where().`in`("tags", Tag.ref(tagId)).setMaxRows(maxLatest).findList()
+    blogs.forEach {
+      it.content = StringUtil.escapeXmlInvalidChar(it.content)
+    }
+    return blogs
+  }
+
+  fun authorRSS(authorId: Long): List<Blog> {
+    val blogs = Blog.byAuthor(authorId)
+    blogs.forEach {
+      it.content = StringUtil.escapeXmlInvalidChar(it.content)
+    }
+    return blogs
+  }
+
+  private fun renderAndGetMentions(blog: Blog) : Set<Long> {
     var content = blog.inputContent
 
     val pair = parseMentions(content)

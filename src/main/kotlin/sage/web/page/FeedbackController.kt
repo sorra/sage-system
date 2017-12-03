@@ -17,7 +17,7 @@ class FeedbackController : BaseController() {
   @RequestMapping
   fun show(): ModelAndView {
     val uid = Auth.uid()
-    val feedbacks = Feedback.orderBy("id desc").findList()
+    val feedbacks = Feedback.allDescending()
     return ModelAndView("feedbacks").addObject("feedbacks", feedbacks).addObject("uid", uid)
   }
   

@@ -15,7 +15,6 @@ import sage.transfer.BlogPreview
 import sage.transfer.BlogView
 import sage.web.auth.Auth
 import sage.web.context.BaseController
-import sage.web.context.RenderUtil
 
 @Controller
 @RequestMapping("/blogs")
@@ -89,7 +88,6 @@ class BlogController : BaseController() {
 
     val (blogs, pagesCount) = GlobalCaches.blogsCache["/blogs", pageIndex, pageSize]
 
-    return ModelAndView("blogs").addObject("blogs", blogs.map(::BlogPreview))
-        .addObject("paginationLinks", RenderUtil.paginationLinks("/blogs", pagesCount, pageIndex))
+    return pagedModelAndView("blogs", blogs.map(::BlogPreview), pagesCount, pageIndex)
   }
 }

@@ -13,9 +13,9 @@ class Tag(
     @ManyToOne
     var parent: Tag?,
     var isCore: Boolean,
-    @Column(columnDefinition = "TEXT") //@Lob @Basic
+    @Column(columnDefinition = "TEXT")
     var intro: String = "",
-    val creatorId: Long) : BaseModel() {
+    val creatorId: Long) : AutoModel() {
 
   @OneToMany(mappedBy = "parent")
   var children: Set<Tag> = HashSet()
@@ -110,11 +110,9 @@ class Tag(
 
   private fun produceChainStr() = chainUp().asReversed().map(Tag::name).joinToString("->")
 
-  companion object : Find<Long, Tag>() {
+  companion object : BaseFind<Long, Tag>(Tag::class) {
     val ROOT_ID: Long = 1
     val ROOT_NAME = "无"
-
-    fun get(id: Long) = getNonNull(Tag::class, id)
 
     fun multiGet(ids: Collection<Long>) = ids.mapNotNull { byId(it) }.toMutableSet()
 
