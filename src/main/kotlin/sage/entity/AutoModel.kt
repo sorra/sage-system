@@ -10,9 +10,11 @@ import javax.persistence.Id
 import javax.persistence.MappedSuperclass
 import javax.persistence.Version
 
+/**
+ * AutoModel has auto-increment ID & useful stuff
+ */
 @MappedSuperclass
 abstract class AutoModel : Model() {
-  // AutoModel has auto-increment id & useful stuff
 
   @Id @GeneratedValue
   var id: Long = 0

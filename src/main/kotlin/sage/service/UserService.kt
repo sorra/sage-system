@@ -36,8 +36,8 @@ class UserService {
         Follow.followersCount(userId),
         Blog.where().eq("author", User.ref(userId)).findRowCount(),
         Tweet.where().eq("author", User.ref(userId)).findRowCount(),
-        cuid?.run { Follow.find(this, userId) },
-        cuid?.run { Follow.find(userId, this) },
+        cuid?.let { Follow.find(it, userId) },
+        cuid?.let { Follow.find(userId, it) },
         userTags(userId))
   }
 

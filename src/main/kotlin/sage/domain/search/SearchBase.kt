@@ -24,7 +24,7 @@ class SearchBase {
   private var client: TransportClient = {
     val client = TransportClient.builder().build().addTransportAddresses(InetSocketTransportAddress(InetAddress.getByName("localhost"), 9300))
     if (client.connectedNodes().isEmpty()) {
-      log.error("Cannot connect to search server!")
+      log.error("Cannot connect to the search server!")
       client.close()
     }
     client
@@ -37,7 +37,8 @@ class SearchBase {
 
   fun setupMappings() {
       val source = String(Files.readAllBytes(Paths.get(javaClass.classLoader.getResource("search/mappings.json")!!.toURI())))
-    client.run {admin().indices().preparePutMapping(INDEX).setSource(source).setUpdateAllTypes(true).execute()}
+    client.admin().indices().preparePutMapping(INDEX).setSource(source).setUpdateAllTypes(true)
+        .execute()
   }
 
   /**
@@ -52,21 +53,23 @@ class SearchBase {
   fun index(id: Long, obj: Any) {
     try {
       val json = Json.json(obj)
-      client.prepareIndex(INDEX, mapType(obj.javaClass), id.toString()).setSource(json).execute()
+      client.prepareIndex(INDEX, mapType(obj.javaClass), id.toString()).setSource(json)
+          .execute()
     } catch (e: NoNodeAvailableException) {
       log.error(e.toString())
     } catch (e: Exception) {
-      log.error("", e)
+      log.error("index has error:", e)
     }
   }
 
   fun delete(clazz: Class<*>, id: Long) {
     try {
-      client.prepareDelete().setIndex(INDEX).setType(mapType(clazz)).setId(id.toString()).execute()
+      client.prepareDelete().setIndex(INDEX).setType(mapType(clazz)).setId(id.toString())
+          .execute()
     } catch (e: NoNodeAvailableException) {
       log.error(e.toString())
     } catch (e: Exception) {
-      log.error("", e)
+      log.error("delete has error:", e)
     }
   }
 
@@ -80,7 +83,7 @@ class SearchBase {
       log.error(e.toString())
       throw DomainException("搜索服务出问题了！")
     } catch (e: Exception) {
-      log.error("", e)
+      log.error("search has error:", e)
       throw e
     }
   }
@@ -95,8 +98,7 @@ class SearchBase {
         TweetView::class.java to TWEET)
 
     private fun mapType(clazz: Class<*>): String {
-      val type = typeMap[clazz] ?: throw IllegalArgumentException(clazz.name + " is not indexed type!")
-      return type
+      return typeMap[clazz] ?: throw IllegalArgumentException(clazz.name + " is not indexed type!")
     }
   }
 }

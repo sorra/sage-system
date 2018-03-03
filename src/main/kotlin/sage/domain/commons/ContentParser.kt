@@ -47,25 +47,26 @@ object ContentParser {
     return listOf(Element("link", (section.data as String)))
   }
 
-  private fun parseText(segment: String): List<Element> = segment.run {
-      val idx1 = indexOf('#')
+  private fun parseText(segment: String): List<Element> {
+      val idx1 = segment.indexOf('#')
       if (idx1 < 0) {
-        return listOf(toTextElem())
+        return listOf(segment.toTextElem())
       }
 
-      val idx2 = indexOf('#', idx1 + 1)
+      val idx2 = segment.indexOf('#', idx1 + 1)
       if (idx2 < 0) {
-        return listOf(toTextElem())
+        return listOf(segment.toTextElem())
       }
 
       val subSegs = ArrayList<Element>(3)
-      substring(0, idx1).apply {
-        if (length > 0) subSegs.add(Element("", this))
+      segment.substring(0, idx1).let {
+        if (it.isNotEmpty()) subSegs.add(Element("", it))
       }
-      subSegs.add(Element("emphasis", substring(idx1, idx2 + 1)))
-      substring(idx2 + 1).apply {
-        if (length > 0) subSegs.add(Element("", this))
+      subSegs.add(Element("emphasis", segment.substring(idx1, idx2 + 1)))
+      segment.substring(idx2 + 1).let {
+        if (it.isNotEmpty()) subSegs.add(Element("", it))
       }
+
       return subSegs
   }
 

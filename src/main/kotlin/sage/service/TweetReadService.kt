@@ -67,7 +67,7 @@ class TweetReadService
   fun byAuthor(authorId: Long, edge: Edge): List<Tweet> = Tweet.byAuthor(authorId, edge)
 
   fun getTweetView(tweetId: Long): TweetView? =
-      Tweet.byId(tweetId)?.run { transfers.toTweetView(this) }
+      Tweet.byId(tweetId)?.let(transfers::toTweetView)
 
   fun getForwards(originId: Long): Collection<Tweet> {
     val tweet = Tweet.byId(originId)

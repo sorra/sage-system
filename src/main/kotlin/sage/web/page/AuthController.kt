@@ -23,32 +23,33 @@ class AuthController : BaseController() {
     if (email.isEmpty() || password.isEmpty()) {
       throw DomainException("Empty input!")
     }
-    log.info("Login email: {}", email)
+
+    log.info("Trying login email: {}", email)
     Auth.logout()
+    val user = userService.login(email, password)
+    Auth.login(user.id, rememberMe)
+    log.info("User[{}] login successfully.", user)
 
     val referer = request.getHeader("referer")
     log.debug("Referer: {}", referer)
 
     val destContext = "?goto="
     val idx = referer.lastIndexOf(destContext)
-    var dest: String? = if (idx < 0) null
+    var dest: String? =
+        if (idx < 0) null
         else referer.substring(idx + destContext.length, referer.length)
     if (dest != null && dest.contains(":")) {
-      log.info("XSS URL = " + dest)
+      log.info("Login dest got XSS URL = " + dest)
       dest = null // Escape cross-site url
     }
 
-    val user = userService.login(email, password)
-    Auth.login(user.id, rememberMe)
-    log.info("User {} logged in.", user)
-    if (dest == null) { return "redirect:/" }
-    else { return "redirect:" + Auth.decodeLink(dest) }
+    return "redirect:" + (if (dest == null) "/" else Auth.decodeLink(dest))
   }
 
   @RequestMapping("/logout")
   fun logout(): String {
-    log.info("Logout uid: ", Auth.uid())
     Auth.logout()
+    log.info("User[{}] logout successfully.", Auth.uid())
     return "redirect:/login"
   }
 

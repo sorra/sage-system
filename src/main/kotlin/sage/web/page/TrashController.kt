@@ -14,8 +14,16 @@ import sage.transfer.BlogPreview
 class TrashController @Autowired constructor(private val transferService: TransferService) {
   @RequestMapping
   fun show(): ModelAndView {
-    val blogs = Blog.where().eq("deleted", true).setIncludeSoftDeletes().findList().map(::BlogPreview)
-    val tweets = Tweet.where().eq("deleted", true).findList().run { transferService.toTweetViews(this) }
-    return ModelAndView("trash").addObject("blogs", blogs).addObject("tweets", tweets)
+    val blogs = Blog.where().eq("deleted", true).setIncludeSoftDeletes()
+        .findList()
+        .map(::BlogPreview)
+
+    val tweets = Tweet.where().eq("deleted", true)
+        .findList()
+        .let { transferService.toTweetViews(it) }
+
+    return ModelAndView("trash")
+        .addObject("blogs", blogs)
+        .addObject("tweets", tweets)
   }
 }

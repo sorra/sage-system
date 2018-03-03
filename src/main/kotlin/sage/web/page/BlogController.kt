@@ -35,7 +35,7 @@ class BlogController : BaseController() {
                   @RequestParam(required = false) draftId: Long?): String {
     val uid = Auth.checkUid()
     val tagIds = tagIds()
-    val blog = blogService.post(uid, title, content, tagIds, contentType).run { BlogView(this) }
+    val blog = blogService.post(uid, title, content, tagIds, contentType).let(::BlogView)
     draftId?.let { Draft.deleteById(it) }
     return "/blogs/${blog.id}"
   }
@@ -67,7 +67,7 @@ class BlogController : BaseController() {
 
   @RequestMapping("/{id}")
   fun get(@PathVariable id: Long) : ModelAndView {
-    val blog = Blog.get(id).run { BlogView(this) }
+    val blog = Blog.get(id).let(::BlogView)
     blog.views += 1
     BlogStat.incViews(id)
     val isLiked: Boolean? = Auth.uid()?.let { Liking.find(it, Liking.BLOG, id) != null }
