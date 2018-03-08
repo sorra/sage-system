@@ -20,10 +20,12 @@ class FeedbackController : BaseController() {
   }
   
   @PostMapping("/new")
-  fun create(@RequestParam content: String,
+  fun create(@RequestParam(defaultValue = "") content: String,
              @RequestParam(defaultValue = "") name: String,
              @RequestParam(defaultValue = "") email: String): String {
-    if (content.isEmpty()) throw BadArgumentException("请输入反馈内容")
+    if (content.isEmpty()) {
+      throw BadArgumentException("请输入反馈内容")
+    }
     val ip = request.getHeader("X-Real-IP").let {
       if (it.isNullOrEmpty()) request.remoteAddr
       else it

@@ -15,7 +15,9 @@ class DraftAjaxController {
                 @RequestParam(defaultValue = "") title: String,
                 @RequestParam(defaultValue = "") content: String): Long {
     val uid = Auth.checkUid()
-    return draftId?.let { Draft.byId(it) }?.let {
+    return draftId?.let {
+      Draft.byId(it)
+    }?.let {
       DraftPermission(uid, it).canEdit()
       it.title = title
       it.content = content

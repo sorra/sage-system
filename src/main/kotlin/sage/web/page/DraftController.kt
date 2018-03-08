@@ -15,7 +15,7 @@ import sage.web.auth.Auth
 
 @Controller
 @RequestMapping("/drafts")
-class DraftsController @Autowired constructor(private val userService: UserService) {
+class DraftController @Autowired constructor(private val userService: UserService) {
   @RequestMapping
   fun show(): ModelAndView {
     val uid = Auth.checkUid()
