@@ -13,7 +13,7 @@ import sage.web.context.BaseController
 @RequestMapping("/tags")
 class TagController : BaseController() {
 
-  @RequestMapping("/new", method = arrayOf(RequestMethod.POST))
+  @PostMapping("/new")
   @ResponseBody
   fun create(@RequestParam name: String,
                   @RequestParam(required = false) parentId: Long?,
@@ -24,7 +24,7 @@ class TagController : BaseController() {
     return "/tags/${tag.id}"
   }
 
-  @RequestMapping("/{id}")
+  @GetMapping("/{id}")
   fun get(@PathVariable id: Long): ModelAndView {
     val tag = Tag.get(id)
     val blogs = Blog.where().`in`("tags.id", tag.getQueryTags().map { it.id }).findList()
@@ -47,7 +47,7 @@ class TagController : BaseController() {
         .addObject("countPendingRequestsOfTag", tagChangeService.countPendingRequestsOfTag(id))
   }
 
-  @RequestMapping("/{id}/rss")
+  @GetMapping("/{id}/rss")
   fun rss(@PathVariable id: Long): ModelAndView {
     val blogs = blogService.tagRSS(id)
     response.contentType = "text/xml"

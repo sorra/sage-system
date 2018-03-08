@@ -5,10 +5,9 @@ import sage.web.auth.Auth
 import sage.web.context.BaseController
 
 @RestController
-@RequestMapping(method = arrayOf(RequestMethod.POST))
 class RelationAjaxController : BaseController() {
 
-  @RequestMapping("/follow/{targetId}")
+  @PostMapping("/follow/{targetId}")
   fun follow(@PathVariable targetId: Long,
                   @RequestParam(required = false) reason: String?,
                   @RequestParam(defaultValue = "false") includeNew: Boolean,
@@ -19,7 +18,7 @@ class RelationAjaxController : BaseController() {
     relationService.follow(uid, targetId, reason, tagIds, includeNew, includeAll, userTagOffset)
   }
 
-  @RequestMapping("/unfollow/{targetId}")
+  @PostMapping("/unfollow/{targetId}")
   fun unfollow(@PathVariable targetId: Long) {
     val uid = Auth.checkUid()
     relationService.unfollow(uid, targetId)

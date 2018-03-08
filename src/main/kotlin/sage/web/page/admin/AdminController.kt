@@ -2,10 +2,7 @@ package sage.web.page.admin
 
 import com.avaje.ebean.Ebean
 import org.springframework.stereotype.Controller
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RequestMethod
-import org.springframework.web.bind.annotation.RequestParam
-import org.springframework.web.bind.annotation.ResponseBody
+import org.springframework.web.bind.annotation.*
 import org.springframework.web.servlet.ModelAndView
 import sage.domain.constraints.Authority
 import sage.entity.User
@@ -16,7 +13,7 @@ import sage.web.context.BaseController
 @RequestMapping("/admin")
 class AdminController : BaseController() {
 
-  @RequestMapping("/user-info", method = arrayOf(RequestMethod.GET))
+  @GetMapping("/user-info")
   fun userInfo(): String {
     if (User.get(Auth.checkUid()).authority != Authority.SITE_ADMIN) {
       response.sendError(404)
@@ -24,7 +21,7 @@ class AdminController : BaseController() {
     return "admin-page-user-info"
   }
 
-  @RequestMapping("/user-info", method = arrayOf(RequestMethod.POST))
+  @PostMapping("/user-info")
   @ResponseBody
   fun changeUserInfo(@RequestParam userId: Long): String {
     if (User.get(Auth.checkUid()).authority != Authority.SITE_ADMIN) {
@@ -53,7 +50,7 @@ class AdminController : BaseController() {
     return "/users/$userId"
   }
 
-  @RequestMapping("/sql", method = arrayOf(RequestMethod.GET))
+  @GetMapping("/sql")
   fun sql(): String {
     if (User.get(Auth.checkUid()).authority != Authority.SITE_ADMIN) {
       response.sendError(404)
@@ -62,7 +59,7 @@ class AdminController : BaseController() {
     return "admin-page-sql"
   }
 
-  @RequestMapping("/sql", method = arrayOf(RequestMethod.POST))
+  @PostMapping("/sql")
   fun submitSql(@RequestParam statement: String): ModelAndView {
     val results = if (statement.trim().toLowerCase().startsWith("select")) {
       Ebean.getDefaultServer().createSqlQuery(statement).findList().map { it.toString() }

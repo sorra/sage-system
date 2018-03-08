@@ -1,11 +1,6 @@
 package sage.web.api
 
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RequestMethod.GET
-import org.springframework.web.bind.annotation.RequestMethod.POST
-import org.springframework.web.bind.annotation.RequestParam
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 import sage.domain.commons.DomainException
 import sage.transfer.*
 import sage.web.auth.Auth
@@ -16,13 +11,13 @@ import sage.web.context.Json
 @RequestMapping("/list")
 class ListController : BaseController() {
 
-  @RequestMapping("/resource/{id}", method = arrayOf(GET))
+  @GetMapping("/resource/{id}")
   fun getResourceList(@PathVariable id: Long): ResourceList {
     Auth.checkUid()
     return listService.getResourceList(id)
   }
 
-  @RequestMapping("/resource/{id}", method = arrayOf(POST))
+  @PostMapping("/resource/{id}")
   fun updateResourceList(@PathVariable id: Long, @RequestParam list: String): Boolean {
     val uid = Auth.checkUid()
 
@@ -32,7 +27,7 @@ class ListController : BaseController() {
     return true
   }
 
-  @RequestMapping("/resource/add", method = arrayOf(POST))
+  @PostMapping("/resource/add")
   fun addResourceList(@RequestParam list: String): Long {
     val uid = Auth.checkUid()
 
@@ -40,13 +35,13 @@ class ListController : BaseController() {
     return listService.addResourceList(rc, uid)
   }
 
-  @RequestMapping("/follow/{id}", method = arrayOf(GET))
+  @GetMapping("/follow/{id}")
   fun getFollowList(@PathVariable id: Long): FollowList {
     Auth.checkUid()
     return listService.getFollowList(id)
   }
 
-  @RequestMapping("/follow/{id}", method = arrayOf(POST))
+  @PostMapping("/follow/{id}")
   fun updateFollowList(@PathVariable id: Long, @RequestParam listLite: String): Boolean {
     val uid = Auth.checkUid()
 
@@ -56,7 +51,7 @@ class ListController : BaseController() {
     return true
   }
 
-  @RequestMapping("/follow/add", method = arrayOf(POST))
+  @PostMapping("/follow/add")
   fun addFollowList(@RequestParam listLite: String): Long {
     val uid = Auth.checkUid()
 
@@ -65,7 +60,7 @@ class ListController : BaseController() {
     return listService.addFollowList(fcLite, uid)
   }
 
-  @RequestMapping("/follow/expose-all", method = arrayOf(POST))
+  @PostMapping("/follow/expose-all")
   fun exposeAllOfFollow(): Long {
     val uid = Auth.checkUid()
 

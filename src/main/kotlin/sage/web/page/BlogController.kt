@@ -1,16 +1,14 @@
 package sage.web.page
 
 import org.springframework.stereotype.Controller
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RequestMethod.GET
-import org.springframework.web.bind.annotation.RequestMethod.POST
-import org.springframework.web.bind.annotation.RequestParam
-import org.springframework.web.bind.annotation.ResponseBody
+import org.springframework.web.bind.annotation.*
 import org.springframework.web.servlet.ModelAndView
 import sage.domain.cache.GlobalCaches
 import sage.domain.permission.BlogPermission
-import sage.entity.*
+import sage.entity.Blog
+import sage.entity.BlogStat
+import sage.entity.Draft
+import sage.entity.Liking
 import sage.transfer.BlogPreview
 import sage.transfer.BlogView
 import sage.web.auth.Auth
@@ -19,7 +17,7 @@ import sage.web.context.BaseController
 @Controller
 @RequestMapping("/blogs")
 class BlogController : BaseController() {
-  @RequestMapping("/new", method = arrayOf(GET))
+  @GetMapping("/new")
   fun newPage(@RequestParam(required = false) contentType: String?): ModelAndView {
     val uid = Auth.checkUid()
     val topTags = userService.topTags(uid)
@@ -28,7 +26,7 @@ class BlogController : BaseController() {
         .addObject("topTags", topTags)
   }
 
-  @RequestMapping("/new", method = arrayOf(POST))
+  @PostMapping("/new")
   @ResponseBody
   fun create(@RequestParam title: String, @RequestParam content: String,
                   @RequestParam contentType: String,
@@ -40,7 +38,7 @@ class BlogController : BaseController() {
     return "/blogs/${blog.id}"
   }
 
-  @RequestMapping("/{id}/edit", method = arrayOf(GET))
+  @GetMapping("/{id}/edit")
   fun editPage(@PathVariable id: Long, @RequestParam(required = false) contentType: String?): ModelAndView {
     val uid = Auth.checkUid()
     val blog = Blog.get(id)
@@ -53,7 +51,7 @@ class BlogController : BaseController() {
         .addObject("existingTags", blogView.tags).addObject("topTags", topTags)
   }
 
-  @RequestMapping("/{id}/edit", method = arrayOf(POST))
+  @PostMapping("/{id}/edit")
   @ResponseBody
   fun edit(@PathVariable id: Long, @RequestParam title: String, @RequestParam content: String,
                 @RequestParam contentType: String,
@@ -65,7 +63,7 @@ class BlogController : BaseController() {
     return "/blogs/$id"
   }
 
-  @RequestMapping("/{id}")
+  @GetMapping("/{id}")
   fun get(@PathVariable id: Long) : ModelAndView {
     val blog = Blog.get(id).let(::BlogView)
     blog.views += 1
@@ -74,14 +72,14 @@ class BlogController : BaseController() {
     return ModelAndView("blog").addObject("blog", blog).addObject("isLiked", isLiked)
   }
 
-  @RequestMapping("/{id}/delete", method = arrayOf(POST))
+  @PostMapping("/{id}/delete")
   fun delete(@PathVariable id: Long): String {
     val uid = Auth.checkUid()
     blogService.delete(uid, id)
     return "redirect:/"
   }
 
-  @RequestMapping
+  @GetMapping
   fun all(): ModelAndView {
     val pageIndex = pageIndex()
     val pageSize = pageSize()

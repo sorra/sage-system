@@ -2,8 +2,8 @@ package sage.web.page
 
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Controller
+import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RequestMethod.POST
 import org.springframework.web.bind.annotation.RequestParam
 import sage.domain.commons.BadArgumentException
 import sage.domain.commons.DomainException
@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletRequest
 @RequestMapping("/auth")
 class AuthController : BaseController() {
 
-  @RequestMapping("/login", method = arrayOf(POST))
+  @PostMapping("/login")
   fun login(@RequestParam email: String,
                  @RequestParam password: String,
                  @RequestParam(defaultValue = "false") rememberMe: Boolean): String {
@@ -53,7 +53,7 @@ class AuthController : BaseController() {
     return "redirect:/login"
   }
 
-  @RequestMapping("/register", method = arrayOf(POST))
+  @PostMapping("/register")
   fun register(request: HttpServletRequest,
                     @RequestParam("email") email: String,
                     @RequestParam("password") password: String,

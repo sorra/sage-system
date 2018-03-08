@@ -5,9 +5,8 @@ import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Controller
 import org.springframework.ui.ModelMap
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RequestMethod.GET
-import org.springframework.web.bind.annotation.RequestMethod.POST
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.multipart.MultipartFile
 import sage.service.FilesService
@@ -20,7 +19,7 @@ class UserInfoController
     private val userService: UserService,
     private val filesService: FilesService) {
 
-  @RequestMapping("/user-info", method = arrayOf(GET))
+  @GetMapping("/user-info")
   fun info(@RequestParam(required = false) next: String?, model: ModelMap): String {
     val cuid = Auth.checkUid()
     model.put("user", userService.getUserLabel(cuid))
@@ -32,7 +31,7 @@ class UserInfoController
     return "user-info"
   }
 
-  @RequestMapping("/user-info", method = arrayOf(POST))
+  @PostMapping("/user-info")
   fun changeInfo(@RequestParam(required = false) name: String?,
                       @RequestParam(required = false) intro: String?,
                       @RequestParam(required = false) avatar: MultipartFile?,
@@ -50,13 +49,13 @@ class UserInfoController
     return "redirect:/user-info"
   }
 
-  @RequestMapping("/change-password", method = arrayOf(GET))
+  @GetMapping("/change-password")
   fun pageChangePassword(): String {
     Auth.checkUid()
     return "change-password"
   }
 
-  @RequestMapping("/change-password", method = arrayOf(POST))
+  @PostMapping("/change-password")
   fun changePassword(@RequestParam oldPassword: String, @RequestParam newPassword: String, model: ModelMap): String {
     val cuid = Auth.checkUid()
     try {

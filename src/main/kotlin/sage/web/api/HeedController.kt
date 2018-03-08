@@ -1,11 +1,7 @@
 package sage.web.api
 
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RequestMethod.GET
-import org.springframework.web.bind.annotation.RequestMethod.POST
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 import sage.service.HeedService
 import sage.service.TagService
 import sage.service.UserService
@@ -20,43 +16,43 @@ class HeedController @Autowired constructor(
   private val userService: UserService,
   private val tagService: TagService) {
 
-  @RequestMapping("/heed/tag/{id}", method = arrayOf(POST))
+  @PostMapping("/heed/tag/{id}")
   fun heedTag(@PathVariable id: Long) {
     val uid = Auth.checkUid()
     heedService.heedTag(uid, id)
   }
 
-  @RequestMapping("/unheed/tag/{id}", method = arrayOf(POST))
+  @PostMapping("/unheed/tag/{id}")
   fun unheedTag(@PathVariable id: Long) {
     val uid = Auth.checkUid()
     heedService.unheedTag(uid, id)
   }
 
-  @RequestMapping("/heed/follow-list/{id}", method = arrayOf(POST))
+  @PostMapping("/heed/follow-list/{id}")
   fun heedFollowList(@PathVariable id: Long) {
     val cuid = Auth.checkUid()
     heedService.heedFollowList(cuid, id)
   }
 
-  @RequestMapping("/unheed/follow-list/{id}", method = arrayOf(POST))
+  @PostMapping("/unheed/follow-list/{id}")
   fun unheedFollowList(@PathVariable id: Long) {
     val cuid = Auth.checkUid()
     heedService.unheedFollowList(cuid, id)
   }
 
-  @RequestMapping("/heeding/tag/{id}")
+  @GetMapping("/heeding/tag/{id}")
   fun heedingTag(@PathVariable id: Long) = heedService.existsTagHeed(Auth.checkUid(), id)
 
-  @RequestMapping("/heeding/follow-list/{id}")
+  @GetMapping("/heeding/follow-list/{id}")
   fun heedingFollowList(@PathVariable id: Long) = heedService.existsFollowListHeed(Auth.checkUid(), id)
 
-  @RequestMapping("/heeds/tag", method = arrayOf(GET))
+  @GetMapping("/heeds/tag")
   fun tagHeeds(): List<TagCard> {
     val cuid = Auth.checkUid()
     return heedService.tagHeeds(cuid).map({ tagHeed -> tagService.getTagCard(tagHeed.tag.id) })
   }
 
-  @RequestMapping("/heeds/follow-list", method = arrayOf(GET))
+  @GetMapping("/heeds/follow-list")
   fun followListHeeds(): List<FollowList> {
     val cuid = Auth.checkUid()
     return heedService.followListHeeds(cuid).map { flHeed ->

@@ -13,7 +13,7 @@ class FavController {
   @Autowired
   private val favService: FavService? = null
 
-  @RequestMapping("/add", method = arrayOf(RequestMethod.POST))
+  @PostMapping("/add")
   fun addFav(@RequestParam(required = false) link: String?, @RequestParam(required = false) tweetId: Long?) {
     val uid = Auth.checkUid()
 
@@ -26,7 +26,7 @@ class FavController {
     }
   }
 
-  @RequestMapping("/{favId}/delete", method = arrayOf(RequestMethod.POST))
+  @PostMapping("/{favId}/delete")
   fun deleteFav(@PathVariable favId: Long?): Boolean {
     val uid = Auth.checkUid()
 

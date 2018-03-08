@@ -1,21 +1,18 @@
 package sage.web.api
 
 import org.slf4j.LoggerFactory
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RequestMethod
-import org.springframework.web.bind.annotation.RequestParam
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 import sage.domain.commons.RichElement
 import sage.web.auth.Auth
 import sage.web.context.BaseController
 
 @RestController
-@RequestMapping("/post", method = arrayOf(RequestMethod.POST))
+@RequestMapping("/post")
 class PostController : BaseController() {
 
   private val logger = LoggerFactory.getLogger(javaClass)
 
-  @RequestMapping("/tweet")
+  @PostMapping("/tweet")
   fun tweet(
       @RequestParam content: String,
       @RequestParam("pictureRef[]", defaultValue = "") pictureRefs: Collection<String>): Boolean {
@@ -28,7 +25,7 @@ class PostController : BaseController() {
     return true
   }
 
-  @RequestMapping("/forward")
+  @PostMapping("/forward")
   fun forward(
       @RequestParam content: String,
       @RequestParam originId: Long,
@@ -39,7 +36,7 @@ class PostController : BaseController() {
     return true
   }
 
-  @RequestMapping("/comment")
+  @PostMapping("/comment")
   fun comment(
       @RequestParam content: String,
       @RequestParam sourceId: Long,

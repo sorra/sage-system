@@ -11,29 +11,29 @@ import sage.web.context.BaseController
 @RequestMapping("/user")
 class UserAjaxController : BaseController() {
 
-  @RequestMapping("/self")
+  @GetMapping("/self")
   fun self(): UserSelf {
     val uid = Auth.checkUid()
     return userService.getSelf(uid)
   }
 
-  @RequestMapping("/card/{id}")
-  fun userCard(@PathVariable id: Long?): UserCard {
+  @GetMapping("/card/{id}")
+  fun userCard(@PathVariable id: Long): UserCard {
     val uid = Auth.checkUid()
-    return userService.getUserCard(uid, id!!)
+    return userService.getUserCard(uid, id)
   }
 
-  @RequestMapping("/info/{id}")
-  fun userInfo(@PathVariable id: Long?): Any {
+  @GetMapping("/info/{id}")
+  fun userInfo(@PathVariable id: Long): Any {
     throw UnsupportedOperationException()
   }
 
-  @RequestMapping("/change-intro", method = arrayOf(RequestMethod.POST))
+  @PostMapping("/change-intro")
   fun changeIntro(@RequestParam intro: String) {
     userService.changeIntro(Auth.checkUid(), intro)
   }
 
-  @RequestMapping("/change-avatar", method = arrayOf(RequestMethod.POST))
+  @PostMapping("/change-avatar")
   fun changeAvatar(@RequestParam photo: MultipartFile) {
     //TODO
     userService.changeAvatar(Auth.checkUid(), "")

@@ -9,7 +9,7 @@ import sage.web.auth.Auth
 @RestController
 @RequestMapping("/drafts")
 class DraftAjaxController {
-  @RequestMapping("/save", method = arrayOf(RequestMethod.POST))
+  @PostMapping("/save")
   fun save(@RequestParam(required = false) draftId: Long?,
                 @RequestParam(required = false) targetId: Long?,
                 @RequestParam(defaultValue = "") title: String,
