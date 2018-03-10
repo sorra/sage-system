@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component
 import sage.domain.commons.DomainException
 import sage.transfer.BlogView
 import sage.transfer.TweetView
-import sage.web.context.Json
+import sage.util.Json
 import java.net.InetAddress
 import java.nio.file.Files
 import java.nio.file.Paths

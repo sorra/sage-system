@@ -6,17 +6,17 @@ import org.springframework.stereotype.Component
 import org.springframework.util.Assert
 import org.springframework.web.context.WebApplicationContext
 import sage.service.BlogService
-import sage.service.ServiceInitializer
+import sage.service.TestServiceInitializer
 import sage.service.TagService
 import sage.service.TweetPostService
 import java.io.*
 import java.util.*
 
 @Component
-class DataInitializer {
+class TestDataInitializer {
   private val logger = LoggerFactory.getLogger(javaClass)
   @Autowired
-  private val na: ServiceInitializer? = null
+  private val na: TestServiceInitializer? = null
   @Autowired
   private val wac: WebApplicationContext? = null
   @Autowired
@@ -28,7 +28,7 @@ class DataInitializer {
 
   fun init() {
     val docRootPath = wac!!.servletContext.getRealPath("/docs")
-    logger.info("Reading docRootPath: " + docRootPath)
+    logger.info("Reading docRootPath: $docRootPath")
     val docFolder = File(docRootPath)
     Assert.isTrue(docFolder.exists(), "$docRootPath not exist!")
     for (doc in docFolder.listFiles()!!) {

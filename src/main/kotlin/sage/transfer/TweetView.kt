@@ -4,7 +4,7 @@ import sage.annotation.KotlinNoArg
 import sage.domain.commons.IdCommons
 import sage.entity.Blog
 import sage.entity.Tweet
-import sage.web.context.RenderUtil
+import sage.web.render.RenderUtil
 import java.util.*
 
 @KotlinNoArg

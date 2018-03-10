@@ -7,6 +7,7 @@ import org.springframework.web.context.WebApplicationContext
 import org.springframework.web.servlet.ModelAndView
 import sage.service.HasServices
 import sage.web.model.FrontMap
+import sage.web.render.RenderUtil
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 

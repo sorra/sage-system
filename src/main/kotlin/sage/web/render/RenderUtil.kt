@@ -1,8 +1,9 @@
-package sage.web.context
+package sage.web.render
 
 import sage.domain.commons.ContentParser
 import sage.transfer.MidForward
 import sage.util.Settings
+import sage.web.context.VersionsMapper
 
 object RenderUtil {
   private val CDN: String = Settings.props.getProperty("cdn") ?: ""

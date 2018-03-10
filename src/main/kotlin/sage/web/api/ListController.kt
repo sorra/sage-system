@@ -5,7 +5,7 @@ import sage.domain.commons.DomainException
 import sage.transfer.*
 import sage.web.auth.Auth
 import sage.web.context.BaseController
-import sage.web.context.Json
+import sage.util.Json
 
 @RestController
 @RequestMapping("/list")

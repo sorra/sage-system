@@ -1,6 +1,6 @@
 package sage.domain.commons
 
-import sage.web.context.Json
+import sage.util.Json
 import java.util.*
 
 

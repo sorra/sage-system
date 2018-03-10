@@ -28,7 +28,7 @@ import sage.util.Settings
 import sage.web.context.PageDefaultModelInterceptor
 import sage.web.context.VersionsMapper
 import sage.web.filter.CurrentRequestFilter
-import sage.web.filter.LoggingURLFilter
+import sage.web.filter.AccessLoggingFilter
 import sage.web.filter.StaticResourceRefreshFilter
 import java.sql.Timestamp
 import javax.servlet.ServletContext
@@ -78,7 +78,7 @@ class Application : WebMvcConfigurerAdapter() {
   }
 
   @Bean
-  fun loggingURLFilter() = LoggingURLFilter()
+  fun accessLoggingFilter() = AccessLoggingFilter()
   @Bean
   fun currentRequestFilter() = CurrentRequestFilter()
   @Bean

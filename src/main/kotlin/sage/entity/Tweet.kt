@@ -6,7 +6,7 @@ import sage.domain.commons.RichElement
 import sage.domain.constraints.TweetConstraints
 import sage.transfer.MidForward
 import sage.transfer.MidForwards
-import sage.web.context.Json
+import sage.util.Json
 import java.util.*
 import javax.persistence.*
 

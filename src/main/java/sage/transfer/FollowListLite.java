@@ -6,7 +6,7 @@ import java.util.function.Function;
 
 import com.fasterxml.jackson.databind.JavaType;
 import sage.entity.FollowListEntity;
-import sage.web.context.Json;
+import sage.util.Json;
 
 public class FollowListLite extends AList {
   private List<FollowInfoLite> list;

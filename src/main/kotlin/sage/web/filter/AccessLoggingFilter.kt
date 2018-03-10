@@ -7,7 +7,7 @@ import javax.servlet.ServletRequest
 import javax.servlet.ServletResponse
 import javax.servlet.http.HttpServletRequest
 
-class LoggingURLFilter : javax.servlet.Filter {
+class AccessLoggingFilter : javax.servlet.Filter {
   private val log = LoggerFactory.getLogger(javaClass)
 
   override fun doFilter(request: ServletRequest, response: ServletResponse, chain: FilterChain) {

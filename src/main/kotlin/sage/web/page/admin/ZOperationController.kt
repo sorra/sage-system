@@ -10,16 +10,16 @@ import sage.domain.cache.GlobalCaches
 import sage.entity.*
 import sage.service.BlogService
 import sage.service.SearchService
-import sage.service.ServiceInitializer
+import sage.service.TestServiceInitializer
 import sage.transfer.BlogView
 import sage.transfer.TweetView
 import sage.web.auth.Auth
-import sage.web.context.DataInitializer
+import sage.web.context.TestDataInitializer
 import java.util.*
 
 @Controller
 class ZOperationController @Autowired constructor(
-    private val si: ServiceInitializer, private val di: DataInitializer,
+    private val si: TestServiceInitializer, private val di: TestDataInitializer,
     private val searchService: SearchService,
     private val blogService: BlogService
 ) {

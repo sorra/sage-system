@@ -2,7 +2,7 @@ package sage.web.model
 
 import org.slf4j.LoggerFactory
 import org.springframework.ui.ModelMap
-import sage.web.context.Json
+import sage.util.Json
 import javax.servlet.http.HttpServletRequest
 
 class FrontMap constructor() : ModelMap() {

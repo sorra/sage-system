@@ -5,7 +5,7 @@ import java.util.List;
 
 import com.fasterxml.jackson.databind.JavaType;
 import sage.entity.ResourceListEntity;
-import sage.web.context.Json;
+import sage.util.Json;
 
 public class ResourceList extends AList {
   private List<ResourceInfo> list;
