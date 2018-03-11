@@ -50,4 +50,7 @@ abstract class HasServices {
 
   @Autowired
   protected lateinit var userService: UserService
+
+  @Autowired
+  protected lateinit var recommendationService: RecommendationService
 }

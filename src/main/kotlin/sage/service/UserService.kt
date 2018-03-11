@@ -140,41 +140,6 @@ class UserService {
     return User.all().filter { it.id != selfId }.map { getUserCard(selfId, it.id) }
   }
 
-  fun recommendByTag(selfId: Long): Collection<UserCard> {
-    return recommend(selfId).map { getUserCard(selfId, it.id) }
-  }
-
-  private fun recommend(userId: Long): List<PersonValue> {
-    val list = ArrayList<PersonValue>()
-    val selfTags = topTags(userId)
-    var i: Long = 1
-    while (true) {
-      val person = User.byId(i) ?: break
-      if (IdCommons.equal(person.id, userId)) {
-        i++
-        continue
-      }
-      var value = 0
-      var j = selfTags.size
-      for (st in selfTags) {
-        val personTags = topTags(i)
-        var k = personTags.size
-        for (pt in personTags) {
-          if (IdCommons.equal(st.id, pt.id)) {
-            value += j * k
-          }
-          k--
-        }
-        j--
-      }
-      if (value > 0) {
-        list.add(PersonValue(i, value))
-      }
-      i++
-    }
-    Collections.sort(list)
-    return list
-  }
 
   private fun userTags(userId: Long): List<TagLabel> {
     val tagCounters = ArrayList<TagCounter>()
@@ -221,13 +186,6 @@ class UserService {
 
     override fun hashCode(): Int {
       return tag.hashCode()
-    }
-  }
-
-  internal class PersonValue(var id: Long, var value: Int) : Comparable<PersonValue> {
-
-    override fun compareTo(other: PersonValue): Int {
-      return -(value - other.value)
     }
   }
 }

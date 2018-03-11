@@ -39,8 +39,13 @@ class UserController : BaseController() {
   @RequestMapping
   fun people(): ModelAndView {
     val uid = Auth.uid()
-    val recomms = if (uid != null) userService.recommendByTag(uid) else emptyList()
+
+    val recomms = uid?.let {
+      recommendationService.recommendUsers(it)
+    } ?: emptyList()
+
     val people = userService.people(uid)
+
     return ModelAndView("people").addObject("recomms", recomms).addObject("people", people)
   }
 
