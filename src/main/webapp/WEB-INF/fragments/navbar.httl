@@ -1,10 +1,10 @@
 #set(FrontMap frontMap)
 #set(UserSelf userSelf)
-<nav id="navbar" class="navbar navbar-default" role="navigation">
+<nav id="navbar" class="navbar navbar-default navbar-inverse" role="navigation">
   <div id="navbar-content" class="container-fluid">
       <!--header section -->  
       <div class="navbar-header">
-          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#nav-collapse">
               <span class="sr-only">Toggle navigation</span>
               <span class="icon-bar"></span>
               <span class="icon-bar"></span>
@@ -13,11 +13,11 @@
           <a class="nav-brand" href="/">轻境界</a>
       </div>
       <!-- menu section -->  
-      <div class="collapse navbar-collapse navbar-ex1-collapse navbar-inverse">
-        <ul class="nav-links nav navbar-nav navbar-right">
+      <div id="nav-collapse" class="navbar-collapse collapse">
+        <ul id="nav-links" class="nav navbar-nav navbar-right">
           <li>
             <form id="search" action="/search" method="get" accept-charset="UTF-8">
-              <input type="text" maxlength="50" name="q" placeholder="搜索" value="">
+              <input name="q" placeholder="搜索" type="text" maxlength="50">
               <button type="submit" class="glyphicon glyphicon-search"></button>
             </form>
           </li>
@@ -47,8 +47,8 @@
           <li><a href="/notifications"><span class="glyphicon glyphicon-bell" title="通知"></span></a></li>
           <li><a href="/messages"><span class="glyphicon glyphicon-envelope" title="私信"></span></a></li>
           #else
-          <li><a href="/login" style="color: lightgreen">注册</a></li>
-          <li><a href="/login" style="color: lightskyblue">登录</a></li>
+          <li><a id="nav-register" href="/register">注册</a></li>
+          <li><a id="nav-login" href="/login">登录</a></li>
           #end
         </ul>
       </div>
