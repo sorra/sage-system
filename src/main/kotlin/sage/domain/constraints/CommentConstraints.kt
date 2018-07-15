@@ -3,7 +3,7 @@ package sage.domain.constraints
 import sage.domain.commons.BadArgumentException
 
 object CommentConstraints {
-  private val COMMENT_MAX_LEN = 1000
+  private const val COMMENT_MAX_LEN = 1000
 
   fun check(inputContent: String) {
     if (inputContent.isEmpty()) {

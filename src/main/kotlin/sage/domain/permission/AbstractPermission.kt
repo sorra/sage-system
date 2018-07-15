@@ -7,7 +7,7 @@ abstract class AbstractPermission {
   abstract val target: Any
   abstract val targetId: Long
 
-  abstract fun checkResult(): Boolean
+  protected abstract fun checkResult(): Boolean
 
   fun canEdit() {
     can(checkResult(), "edit")
@@ -17,9 +17,9 @@ abstract class AbstractPermission {
     can(checkResult(), "delete")
   }
 
-  protected fun can(checkResult: Boolean, action: String) {
+  private fun can(checkResult: Boolean, action: String) {
     if (!checkResult) {
-      throw PermissionDeniedException("User[$userId] is not allowed to $action ${target.javaClass.simpleName}[${targetId}]")
+      throw PermissionDeniedException("User[$userId] is not permitted to $action ${target.javaClass.simpleName}[$targetId]")
     }
   }
 }

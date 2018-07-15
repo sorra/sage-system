@@ -5,7 +5,7 @@ import sage.entity.Tweet
 
 
 object TweetConstraints {
-  private val TWEET_MAX_LEN = 1000
+  private const val TWEET_MAX_LEN = 1000
 
   fun check(tweet: Tweet) {
     if (!tweet.hasOrigin() && !tweet.hasBlog() && tweet.inputContent.isBlank()) {
