@@ -21,16 +21,16 @@ class FileService {
     PIC, AVATAR
   }
 
-  private final val fileManagers = HashMap<Folder, FileManager>()
+  private final val fileManagers: MutableMap<Folder, FileManager> = EnumMap(Folder::class.java)
 
   init {
     fileManagers[Folder.PIC] = FileManager(SUBDIR_PIC)
     fileManagers[Folder.AVATAR] = FileManager(SUBDIR_AVATAR)
   }
 
-  fun picDir(): String = fileManagers[Folder.PIC]!!.DIR!!
+  fun picDir(): String = fileManagers[Folder.PIC]!!.dir.path
 
-  fun avatarDir(): String = fileManagers[Folder.AVATAR]!!.DIR!!
+  fun avatarDir(): String = fileManagers[Folder.AVATAR]!!.dir.path
 
   @Throws(IOException::class)
   fun upload(userId: Long, file: MultipartFile, folder: Folder): String {
@@ -55,16 +55,19 @@ class FileService {
   @Throws(IOException::class)
   private fun saveFile(userId: Long, fm: FileManager, folder: Folder, file: MultipartFile): String {
     if (!isPictureFileSizeAllowed(file.size)) {
-      throw IllegalArgumentException("图片文件太大了!")
+      throw IllegalArgumentException("图片文件大小必须为0~${MAX_PICTURE_BYTES}MB!")
     }
+
     val bytes = file.bytes
     // 后缀必须限定为图片格式，以防脚本注入攻击
     val filename = "" + fm.nextNumber() + SUFFIX
     val webPath = folder.name.toLowerCase() + "/" + filename
-    val storePath = Paths.get(fm.DIR + "/" + filename)
+    val storePath = Paths.get(fm.dir.path + "/" + filename)
+
     Files.write(storePath, bytes, StandardOpenOption.CREATE_NEW)
     FileItem(filename, webPath, storePath.toString(), userId).save()
     log.info("File saved: {}", storePath)
+
     return "/files/$webPath"
   }
 
@@ -72,29 +75,30 @@ class FileService {
     return size in 1..MAX_PICTURE_BYTES
   }
 
-  private class FileManager internal constructor(subdir: String) {
-    var DIR: String? = null
+  private class FileManager {
+    val dir: File
     private val maxNumber = AtomicLong()
 
     internal fun nextNumber(): Long {
       return maxNumber.incrementAndGet()
     }
 
-    init {
-      var dir: File? = null
+    constructor(subdir: String) {
       val root = ENV_SAGE_FILES_HOME ?: USER_HOME
-      if (File(root).exists()) {
-        DIR = root + subdir
-        dir = File(DIR)
-        if ((dir.exists() || dir.mkdirs()) && dir.canWrite()) {
-          log.info("Select the Upload Directory: " + DIR)
+
+      if (!File(root).exists()) {
+        throw IllegalStateException("Root directory is missing: $root")
+      }
+
+      dir = File(root + subdir).let {
+        if ((it.exists() || it.mkdirs()) && it.canWrite()) {
+          log.info("Select the upload directory: {}", it)
+          it
         } else {
-          dir = null
+          throw IllegalStateException("Cannot create the upload directory! user.home=" + System.getProperty("user.home"))
         }
       }
-      if (dir == null) {
-        throw RuntimeException("Cannot create upload directory! user.home=" + System.getProperty("user.home"))
-      }
+
       // Find the largest existing number in files
       var max: Long = 0
       for (name in dir.list()) {
@@ -107,7 +111,7 @@ class FileService {
             max = current
           }
         } catch (e: NumberFormatException) {
-          log.warn("Non-number named file detected: {}", name)
+          log.warn("During init, non-number named file detected: {}", name)
         }
       }
       maxNumber.set(max)
@@ -115,13 +119,16 @@ class FileService {
   }
 
   companion object {
-    private val log = LoggerFactory.getLogger(FileService::class.java)
-    private val MAX_PICTURE_BYTES = 4 * 1024 * 1024.toLong()
+    private const val MAX_PICTURE_MBS = 4L
+    private const val MAX_PICTURE_BYTES = MAX_PICTURE_MBS * 1024 * 1024
     // Only for trial
-    private val SUFFIX = ".jpg"
+    private const val SUFFIX = ".jpg"
+    private const val SUBDIR_PIC = "/programs/pic_files"
+    private const val SUBDIR_AVATAR = "/programs/avatar_files"
+
     private val ENV_SAGE_FILES_HOME = System.getenv("SAGE_FILES_HOME")
     private val USER_HOME = System.getProperty("user.home")
-    private val SUBDIR_PIC = "/programs/pic_files"
-    private val SUBDIR_AVATAR = "/programs/avatar_files"
+
+    private val log = LoggerFactory.getLogger(FileService::class.java)
   }
 }
