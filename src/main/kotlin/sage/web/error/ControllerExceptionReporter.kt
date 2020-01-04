@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.servlet.ModelAndView
 import sage.domain.commons.BadArgumentException
 import sage.domain.commons.DomainException
-import java.io.IOException
 import java.io.PrintWriter
 import java.io.StringWriter
 import javax.servlet.http.HttpServletRequest
@@ -60,7 +59,6 @@ class ControllerExceptionReporter {
 
   @ExceptionHandler
   @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-  @Throws(IOException::class)
   fun any(e: Throwable, request: HttpServletRequest): ModelAndView {
     log.error("URI: " + request.requestURI + "\nController error: ", e)
     return errorPage(HttpStatus.INTERNAL_SERVER_ERROR, e.javaClass.name)
