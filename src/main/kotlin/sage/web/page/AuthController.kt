@@ -39,7 +39,7 @@ class AuthController : BaseController() {
         if (idx < 0) null
         else referer.substring(idx + destContext.length, referer.length)
     if (dest != null && dest.contains(":")) {
-      log.info("Login dest got XSS URL = " + dest)
+      log.info("Login dest got XSS URL = {}", dest)
       dest = null // Escape cross-site url
     }
 
@@ -55,9 +55,9 @@ class AuthController : BaseController() {
 
   @PostMapping("/register")
   fun register(request: HttpServletRequest,
-                    @RequestParam("email") email: String,
-                    @RequestParam("password") password: String,
-                    @RequestParam("repeatPassword", required = false) repeatPassword: String?): String {
+                    @RequestParam email: String,
+                    @RequestParam password: String,
+                    @RequestParam(required = false) repeatPassword: String?): String {
     log.info("Try to register email: {}", email)
 
     if (email.length > 50) {
