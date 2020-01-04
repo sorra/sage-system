@@ -29,7 +29,7 @@ apply plugin: "kotlin-noarg"
 
 jar {
   baseName = 'sage'
-  version = '1.0-SNAPSHOT'
+  version = '2.0-SNAPSHOT'
 }
 
 sourceCompatibility = 1.8
