@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.ResponseBody
 import org.springframework.web.multipart.MultipartFile
 import sage.domain.commons.DomainException
-import sage.service.FilesService
+import sage.service.FileService
 import sage.web.auth.Auth
 import sage.web.context.BaseController
 import java.io.IOException
@@ -22,7 +22,7 @@ class UploadAjaxController() : BaseController() {
     val uid = Auth.checkUid()
     log.info("uploadPic: uid={}, filename={}", uid, file.name)
     try {
-      val link = filesService.upload(uid, file, FilesService.Folder.PIC)
+      val link = fileService.upload(uid, file, FileService.Folder.PIC)
       return mapOf("location" to link)
     } catch (e: IOException) {
       throw DomainException("uploadPic failed!", e)

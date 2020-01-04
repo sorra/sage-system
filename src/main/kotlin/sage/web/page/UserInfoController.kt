@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.multipart.MultipartFile
-import sage.service.FilesService
+import sage.service.FileService
 import sage.service.UserService
 import sage.web.auth.Auth
 
@@ -17,7 +17,7 @@ import sage.web.auth.Auth
 class UserInfoController
 @Autowired constructor(
     private val userService: UserService,
-    private val filesService: FilesService) {
+    private val fileService: FileService) {
 
   @GetMapping("/user-info")
   fun info(@RequestParam(required = false) next: String?, model: ModelMap): String {
@@ -40,7 +40,7 @@ class UserInfoController
     val cuid = Auth.checkUid()
     val path =
         if (!colorAvatar.isNullOrEmpty()) colorAvatar
-        else if (avatar != null && !avatar.isEmpty) filesService.upload(cuid, avatar, FilesService.Folder.AVATAR)
+        else if (avatar != null && !avatar.isEmpty) fileService.upload(cuid, avatar, FileService.Folder.AVATAR)
         else null
     userService.changeInfo(cuid, name, intro, path)
     if (StringUtils.isNotBlank(next)) {

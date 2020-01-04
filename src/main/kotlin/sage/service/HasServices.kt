@@ -10,7 +10,7 @@ abstract class HasServices {
   protected lateinit var favService: FavService
 
   @Autowired
-  protected lateinit var filesService: FilesService
+  protected lateinit var fileService: FileService
 
   @Autowired
   protected lateinit var heedService: HeedService

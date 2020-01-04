@@ -21,7 +21,7 @@ import org.springframework.http.HttpStatus
 import org.springframework.web.multipart.commons.CommonsMultipartResolver
 import org.springframework.web.servlet.config.annotation.*
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView
-import sage.service.FilesService
+import sage.service.FileService
 import sage.service.TagService
 import sage.service.UserService
 import sage.util.Settings
@@ -57,8 +57,8 @@ class Application : WebMvcConfigurerAdapter() {
   override fun addResourceHandlers(registry: ResourceHandlerRegistry) {
     super.addResourceHandlers(registry)
     registry.addResourceHandler("/static/**")?.addResourceLocations("/static/")
-    registry.addResourceHandler("/files/pic/**").addResourceLocations(toLocation(filesService.picDir()))
-    registry.addResourceHandler("/files/avatar/**").addResourceLocations(toLocation(filesService.avatarDir()))
+    registry.addResourceHandler("/files/pic/**").addResourceLocations(toLocation(fileService.picDir()))
+    registry.addResourceHandler("/files/avatar/**").addResourceLocations(toLocation(fileService.avatarDir()))
   }
 
   private fun toLocation(path: String): String {
@@ -92,7 +92,7 @@ class Application : WebMvcConfigurerAdapter() {
   }
 
   @Autowired
-  private lateinit var filesService: FilesService
+  private lateinit var fileService: FileService
   @Autowired
   private lateinit var userService: UserService
   @Autowired

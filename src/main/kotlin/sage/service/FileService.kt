@@ -15,7 +15,7 @@ import java.util.*
 import java.util.concurrent.atomic.AtomicLong
 
 @Service
-class FilesService {
+class FileService {
 
   enum class Folder {
     PIC, AVATAR
@@ -24,8 +24,8 @@ class FilesService {
   private final val fileManagers = HashMap<Folder, FileManager>()
 
   init {
-    fileManagers.put(Folder.PIC, FileManager(SUBDIR_PIC))
-    fileManagers.put(Folder.AVATAR, FileManager(SUBDIR_AVATAR))
+    fileManagers[Folder.PIC] = FileManager(SUBDIR_PIC)
+    fileManagers[Folder.AVATAR] = FileManager(SUBDIR_AVATAR)
   }
 
   fun picDir(): String = fileManagers[Folder.PIC]!!.DIR!!
@@ -33,13 +33,13 @@ class FilesService {
   fun avatarDir(): String = fileManagers[Folder.AVATAR]!!.DIR!!
 
   @Throws(IOException::class)
-  fun upload(userId: Long, file: MultipartFile, folder: FilesService.Folder): String {
+  fun upload(userId: Long, file: MultipartFile, folder: Folder): String {
     val fm = fileManagers[folder]!!
     return saveFile(userId, fm, folder, file)
   }
 
   @Throws(IOException::class)
-  fun multiUpload(userId: Long, files: Array<MultipartFile>, folder: FilesService.Folder): Collection<String> {
+  fun multiUpload(userId: Long, files: Array<MultipartFile>, folder: Folder): Collection<String> {
     val fm = fileManagers[folder]!!
     return files.map { file -> saveFile(userId, fm, folder, file) }
   }
@@ -64,8 +64,8 @@ class FilesService {
     val storePath = Paths.get(fm.DIR + "/" + filename)
     Files.write(storePath, bytes, StandardOpenOption.CREATE_NEW)
     FileItem(filename, webPath, storePath.toString(), userId).save()
-    log.info("File saved: " + storePath)
-    return "/files/" + webPath
+    log.info("File saved: {}", storePath)
+    return "/files/$webPath"
   }
 
   private fun isPictureFileSizeAllowed(size: Long): Boolean {
@@ -107,7 +107,7 @@ class FilesService {
             max = current
           }
         } catch (e: NumberFormatException) {
-          log.warn("Non-number named file detected: " + name)
+          log.warn("Non-number named file detected: {}", name)
         }
       }
       maxNumber.set(max)
@@ -115,7 +115,7 @@ class FilesService {
   }
 
   companion object {
-    private val log = LoggerFactory.getLogger(FilesService::class.java)
+    private val log = LoggerFactory.getLogger(FileService::class.java)
     private val MAX_PICTURE_BYTES = 4 * 1024 * 1024.toLong()
     // Only for trial
     private val SUFFIX = ".jpg"
