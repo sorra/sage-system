@@ -41,8 +41,8 @@ class Application : WebMvcConfigurerAdapter() {
     val config = ServerConfig()
     config.name = "db"
     val ebeanProps = PropertyMap.defaultProperties()
-    Settings.props.getProperty("pass")?.let { pass ->
-      if (pass.isNotEmpty()) ebeanProps.setProperty("datasource.db.password", pass.map { it - 1 }.joinToString(""))
+    Settings.getProperty("dbpass")?.let { dbpass ->
+      ebeanProps.setProperty("datasource.db.password", dbpass)
     }
     config.loadFromProperties(ebeanProps)
     config.isDefaultServer = true

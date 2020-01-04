@@ -6,7 +6,7 @@ import sage.util.Settings
 import sage.web.context.VersionsMapper
 
 object RenderUtil {
-  private val CDN: String = Settings.props.getProperty("cdn") ?: ""
+  private val CDN: String = Settings.getProperty("cdn") ?: ""
 
   @JvmStatic fun cdn() = CDN
 

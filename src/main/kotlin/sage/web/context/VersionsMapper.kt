@@ -16,7 +16,7 @@ object VersionsMapper {
   private lateinit var dir: Path
   private val map: MutableMap<String, VersionedFile> = ConcurrentHashMap()
 
-  private val delaySeconds: Int = Settings.props["versions.delaySeconds"]?.toString()?.toInt() ?: 0
+  private val delaySeconds: Int = Settings.getProperty("versions.delaySeconds")?.toInt() ?: 0
 
   fun setup(servletContext: ServletContext): VersionsMapper {
     dir = Paths.get(servletContext.getRealPath("/static/"))
@@ -53,7 +53,7 @@ object VersionsMapper {
       if (versionedFile.file.lastModified() > versionedFile.lastChecked) { // file is modified
         versionedFile = putVersionedFile(path, versionedFile.file.toPath(), currentTime)
       } else {
-        versionedFile.lastChecked = currentTime;
+        versionedFile.lastChecked = currentTime
       }
     }
     return versionedFile.version
@@ -66,7 +66,7 @@ object VersionsMapper {
     val versionedFile = VersionedFile(path.toFile(), version, time)
     val cost = System.currentTimeMillis() - start
     log.info("putVersionedFile ${cost}ms path=$putPath , version=$version")
-    map.put(putPath, versionedFile)
+    map[putPath] = versionedFile
     return versionedFile
   }
 
