@@ -22,21 +22,21 @@ class UserInfoController
   @GetMapping("/user-info")
   fun info(@RequestParam(required = false) next: String?, model: ModelMap): String {
     val cuid = Auth.checkUid()
-    model.put("user", userService.getUserLabel(cuid))
+    model["user"] = userService.getUserLabel(cuid)
     var action = "user-info"
     if (StringUtils.isNotBlank(next)) {
-      action += "?next=" + next
+      action += "?next=$next"
     }
-    model.put("action", action)
+    model["action"] = action
     return "user-info"
   }
 
   @PostMapping("/user-info")
   fun changeInfo(@RequestParam(required = false) name: String?,
-                      @RequestParam(required = false) intro: String?,
-                      @RequestParam(required = false) avatar: MultipartFile?,
-                      @RequestParam(required = false) colorAvatar: String?,
-                      @RequestParam(required = false) next: String?): String {
+                 @RequestParam(required = false) intro: String?,
+                 @RequestParam(required = false) avatar: MultipartFile?,
+                 @RequestParam(required = false) colorAvatar: String?,
+                 @RequestParam(required = false) next: String?): String {
     val cuid = Auth.checkUid()
     val path =
         if (!colorAvatar.isNullOrEmpty()) colorAvatar
@@ -61,14 +61,14 @@ class UserInfoController
     try {
       val match = userService.updatePassword(cuid, oldPassword, newPassword)
       if (match) {
-        model.put("success", true)
-        model.put("serverMsg", "修改成功")
+        model["success"] = true
+        model["serverMsg"] = "修改成功"
       } else {
-        model.put("serverMsg", "旧密码输入不对")
+        model["serverMsg"] = "旧密码输入不对"
       }
     } catch (e: Exception) {
       log.error("changePassword", e)
-      model.put("serverMsg", "未知错误")
+      model["serverMsg"] = "未知错误"
     }
 
     return "change-password"
