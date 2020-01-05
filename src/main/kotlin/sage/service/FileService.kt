@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service
 import org.springframework.web.multipart.MultipartFile
 import sage.domain.permission.FileItemPermission
 import sage.entity.FileItem
+import sage.util.Settings
 import java.io.File
 import java.io.IOException
 import java.nio.file.Files
@@ -84,13 +85,15 @@ class FileService {
     }
 
     constructor(subdir: String) {
-      val root = ENV_SAGE_FILES_HOME ?: USER_HOME
 
-      if (!File(root).exists()) {
-        throw IllegalStateException("Root directory is missing: $root")
+      File(FILESTORE_HOME).let {
+        if (!it.exists()) {
+          log.warn("FILESTORE_HOME is missing, recreate $FILESTORE_HOME")
+          it.mkdirs()
+        }
       }
 
-      dir = File(root + subdir).let {
+      dir = File(FILESTORE_HOME + subdir).let {
         if ((it.exists() || it.mkdirs()) && it.canWrite()) {
           log.info("Select the upload directory: {}", it)
           it
@@ -101,7 +104,7 @@ class FileService {
 
       // Find the largest existing number in files
       var max: Long = 0
-      for (name in dir.list()) {
+      for (name in dir.list()!!) {
         if (name.startsWith(".") || name.startsWith("color")) {
           continue
         }
@@ -123,11 +126,19 @@ class FileService {
     private const val MAX_PICTURE_BYTES = MAX_PICTURE_MBS * 1024 * 1024
     // Only for trial
     private const val SUFFIX = ".jpg"
-    private const val SUBDIR_PIC = "/programs/pic_files"
-    private const val SUBDIR_AVATAR = "/programs/avatar_files"
+    private const val SUBDIR_PIC = "/pic_files"
+    private const val SUBDIR_AVATAR = "/avatar_files"
 
-    private val ENV_SAGE_FILES_HOME = System.getenv("SAGE_FILES_HOME")
-    private val USER_HOME = System.getProperty("user.home")
+    private val FILESTORE_HOME = {
+      val value = Settings.getProperty("filestore.home")
+          ?: throw IllegalArgumentException("filestore.home is not set!")
+
+      if (value.startsWith("~/")) {
+        value.replaceFirst("~", System.getProperty("user.home"))
+      } else {
+        value
+      }
+    }()
 
     private val log = LoggerFactory.getLogger(FileService::class.java)
   }
