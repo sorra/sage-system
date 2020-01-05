@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   $!{desc}
-	<title>登录 - 轻境界</title>
+	<title>登录 - ${siteName()}</title>
   $!{allcss}
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
@@ -16,7 +16,7 @@
 </head>
 <body class="auth-page">
   <form id="login" action="/auth/login" method="post">
-    <a href="/"><h3 class="heading">轻境界</h3></a>
+    <a href="/"><h3 class="heading">${siteName()}</h3></a>
     <div class="input-group">
       <label for="email">邮箱</label>
       <input id="email" name="email" type="text" placeholder="请输入您的邮箱" />

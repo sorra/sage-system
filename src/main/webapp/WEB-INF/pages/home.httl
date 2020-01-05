@@ -1,7 +1,7 @@
 ${extends("layout.httl")}
 
 #macro(title)
-首页 - 轻境界
+首页 - ${siteName()}
 #end
 
 #macro(style)

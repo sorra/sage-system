@@ -1,4 +1,4 @@
-[轻境界](https://www.qingjingjie.com/) 新一代SNS社区：后端基于Kotlin + Spring Boot + Ebean ORM， 前端基于JS + jQuery + Bootstrap。
+新一代博客和SNS社区：后端基于Kotlin + Spring Boot + Ebean ORM， 前端基于JS + jQuery + Bootstrap。
 
 ### 开发环境安装指南
 

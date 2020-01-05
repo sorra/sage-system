@@ -1,7 +1,7 @@
 ${extends("layout.httl")}
 
 #macro(title)
-微言 - 轻境界
+微言 - ${siteName()}
 #end
 
 #macro(body)

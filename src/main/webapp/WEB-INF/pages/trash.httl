@@ -7,7 +7,7 @@
 <head>
   <meta charset="UTF-8">
   $!{desc}
-  <title>轻境界 - 回收站</title>
+  <title>回收站 - ${siteName()}</title>
   $!{allcss}
 </head>
 <body>

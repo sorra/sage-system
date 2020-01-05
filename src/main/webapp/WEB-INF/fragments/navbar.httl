@@ -10,7 +10,7 @@
               <span class="icon-bar"></span>
               <span class="icon-bar"></span>
           </button>
-          <a class="nav-brand" href="/">轻境界</a>
+          <a class="nav-brand" href="/">${siteName()}</a>
       </div>
       <!-- menu section -->  
       <div id="nav-collapse" class="navbar-collapse collapse">

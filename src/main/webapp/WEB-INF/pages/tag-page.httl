@@ -2,7 +2,7 @@ ${extends("layout.httl")}
 
 #macro(title)
 <!-- #set(Tag tag) -->
-${tag.name} - 轻境界
+${tag.name} - ${siteName()}
 #end
 
 #macro(style)

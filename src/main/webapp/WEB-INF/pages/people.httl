@@ -8,7 +8,7 @@
 <head>
   <meta charset="UTF-8">
   $!{desc}
-  <title>人们 - 轻境界</title>
+  <title>人们 - ${siteName()}</title>
   $!{allcss}
   <style>
     #container > div{

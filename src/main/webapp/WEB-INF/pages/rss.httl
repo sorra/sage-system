@@ -7,17 +7,18 @@
       #set(pubDate = blogs[0].whenCreated)
     #end
     <title>${name}</title>
-    <link>http://www.qingjingjie.com</link>
-    <description>轻境界 - 轻装前往更高境界</description>
+    <link>${siteUrl()}</link>
+    <description>${siteDescription()}</description>
     <pubDate>${pubDate}</pubDate>
     <language>zh-cn</language>
-    <copyright>@qingjingjie.com</copyright>
+    <copyright>@${siteDomain()}</copyright>
     #for(each : blogs)
     <item>
       <title>${each.title}</title>
-      <link>http://www.qingjingjie.com/blogs/${each.id}</link>
+      <link>${siteUrl()}/blogs/${each.id}</link>
       <pubDate>${each.whenCreated}</pubDate>
       <description>${each.content}</description>
     </item>
     #end
-  </channel></rss>
+  </channel>
+</rss>

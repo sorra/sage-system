@@ -1,7 +1,7 @@
 ${extends("layout.httl")}
 
 #macro(title)
-轻境界：轻装前往更高境界
+${siteDescription()}
 #end
 
 #macro(style)
@@ -14,10 +14,6 @@ ${extends("layout.httl")}
   }
   #welcome-login {
     margin: 20px;
-    padding: 5px;
-    background-color: beige;
-    max-width: 181px;
-    border-radius: 5px;
   }
   #hot-tags {
     margin: 5px 0 5px 0;
@@ -61,11 +57,11 @@ ${extends("layout.httl")}
   -->
   #if(userSelf == null)
   <div id="welcome-login">
-    <a class="btn btn-default btn-success" href="/register">快速注册</a> 参与社区互动
+    <a class="btn btn-default btn-success" href="/register">快速注册</a> 享受分享的快乐
   </div>
   #end
   <h1 id="site-whats">
-    <a href="/blogs/1">轻境界是什么？</a>
+    <a href="/blogs/1">这是什么网站？</a>
   </h1>
   <div id="hot-tags">
     热门标签：
@@ -74,7 +70,7 @@ ${extends("layout.httl")}
     #end
   </div>
   <div id="feedback-entrance">
-    <a href="/feedbacks">直接反馈</a> 或联系info@qingjingjie.com
+    <a href="/feedbacks">直接反馈</a> 或联系<a href="mailto: ${siteEmail()}">${siteEmail()}</a>
   </div>
 
   <ul id="areas-switcher" class="nav nav-tabs" role="tablist">

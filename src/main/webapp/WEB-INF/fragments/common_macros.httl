@@ -10,7 +10,7 @@ $!{include("tmpl.httl")}
 #end
 
 #macro(desc)
-<meta name="description" content="程序员和远程工作者社区" />
+<meta name="description" content="${siteDescription()}" />
 <link rel="icon" type="image/png" href="${cdn()}/static/favicon.png"/>
 #end
 

@@ -37,16 +37,16 @@ import javax.servlet.ServletContext
 class Application : WebMvcConfigurerAdapter() {
 
   @Bean(autowire = Autowire.BY_TYPE) @Scope(SCOPE_SINGLETON)
-    fun getEbeanServer(): EbeanServer {
+  fun getEbeanServer(): EbeanServer {
     val config = ServerConfig()
     config.name = "db"
-    val ebeanProps = PropertyMap.defaultProperties()
-    Settings.getProperty("dbpass")?.let { dbpass ->
-      ebeanProps.setProperty("datasource.db.password", dbpass)
-    }
-    config.loadFromProperties(ebeanProps)
     config.isDefaultServer = true
 
+    val ebeanProps = PropertyMap.defaultProperties()
+    ebeanProps.setProperty("datasource.db.username", Settings.getProperty("db.username"))
+    ebeanProps.setProperty("datasource.db.password", Settings.getProperty("db.password"))
+
+    config.loadFromProperties(ebeanProps)
     return EbeanServerFactory.create(config)
   }
 
