@@ -6,7 +6,7 @@
 
 - JDK 8
 - MySQL 5.6
-- ElasticSearch 2 (可选)
+- ElasticSearch 7.5.1 (可选)
 
 数据库：
 
@@ -21,7 +21,7 @@
 
 开发过程：
 
-- 后端: 修改代码, 重启程序
+- 后端: 修改代码, 重启应用
 - 前端: 执行`./gradlew web`, 刷新网页
 - 干净构建: 执行`./gradlew clean web bootRun`
 
