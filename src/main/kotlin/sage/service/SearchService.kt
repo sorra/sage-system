@@ -11,13 +11,18 @@ import sage.transfer.BlogPreview
 import sage.transfer.TweetView
 
 @Service
-class SearchService @Autowired constructor(private val searchBase: SearchBase) {
+class SearchService
+@Autowired
+constructor(private val searchBase: SearchBase) {
+
   private val log = LoggerFactory.getLogger(javaClass)
 
-  final val reservedSyms = arrayOf("+", "-", "=", "&&", "||", ">", "<", "!", "(", ")", "{", "}", "[", "]", "^", "\"", "~", "*", "?", ":", "\\", "/")
-  final val escapedSyms = reservedSyms.map { "\\" + it }.toTypedArray()
+  private final val reservedSyms = arrayOf("+", "-", "=", "&&", "||", ">", "<", "!", "(", ")", "{", "}", "[", "]", "^", "\"", "~", "*", "?", ":", "\\", "/")
+  private final val escapedSyms = reservedSyms.map { "\\" + it }.toTypedArray()
 
-  fun setupMappings() = searchBase.setupMappings()
+  fun setupMappings() {
+    searchBase.setupMappings()
+  }
 
   fun index(id: Long, obj: Any) {
     searchBase.index(id, obj)
@@ -32,30 +37,32 @@ class SearchService @Autowired constructor(private val searchBase: SearchBase) {
     val words = query.split(" ")
 
     val hits = searchBase.search(query).hits.hits.filter { hit ->
-      val match = hit.sourceAsMap().any { entry ->
+      val match = hit.sourceAsMap.any { entry ->
         (entry.key == "title" || entry.key == "content")
             && entry.value.toString().toLowerCase().indexOfAny(words) >= 0
       }
+
       if (!match) {
         log.info("Doc type={} id={} cannot match words={} in query={}", hit.type, hit.id, words, query)
       }
       match
     }
-    @Suppress("IMPLICIT_CAST_TO_ANY")
-    val results = hits.map { hit ->
-      fun findById(f: (Long) -> Any?) = hit.sourceAsMap()["id"]?.run{ f(toString().toLong()) }
+
+    val results = hits.mapNotNull { hit ->
+      fun findById(f: (Long) -> Any?) = hit.sourceAsMap["id"]?.run { f(toString().toLong()) }
       when (hit.type) {
         SearchBase.BLOG -> findById {
           BlogPreview(Blog.get(it))
         }
         SearchBase.TWEET -> findById { id ->
           Tweet.byId(id)?.let { t ->
-            TweetView(t, Tweet.getOrigin(t), false, {false})
+            TweetView(t, Tweet.getOrigin(t), false, { false })
           }
         }
         else -> null
       }
-    }.filterNotNull()
+    }
+
     val types = results.map { it.javaClass.simpleName }
     return types to results
   }

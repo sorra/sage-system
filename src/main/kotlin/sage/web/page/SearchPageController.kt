@@ -18,9 +18,12 @@ class SearchPageController : BaseController() {
     if (q.isEmpty()) {
       return "forward:/"
     }
+
     val uid = Auth.checkUid()
     logger.info("/search uid=$uid, query=$q")
+
     val (types, rawResults) = searchService.search(q)
+
     val results = rawResults.mapNotNull { result ->
       if (result is TweetView) {
         Tweet.byId(result.id)?.let {
@@ -39,7 +42,9 @@ class SearchPageController : BaseController() {
         result
       }
     }
+
     model.addAttribute("types", types).addAttribute("results", results)
+
     return "search-result"
   }
 
