@@ -49,19 +49,13 @@
     </encoder>
   </appender>
 
-  <logger name="org.springframework">
+  <logger name="org">
     <level value="INFO"/>
   </logger>
   <logger name="httl">
     <level value="INFO"/>
   </logger>
-  <logger name="com.avaje">
-    <level value="INFO"/>
-  </logger>
-  <logger name="org.avaje">
-    <level value="INFO"/>
-  </logger>
-  <logger name="org.elasticsearch">
+  <logger name="com">
     <level value="INFO"/>
   </logger>
 
