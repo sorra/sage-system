@@ -79,7 +79,7 @@ class TweetReadService
   }
 
   fun search(query: String): List<TweetView> {
-    val searchHits = searchService.search("tweet", query).hits
+    val searchHits = searchService.search(SearchService.TWEET, query).hits
 
     return searchHits.hits.mapNotNull {
       val id = it.id.toLong()

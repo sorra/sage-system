@@ -117,7 +117,7 @@ class BlogService
   }
 
   fun search(query: String): List<BlogPreview> {
-    val searchHits = searchService.search("blog", query).hits
+    val searchHits = searchService.search(SearchService.BLOG, query).hits
 
     return searchHits.hits.mapNotNull {
       val id = it.id.toLong()
@@ -136,11 +136,11 @@ class BlogService
   }
 
   private fun index(blog: Blog) {
-    searchService.index("blog", blog.id, blog.toSearchableBlog())
+    searchService.index(SearchService.BLOG, blog.id, blog.toSearchableBlog())
   }
 
   private fun unindex(blog: Blog) {
-    searchService.delete("blog", blog.id)
+    searchService.delete(SearchService.BLOG, blog.id)
   }
 
   private val maxLatest = 30

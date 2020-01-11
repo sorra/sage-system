@@ -137,11 +137,11 @@ class TweetPostService
   }
 
   private fun index(tweet: Tweet) {
-    searchService.index("tweet", tweet.id, tweet.toSearchableTweet())
+    searchService.index(SearchService.TWEET, tweet.id, tweet.toSearchableTweet())
   }
 
   private fun unindex(tweet: Tweet) {
-    searchService.delete("tweet", tweet.id)
+    searchService.delete(SearchService.TWEET, tweet.id)
   }
 
   /*
