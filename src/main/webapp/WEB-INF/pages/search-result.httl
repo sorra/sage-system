@@ -6,21 +6,35 @@ ${extends("layout.httl")}
 
 #macro(body)
 	<!--
-	#set(List<String> types)
-	#set(List results)
+	#set(List<BlogPreview> blogs)
+	#set(List<TweetView> tweets)
 	-->
 	<div class="data-holder" style="display:none;">
 		#for(result : results)
 		<span class="hit-json">$!{json(result)}</span>
 		#end
 	</div>
-	<div id="result-list">
-		#for(result : results)
-			#set(type = types[for.index])
-			#if(type == "BlogPreview") $!{include("blog-preview.httl", ["blog": result])}
-			#else(type == "TweetView") $!{include("tweet-group.httl", ["group": result])}
-			#else ${type}
-			#end
-		#end
+	<div id="search-results">
+		<ul class="nav nav-tabs" role="tablist">
+			<li role="presentation" class="active">
+				<a href="#blogs" aria-controls="blogs" role="tab" data-toggle="tab">博客</a>
+			</li>
+			<li role="presentation">
+				<a href="#tweets" aria-controls="tweets" role="tab" data-toggle="tab">微言</a>
+			</li>
+		</ul>
+
+		<div class="tab-content">
+			<div id="blogs" class="blog-list tab-pane active" role="tabpanel">
+				#for(blog : blogs)
+					$!{include("blog-preview.httl")}
+				#end
+			</div>
+			<div id="tweets" class="tweet-list tab-pane" role="tabpanel">
+				#for(tweet: tweets)
+					$!{include("tweet.httl")}
+				#end
+			</div>
+		</div>
 	</div>
 #end

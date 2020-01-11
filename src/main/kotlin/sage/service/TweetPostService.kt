@@ -10,7 +10,6 @@ import sage.domain.intelligence.TagAnalyzer
 import sage.domain.permission.TweetPermission
 import sage.entity.*
 import sage.transfer.MidForwards
-import sage.transfer.TweetView
 import java.util.*
 
 @Service
@@ -18,7 +17,6 @@ class TweetPostService
 @Autowired constructor(
     private val searchService: SearchService,
     private val userService: UserService,
-    private val transfers: TransferService,
     private val notifService: NotificationService) {
 
   fun post(userId: Long, inputContent: String, richElements: Collection<RichElement>, tagIds: Collection<Long>): Tweet {
@@ -26,8 +24,7 @@ class TweetPostService
 
     val (hyperContent, mentionedIds) = ContentParser.tweet(inputContent) { name -> User.byName(name) }
 
-    val tweet = Tweet(inputContent, hyperContent, richElements, User.ref(userId),
-        Tag.multiGet(intelliTagIds))
+    val tweet = Tweet(inputContent, hyperContent, richElements, User.ref(userId), Tag.multiGet(intelliTagIds))
 
     tweet.validate()
 
@@ -40,7 +37,7 @@ class TweetPostService
 
     mentionedIds.forEach { atId -> notifService.mentionedByTweet(atId, userId, tweet.id) }
 
-    searchService.index(tweet.id, transfers.toTweetViewNoCount(tweet))
+    index(tweet)
     GlobalCaches.tweetsCache.clear()
     return tweet
   }
@@ -64,14 +61,14 @@ class TweetPostService
     val origins = fromDirectToInitialOrigin(directOrigin)
     val initialOrigin = origins.last
 
-    val tweet: Tweet
-    if (initialOrigin == directOrigin) {
-      tweet = Tweet(inputContent, hyperContent, emptyList(), User.ref(userId), initialOrigin)
-    } else {
-      val midForwards = MidForwards(directOrigin)
-      removedForwardIds.forEach { midForwards.removeById(it) }
-      tweet = Tweet(inputContent, hyperContent, emptyList(), midForwards, User.ref(userId), initialOrigin)
-    }
+    val tweet: Tweet =
+        if (initialOrigin == directOrigin) {
+          Tweet(inputContent, hyperContent, emptyList(), User.ref(userId), initialOrigin)
+        } else {
+          val midForwards = MidForwards(directOrigin)
+          removedForwardIds.forEach { midForwards.removeById(it) }
+          Tweet(inputContent, hyperContent, emptyList(), midForwards, User.ref(userId), initialOrigin)
+        }
 
     tweet.validate()
 
@@ -86,7 +83,7 @@ class TweetPostService
     origins.forEach { origin -> notifService.forwarded(origin.author.id, userId, tweet.id) }
     mentionedIds.forEach { atId -> notifService.mentionedByTweet(atId, userId, tweet.id) }
 
-    searchService.index(tweet.id, transfers.toTweetViewNoCount(tweet))
+    index(tweet)
     GlobalCaches.tweetsCache.clear()
     return tweet
   }
@@ -125,8 +122,26 @@ class TweetPostService
     tweet.deleted = true
     tweet.update()
 
-    searchService.delete(TweetView::class.java, tweetId)
+    unindex(tweet)
     GlobalCaches.tweetsCache.clear()
+  }
+
+  fun reindexAll() {
+    Tweet.where().setIncludeSoftDeletes().findEach {
+      if (it.deleted) {
+        unindex(it)
+      } else {
+        index(it)
+      }
+    }
+  }
+
+  private fun index(tweet: Tweet) {
+    searchService.index("tweet", tweet.id, tweet.toSearchableTweet())
+  }
+
+  private fun unindex(tweet: Tweet) {
+    searchService.delete("tweet", tweet.id)
   }
 
   /*

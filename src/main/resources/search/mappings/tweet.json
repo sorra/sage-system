@@ -1,7 +1,12 @@
 {
   "properties": {
     "content": {
-      "type": "string"
+      "type": "text",
+      "store": "false",
+      "term_vector": "with_positions_offsets",
+      "analyzer": "ik_max_word",
+      "search_analyzer": "ik_smart",
+      "boost": 8
     }
   }
 }

@@ -2,6 +2,7 @@ package sage.entity
 
 import com.avaje.ebean.annotation.SoftDelete
 import sage.domain.constraints.BlogConstraints
+import sage.transfer.SearchableBlog
 import java.sql.Timestamp
 import java.util.*
 import javax.persistence.*
@@ -16,7 +17,9 @@ class Blog(
     hyperContent: String,
 
     @ManyToOne(optional = false)
-    val author: User, tags: Set<Tag>,
+    val author: User,
+
+    tags: Set<Tag>,
 
     var contentType: Short
 ) : AutoModel() {
@@ -24,8 +27,8 @@ class Blog(
   @Column(columnDefinition = "TEXT") @Basic(fetch = FetchType.LAZY)
   var content: String = hyperContent
 
-  @ManyToMany(cascade = arrayOf(CascadeType.ALL))
-  var tags: MutableSet<Tag> = HashSet()
+  @ManyToMany
+  var tags: MutableSet<Tag> = HashSet(tags)
 
   var whenEdited: Timestamp? = null
 
@@ -40,6 +43,10 @@ class Blog(
   fun validate() {
     BlogConstraints.check(this)
   }
+
+  fun toSearchableBlog(): SearchableBlog = SearchableBlog(
+      id, author.toUserLabel(), title, content, whenCreated, whenEdited, tags.map(Tag::toTagLabel)
+  )
 
   companion object : BaseFind<Long, Blog>(Blog::class) {
     val MARKDOWN: Short = 1
@@ -56,9 +63,5 @@ class Blog(
     }
 
     fun byAuthor(authorId: Long): List<Blog> = where().eq("author", User.ref(authorId)).orderBy("id desc").findList()
-  }
-
-  init {
-    this.tags = HashSet(tags)
   }
 }

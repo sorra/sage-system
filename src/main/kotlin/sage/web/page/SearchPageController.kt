@@ -22,28 +22,12 @@ class SearchPageController : BaseController() {
     val uid = Auth.checkUid()
     logger.info("/search uid=$uid, query=$q")
 
-    val (types, rawResults) = searchService.search(q)
+    val blogs = blogService.search(q)
+    val tweets = tweetReadService.search(q)
 
-    val results = rawResults.mapNotNull { result ->
-      if (result is TweetView) {
-        Tweet.byId(result.id)?.let {
-          if (it.deleted) {
-            null
-          } else {
-            val view = transferService.toTweetView(it)
-            if (it.hasOrigin()) {
-              TweetGroup.createByForward(view)
-            } else {
-              TweetGroup.createByOrigin(view)
-            }
-          }
-        }
-      } else {
-        result
-      }
-    }
-
-    model.addAttribute("types", types).addAttribute("results", results)
+    model
+        .addAttribute("blogs", blogs)
+        .addAttribute("tweets", tweets)
 
     return "search-result"
   }

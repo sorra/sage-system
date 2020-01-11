@@ -1,11 +1,11 @@
 package sage.transfer;
 
-import java.util.List;
+import java.util.Collection;
 
 public interface Item {
   String getType();
 
-  List<TagLabel> getTags();
+  Collection<TagLabel> getTags();
 
   TweetView getOrigin();
 }

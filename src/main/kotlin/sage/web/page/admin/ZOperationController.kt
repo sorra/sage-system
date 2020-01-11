@@ -11,17 +11,18 @@ import sage.entity.*
 import sage.service.BlogService
 import sage.service.SearchService
 import sage.service.TestServiceInitializer
-import sage.transfer.BlogView
-import sage.transfer.TweetView
+import sage.service.TweetPostService
 import sage.web.auth.Auth
 import sage.web.context.TestDataInitializer
 import java.util.*
 
 @Controller
 class ZOperationController @Autowired constructor(
-    private val si: TestServiceInitializer, private val di: TestDataInitializer,
+    private val si: TestServiceInitializer,
+    private val di: TestDataInitializer,
     private val searchService: SearchService,
-    private val blogService: BlogService
+    private val blogService: BlogService,
+    private val tweetPostService: TweetPostService
 ) {
 
   @RequestMapping("/z-init")
@@ -30,22 +31,32 @@ class ZOperationController @Autowired constructor(
     if (User.byId(1) != null) {
       return "Already inited."
     }
+
     si.init()
     di.init()
+
     return "Done."
   }
 
   @RequestMapping("/z-reindex")
   @ResponseBody
   fun reindex() = authDo {
-    searchService.setupMappings()
-    Blog.findEach {
-      searchService.index(it.id, BlogView(it))
-    }
-    Tweet.findEach {
-      searchService.index(it.id, TweetView(it, Tweet.getOrigin(it), false, {false}))
-    }
+    searchService.setupIndex(SearchService.BLOG)
+    blogService.reindexAll()
+
+    searchService.setupIndex(SearchService.TWEET)
+    tweetPostService.reindexAll()
+
     "Done."
+  }
+
+  @RequestMapping("/z-drop-reindex")
+  @ResponseBody
+  fun dropReindex() = authDo {
+    searchService.dropIndex(SearchService.BLOG)
+    searchService.dropIndex(SearchService.TWEET)
+
+    reindex()
   }
 
   @RequestMapping("/z-reload")

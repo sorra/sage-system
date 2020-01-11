@@ -9,7 +9,9 @@ import sage.domain.commons.ReplaceMention
 import sage.domain.intelligence.TagAnalyzer
 import sage.domain.permission.BlogPermission
 import sage.entity.*
+import sage.transfer.BlogPreview
 import sage.transfer.BlogView
+import sage.transfer.SearchableBlog
 import sage.util.JsoupUtil
 import sage.util.MarkdownUtil
 import sage.util.StringUtil
@@ -42,9 +44,10 @@ class BlogService
 
     mentionedIds.forEach { atId -> notifService.mentionedByBlog(atId, userId, blog.id) }
 
-    searchService.index(blog.id, BlogView(blog))
+    index(blog)
     GlobalCaches.blogsCache.clear()
     GlobalCaches.tweetsCache.clear()
+
     return blog
   }
 
@@ -73,7 +76,8 @@ class BlogService
       (mentionedIds - oldMentionedIds).forEach { atId -> notifService.mentionedByBlog(atId, userId, blogId) }
     }
 
-    searchService.index(blog.id, BlogView(blog))
+    index(blog)
+
     return blog
   }
 
@@ -89,7 +93,7 @@ class BlogService
       it.update()
     }
 
-    searchService.delete(BlogView::class.java, blog.id)
+    unindex(blog)
   }
 
   fun comment(userId: Long, inputContent: String, blogId: Long, replyUserId: Long?): Comment {
@@ -108,7 +112,35 @@ class BlogService
       notifService.replied(replyUserId, userId, comment.id)
     }
     mentionedIds.forEach { atId -> notifService.mentionedByComment(atId, userId, comment.id) }
+
     return comment
+  }
+
+  fun search(query: String): List<BlogPreview> {
+    val searchHits = searchService.search("blog", query).hits
+
+    return searchHits.hits.mapNotNull {
+      val id = it.id.toLong()
+      Blog.byId(id)
+    }.map(::BlogPreview)
+  }
+
+  fun reindexAll() {
+    Blog.where().setIncludeSoftDeletes().findEach {
+      if (it.deleted) {
+        unindex(it)
+      } else {
+        index(it)
+      }
+    }
+  }
+
+  private fun index(blog: Blog) {
+    searchService.index("blog", blog.id, blog.toSearchableBlog())
+  }
+
+  private fun unindex(blog: Blog) {
+    searchService.delete("blog", blog.id)
   }
 
   private val maxLatest = 30

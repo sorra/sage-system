@@ -10,7 +10,8 @@ import sage.transfer.TweetView
 
 @Service
 class TweetReadService
-@Autowired constructor(private val transfers: TransferService) {
+@Autowired constructor(private val transfers: TransferService,
+                       private val searchService: SearchService) {
 
   fun byFollowings(userId: Long, edge: Edge): List<Tweet> {
     val tweets = Tweet.byAuthor(userId, edge)
@@ -75,6 +76,15 @@ class TweetReadService
       return emptyList()
     }
     return Tweet.forwards(originId)
+  }
+
+  fun search(query: String): List<TweetView> {
+    val searchHits = searchService.search("tweet", query).hits
+
+    return searchHits.hits.mapNotNull {
+      val id = it.id.toLong()
+      Tweet.byId(id)
+    }.map(transfers::toTweetView)
   }
 
   companion object {

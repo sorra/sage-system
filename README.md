@@ -6,7 +6,7 @@
 
 - JDK 8
 - MySQL 5.6
-- ElasticSearch 7.5.1 (可选)
+- ElasticSearch 7.5.1 (可选, 需安装IK Analyzer插件)
 
 数据库：
 

@@ -6,6 +6,7 @@ import sage.domain.commons.RichElement
 import sage.domain.constraints.TweetConstraints
 import sage.transfer.MidForward
 import sage.transfer.MidForwards
+import sage.transfer.SearchableTweet
 import sage.util.Json
 import java.util.*
 import javax.persistence.*
@@ -42,7 +43,7 @@ class Tweet : AutoModel {
   @Column(nullable = false)
   var blogId: Long = 0
 
-  @ManyToMany(cascade = arrayOf(CascadeType.ALL))
+  @ManyToMany
   var tags: MutableSet<Tag> = HashSet()
 
   var deleted: Boolean = false
@@ -85,7 +86,7 @@ class Tweet : AutoModel {
         else emptyList()
       } catch (e: Exception) {
         log.error("richElements cannot be deserialized from JSON", e)
-        emptyList<RichElement>()
+        emptyList()
       }
 
   fun midForwards(): MidForwards? =
@@ -102,10 +103,16 @@ class Tweet : AutoModel {
     TweetConstraints.check(this)
   }
 
+  fun toSearchableTweet(): SearchableTweet = SearchableTweet(
+      id, author.toUserLabel(), content, whenCreated, tags.map(Tag::toTagLabel)
+  )
+
   companion object : BaseFind<Long, Tweet>(Tweet::class) {
     private val log = LoggerFactory.getLogger(Tweet::class.java)
 
     fun recent(size: Int): List<Tweet> = default().orderBy("id desc").setMaxRows(size).findList()
+
+    override fun byId(id: Long) = default().eq("id", id).findUnique()
 
     fun byTags(tags: Collection<Tag>, edge: Edge): List<Tweet> {
       if (tags.isEmpty()) {

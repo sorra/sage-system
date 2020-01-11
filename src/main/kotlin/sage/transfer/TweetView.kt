@@ -3,6 +3,7 @@ package sage.transfer
 import sage.annotation.KotlinNoArg
 import sage.domain.commons.IdCommons
 import sage.entity.Blog
+import sage.entity.Tag
 import sage.entity.Tweet
 import sage.web.render.RenderUtil
 import java.util.*
@@ -19,7 +20,7 @@ class TweetView {
   var origin: TweetView? = null
 
   var midForwards: MidForwards? = null
-  val tags = ArrayList<TagLabel>()
+  var tags: Collection<TagLabel> = mutableListOf()
 
   var forwardCount: Int = 0
   var commentCount: Int = 0
@@ -49,9 +50,8 @@ class TweetView {
       this.origin = TweetView(origin, null, showsStat, isLikedChecker)
     }
     midForwards = tweet.midForwards()
-    for (tag in tweet.tags) {
-      tags.add(tag.toTagLabel())
-    }
+
+    tags = tweet.tags.map(Tag::toTagLabel)
 
     tweet.stat()?.let {
       this.forwardCount = it.forwards
