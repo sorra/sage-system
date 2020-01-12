@@ -21,6 +21,7 @@ class BlogController : BaseController() {
   fun newPage(@RequestParam(required = false) contentType: String?): ModelAndView {
     val uid = Auth.checkUid()
     val topTags = userService.topTags(uid)
+
     return ModelAndView("write-blog")
         .addObject("contentType", contentType)
         .addObject("topTags", topTags)
@@ -28,24 +29,31 @@ class BlogController : BaseController() {
 
   @PostMapping("/new")
   @ResponseBody
-  fun create(@RequestParam title: String, @RequestParam content: String,
-                  @RequestParam contentType: String,
-                  @RequestParam(required = false) draftId: Long?): String {
+  fun create(@RequestParam title: String,
+             @RequestParam content: String,
+             @RequestParam contentType: String,
+             @RequestParam(required = false) draftId: Long?): String {
     val uid = Auth.checkUid()
     val tagIds = tagIds()
+
     val blog = blogService.post(uid, title, content, tagIds, contentType).let(::BlogView)
+
     draftId?.let { Draft.deleteById(it) }
+
     return "/blogs/${blog.id}"
   }
 
   @GetMapping("/{id}/edit")
-  fun editPage(@PathVariable id: Long, @RequestParam(required = false) contentType: String?): ModelAndView {
+  fun editPage(@PathVariable id: Long,
+               @RequestParam(required = false) contentType: String?): ModelAndView {
     val uid = Auth.checkUid()
     val blog = Blog.get(id)
+
     BlogPermission(uid, blog).canEdit()
 
     val blogView = blog.let { BlogView(it, showInputContent = true) }
     val topTags = userService.filterNewTags(uid, blogView.tags)
+
     return ModelAndView("write-blog")
         .addObject("blog", blogView).addObject("contentType", contentType)
         .addObject("existingTags", blogView.tags).addObject("topTags", topTags)
@@ -53,13 +61,18 @@ class BlogController : BaseController() {
 
   @PostMapping("/{id}/edit")
   @ResponseBody
-  fun edit(@PathVariable id: Long, @RequestParam title: String, @RequestParam content: String,
-                @RequestParam contentType: String,
-                @RequestParam(required = false) draftId: Long?): String {
+  fun edit(@PathVariable id: Long,
+           @RequestParam title: String,
+           @RequestParam content: String,
+           @RequestParam contentType: String,
+           @RequestParam(required = false) draftId: Long?): String {
     val uid = Auth.checkUid()
     val tagIds = tagIds()
+
     blogService.edit(uid, id, title, content, tagIds, contentType)
+
     draftId?.let { Draft.deleteById(it) }
+
     return "/blogs/$id"
   }
 

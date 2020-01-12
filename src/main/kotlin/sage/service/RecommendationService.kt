@@ -13,7 +13,7 @@ class RecommendationService @Autowired constructor(
 ) {
 
   fun recommendUsers(userId: Long): List<UserCard> {
-    val recomms = recommendByTag(userId).map { it.id }
+    val recomms = recommendPeopleByTag(userId).map { it.id }
     val followingUsers = relationService.followings(userId).mapTo(hashSetOf()) { it.target.id }
 
     return (recomms - followingUsers).map {
@@ -21,8 +21,8 @@ class RecommendationService @Autowired constructor(
     }
   }
 
-  private fun recommendByTag(userId: Long): List<PersonValue> {
-    val list = mutableListOf<PersonValue>()
+  private fun recommendPeopleByTag(userId: Long): List<PersonValue> {
+    val resultList = mutableListOf<PersonValue>()
     val selfTags = userService.topTags(userId)
 
     var i: Long = 1
@@ -32,6 +32,7 @@ class RecommendationService @Autowired constructor(
         i++
         continue
       }
+
       var value = 0
       var j = selfTags.size
       for (st in selfTags) {
@@ -45,14 +46,16 @@ class RecommendationService @Autowired constructor(
         }
         j--
       }
+
       if (value > 0) {
-        list.add(PersonValue(i, value))
+        resultList.add(PersonValue(i, value))
       }
+
       i++
     }
 
-    list.sort()
-    return list
+    resultList.sort()
+    return resultList
   }
 
   private class PersonValue(var id: Long, var value: Int) : Comparable<PersonValue> {

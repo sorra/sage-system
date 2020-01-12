@@ -10,8 +10,6 @@ import sage.domain.intelligence.TagAnalyzer
 import sage.domain.permission.BlogPermission
 import sage.entity.*
 import sage.transfer.BlogPreview
-import sage.transfer.BlogView
-import sage.transfer.SearchableBlog
 import sage.util.JsoupUtil
 import sage.util.MarkdownUtil
 import sage.util.StringUtil
