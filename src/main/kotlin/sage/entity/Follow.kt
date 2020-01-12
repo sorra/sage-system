@@ -2,7 +2,6 @@ package sage.entity
 
 import sage.domain.commons.IdCommons
 import java.util.*
-import javax.persistence.CascadeType
 import javax.persistence.Entity
 import javax.persistence.ManyToMany
 import javax.persistence.ManyToOne
@@ -18,7 +17,7 @@ class Follow : AutoModel {
 
   var reason: String? = null
 
-  @ManyToMany(cascade = arrayOf(CascadeType.ALL))
+  @ManyToMany
   var tags: MutableSet<Tag> = HashSet()
 
   /** If auto-include new tags  */

@@ -3,7 +3,7 @@ package sage.entity
 import javax.persistence.*
 
 @Entity
-@Table(uniqueConstraints = arrayOf(UniqueConstraint(columnNames = arrayOf("user_id", "tag_id"))))
+@Table(uniqueConstraints = [UniqueConstraint(columnNames = ["user_id", "tag_id"])])
 class UserTag(var userId: Long = 0, var tagId: Long = 0) : AutoModel() {
 
   companion object : BaseFind<Long, UserTag>(UserTag::class) {

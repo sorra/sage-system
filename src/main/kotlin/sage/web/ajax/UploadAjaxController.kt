@@ -15,12 +15,15 @@ import javax.servlet.http.HttpServletResponse
 
 @Controller
 @RequestMapping("/upload")
-class UploadAjaxController() : BaseController() {
-  @PostMapping("/pic", produces = arrayOf("application/json"))
+class UploadAjaxController : BaseController() {
+
+  @PostMapping("/pic", produces = ["application/json"])
   @ResponseBody
   fun uploadPic(file: MultipartFile, response: HttpServletResponse): Map<String, String> {
     val uid = Auth.checkUid()
+
     log.info("uploadPic: uid={}, filename={}", uid, file.name)
+
     try {
       val link = fileService.upload(uid, file, FileService.Folder.PIC)
       return mapOf("location" to link)

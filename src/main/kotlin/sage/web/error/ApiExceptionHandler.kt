@@ -10,7 +10,7 @@ import sage.domain.commons.DomainException
 import sage.web.auth.RequireLoginException
 import javax.servlet.http.HttpServletRequest
 
-@ControllerAdvice(basePackages = arrayOf("sage.web.api"))
+@ControllerAdvice(basePackages = ["sage.web.api"])
 @Order(0)
 class ApiExceptionHandler {
   @ExceptionHandler(RequireLoginException::class)

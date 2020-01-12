@@ -10,7 +10,7 @@ import sage.domain.commons.DomainException
 import sage.web.auth.RequireLoginException
 import javax.servlet.http.HttpServletRequest
 
-@ControllerAdvice(basePackages = arrayOf("sage.web.ajax"))
+@ControllerAdvice(basePackages = ["sage.web.ajax"])
 @Order(0)
 class AjaxExceptionHandler {
   @ExceptionHandler(RequireLoginException::class)

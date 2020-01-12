@@ -10,7 +10,7 @@ import sage.web.auth.Auth
 import sage.web.auth.RequireLoginException
 import javax.servlet.http.HttpServletRequest
 
-@ControllerAdvice(basePackages = arrayOf("sage.web.page"))
+@ControllerAdvice(basePackages = ["sage.web.page"])
 @Order(0)
 class PageExceptionHandler {
   @ExceptionHandler(RequireLoginException::class)
