@@ -9,11 +9,11 @@ ${extends("layout.httl")}
 	#set(List<BlogPreview> blogs)
 	#set(List<TweetView> tweets)
 	-->
-	<div class="data-holder" style="display:none;">
-		#for(result : results)
-		<span class="hit-json">$!{json(result)}</span>
-		#end
-	</div>
+<!--	<div class="data-holder" style="display:none;">-->
+<!--		#for(result : results)-->
+<!--		<span class="hit-json">$!{json(result)}</span>-->
+<!--		#end-->
+<!--	</div>-->
 	<div id="search-results">
 		<ul class="nav nav-tabs" role="tablist">
 			<li role="presentation" class="active">
@@ -28,11 +28,15 @@ ${extends("layout.httl")}
 			<div id="blogs" class="blog-list tab-pane active" role="tabpanel">
 				#for(blog : blogs)
 					$!{include("blog-preview.httl")}
+				#else
+					0个搜索结果
 				#end
 			</div>
 			<div id="tweets" class="tweet-list tab-pane" role="tabpanel">
 				#for(tweet: tweets)
 					$!{include("tweet.httl")}
+				#else
+					0个搜索结果
 				#end
 			</div>
 		</div>
