@@ -25,7 +25,8 @@ class UserController : BaseController() {
 
     frontMap().attr("id", id).attr("isSelfPage", uid == id)
 
-    return ModelAndView("user-page").addObject("thisUser", thisUser)
+    return ModelAndView("user-page")
+        .addObject("thisUser", thisUser)
         .addObject("blogs", blogs)
   }
 
@@ -33,7 +34,8 @@ class UserController : BaseController() {
   fun userCard(@PathVariable id: Long): ModelAndView {
     val uid = Auth.checkUid()
     val theUser = userService.getUserCard(uid, id)
-    return ModelAndView("user-card").addObject("user", theUser)
+    return ModelAndView("user-card")
+        .addObject("user", theUser)
   }
 
   @RequestMapping
@@ -46,13 +48,17 @@ class UserController : BaseController() {
 
     val people = userService.people(uid)
 
-    return ModelAndView("people").addObject("recomms", recomms).addObject("people", people)
+    return ModelAndView("people")
+        .addObject("recomms", recomms)
+        .addObject("people", people)
   }
 
   @RequestMapping("/{id}/rss")
   fun rss(@PathVariable id: Long): ModelAndView {
     val blogs = blogService.authorRSS(id)
     response.contentType = "text/xml"
-    return ModelAndView("rss").addObject("blogs", blogs).addObject("name", User.get(id).name)
+    return ModelAndView("rss")
+        .addObject("blogs", blogs)
+        .addObject("name", User.get(id).name)
   }
 }

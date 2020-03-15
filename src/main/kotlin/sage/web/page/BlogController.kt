@@ -51,7 +51,7 @@ class BlogController : BaseController() {
 
     BlogPermission(uid, blog).canEdit()
 
-    val blogView = blog.let { BlogView(it, showInputContent = true) }
+    val blogView = BlogView(blog, showInputContent = true)
     val topTags = userService.filterNewTags(uid, blogView.tags)
 
     return ModelAndView("write-blog")
