@@ -57,13 +57,17 @@ class Application : WebMvcConfigurerAdapter() {
   override fun addResourceHandlers(registry: ResourceHandlerRegistry) {
     super.addResourceHandlers(registry)
     registry.addResourceHandler("/static/**")?.addResourceLocations("/static/")
-    registry.addResourceHandler("/files/pic/**").addResourceLocations(toLocation(fileService.picDir()))
-    registry.addResourceHandler("/files/avatar/**").addResourceLocations(toLocation(fileService.avatarDir()))
+    registry.addResourceHandler("/files/pic/**").addResourceLocations(fileUrl(fileService.picDir()))
+    registry.addResourceHandler("/files/avatar/**").addResourceLocations(fileUrl(fileService.avatarDir()))
   }
 
-  private fun toLocation(path: String): String {
-    if (path.startsWith("/")) { return "file:$path/" }
-    else { return "file:///$path/" }
+  private fun fileUrl(path: String): String {
+    return if (path.startsWith("/")) {
+      "file:$path/"
+    }
+    else {
+      "file:///$path/"
+    }
   }
 
   @Bean
