@@ -4,8 +4,10 @@ import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import sage.domain.commons.Edge
-import sage.entity.*
-import sage.transfer.FollowListLite
+import sage.entity.Follow
+import sage.entity.Tag
+import sage.entity.Tweet
+import sage.entity.UserTag
 import sage.transfer.TweetView
 
 @Service
@@ -27,16 +29,18 @@ class TweetReadService
 
   private fun byFollow(follow: Follow, edge: Edge): List<Tweet> {
     val authorId = follow.target.id
-    val result: List<Tweet>
-    if (follow.isIncludeAll) {
-      result = Tweet.byAuthor(authorId, edge)
-    } else if (follow.isIncludeNew) {
-      updateOffsetIfNeeded(follow)
-      result = Tweet.byAuthorAndTags(authorId, follow.tags, edge)
-    } else {
-      result = Tweet.byAuthorAndTags(authorId, follow.tags, edge)
+    return when {
+      follow.isIncludeAll -> {
+        Tweet.byAuthor(authorId, edge)
+      }
+      follow.isIncludeNew -> {
+        updateOffsetIfNeeded(follow)
+        Tweet.byAuthorAndTags(authorId, follow.tags, edge)
+      }
+      else -> {
+        Tweet.byAuthorAndTags(authorId, follow.tags, edge)
+      }
     }
-    return result
   }
 
   private fun updateOffsetIfNeeded(follow: Follow) {
@@ -59,9 +63,6 @@ class TweetReadService
     }
 
   }
-
-  fun byFollowListLite(list: FollowListLite, edge: Edge): List<Tweet> =
-      list.list.flatMap { info -> Tweet.byAuthorAndTags(info.userId!!, Tag.multiGet(info.tagIds), edge) }
 
   fun byTag(tagId: Long, edge: Edge): List<Tweet> = Tweet.byTags(setOf(Tag.ref(tagId)), edge)
 

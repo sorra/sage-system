@@ -4,21 +4,6 @@ import javax.persistence.Entity
 import javax.persistence.ManyToOne
 
 @Entity
-class FollowListHeed(
-    @ManyToOne(optional = false)
-    var user: User,
-    @ManyToOne
-    var list: FollowListEntity
-) : AutoModel() {
-
-  companion object : BaseFind<Long, FollowListHeed>(FollowListHeed::class) {
-    fun find(userId: Long, listId: Long) =
-        where().eq("user", User.ref(userId)).eq("list", FollowListEntity.ref(listId)).findUnique()
-    fun byUser(userId: Long): List<FollowListHeed> = where().eq("user", User.ref(userId)).findList()
-  }
-}
-
-@Entity
 class TagHeed(
     @ManyToOne(optional = false)
     var user: User,

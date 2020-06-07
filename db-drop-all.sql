@@ -28,12 +28,6 @@ drop index ix_follow_tag_follow on follow_tag;
 alter table follow_tag drop foreign key fk_follow_tag_tag;
 drop index ix_follow_tag_tag on follow_tag;
 
-alter table follow_list_heed drop foreign key fk_follow_list_heed_user_id;
-drop index ix_follow_list_heed_user_id on follow_list_heed;
-
-alter table follow_list_heed drop foreign key fk_follow_list_heed_list_id;
-drop index ix_follow_list_heed_list_id on follow_list_heed;
-
 alter table tag drop foreign key fk_tag_parent_id;
 drop index ix_tag_parent_id on tag;
 
@@ -81,10 +75,6 @@ drop table if exists follow;
 
 drop table if exists follow_tag;
 
-drop table if exists follow_list_entity;
-
-drop table if exists follow_list_heed;
-
 drop table if exists liking;
 
 drop table if exists login_pass;
@@ -92,8 +82,6 @@ drop table if exists login_pass;
 drop table if exists message;
 
 drop table if exists notification;
-
-drop table if exists resource_list_entity;
 
 drop table if exists tag;
 

@@ -113,27 +113,6 @@ create table follow_tag (
   constraint pk_follow_tag primary key (follow_id,tag_id)
 );
 
-create table follow_list_entity (
-  id                            bigint auto_increment not null,
-  owner_id                      bigint,
-  name                          varchar(255),
-  list_json                     TEXT,
-  version                       bigint not null,
-  when_created                  datetime(6) not null,
-  when_modified                 datetime(6) not null,
-  constraint pk_follow_list_entity primary key (id)
-);
-
-create table follow_list_heed (
-  id                            bigint auto_increment not null,
-  user_id                       bigint not null,
-  list_id                       bigint,
-  version                       bigint not null,
-  when_created                  datetime(6) not null,
-  when_modified                 datetime(6) not null,
-  constraint pk_follow_list_heed primary key (id)
-);
-
 create table liking (
   id                            bigint auto_increment not null,
   user_id                       bigint,
@@ -177,17 +156,6 @@ create table notification (
   when_modified                 datetime(6) not null,
   constraint ck_notification_type check (type in (0,1,2,3,4,5,6,7,8,9)),
   constraint pk_notification primary key (id)
-);
-
-create table resource_list_entity (
-  id                            bigint auto_increment not null,
-  owner_id                      bigint,
-  name                          varchar(255),
-  list_json                     TEXT,
-  version                       bigint not null,
-  when_created                  datetime(6) not null,
-  when_modified                 datetime(6) not null,
-  constraint pk_resource_list_entity primary key (id)
 );
 
 create table tag (
@@ -324,12 +292,6 @@ create index ix_follow_tag_follow on follow_tag (follow_id);
 
 alter table follow_tag add constraint fk_follow_tag_tag foreign key (tag_id) references tag (id) on delete restrict on update restrict;
 create index ix_follow_tag_tag on follow_tag (tag_id);
-
-alter table follow_list_heed add constraint fk_follow_list_heed_user_id foreign key (user_id) references user (id) on delete restrict on update restrict;
-create index ix_follow_list_heed_user_id on follow_list_heed (user_id);
-
-alter table follow_list_heed add constraint fk_follow_list_heed_list_id foreign key (list_id) references follow_list_entity (id) on delete restrict on update restrict;
-create index ix_follow_list_heed_list_id on follow_list_heed (list_id);
 
 alter table tag add constraint fk_tag_parent_id foreign key (parent_id) references tag (id) on delete restrict on update restrict;
 create index ix_tag_parent_id on tag (parent_id);

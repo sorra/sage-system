@@ -21,7 +21,6 @@ class StreamService
     // TweetsByFollowings must be added first, they are prior
     mergedSet.addAll(transfers.toTweetViews(tweetRead.byFollowings(userId, edge)))
     mergedSet.addAll(tcsByTagHeeds(userId, edge))
-    mergedSet.addAll(tcsByFollowListHeeds(userId, edge))
     // Multi-source may break the edge assumption:
     // e.g. from followings ends at 33, from heeds ends at 29.
     // Next time should be before 33 or before 29?
@@ -62,15 +61,6 @@ class StreamService
       tcsByTags.addAll(tagTcs)
     }
     return tcsByTags
-  }
-
-  private fun tcsByFollowListHeeds(userId: Long, edge: Edge): List<TweetView> {
-    val tcsByFollowLists = ArrayList<TweetView>()
-    for (hd in heedService.followListHeeds(userId)) {
-      val followList = FollowListLite.fromEntity(hd.list)
-      tcsByFollowLists.addAll(transfers.toTweetViews(tweetRead.byFollowListLite(followList, edge)))
-    }
-    return tcsByFollowLists
   }
 
   fun tagStream(tagId: Long, edge: Edge): Stream {

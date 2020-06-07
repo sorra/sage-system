@@ -1,7 +1,9 @@
 package sage.service
 
 import org.springframework.stereotype.Service
-import sage.entity.*
+import sage.entity.Tag
+import sage.entity.TagHeed
+import sage.entity.User
 
 @Service
 class HeedService {
@@ -22,23 +24,5 @@ class HeedService {
 
   fun unheedTag(userId: Long, tagId: Long) {
     TagHeed.find(userId, tagId)?.delete()
-  }
-
-  fun followListHeeds(userId: Long): Collection<FollowListHeed> {
-    return FollowListHeed.byUser(userId)
-  }
-
-  fun existsFollowListHeed(userId: Long, followListId: Long): Boolean {
-    return FollowListHeed.find(userId, followListId) != null
-  }
-
-  fun heedFollowList(userId: Long, followListId: Long) {
-    if (FollowListHeed.find(userId, followListId) == null) {
-      FollowListHeed(User.ref(userId), FollowListEntity.ref(followListId)).save()
-    }
-  }
-
-  fun unheedFollowList(userId: Long, followListId: Long) {
-    FollowListHeed.find(userId, followListId)?.delete()
   }
 }

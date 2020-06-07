@@ -16,9 +16,6 @@ abstract class HasServices {
   protected lateinit var heedService: HeedService
 
   @Autowired
-  protected lateinit var listService: ListService
-
-  @Autowired
   protected lateinit var messageService: MessageService
 
   @Autowired

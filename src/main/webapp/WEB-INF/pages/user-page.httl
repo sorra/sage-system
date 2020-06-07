@@ -20,8 +20,8 @@ ${extends("layout.httl")}
     #if(frontMap.get("isSelfPage") == true)
     <a href="/user-info">修改↓️</a>
     #end
+
     #set(user = thisUser)
-    <a href="/lists?uid=${user.id}">分享的列表</a>
     $!{include("user-card.httl")}
     加入时间：$!{spanHumanTime(user.whenCreated)}
   </div>
