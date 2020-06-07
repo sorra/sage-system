@@ -11,7 +11,7 @@
 	</form>
 	<form class="pic-upload">
 		<a class="pic-upload-btn btn btn-default btn-xs" style="position: relative; display: inline-block; overflow: hidden;">
-			<span class="glyphicon glyphicon-picture"></span>图片
+			<span class="glyphicon glyphicon-picture"></span>贴图
 			<input type="file" name="file" style="position: absolute; top: 0; right: 0; opacity: 0; -ms-filter: 'alpha(opacity=0)'; max-width: 52px;"/>
 		</a>
 		<a class="pic-preview" href="javascript:;" style="display: none">
